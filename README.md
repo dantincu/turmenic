@@ -1,2 +1,2 @@
 # tncvd
-This is where I put my public code.
+This is the default public repository.
