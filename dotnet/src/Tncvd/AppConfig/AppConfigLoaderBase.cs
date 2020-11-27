@@ -1,53 +1,32 @@
-﻿namespace Tncvd.AppConfig
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace Tncvd.AppConfig
+{
     public abstract class AppConfigLoaderBase<T> where T : ConfigurationSectionGroup
     {
-        public const string EXECUTABLE_FILE_EXTENSION_NAME = "exe";
-        public const string LIBRARY_FILE_EXTENSION_NAME = "dll";
-        public const string CONFIG_FILE_EXTENSION_NAME = "config";
+        public const string DEFAULT_SECTION_GROUP_NAME = "tncvd";
+
+        // This property only needs to be defined here, in one place, because it will return the inheriting type's assembly at runtime
+        protected string AssemblyName => this.GetType().Assembly.GetName().Name; 
+
+        protected virtual string SectionGroupName => DEFAULT_SECTION_GROUP_NAME;
 
         public T Load(string sectionGroupName = null)
         {
-            string configFileName = this.GetConfigFileName();
+            T retInstance;
+
             sectionGroupName = sectionGroupName ?? this.SectionGroupName;
+            Configuration config = this.LoadConfiguration();
 
-            T group = ConfigurationManager.OpenMappedExeConfiguration(new ExeConfigurationFileMap
-            {
-                ExeConfigFilename = configFileName
-            }, ConfigurationUserLevel.None).SectionGroups[sectionGroupName] as T;
-
-            return group;
+            retInstance = config?.SectionGroups[sectionGroupName] as T;
+            return retInstance;
         }
 
-        protected abstract string AssemblyName { get; }
-
-        protected abstract bool AssemblyIsExecutable { get; }
-
-        protected abstract string SectionGroupName { get; }
-
-        private string GetConfigFileName()
-        {
-            string retVal = this.AssemblyName;
-
-            if (this.AssemblyIsExecutable)
-            {
-                retVal = $"{retVal}.{EXECUTABLE_FILE_EXTENSION_NAME}";
-            }
-            else
-            {
-                retVal = $"{retVal}.{LIBRARY_FILE_EXTENSION_NAME}";
-            }
-
-            retVal = $"{retVal}.{CONFIG_FILE_EXTENSION_NAME}";
-
-            return retVal;
-        }
+        protected abstract Configuration LoadConfiguration();
     }
 }
