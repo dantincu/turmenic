@@ -1,11 +1,14 @@
-﻿namespace Tncvd.Console.App
-{
-    using System;
+﻿using System;
+using Tncvd.Console.App.AppConfig;
 
-    class Program
+namespace Tncvd.Console.App
+{
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            AppExecutionInfo.Register();
+
             System.Console.WriteLine("Hello World!");
             TestAppConfig test = new TestAppConfig();
             test.Run();

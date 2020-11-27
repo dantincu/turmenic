@@ -4,8 +4,9 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tncvd.AppConfig.Config;
 using Tncvd.AppConfig.Config.Env;
+using Tncvd.AppConfig.Env;
+using Tncvd.AppConfig.Settings;
 
 namespace Tncvd.Console.App
 {
@@ -13,27 +14,14 @@ namespace Tncvd.Console.App
     {
         public void Run()
         {
-            TncvdSectionGroup group = ConfigurationManager.OpenMappedExeConfiguration(new ExeConfigurationFileMap
-            {
-                ExeConfigFilename = "Tncvd.dll.config"
-            }, ConfigurationUserLevel.None).SectionGroups["tncvd"] as TncvdSectionGroup;
-            foreach (ConfigurationSection section in group.Sections)
-            {
-                System.Console.WriteLine("\n\n===========================================");
-                System.Console.WriteLine(section.SectionInformation.Name.ToUpper());
-                System.Console.WriteLine("===========================================");
-                if (section.GetType() == typeof(EnvLocationsSection))
-                {
-                    EnvLocationsSection c = (EnvLocationsSection)section;
-                    EnvLocationElementCollection coll = c.Locations;
-                    foreach (EnvLocationElement item in coll)
-                    {
-                        System.Console.WriteLine("|{0}|{1}|", item.Name, item.Path);
-                        System.Console.WriteLine("-------------------------------------------");
-                    }
-                }
-            }
-            System.Console.ReadLine();
+            System.Console.WriteLine($"Root env path: {AppEnvConfigContainer.Instance.EnvRootPath}");
+            System.Console.WriteLine($"Root env config path: {AppEnvConfigContainer.Instance.EnvRootConfigPath}");
+            System.Console.WriteLine($"Root env content path: {AppEnvConfigContainer.Instance.EnvRootContentPath}");
+            System.Console.WriteLine($"Root env data path: {AppEnvConfigContainer.Instance.EnvRootDataPath}");
+            System.Console.WriteLine($"Root env logs path: {AppEnvConfigContainer.Instance.EnvRootLogsPath}");
+            System.Console.WriteLine($"Root env metadata path: {AppEnvConfigContainer.Instance.EnvRootMetadataPath}");
+            System.Console.WriteLine($"Root env temp path: {AppEnvConfigContainer.Instance.EnvRootTempPath}");
+            System.Console.WriteLine($"Default app name prefix: {AppSettingsContainer.Instance.DefaultAppNamePrefix}");
         }
     }
 }

@@ -4,10 +4,11 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tncvd.AppConfig.Env;
 
 namespace Tncvd.AppConfig
 {
-    public abstract class AppEnvConfigContainerBase<T> where T : ConfigurationSectionGroup
+    public abstract class AppConfigContainerBase<T> where T : ConfigurationSectionGroup
     {
         private T _sectionGroup;
 
@@ -27,7 +28,7 @@ namespace Tncvd.AppConfig
         protected abstract T GetSectionGroup();
     }
 
-    public class AppEnvConfigContainerBase<T, TLoader> : AppEnvConfigContainerBase<T> where T : ConfigurationSectionGroup where TLoader : AppConfigLoaderBase<T>
+    public class AppConfigContainerBase<T, TLoader> : AppConfigContainerBase<T> where T : ConfigurationSectionGroup where TLoader : AppConfigLoaderBase<T>
     {
         protected override T GetSectionGroup()
         {
