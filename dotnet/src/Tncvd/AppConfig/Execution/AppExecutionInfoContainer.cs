@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tncvd.AppConfig.Env;
 
 namespace Tncvd.AppConfig.Execution
 {
@@ -44,13 +46,26 @@ namespace Tncvd.AppConfig.Execution
             this.AssureNotRegistered();
 
             this._info = info;
+            this.TryWriteInfoToFile(info);
         }
 
         public void Register<T>() where T : AppExecutionInfoBase
         {
-            this.AssureNotRegistered();
+            T info = Activator.CreateInstance<T>();
+            this.Register(info);
+        }
 
-            this._info = Activator.CreateInstance<T>();
+        private void TryWriteInfoToFile(AppExecutionInfoBase info)
+        {
+            try
+            {
+                info.WriteInfoToFile(
+                    AppEnvConfigContainer.Instance.GetEnvMetadataPath(info.AppExecutionStartAssemblyName),
+                    $"app-info-{info.AppExecutionStartTimeTicks}-{info.AppExecutionId}.xml");
+            }
+            catch
+            {
+            }
         }
 
         private void AssureNotRegistered()

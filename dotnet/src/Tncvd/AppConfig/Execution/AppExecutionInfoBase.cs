@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Tncvd.AppConfig.Execution
 {
@@ -12,26 +14,54 @@ namespace Tncvd.AppConfig.Execution
     {
         private const string APP_SETTINGS_ENV_LOCATION_KEY = "tncvdEnvLocationName";
 
+        private readonly AppExecutionInfoSerializable _info;
+
         public AppExecutionInfoBase(string tncvdEnvLocationName = null)
         {
-            this.AppExecutionId = Guid.NewGuid();
-            this.AppExecutionStartTime = DateTime.Now;
-            this.AppExecutionStartAssemblyName = this.GetAppExecutionStartAssemblyName();
-
-            this.TncvdEnvLocationName = tncvdEnvLocationName ?? ConfigurationManager.AppSettings[APP_SETTINGS_ENV_LOCATION_KEY];
+            this._info = this.GetInstance(tncvdEnvLocationName);
         }
 
-        public Guid AppExecutionId { get; }
+        public Guid AppExecutionId => this._info.AppExecutionId;
 
-        public DateTime AppExecutionStartTime { get; }
+        public DateTime AppExecutionStartTime => this._info.AppExecutionStartTime;
 
-        public string AppExecutionStartAssemblyName { get; }
+        public long AppExecutionStartTimeTicks => this._info.AppExecutionStartTimeTicks;
 
-        public string TncvdEnvLocationName { get; }
+        public string AppExecutionStartAssemblyName => this._info.AppExecutionStartAssemblyName;
+
+        public string TncvdEnvLocationName => this._info.TncvdEnvLocationName;
+
+        public void WriteInfoToFile(string outputDirPath, string outputFileName)
+        {
+            Directory.CreateDirectory(outputDirPath);
+            string outputFilePath = Path.Combine(outputDirPath, outputFileName);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(AppExecutionInfoSerializable));
+            using (StreamWriter sw = new StreamWriter(outputFilePath))
+            {
+                serializer.Serialize(sw, this._info);
+            }
+        }
 
         protected virtual string GetAppExecutionStartAssemblyName()
         {
             return this.GetType().Assembly.GetName().Name;
+        }
+
+        protected virtual AppExecutionInfoSerializable GetInstance(string tncvdEnvLocationName = null)
+        {
+            DateTime appExecutionStartTime = DateTime.Now;
+
+            AppExecutionInfoSerializable appExecutionInfoSerializable = new AppExecutionInfoSerializable
+            {
+                AppExecutionId = Guid.NewGuid(),
+                AppExecutionStartTime = appExecutionStartTime,
+                AppExecutionStartTimeTicks = appExecutionStartTime.Ticks,
+                AppExecutionStartAssemblyName = this.GetAppExecutionStartAssemblyName(),
+                TncvdEnvLocationName = tncvdEnvLocationName ?? ConfigurationManager.AppSettings[APP_SETTINGS_ENV_LOCATION_KEY],
+            };
+
+            return appExecutionInfoSerializable;
         }
     }
 }
