@@ -1,12 +1,12 @@
-﻿using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using Tncvd.AppConfig.Env;
 using Tncvd.AppConfig.Execution;
 
@@ -24,7 +24,7 @@ namespace Tncvd.Logging
                 LogEventLevel.Verbose).WriteTo.File(
                 this.GetLogFilePath(loggerName),
                 restrictedToMinimumLevel: LogEventLevel.Verbose,
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fffffff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fffffff zzz}] [{Level}] [{Message:lj}]{NewLine}{Exception}",
                 formatProvider: null,
                 fileSizeLimitBytes: 1024 * 1024 * 1024,
                 levelSwitch: new LoggingLevelSwitch(LogEventLevel.Verbose),
@@ -59,8 +59,7 @@ namespace Tncvd.Logging
         {
             string retVal = Path.Combine(
                 this.AssureLoggerDir(loggerName),
-                this.GetLoggerFileName(loggerName)
-            );
+                this.GetLoggerFileName(loggerName));
 
             return retVal;
         }
