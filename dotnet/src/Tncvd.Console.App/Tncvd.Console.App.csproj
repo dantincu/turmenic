@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tncvd.AppConfig\Tncvd.AppConfig.csproj" />
+    <ProjectReference Include="..\Tncvd.Logging\Tncvd.Logging.csproj" />
     <ProjectReference Include="..\Tncvd\Tncvd.csproj" />
   </ItemGroup>
 

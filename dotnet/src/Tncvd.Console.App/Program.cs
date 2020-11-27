@@ -12,6 +12,9 @@ namespace Tncvd.Console.App
             System.Console.WriteLine("Hello World!");
             TestAppConfig test = new TestAppConfig();
             test.Run();
+
+            TestLogger loggerTest = new TestLogger();
+            loggerTest.Run();
         }
     }
 }
