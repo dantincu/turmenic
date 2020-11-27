@@ -24,7 +24,7 @@ namespace Tncvd.Logging
                 LogEventLevel.Verbose).WriteTo.File(
                 this.GetLogFilePath(loggerName),
                 restrictedToMinimumLevel: LogEventLevel.Verbose,
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fffffff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fffffff zzz}] [{Level}] [{Message:lj}]{NewLine}{Exception}",
                 formatProvider: null,
                 fileSizeLimitBytes: 1024 * 1024 * 1024,
                 levelSwitch: new LoggingLevelSwitch(LogEventLevel.Verbose),
