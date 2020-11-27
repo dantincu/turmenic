@@ -1,9 +1,9 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Tncvd.Logging
 {
@@ -18,8 +18,6 @@ namespace Tncvd.Logging
         protected Serilog.Core.Logger Logger { get; }
 
         protected string LoggerName { get; }
-
-        protected abstract Serilog.Core.Logger GetLoggerInstance(string loggerName);
 
         public void Verbose(string messageTemplate, params object[] propertyValues)
         {
@@ -85,5 +83,7 @@ namespace Tncvd.Logging
         {
             this.Logger.Dispose();
         }
+
+        protected abstract Serilog.Core.Logger GetLoggerInstance(string loggerName);
     }
 }

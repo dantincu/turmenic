@@ -1,12 +1,12 @@
-﻿using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using Tncvd.AppConfig.Env;
 using Tncvd.AppConfig.Execution;
 
@@ -59,8 +59,7 @@ namespace Tncvd.Logging
         {
             string retVal = Path.Combine(
                 this.AssureLoggerDir(loggerName),
-                this.GetLoggerFileName(loggerName)
-            );
+                this.GetLoggerFileName(loggerName));
 
             return retVal;
         }
