@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tncvd.AppConfig\Tncvd.AppConfig.csproj" />
     <ProjectReference Include="..\Tncvd\Tncvd.csproj" />
   </ItemGroup>
 
