@@ -14,7 +14,7 @@ namespace Tncvd.WinForms.UserControls.Forms
     {
         public AppFormBase()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

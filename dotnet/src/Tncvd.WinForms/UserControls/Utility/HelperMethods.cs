@@ -10,10 +10,10 @@ namespace Tncvd.WinForms.UserControls.Utility
     public static class HelperMethods
     {
         #region WinForms Controls
-        public static void AddBasicControlProperties(Control Control)
+        public static void AddBasicControlProperties(Control control)
         {
-            Control.BackColor = ConstantValues.AppColors.DefaultAppBackColor;
-            Control.ForeColor = ConstantValues.AppColors.DefaultAppForeColor;
+            control.BackColor = ConstantValues.AppColors.DefaultAppBackColor;
+            control.ForeColor = ConstantValues.AppColors.DefaultAppForeColor;
         }
 
         public static void AddBasicUserControlProperties(UserControl userControl)

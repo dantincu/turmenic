@@ -17,9 +17,9 @@ namespace Tncvd.Validators
 
         public bool IsValidStringLiteral(string value)
         {
-            bool retVal = _stringDelimiterChars.Any(c => value.StartsWith(c) && value.EndsWith(c));
+            bool retVal = this._stringDelimiterChars.Any(c => value.StartsWith(c) && value.EndsWith(c));
 
-            retVal = retVal && IsUnescaped(value) == false;
+            retVal = retVal && this.IsUnescaped(value) == false;
             return retVal;
         }
 
@@ -30,13 +30,13 @@ namespace Tncvd.Validators
             switch (value[0])
             {
                 case '\'':
-                    retVal = IsSingleQuoteUnescaped(value);
+                    retVal = this.IsSingleQuoteUnescaped(value);
                     break;
                 case '"':
-                    retVal = IsDoubleQuoteUnescaped(value);
+                    retVal = this.IsDoubleQuoteUnescaped(value);
                     break;
                 case '`':
-                    retVal = IsTickUnescaped(value);
+                    retVal = this.IsTickUnescaped(value);
                     break;
                 default:
                     throw new InvalidOperationException("Something went wrong...");
@@ -47,41 +47,41 @@ namespace Tncvd.Validators
 
         private bool IsTickUnescaped(string value)
         {
-            value = GetSubstringWithoutMargins(value);
-            value = RemoveDoubleTicksFromString(value);
+            value = this.GetSubstringWithoutMargins(value);
+            value = this.RemoveDoubleTicksFromString(value);
             return value.Contains('`');
         }
 
         private string RemoveDoubleTicksFromString(string value)
         {
-            return value.Replace("``", "");
+            return value.Replace("``", string.Empty);
         }
 
         private bool IsSingleQuoteUnescaped(string value)
         {
-            value = GetSubstringWithoutMargins(value);
-            value = RemoveBackSlashEscapedFromString(value, '\'');
+            value = this.GetSubstringWithoutMargins(value);
+            value = this.RemoveBackSlashEscapedFromString(value, '\'');
             return value.Contains('\'');
         }
 
         private bool IsDoubleQuoteUnescaped(string value)
         {
-            value = GetSubstringWithoutMargins(value);
-            value = RemoveBackSlashEscapedFromString(value, '"');
+            value = this.GetSubstringWithoutMargins(value);
+            value = this.RemoveBackSlashEscapedFromString(value, '"');
             return value.Contains('"');
         }
 
         private string RemoveBackSlashEscapedFromString(string value, char quoteChar)
         {
-            value = RemoveDoubleBackSlashesFromString(value);
-            value = value.Replace($"\\{quoteChar}", "");
+            value = this.RemoveDoubleBackSlashesFromString(value);
+            value = value.Replace($"\\{quoteChar}", string.Empty);
 
             return value;
         }
 
         private string RemoveDoubleBackSlashesFromString(string value)
         {
-            return value.Replace(@"\\", "");
+            return value.Replace(@"\\", string.Empty);
         }
 
         private string GetSubstringWithoutMargins(string value, int marginLength = 1)

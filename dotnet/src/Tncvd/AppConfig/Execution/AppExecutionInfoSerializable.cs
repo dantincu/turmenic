@@ -17,6 +17,6 @@ namespace Tncvd.AppConfig.Execution
 
         public string AppExecutionStartAssemblyName { get; set; }
 
-        public string TncvdEnvLocationName { get; set; }
+        public string TncvdEnvLocationPath { get; set; }
     }
 }

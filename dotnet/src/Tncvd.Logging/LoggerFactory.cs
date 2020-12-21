@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tncvd.Reflection;
 
 namespace Tncvd.Logging
 {
@@ -35,7 +36,7 @@ namespace Tncvd.Logging
 
         public FileLogger GetFileLogger(Type type)
         {
-            string loggerName = type.FullName;
+            string loggerName = type.GetFullTypeName();
             FileLogger fileLogger = this.GetFileLogger(loggerName);
 
             return fileLogger;
@@ -43,7 +44,7 @@ namespace Tncvd.Logging
 
         public void CloseAndFlushGlobal()
         {
-            Serilog.Log.CloseAndFlush();
+            global::Serilog.Log.CloseAndFlush();
         }
     }
 }

@@ -4,43 +4,26 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tncvd.AppConfig.Config.Settings.Simple;
 
 namespace Tncvd.AppConfig.Config.Settings
 {
-    public class SettingElement : ConfigurationElement
+    public class SettingElement : SimpleSettingElement
     {
-        private const string NAME_KEY = "name";
-        private const string VALUE_KEY = "value";
+        private const string ALT_VALUE_KEY = "altValue";
 
-        private const string DEFAULT_SETTING_NAME = "default";
-
-        [ConfigurationProperty(NAME_KEY, DefaultValue = DEFAULT_SETTING_NAME, IsKey = true, IsRequired = true)]
-        public string Name
+        [ConfigurationProperty(ALT_VALUE_KEY, DefaultValue = "", IsKey = false, IsRequired = false)]
+        public string AltValue
         {
             get
             {
-                string retVal = (string)this[NAME_KEY];
+                string retVal = (string)this[ALT_VALUE_KEY];
                 return retVal;
             }
 
             set
             {
-                this[NAME_KEY] = value;
-            }
-        }
-
-        [ConfigurationProperty(VALUE_KEY, DefaultValue = "", IsKey = false, IsRequired = true)]
-        public string Value
-        {
-            get
-            {
-                string retVal = (string)this[VALUE_KEY];
-                return retVal;
-            }
-
-            set
-            {
-                this[VALUE_KEY] = value;
+                this[ALT_VALUE_KEY] = value;
             }
         }
     }

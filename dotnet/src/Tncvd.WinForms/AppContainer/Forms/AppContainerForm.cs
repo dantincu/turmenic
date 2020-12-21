@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Tncvd.WinForms.UserControls.Forms;
+using Tncvd.Reflection;
 using Tncvd.WinForms.Logging;
-using Tncvd.WinForms.UserControls.Utility;
 
 namespace Tncvd.WinForms.AppContainer.Forms
 {
@@ -31,13 +24,13 @@ namespace Tncvd.WinForms.AppContainer.Forms
         #region Constructors
         public AppContainerForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.InitForm();
         }
 
         public AppContainerForm(Func<Form> appMainFormCreator)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this._appMainFormCreator = appMainFormCreator;
             this.InitForm();
         }
@@ -63,16 +56,16 @@ namespace Tncvd.WinForms.AppContainer.Forms
             TextBoxLoggerFactory.Instance.RegisterDefaultLoggingRichTextBox(this.richTextBoxAppLogs);
             TextBoxLoggerFactory.Instance.RegisterDefaultOutputRichTextBox(this.richTextBoxOutput);
             this._appContainer = AppContainer.Instance;
-            this._logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(this.GetType().FullName);
+            this._logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(this.GetType().GetFullTypeName());
             this.FormTabControl.SelectedTab = this.appLogsTabPage;
         }
 
         private void SetupLayout()
         {
             this.formSplitPannel.Panel1.ClientSize = new Size(this.formSplitPannel.Size.Width, DEFAULT_MENU_STRIP_HEIGHT_PX);
-            this.formSplitPannel.SizeChanged += FormSplitContainer_SizeChanged;
+            this.formSplitPannel.SizeChanged += this.FormSplitContainer_SizeChanged;
 
-            HelperMethods.AddRichTextBoxProperties(this.richTextBoxAppLogs);
+            UserControls.Utility.HelperMethods.AddRichTextBoxProperties(this.richTextBoxAppLogs);
         }
 
         #endregion Methods - Init Form
