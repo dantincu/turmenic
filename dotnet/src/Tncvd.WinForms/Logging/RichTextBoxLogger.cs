@@ -1,50 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tncvd.Reflection;
 using Tncvd.WinForms.Styles.Colors;
 
 namespace Tncvd.WinForms.Logging
 {
     public class RichTextBoxLogger : TextBoxLogger
     {
+        public const string EXCEPTION_MESSAGE_DELIMITER = "[EXCEPTION-MESSAGE]";
+        public const string EXCEPTION_TYPE_DELIMITER = "[EXCEPTION-TYPE]";
+        public const string EXCEPTION_STACKTRACE_DELIMITER = "[EXCEPTION-STACKTRACE]";
+
         private readonly RichTextBox _richTextBox;
         public RichTextBoxLogger(RichTextBox textBox, string loggerName) : base(textBox, loggerName)
         {
-            _richTextBox = textBox;
+            this._richTextBox = textBox;
         }
 
-        protected RichTextBox RichTextBox => _richTextBox;
+        protected RichTextBox RichTextBox => this._richTextBox;
 
         protected override void LogExceptionInternal(LogLevel logLevel, Exception ex, string message)
         {
-            Color logMessageColor = GetLogMessageColor(logLevel);
-            LogInternalCore(logLevel, message, logMessageColor);
-            AppendException(_richTextBox, logLevel, logMessageColor, ex);
-            AppendLogMessageEnding(_richTextBox, logLevel, logMessageColor);
+            Color logMessageColor = this.GetLogMessageColor(logLevel);
+            this.LogInternalCore(logLevel, message, logMessageColor);
+            this.AppendException(this._richTextBox, logLevel, logMessageColor, ex);
+            this.AppendLogMessageEnding(this._richTextBox, logLevel, logMessageColor);
         }
 
         protected override void LogInternal(LogLevel logLevel, string message)
         {
-            Color logMessageColor = GetLogMessageColor(logLevel);
-            LogInternalCore(logLevel, message, logMessageColor);
-            AppendLogMessageEnding(_richTextBox, logLevel, logMessageColor);
+            Color logMessageColor = this.GetLogMessageColor(logLevel);
+            this.LogInternalCore(logLevel, message, logMessageColor);
+            this.AppendLogMessageEnding(this._richTextBox, logLevel, logMessageColor);
         }
 
         protected virtual void LogInternalCore(LogLevel logLevel, string message, Color logMessageColor)
         {
-            AppendLogLevel(_richTextBox, logLevel, logMessageColor);
-            AppendTimeStamp(_richTextBox, DateTime.Now, logMessageColor);
-            AppendLoggerName(_richTextBox, logLevel, logMessageColor);
-            AppendMessageText(_richTextBox, logLevel, logMessageColor, message);
+            this.AppendLogLevel(this._richTextBox, logLevel, logMessageColor);
+            this.AppendTimeStamp(this._richTextBox, DateTime.Now, logMessageColor);
+            this.AppendLoggerName(this._richTextBox, logLevel, logMessageColor);
+            this.AppendMessageText(this._richTextBox, logLevel, logMessageColor, message);
         }
 
         protected void AppendMessageText(RichTextBox textBox, LogLevel logLevel, Color logMessageColor, string message)
         {
-            AppendText(_richTextBox, logMessageColor, FontStyle.Regular, $" {message}{Environment.NewLine}");
+            this.AppendText(this._richTextBox, logMessageColor, FontStyle.Regular, $" {message}{Environment.NewLine}");
         }
 
         protected void AppendLogMessageEnding(RichTextBox textBox, LogLevel logLevel, Color logMessageColor)
@@ -62,29 +63,29 @@ namespace Tncvd.WinForms.Logging
             textBox.Select(initialTextLength, textLength);
             textBox.SelectionColor = color;
 
-            SetSelectionFontStyle(textBox, fontStyle);
+            this.SetSelectionFontStyle(textBox, fontStyle);
         }
 
         protected Color GetLogMessageColor(LogLevel logLevel)
         {
-            Color retVal = ConstantValues.TextColors.DefaultTextColor;
+            Color retVal = Styles.Colors.ConstantValues.TextColors.DefaultTextColor;
 
             switch (logLevel)
             {
                 case LogLevel.Debug:
-                    retVal = ConstantValues.TextColors.DefaultTextColor;
+                    retVal = Styles.Colors.ConstantValues.TextColors.DefaultTextColor;
                     break;
                 case LogLevel.Information:
-                    retVal = ConstantValues.TextColors.InformationTextColor;
+                    retVal = Styles.Colors.ConstantValues.TextColors.InformationTextColor;
                     break;
                 case LogLevel.Success:
-                    retVal = ConstantValues.TextColors.SuccessColor;
+                    retVal = Styles.Colors.ConstantValues.TextColors.SuccessColor;
                     break;
                 case LogLevel.Warning:
-                    retVal = ConstantValues.TextColors.WarningTextColor;
+                    retVal = Styles.Colors.ConstantValues.TextColors.WarningTextColor;
                     break;
                 case LogLevel.Error:
-                    retVal = ConstantValues.TextColors.ErrorTextColor;
+                    retVal = Styles.Colors.ConstantValues.TextColors.ErrorTextColor;
                     break;
                 default:
                     throw new NotSupportedException("The provided log level is not currently supported.");
@@ -104,43 +105,42 @@ namespace Tncvd.WinForms.Logging
         protected void AppendLogLevel(RichTextBox textBox, LogLevel logLevel, Color color)
         {
             string logLevelString = $" [{GetLogLevelString(logLevel)}] ";
-            AppendText(textBox, color, FontStyle.Bold | FontStyle.Italic, logLevelString);
+            this.AppendText(textBox, color, FontStyle.Bold | FontStyle.Italic, logLevelString);
         }
-
         protected void AppendMessagePartsDelimiter(RichTextBox textBox, Color color)
         {
-            AppendText(textBox, color, FontStyle.Bold | FontStyle.Underline, MESSAGE_PARTS_DELIMITER);
+            this.AppendText(textBox, color, FontStyle.Bold | FontStyle.Underline, TextBoxLogger.MESSAGE_PARTS_DELIMITER);
         }
 
         protected void AppendTimeStamp(RichTextBox textBox, DateTime timeStamp, Color color)
         {
-            string timeStampString = GetDateTimeString(DateTime.Now);
+            string timeStampString = this.GetDateTimeString(DateTime.Now);
             string message = $" [{timeStampString}] ";
 
-            AppendMessagePartsDelimiter(textBox, color);
-            AppendText(textBox, color, FontStyle.Regular, message);
-            AppendMessagePartsDelimiter(textBox, color);
+            this.AppendMessagePartsDelimiter(textBox, color);
+            this.AppendText(textBox, color, FontStyle.Regular, message);
+            this.AppendMessagePartsDelimiter(textBox, color);
         }
 
         protected void AppendLoggerName(RichTextBox textBox, LogLevel logLevel, Color color)
         {
-            AppendText(textBox, color, FontStyle.Regular, $" [{LoggerName}] ");
-            AppendMessagePartsDelimiter(textBox, color);
+            this.AppendText(textBox, color, FontStyle.Regular, $" [{LoggerName}] ");
+            this.AppendMessagePartsDelimiter(textBox, color);
         }
 
         protected void AppendException(RichTextBox textBox, LogLevel logLevel, Color color, Exception ex)
         {
-            AppendExceptionPart(textBox, logLevel, color, "[EXCEPTION-MESSAGE]", ex.Message);
-            AppendExceptionPart(textBox, logLevel, color, "[EXCEPTION-TYPE]", ex.GetType().FullName);
-            AppendExceptionPart(textBox, logLevel, color, "[EXCEPTION-STACKTRACE]", ex.StackTrace);
+            this.AppendExceptionPart(textBox, logLevel, color, EXCEPTION_MESSAGE_DELIMITER, ex.Message);
+            this.AppendExceptionPart(textBox, logLevel, color, EXCEPTION_TYPE_DELIMITER, ex.GetType().GetFullTypeName());
+            this.AppendExceptionPart(textBox, logLevel, color, EXCEPTION_STACKTRACE_DELIMITER, ex.StackTrace);
         }
 
         protected void AppendExceptionPart(RichTextBox textBox, LogLevel logLevel, Color color, string exceptionPartNameString, string exceptionPartString)
         {
-            AppendText(textBox, color, FontStyle.Bold | FontStyle.Italic, $" {exceptionPartNameString} ");
-            AppendMessagePartsDelimiter(textBox, color);
+            this.AppendText(textBox, color, FontStyle.Bold | FontStyle.Italic, $" {exceptionPartNameString} ");
+            this.AppendMessagePartsDelimiter(textBox, color);
 
-            AppendMessageText(_richTextBox, logLevel, color, exceptionPartString);
+            this.AppendMessageText(this._richTextBox, logLevel, color, exceptionPartString);
         }
     }
 }

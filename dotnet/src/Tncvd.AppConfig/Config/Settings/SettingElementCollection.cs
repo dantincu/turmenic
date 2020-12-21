@@ -4,10 +4,11 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tncvd.AppConfig.Config.Settings.Simple;
 
 namespace Tncvd.AppConfig.Config.Settings
 {
-    [ConfigurationCollection(typeof(SettingElement), AddItemName = "add")]
+    [ConfigurationCollection(typeof(SettingElement), AddItemName = SimpleSettingElementCollection.DEFAULT_ADD_ITEM_NAME)]
     public class SettingElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

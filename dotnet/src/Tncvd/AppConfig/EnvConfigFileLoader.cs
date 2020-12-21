@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Text;
+using Tncvd.AppConfig.Env;
+
+namespace Tncvd.AppConfig
+{
+    public class EnvConfigFileLoader : ConfigFileLoaderBase
+    {
+        public EnvConfigFileLoader(string EnvDirPath)
+        {
+            this.EnvDirPath = EnvDirPath;
+        }
+
+        protected string EnvDirPath { get; }
+
+        protected override string GetConfigFilePath()
+        {
+            string retVal = Path.Combine(
+                this.EnvDirPath,
+                this.GetDefaultEnvConfigFileName());
+
+            return retVal;
+        }
+
+        protected string GetDefaultEnvConfigFileName()
+        {
+            string envConfigFileName = FileSystem.HelperMethods.GetFileName(
+                Tncvd.Utility.ConstantValues.DEFAULT_ROOT_NAMESPACE_CAMELCASE,
+                ENV_CONFIG_FILE_NAME_SUFFIX,
+                FileSystem.ConstantValues.CommonFileExtensions.CONFIG);
+
+            return envConfigFileName;
+        }
+    }
+}

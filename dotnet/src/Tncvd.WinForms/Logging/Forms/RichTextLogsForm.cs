@@ -14,7 +14,7 @@ namespace Tncvd.WinForms.Logging.Forms
     {
         public RichTextLogsForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

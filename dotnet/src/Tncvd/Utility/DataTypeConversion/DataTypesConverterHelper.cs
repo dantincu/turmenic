@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tncvd.Components;
+using Tncvd.Reflection;
 
-namespace Tncvd.Utility
+namespace Tncvd.Utility.DataTypeConversion
 {
-    public class DataTypesConverterHelper
+    public class DataTypesConverterHelper : InstanceContainer<DataTypesConverterHelper>
     {
-        private static DataTypesConverterHelper _instance;
-
         private readonly Dictionary<Type, Func<string, object>> _converterMethods = new Dictionary<Type, Func<string, object>>
         {
             {
@@ -70,49 +70,32 @@ namespace Tncvd.Utility
             }
         };
 
-        private DataTypesConverterHelper()
-        {
-
-        }
-
-        public static DataTypesConverterHelper Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new DataTypesConverterHelper();
-                }
-
-                return _instance;
-            }
-        }
-
         public Func<string, T> GetConverterMethod<T>()
         {
             Func<string, object> converter;
 
             if (this._converterMethods.TryGetValue(typeof(T), out converter) == false)
             {
-                throw new ArgumentException($"No converter method available for converting to data type {typeof(T).FullName}");
+                throw new ArgumentException($"No converter method available for converting to data type {typeof(T).GetFullTypeName()}");
             }
 
             return converter as Func<string, T>;
         }
 
-        public T TryConvertFromString<T>(string inputValue, bool rethrowError = false, Func<string, T> converter = null)
+        public T ConvertFromString<T>(string inputValue, bool rethrowError = false, Func<string, T> converter = null)
         {
-            T retVal;
+            T retVal = default;
 
             try
             {
-                converter = converter ?? this.GetConverterMethod<T>();
-                retVal = converter(inputValue);
+                if (string.IsNullOrWhiteSpace(inputValue) == false)
+                {
+                    converter = converter ?? this.GetConverterMethod<T>();
+                    retVal = converter(inputValue);
+                }
             }
             catch
             {
-                retVal = default;
-
                 if (rethrowError)
                 {
                     throw;

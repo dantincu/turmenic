@@ -7,18 +7,17 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Tncvd.AppConfig.Env;
 
 namespace Tncvd.AppConfig.Execution
 {
     public abstract class AppExecutionInfoBase
     {
-        private const string APP_SETTINGS_ENV_LOCATION_KEY = "tncvdEnvLocationName";
-
         private readonly AppExecutionInfoSerializable _info;
 
-        public AppExecutionInfoBase(string tncvdEnvLocationName = null)
+        public AppExecutionInfoBase()
         {
-            this._info = this.GetInstance(tncvdEnvLocationName);
+            this._info = this.GetInstance();
         }
 
         public Guid AppExecutionId => this._info.AppExecutionId;
@@ -29,7 +28,7 @@ namespace Tncvd.AppConfig.Execution
 
         public string AppExecutionStartAssemblyName => this._info.AppExecutionStartAssemblyName;
 
-        public string TncvdEnvLocationName => this._info.TncvdEnvLocationName;
+        public string TncvdEnvLocationPath => this._info.TncvdEnvLocationPath;
 
         public void WriteInfoToFile(string outputDirPath, string outputFileName)
         {
@@ -48,7 +47,7 @@ namespace Tncvd.AppConfig.Execution
             return this.GetType().Assembly.GetName().Name;
         }
 
-        protected virtual AppExecutionInfoSerializable GetInstance(string tncvdEnvLocationName = null)
+        protected virtual AppExecutionInfoSerializable GetInstance()
         {
             DateTime appExecutionStartTime = DateTime.Now;
 
@@ -58,7 +57,7 @@ namespace Tncvd.AppConfig.Execution
                 AppExecutionStartTime = appExecutionStartTime,
                 AppExecutionStartTimeTicks = appExecutionStartTime.Ticks,
                 AppExecutionStartAssemblyName = this.GetAppExecutionStartAssemblyName(),
-                TncvdEnvLocationName = tncvdEnvLocationName ?? ConfigurationManager.AppSettings[APP_SETTINGS_ENV_LOCATION_KEY],
+                TncvdEnvLocationPath = AppEnvConfigContainer.Instance.EnvRootPath,
             };
 
             return appExecutionInfoSerializable;

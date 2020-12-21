@@ -14,9 +14,9 @@ namespace Tncvd.WinForms.AppContainer.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -144,7 +144,7 @@ namespace Tncvd.WinForms.AppContainer.Forms
             this.Controls.Add(this.formSplitPannel);
             this.MainMenuStrip = this.formMenuStrip;
             this.Name = "AppContainerForm";
-            this.Text = "AppManagerForm";
+            this.Text = "App Container";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AppContainerForm_Load);
             this.formSplitPannel.Panel1.ResumeLayout(false);

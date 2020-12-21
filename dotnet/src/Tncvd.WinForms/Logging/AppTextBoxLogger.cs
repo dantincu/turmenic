@@ -15,50 +15,50 @@ namespace Tncvd.WinForms.Logging
 
         public DialogResult ShowMessage(string message)
         {
-            Information(message);
-            return ShowInformationMessageBox(message);
+            this.Information(message);
+            return this.ShowInformationMessageBox(message);
         }
 
         public DialogResult ShowMessage(Exception ex, string message)
         {
-            Information(ex, message);
-            return ShowInformationMessageBox(message);
+            this.Information(ex, message);
+            return this.ShowInformationMessageBox(message);
         }
 
         public DialogResult ShowErrorMessage(string message)
         {
-            Error(message);
-            return ShowErrorMessageBox(message);
+            this.Error(message);
+            return this.ShowErrorMessageBox(message);
         }
 
         public DialogResult ShowErrorMessage(Exception ex, string message)
         {
-            Error(ex, message);
-            return ShowErrorMessageBox(message);
+            this.Error(ex, message);
+            return this.ShowErrorMessageBox(message);
         }
 
         public DialogResult ShowWarningMessage(string message, bool showCancelButton = false)
         {
-            Warning(message);
-            return ShowWarningMessageBox(message, showCancelButton);
+            this.Warning(message);
+            return this.ShowWarningMessageBox(message, showCancelButton);
         }
 
         public DialogResult ShowWarningMessage(Exception ex, string message, bool showCancelButton = false)
         {
-            Warning(ex, message);
-            return ShowWarningMessageBox(message, showCancelButton);
+            this.Warning(ex, message);
+            return this.ShowWarningMessageBox(message, showCancelButton);
         }
 
         public DialogResult ShowSuccessMessage(string message)
         {
-            Success(message);
-            return ShowSuccessMessageBox(message);
+            this.Success(message);
+            return this.ShowSuccessMessageBox(message);
         }
 
         public DialogResult ShowSuccessMessage(Exception ex, string message)
         {
-            Success(ex, message);
-            return ShowSuccessMessageBox(message);
+            this.Success(ex, message);
+            return this.ShowSuccessMessageBox(message);
         }
 
         public DialogResult ShowInformationMessageBox(string message)
@@ -73,7 +73,7 @@ namespace Tncvd.WinForms.Logging
 
         public DialogResult ShowWarningMessageBox(string message, bool showCancelButton = false)
         {
-            MessageBoxButtons messageBoxButtons = GetMessageBoxButtons(false, showCancelButton);
+            MessageBoxButtons messageBoxButtons = this.GetMessageBoxButtons(false, showCancelButton);
             return MessageBox.Show(message, "Warning", messageBoxButtons, MessageBoxIcon.Warning);
         }
 
@@ -84,7 +84,7 @@ namespace Tncvd.WinForms.Logging
 
         public DialogResult ShowQuestionBox(string questionText, string caption, bool isYesNo, bool showCancelButton)
         {
-            MessageBoxButtons messageBoxButtons = GetMessageBoxButtons(isYesNo, showCancelButton);
+            MessageBoxButtons messageBoxButtons = this.GetMessageBoxButtons(isYesNo, showCancelButton);
             return MessageBox.Show(questionText, caption, messageBoxButtons, MessageBoxIcon.Question);
         }
 

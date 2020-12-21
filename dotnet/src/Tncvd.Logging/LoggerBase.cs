@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Serilog;
 
 namespace Tncvd.Logging
 {
@@ -15,7 +14,7 @@ namespace Tncvd.Logging
             this.Logger = this.GetLoggerInstance(loggerName);
         }
 
-        protected Serilog.Core.Logger Logger { get; }
+        protected global::Serilog.Core.Logger Logger { get; }
 
         protected string LoggerName { get; }
 
@@ -84,6 +83,6 @@ namespace Tncvd.Logging
             this.Logger.Dispose();
         }
 
-        protected abstract Serilog.Core.Logger GetLoggerInstance(string loggerName);
+        protected abstract global::Serilog.Core.Logger GetLoggerInstance(string loggerName);
     }
 }

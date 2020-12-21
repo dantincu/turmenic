@@ -1,9 +1,6 @@
-﻿using Tncvd.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Tncvd.Reflection;
+using Tncvd.Services;
 using Tncvd.Utility;
 using Tncvd.WinForms.Logging;
 
@@ -17,8 +14,8 @@ namespace Tncvd.WinForms.AppContainer.Forms
 
         private AppContainer()
         {
-            _logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().FullName);
-            OutputLogger = TextBoxLoggerFactory.Instance.GetOutputTextBoxLogger("APP OUTPUT");
+            this._logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().GetFullTypeName());
+            this.OutputLogger = TextBoxLoggerFactory.Instance.GetOutputTextBoxLogger("APP OUTPUT");
         }
 
         public static AppContainer Instance
@@ -58,16 +55,16 @@ namespace Tncvd.WinForms.AppContainer.Forms
 
         public ActionResponse<TData> RunAction<TData>(Func<ActionResponse<TData>> action, AppTextBoxLogger appTextBoxLogger, string actionName = "action", bool printResultDataToOutput = false)
         {
-            OutputLogger.Clear();
+            this.OutputLogger.Clear();
 
             Func<ActionResponse> unTypedAction = action;
-            ActionResponse<TData> response = RunAction(unTypedAction, appTextBoxLogger, actionName) as ActionResponse<TData>;
+            ActionResponse<TData> response = this.RunAction(unTypedAction, appTextBoxLogger, actionName) as ActionResponse<TData>;
 
             if (printResultDataToOutput && response != null && response.Data != null)
             {
-                OutputLogger.Information($"Outputting string representation for object of type {typeof(TData).FullName}:");
+                this.OutputLogger.Information($"Outputting string representation for object of type {typeof(TData).GetFullTypeName()}:");
                 string objectString = SerializationHelperMethods.ObjectToStringOrXml(response.Data);
-                OutputLogger.Information(objectString);
+                this.OutputLogger.Information(objectString);
             }
 
             return response;

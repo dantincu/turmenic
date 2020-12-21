@@ -61,11 +61,23 @@ namespace Tncvd.AppConfig.Execution
             {
                 info.WriteInfoToFile(
                     AppEnvConfigContainer.Instance.GetEnvMetadataPath(info.AppExecutionStartAssemblyName),
-                    $"app-info-{info.AppExecutionStartTimeTicks}-{info.AppExecutionId}.xml");
+                    this.GetOutputFileName(info));
             }
             catch
             {
             }
+        }
+
+        private string GetOutputFileName(AppExecutionInfoBase info)
+        {
+            string outputFileName = FileSystem.HelperMethods.GetSlugFileNameFromSegments(
+                FileSystem.ConstantValues.CommonFileExtensions.XML,
+                "app",
+                "info",
+                info.AppExecutionStartTimeTicks.ToString(),
+                info.AppExecutionId.ToString());
+
+            return outputFileName;
         }
 
         private void AssureNotRegistered()

@@ -62,28 +62,28 @@ namespace Tncvd.WinForms.Logging
 
         public void RegisterDefaultLoggingRichTextBox(RichTextBox richTextBox)
         {
-            AssureDefaultLoggingRichTextBoxNotYetRegistered();
-            ValidateRichTextBoxRegisterArgument(richTextBox);
-            _defaultLoggingRichTextBox = richTextBox;
+            this.AssureDefaultLoggingRichTextBoxNotYetRegistered();
+            this.ValidateRichTextBoxRegisterArgument(richTextBox);
+            this._defaultLoggingRichTextBox = richTextBox;
         }
 
         public void RegisterDefaultOutputRichTextBox(RichTextBox richTextBox)
         {
-            AssureDefaultOutputRichTextBoxNotYetRegistered();
-            ValidateRichTextBoxRegisterArgument(richTextBox);
-            _defaultOutputRichTextBox = richTextBox;
+            this.AssureDefaultOutputRichTextBoxNotYetRegistered();
+            this.ValidateRichTextBoxRegisterArgument(richTextBox);
+            this._defaultOutputRichTextBox = richTextBox;
         }
 
         public AppTextBoxLogger GetAppTextBoxLogger(string loggerName)
         {
-            AssureDefaultLoggingRichTextBoxRegistered();
-            return GetAppTextBoxLogger(_defaultLoggingRichTextBox, loggerName);
+            this.AssureDefaultLoggingRichTextBoxRegistered();
+            return this.GetAppTextBoxLogger(this._defaultLoggingRichTextBox, loggerName);
         }
 
         public AppTextBoxLogger GetOutputTextBoxLogger(string loggerName)
         {
-            AssureDefaultOutputRichTextBoxRegistered();
-            return GetAppTextBoxLogger(_defaultOutputRichTextBox, loggerName);
+            this.AssureDefaultOutputRichTextBoxRegistered();
+            return this.GetAppTextBoxLogger(this._defaultOutputRichTextBox, loggerName);
         }
 
         #region Methods - Validaion
@@ -98,7 +98,7 @@ namespace Tncvd.WinForms.Logging
 
         private void AssureDefaultLoggingRichTextBoxRegistered()
         {
-            if (_defaultLoggingRichTextBox == null)
+            if (this._defaultLoggingRichTextBox == null)
             {
                 throw new InvalidOperationException("The default logging rich text box has not yet been registered!");
             }
@@ -106,7 +106,7 @@ namespace Tncvd.WinForms.Logging
 
         private void AssureDefaultLoggingRichTextBoxNotYetRegistered()
         {
-            if (_defaultLoggingRichTextBox != null)
+            if (this._defaultLoggingRichTextBox != null)
             {
                 throw new InvalidOperationException("The default logging rich text box has already been registered and it cannot be registered twice!");
             }
@@ -114,7 +114,7 @@ namespace Tncvd.WinForms.Logging
 
         private void AssureDefaultOutputRichTextBoxRegistered()
         {
-            if (_defaultOutputRichTextBox == null)
+            if (this._defaultOutputRichTextBox == null)
             {
                 throw new InvalidOperationException("The default output rich text box has not yet been registered!");
             }
@@ -122,7 +122,7 @@ namespace Tncvd.WinForms.Logging
 
         private void AssureDefaultOutputRichTextBoxNotYetRegistered()
         {
-            if (_defaultOutputRichTextBox != null)
+            if (this._defaultOutputRichTextBox != null)
             {
                 throw new InvalidOperationException("The default output rich text box has already been registered and it cannot be registered twice!");
             }
