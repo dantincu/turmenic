@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tncvd.Deps
 {
-    public class KernelContainer
+    public class KernelContainer : IDisposable
     {
         private static KernelContainer _instance;
 
@@ -31,5 +31,10 @@ namespace Tncvd.Deps
         }
 
         public Ninject.StandardKernel Kernel => this._kernel;
+
+        public void Dispose()
+        {
+            this._kernel.Dispose();
+        }
     }
 }

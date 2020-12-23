@@ -187,7 +187,7 @@ namespace Tncvd.Utility.DataTypeConversion
 
             if (this._parserMethods.TryGetValue(typeof(T), out converter) == false)
             {
-                throw new ArgumentException($"No parser method available for parsing data type {typeof(T).GetFullTypeName()}");
+                throw new ArgumentException($"No parser method available for parsing data type {typeof(T).GetTypeFullName()}");
             }
 
             return converter as Func<string, Tuple<bool, T>>;

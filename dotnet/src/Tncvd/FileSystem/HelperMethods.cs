@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Tncvd.FileSystem
 {
-    public static class HelperMethods
+    public static partial class HelperMethods
     {
+        #region Slug
+
         public static string GetFileName(params string[] fileNameParts)
         {
             string fileName = fileNameParts.Aggregate((leftPart, rightPart) => $"{leftPart}{ConstantValues.FILE_NAME_EXTENSION_DELIMITER}{rightPart}");
@@ -35,6 +35,29 @@ namespace Tncvd.FileSystem
             string fileName = GetFileName(slug, fileNameExtension);
 
             return fileName;
+        }
+
+        #endregion Slug
+
+        public static string GetDefaultDestinationFilePath(string sourceFilePath, string destinationDirPath)
+        {
+            string fileName = Path.GetFileName(sourceFilePath);
+            string destinationFilePath = Path.Combine(destinationDirPath, fileName);
+
+            return destinationFilePath;
+        }
+
+        public static bool AssureDirectory(string dirPath)
+        {
+            bool created = false;
+
+            if (Directory.Exists(dirPath) == false)
+            {
+                created = true;
+                Directory.CreateDirectory(dirPath);
+            }
+
+            return created;
         }
     }
 }

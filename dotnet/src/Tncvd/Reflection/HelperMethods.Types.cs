@@ -10,7 +10,7 @@ namespace Tncvd.Reflection
     {
         #region Extensions
 
-        public static string GetFullTypeName(this Type type)
+        public static string GetTypeFullName(this Type type)
         {
             string retVal = type.Name;
 
@@ -68,7 +68,7 @@ namespace Tncvd.Reflection
 
         public static bool TypesHaveSameNameAndNs(params Type[] types)
         {
-            bool retVal = types.Select(type => type.GetFullTypeName()).Distinct().Count() == 1;
+            bool retVal = types.Select(type => type.GetTypeFullName()).Distinct().Count() == 1;
             return retVal;
         }
     }
