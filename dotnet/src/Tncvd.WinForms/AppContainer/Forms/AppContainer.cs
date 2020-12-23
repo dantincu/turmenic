@@ -14,7 +14,7 @@ namespace Tncvd.WinForms.AppContainer.Forms
 
         private AppContainer()
         {
-            this._logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().GetFullTypeName());
+            this._logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().GetTypeFullName());
             this.OutputLogger = TextBoxLoggerFactory.Instance.GetOutputTextBoxLogger("APP OUTPUT");
         }
 
@@ -62,7 +62,7 @@ namespace Tncvd.WinForms.AppContainer.Forms
 
             if (printResultDataToOutput && response != null && response.Data != null)
             {
-                this.OutputLogger.Information($"Outputting string representation for object of type {typeof(TData).GetFullTypeName()}:");
+                this.OutputLogger.Information($"Outputting string representation for object of type {typeof(TData).GetTypeFullName()}:");
                 string objectString = SerializationHelperMethods.ObjectToStringOrXml(response.Data);
                 this.OutputLogger.Information(objectString);
             }

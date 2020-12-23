@@ -1,4 +1,7 @@
 ﻿using Serilog.Sinks.File;
+using System;
+using System.IO;
+using Tncvd.Logging.LogFilesBackup;
 
 namespace Tncvd.Logging.Serilog
 {
@@ -6,7 +9,12 @@ namespace Tncvd.Logging.Serilog
     {
         public override void OnFileDeleting(string path)
         {
-            base.OnFileDeleting(path);
+            HelperMethods.TryMakeLogFileBackupCopy<IOException>(
+                path,
+                () =>
+                {
+                    base.OnFileDeleting(path);
+                });
         }
     }
 }

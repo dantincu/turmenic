@@ -56,7 +56,7 @@ namespace Tncvd.WinForms.AppContainer.Forms
             TextBoxLoggerFactory.Instance.RegisterDefaultLoggingRichTextBox(this.richTextBoxAppLogs);
             TextBoxLoggerFactory.Instance.RegisterDefaultOutputRichTextBox(this.richTextBoxOutput);
             this._appContainer = AppContainer.Instance;
-            this._logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(this.GetType().GetFullTypeName());
+            this._logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(this.GetType().GetTypeFullName());
             this.FormTabControl.SelectedTab = this.appLogsTabPage;
         }
 

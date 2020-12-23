@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Tncvd.AppConfig
 {
-    internal class AppConfigFileLoader : AssemblyConfigFileLoaderBase
+    public class AppConfigFileLoader : AssemblyConfigFileLoaderBase
     {
         protected override bool AssemblyIsExecutable => false;
     }

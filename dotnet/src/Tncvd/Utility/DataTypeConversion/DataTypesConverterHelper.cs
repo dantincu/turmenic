@@ -76,7 +76,7 @@ namespace Tncvd.Utility.DataTypeConversion
 
             if (this._converterMethods.TryGetValue(typeof(T), out converter) == false)
             {
-                throw new ArgumentException($"No converter method available for converting to data type {typeof(T).GetFullTypeName()}");
+                throw new ArgumentException($"No converter method available for converting to data type {typeof(T).GetTypeFullName()}");
             }
 
             return converter as Func<string, T>;

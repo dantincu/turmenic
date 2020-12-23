@@ -15,7 +15,7 @@ namespace Tncvd.AppConfig.Env
                 ArrayHelperMethods.ConcatArraysAsStrings(
                     new string[] {
                         rootEnvDirName,
-                        type.GetFullTypeName()
+                        type.GetTypeFullName()
                     },
                     relPathParts));
 

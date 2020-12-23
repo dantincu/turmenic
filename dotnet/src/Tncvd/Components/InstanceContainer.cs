@@ -4,11 +4,7 @@ using System.Text;
 
 namespace Tncvd.Components
 {
-    public class InstanceContainer
-    {
-    }
-
-    public class InstanceContainer<T> : InstanceContainer where T : new()
+    public class InstanceContainer<T> where T : new()
     {
         private static T _instance;
 

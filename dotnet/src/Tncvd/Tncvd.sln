@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd", "Tncvd.csproj", "{6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.AppConfig", "..\Tncvd.AppConfig\Tncvd.AppConfig.csproj", "{A59CBCBC-029F-49C3-B6D4-43C501518BC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Logging", "..\Tncvd.Logging\Tncvd.Logging.csproj", "{6CDD743F-735E-400B-95F6-D431B2090E3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Logging", "..\Tncvd.Logging\Tncvd.Logging.csproj", "{6CDD743F-735E-400B-95F6-D431B2090E3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Logging.Test.Xunit", "..\Tncvd.Logging.Test.Xunit\Tncvd.Logging.Test.Xunit.csproj", "{B9CD610D-15F0-4DAB-893C-A8D14CFDECBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Testing", "..\Tncvd.Testing\Tncvd.Testing.csproj", "{B48D1461-B76A-4205-B0F9-3174C5CBC698}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.AppSettings", "..\Tncvd.AppSettings\Tncvd.AppSettings.csproj", "{960EB3B7-A198-4AB2-923C-778743A040F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +51,18 @@ Global
 		{6CDD743F-735E-400B-95F6-D431B2090E3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CDD743F-735E-400B-95F6-D431B2090E3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CDD743F-735E-400B-95F6-D431B2090E3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9CD610D-15F0-4DAB-893C-A8D14CFDECBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9CD610D-15F0-4DAB-893C-A8D14CFDECBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9CD610D-15F0-4DAB-893C-A8D14CFDECBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9CD610D-15F0-4DAB-893C-A8D14CFDECBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B48D1461-B76A-4205-B0F9-3174C5CBC698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B48D1461-B76A-4205-B0F9-3174C5CBC698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B48D1461-B76A-4205-B0F9-3174C5CBC698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B48D1461-B76A-4205-B0F9-3174C5CBC698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{960EB3B7-A198-4AB2-923C-778743A040F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{960EB3B7-A198-4AB2-923C-778743A040F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{960EB3B7-A198-4AB2-923C-778743A040F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{960EB3B7-A198-4AB2-923C-778743A040F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

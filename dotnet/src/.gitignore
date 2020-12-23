@@ -352,3 +352,6 @@ MigrationBackup/
 */App.config
 */tncvd.config
 *.tncvd.config
+*/appsettings.json
+*/tncvd.appsettings.json
+*.tncvd.appsettings.json

@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Tncvd.Collections;
+using Tncvd.Reflection;
 
 namespace Tncvd.AppConfig.Env
 {
@@ -15,7 +16,7 @@ namespace Tncvd.AppConfig.Env
                 ArrayHelperMethods.ConcatArraysAsStrings(
                     new string[] {
                         rootEnvDirName,
-                        assembly.GetName().FullName
+                        assembly.GetAssemblyFullName()
                     },
                     relPathParts));
 

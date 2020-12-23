@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tncvd.AppConfig.Config.Env;
-using Tncvd.AppConfig.Env;
+﻿using Tncvd.AppConfig.Env;
 
-namespace Tncvd.Console.App
+namespace Tncvd.Console.App.Components
 {
     internal class TestAppConfig
     {

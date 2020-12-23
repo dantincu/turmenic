@@ -15,11 +15,16 @@ using Serilog.Sinks.File;
 using Tncvd.AppConfig.Env;
 using Tncvd.AppConfig.Execution;
 using Tncvd.Logging.Serilog;
+using Tncvd.Reflection;
 
 namespace Tncvd.Logging
 {
     public class FileLogger : LoggerBase
     {
+        public FileLogger(Type loggerType) : this(loggerType.GetTypeFullName())
+        {
+        }
+
         public FileLogger(string loggerName) : base(loggerName)
         {
         }

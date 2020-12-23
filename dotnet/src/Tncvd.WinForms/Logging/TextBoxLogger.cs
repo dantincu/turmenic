@@ -122,7 +122,7 @@ namespace Tncvd.WinForms.Logging
         protected virtual string GetExceptionString(Exception ex)
         {
             string excStackTraceString = ex.StackTrace;
-            string excString = $"[MESSAGE] {ex.Message}{Environment.NewLine} [TYPE] {ex.GetType().GetFullTypeName()}{Environment.NewLine} [STACKTRACE] {ex.StackTrace}";
+            string excString = $"[MESSAGE] {ex.Message}{Environment.NewLine} [TYPE] {ex.GetType().GetTypeFullName()}{Environment.NewLine} [STACKTRACE] {ex.StackTrace}";
 
             return excString;
         }

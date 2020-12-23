@@ -12,7 +12,7 @@ namespace Tncvd.AppConfig.Execution
     {
         private static AppExecutionInfoContainer _instance;
 
-        private AppExecutionInfoBase _info;
+        private AppExecutionInfo _info;
 
         private AppExecutionInfoContainer()
         {
@@ -31,7 +31,7 @@ namespace Tncvd.AppConfig.Execution
             }
         }
 
-        public AppExecutionInfoBase Info
+        public AppExecutionInfo Info
         {
             get
             {
@@ -41,21 +41,16 @@ namespace Tncvd.AppConfig.Execution
             }
         }
 
-        public void Register(AppExecutionInfoBase info)
+        public void Register(AppExecutionInfo info)
         {
             this.AssureNotRegistered();
 
             this._info = info;
+
             this.TryWriteInfoToFile(info);
         }
 
-        public void Register<T>() where T : AppExecutionInfoBase
-        {
-            T info = Activator.CreateInstance<T>();
-            this.Register(info);
-        }
-
-        private void TryWriteInfoToFile(AppExecutionInfoBase info)
+        private void TryWriteInfoToFile(AppExecutionInfo info)
         {
             try
             {
@@ -68,7 +63,7 @@ namespace Tncvd.AppConfig.Execution
             }
         }
 
-        private string GetOutputFileName(AppExecutionInfoBase info)
+        private string GetOutputFileName(AppExecutionInfo info)
         {
             string outputFileName = FileSystem.HelperMethods.GetSlugFileNameFromSegments(
                 FileSystem.ConstantValues.CommonFileExtensions.XML,

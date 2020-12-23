@@ -131,7 +131,7 @@ namespace Tncvd.WinForms.Logging
         protected void AppendException(RichTextBox textBox, LogLevel logLevel, Color color, Exception ex)
         {
             this.AppendExceptionPart(textBox, logLevel, color, EXCEPTION_MESSAGE_DELIMITER, ex.Message);
-            this.AppendExceptionPart(textBox, logLevel, color, EXCEPTION_TYPE_DELIMITER, ex.GetType().GetFullTypeName());
+            this.AppendExceptionPart(textBox, logLevel, color, EXCEPTION_TYPE_DELIMITER, ex.GetType().GetTypeFullName());
             this.AppendExceptionPart(textBox, logLevel, color, EXCEPTION_STACKTRACE_DELIMITER, ex.StackTrace);
         }
 

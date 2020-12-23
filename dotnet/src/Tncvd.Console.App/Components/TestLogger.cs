@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tncvd.Logging;
 
-namespace Tncvd.Console.App
+namespace Tncvd.Console.App.Components
 {
     public class TestLogger
     {
         public void Run()
         {
-            using (FileLogger logger = LoggerFactory.Instance.GetFileLogger(this.GetType()))
+            using (FileLogger logger = LoggerFactory.Instance.GetFileLogger(GetType()))
             {
                 logger.Verbose("Testing \n logger {0}, {1}", 16, new int[] { 1, 2, 3 });
                 logger.Debug("Testing logger {0}, {1}", 16, new Dictionary<string, string> { { "x", "asdf" } });

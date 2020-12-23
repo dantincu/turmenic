@@ -36,8 +36,7 @@ namespace Tncvd.Logging
 
         public FileLogger GetFileLogger(Type type)
         {
-            string loggerName = type.GetFullTypeName();
-            FileLogger fileLogger = this.GetFileLogger(loggerName);
+            FileLogger fileLogger = this.GetFileLogger(type);
 
             return fileLogger;
         }
