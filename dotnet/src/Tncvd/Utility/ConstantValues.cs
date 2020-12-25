@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tncvd.Reflection;
+using Tncvd.Text;
 
 namespace Tncvd.Utility
 {
     public static class ConstantValues
     {
-        public const string DEFAULT_ROOT_NAMESPACE_PASCALCASE = "Tncvd";
-        public const string DEFAULT_ROOT_NAMESPACE_CAMELCASE = "tncvd";
+        public static readonly string RootNamespacePascalCase = typeof(ConstantValues).Assembly.GetAssemblyFullName();
+        public static readonly string RootNamespaceCamelCase = RootNamespacePascalCase.FirstLetterToLower();
     }
 }

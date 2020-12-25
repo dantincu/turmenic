@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tncvd.AppConfig.Utility
+﻿namespace Tncvd.AppConfig.Utility
 {
     public static class ConstantValues
     {
-        public const string DEFAULT_SETTINGS_SECTION_GROUP_NAME = "tncvdSettings";
+        public static readonly string DefaultRootKeyPrefix = typeof(ConstantValues).Assembly.GetName().Name.Split('.')[0].FirstLetterToLower();
+        public static readonly string DefaultSettingsSectionGroupName = DefaultRootKeyPrefix + "Settings";
     }
 }

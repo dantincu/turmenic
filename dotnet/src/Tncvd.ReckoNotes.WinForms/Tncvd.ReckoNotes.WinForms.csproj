@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tncvd.ReckoNotes\Tncvd.ReckoNotes.csproj" />
+    <ProjectReference Include="..\Tncvd.WinForms\Tncvd.WinForms.csproj" />
+  </ItemGroup>
+
+</Project>

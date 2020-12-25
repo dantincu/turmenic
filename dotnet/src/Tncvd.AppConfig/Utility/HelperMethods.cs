@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using Tncvd.AppConfig.Config.Settings.Simple;
 
 namespace Tncvd.AppConfig.Utility
@@ -10,8 +8,9 @@ namespace Tncvd.AppConfig.Utility
     public static class HelperMethods
     {
         #region Extensions
-        public static TSectionGroup GetConfigurationSectionGroup<TSectionGroup>(this Configuration configuration, string sectionGroupName = ConstantValues.DEFAULT_SETTINGS_SECTION_GROUP_NAME) where TSectionGroup : ConfigurationSectionGroup
+        public static TSectionGroup GetConfigurationSectionGroup<TSectionGroup>(this Configuration configuration, string sectionGroupName = null) where TSectionGroup : ConfigurationSectionGroup
         {
+            sectionGroupName = sectionGroupName ?? ConstantValues.DefaultSettingsSectionGroupName;
             TSectionGroup sectionGroup = configuration.SectionGroups[sectionGroupName] as TSectionGroup;
             return sectionGroup;
         }
@@ -57,6 +56,38 @@ namespace Tncvd.AppConfig.Utility
         }
 
         #endregion Extensions.SettingElement
+
+        #region Extensions.Text
+
+        public static string FirstLetterToUpper(this string value)
+        {
+            char firstLetter = value[0];
+
+            if (char.IsLetter(firstLetter) && char.IsLower(firstLetter))
+            {
+                firstLetter = char.ToUpper(firstLetter);
+                value = value.Substring(1);
+                value = $"{firstLetter}{value}";
+            }
+
+            return value;
+        }
+
+        public static string FirstLetterToLower(this string value)
+        {
+            char firstLetter = value[0];
+
+            if (char.IsLetter(firstLetter) && char.IsUpper(firstLetter))
+            {
+                firstLetter = char.ToLower(firstLetter);
+                value = value.Substring(1);
+                value = $"{firstLetter}{value}";
+            }
+
+            return value;
+        }
+
+        #endregion Extensions.Text
 
         #endregion Extensions
 

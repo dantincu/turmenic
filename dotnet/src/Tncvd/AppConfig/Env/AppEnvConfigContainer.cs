@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
-using System.Reflection;
 using Tncvd.AppConfig.Config.Env;
-using Tncvd.AppConfig.Config.Settings.Simple;
 using Tncvd.AppConfig.Env.Data;
-using Tncvd.Collections;
-using Tncvd.Components;
 
 namespace Tncvd.AppConfig.Env
 {
     public partial class AppEnvConfigContainer
     {
-        public const string APP_CONFIG_ENV_LOCATION_PATH_KEY = "tncvdEnvLocationPath";
-        public const string APP_CONFIG_ENV_SECTIONS_GROUP_KEY = "tncvdEnv";
-
+        public static readonly string AppConfigEnvSectionsGroupKey = Tncvd.Utility.ConstantValues.RootNamespaceCamelCase + "Env";
+        public static readonly string AppConfigEnvLocationPathKey = AppConfigEnvSectionsGroupKey + "LocationPath";
+        
         private static AppEnvConfigContainer _instance;
         private static string _envRootPathValue;
 
@@ -50,6 +45,7 @@ namespace Tncvd.AppConfig.Env
             if (_instance == null)
             {
                 _envRootPathValue = envRootPath;
+                _instance = new AppEnvConfigContainer();
             }
             else
             {
@@ -68,7 +64,7 @@ namespace Tncvd.AppConfig.Env
 
         private void InitEnvDirNames(Configuration configuration)
         {
-            EnvSectionGroup sectionGroup = configuration.SectionGroups[APP_CONFIG_ENV_SECTIONS_GROUP_KEY] as EnvSectionGroup;
+            EnvSectionGroup sectionGroup = configuration.SectionGroups[AppConfigEnvSectionsGroupKey] as EnvSectionGroup;
             EnvDirsSection section = sectionGroup.EnvDirsSection;
 
             this.EnvDirNames = new EnvDirNames(section.DirNames);

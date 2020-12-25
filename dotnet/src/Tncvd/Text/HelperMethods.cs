@@ -35,6 +35,28 @@ namespace Tncvd.Text
             return value;
         }
 
+        public static string GetNamespaceStrippedOfAlias(this string @namespace)
+        {
+            string namespaceAliasDelimiter = Reflection.ConstantValues.NAMESPACE_ALIAS_DELIMITER;
+            int indexOf = @namespace.IndexOf(namespaceAliasDelimiter);
+
+            if (indexOf > 0)
+            {
+                @namespace = @namespace.Substring(indexOf + namespaceAliasDelimiter.Length);
+            }
+
+            return @namespace;
+        }
+
+        public static string SubstractRootPartFromNamespace(this string fullNamespace, string rootNamespace, bool stripAlias = true)
+        {
+            fullNamespace = fullNamespace.GetNamespaceStrippedOfAlias();
+            rootNamespace = rootNamespace.GetNamespaceStrippedOfAlias();
+
+            string @namespace = fullNamespace.StartsWith(rootNamespace) ? fullNamespace.Substring(rootNamespace.Length) : fullNamespace;
+            return @namespace;
+        }
+
         #endregion Extensions
     }
 }

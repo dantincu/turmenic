@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Tncvd.FileSystem
 {
-    public static class ConstantValues
+    public static partial class ConstantValues
     {
         public const char FILE_NAME_EXTENSION_DELIMITER = '.';
         public const string REL_FILE_PATH_CURRENT_DIR_SYMBOL = ".";
