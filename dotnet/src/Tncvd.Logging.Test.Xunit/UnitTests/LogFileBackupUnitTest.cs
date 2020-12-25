@@ -5,18 +5,16 @@ using System.Threading.Tasks;
 using Tncvd.AppConfig.Config;
 using Tncvd.AppConfig.Env;
 using Tncvd.Logging.Test.Xunit.AppExecution;
-using Tncvd.Reflection;
 using Tncvd.Testing.UnitTests;
 using Xunit;
 
 namespace Tncvd.Logging.Test.Xunit.UnitTests
 {
-    public class LogFileBackupUnitTest : UnitTestBase<AppExecutionInfoRegistrar>
+    public class LogFileBackupUnitTest : UnitTestBase
     {
         private const string TEST_FILE_NAME = "TEST.TEMP.txt";
         private const string SOURCE_FILE_SAMPLE_TEXT_CONTENT = "<TEST />";
         private const string DESTINATION_FILE_SAMPLE_TEXT_CONTENT = "<TEST></TEST>";
-        private const string TEST_EXCEPTION_MESSAGE = "TEST EXCEPTION MESSAGE";
 
         private readonly string _sourceTestFilePath;
         private readonly string _destinationTestFilePath;
@@ -25,6 +23,11 @@ namespace Tncvd.Logging.Test.Xunit.UnitTests
         {
             this._sourceTestFilePath = this.GetSourceTestFilePath();
             this._destinationTestFilePath = this.GetDestinationTestFilePath();
+        }
+
+        static LogFileBackupUnitTest()
+        {
+            new AppExecutionInfoRegistrar().Register();
         }
 
         [Fact]
@@ -39,9 +42,9 @@ namespace Tncvd.Logging.Test.Xunit.UnitTests
                 success = true;
             }), (task) =>
             {
-                Assert.True(success);
                 this.AssertDestinationFileHasCorrectContent();
             });
+            Assert.True(success);
         }
 
         [Fact]
@@ -54,11 +57,11 @@ namespace Tncvd.Logging.Test.Xunit.UnitTests
             this.AwaitTaskThenPerformAssertions(LogFilesBackup.HelperMethods.MakeLogFileBackupCopy(this._sourceTestFilePath, () =>
             {
                 success = true;
-            }), (task) =>
+            }, true), (task) =>
             {
-                Assert.True(success);
                 this.AssertDestinationFileHasCorrectContent();
             });
+            Assert.True(success);
         }
 
         [Fact]
@@ -73,102 +76,8 @@ namespace Tncvd.Logging.Test.Xunit.UnitTests
                 success = true;
             });
             thread.Join();
-            Assert.True(success);
             this.AssertDestinationFileHasCorrectContent();
-        }
-
-        [Fact]
-        public void TestTryMakeLogFileBackup()
-        {
-            this.AssureSourceTestFile();
-
-            bool success = false;
-            this.AwaitTaskThenPerformAssertions(LogFilesBackup.HelperMethods.TryMakeLogFileBackupCopy(this._sourceTestFilePath, () =>
-            {
-                success = true;
-            }), (task) =>
-            {
-                Assert.True(success);
-                this.AssertDestinationFileHasCorrectContent();
-            });
-        }
-
-        [Fact]
-        public void TestTryMakeLogFileBackupThrwErr()
-        {
-            this.AssureSourceTestFileDeleted();
-
-            this.AwaitTaskThenPerformAssertions(LogFilesBackup.HelperMethods.TryMakeLogFileBackupCopy(this._sourceTestFilePath, () =>
-            {
-                throw new IOException(TEST_EXCEPTION_MESSAGE);
-            }), (task) =>
-            {
-                this.AssertTaskFaultedWithException<IOException>(task, TEST_EXCEPTION_MESSAGE);
-            });
-        }
-
-        [Fact]
-        public void TestTryMakeLogFileBackupThrwErrType()
-        {
-            this.AssureSourceTestFileDeleted();
-
-            this.AwaitTaskThenPerformAssertions(LogFilesBackup.HelperMethods.TryMakeLogFileBackupCopy(this._sourceTestFilePath, () =>
-            {
-                throw new IOException(TEST_EXCEPTION_MESSAGE);
-            }, typeof(IOException)), (task) =>
-            {
-                this.AssertTaskFaultedWithException<IOException>(task, TEST_EXCEPTION_MESSAGE);
-            });
-        }
-
-        [Fact]
-        public void TestTryAsyncFileCopyThrwErrGeneric()
-        {
-            this.AssureSourceTestFileDeleted();
-
-            this.AwaitTaskThenPerformAssertions(LogFilesBackup.HelperMethods.TryMakeLogFileBackupCopy<IOException>(this._sourceTestFilePath, () =>
-            {
-                throw new IOException(TEST_EXCEPTION_MESSAGE);
-            }), (task) =>
-            {
-                this.AssertTaskFaultedWithException<IOException>(task, TEST_EXCEPTION_MESSAGE);
-            });
-        }
-
-        [Fact]
-        public void TestTryMakeLogFileBackupThrwErrTypeUncaught()
-        {
-            this.AssureSourceTestFileDeleted();
-
-            try
-            {
-                Task.WaitAll(LogFilesBackup.HelperMethods.TryMakeLogFileBackupCopy(this._sourceTestFilePath, () =>
-                {
-                    throw new NotSupportedException(TEST_EXCEPTION_MESSAGE);
-                }, typeof(IOException)));
-            }
-            catch (NotSupportedException ex)
-            {
-                Assert.Equal(ex.Message, TEST_EXCEPTION_MESSAGE);
-            }
-        }
-
-        [Fact]
-        public void TestTryAsyncFileCopyThrwErrGenericUncaught()
-        {
-            this.AssureSourceTestFileDeleted();
-
-            try
-            {
-                Task.WaitAll(LogFilesBackup.HelperMethods.TryMakeLogFileBackupCopy<IOException>(this._sourceTestFilePath, () =>
-                {
-                    throw new NotSupportedException(TEST_EXCEPTION_MESSAGE);
-                }));
-            }
-            catch (NotSupportedException ex)
-            {
-                Assert.Equal(ex.Message, TEST_EXCEPTION_MESSAGE);
-            }
+            Assert.True(success);
         }
 
         private string GetSourceTestFilePath()
@@ -195,14 +104,6 @@ namespace Tncvd.Logging.Test.Xunit.UnitTests
             if (File.Exists(this._sourceTestFilePath) == false)
             {
                 File.WriteAllText(this._sourceTestFilePath, SOURCE_FILE_SAMPLE_TEXT_CONTENT);
-            }
-        }
-
-        private void AssureSourceTestFileDeleted()
-        {
-            if (File.Exists(this._sourceTestFilePath))
-            {
-                File.Delete(this._sourceTestFilePath);
             }
         }
 
@@ -238,15 +139,6 @@ namespace Tncvd.Logging.Test.Xunit.UnitTests
             Assert.True(File.Exists(
                 this._destinationTestFilePath) && File.ReadAllText(
                     this._destinationTestFilePath) == SOURCE_FILE_SAMPLE_TEXT_CONTENT);
-        }
-
-        private void AssertTaskFaultedWithException<TExpectedExceptionType>(Task task, string expectedExceptionMessage) where TExpectedExceptionType : Exception
-        {
-            Assert.True(task.IsFaulted);
-            AggregateException taskAggregateException = task.Exception;
-            TExpectedExceptionType taskException = taskAggregateException?.InnerException as TExpectedExceptionType;
-            Assert.NotNull(taskException);
-            Assert.Equal(taskException.Message, TEST_EXCEPTION_MESSAGE);
         }
     }
 }

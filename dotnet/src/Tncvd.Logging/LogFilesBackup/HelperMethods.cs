@@ -8,51 +8,12 @@ namespace Tncvd.Logging.LogFilesBackup
 {
     public static class HelperMethods
     {
-        public static Task TryMakeLogFileBackupCopy(string logFilePath, Action logFileCopySuccessCallback, params Type[] excTypeToCatchArr)
-        {
-            Task task;
-
-            try
-            {
-                task = MakeLogFileBackupCopy(logFilePath, logFileCopySuccessCallback);
-            }
-            catch (Exception ex)
-            {
-                if (excTypeToCatchArr.Any(exc => exc.IsAssignableFrom(ex.GetType())) == false)
-                {
-                    throw;
-                }
-                else
-                {
-                    task = Task.FromException(ex);
-                }
-            }
-
-            return task;
-        }
-
-        public static Task TryMakeLogFileBackupCopy<TCaughtExceptionType>(string logFilePath, Action logFileCopySuccessCallback) where TCaughtExceptionType : Exception
-        {
-            Task task;
-
-            try
-            {
-                task = MakeLogFileBackupCopy(logFilePath, logFileCopySuccessCallback);
-            }
-            catch (TCaughtExceptionType ex)
-            {
-                task = Task.FromException(ex);
-            }
-
-            return task;
-        }
-
-        public static Task MakeLogFileBackupCopy(string logFilePath, Action logFileCopySuccessCallback)
+        public static Task MakeLogFileBackupCopy(string logFilePath, Action logFileCopySuccessCallback, bool overwrite = false)
         {
             string logFileFolderPath = AssureLogFileBackupFolder(logFilePath);
             string logFileBackupFilePath = FileSystem.HelperMethods.GetDefaultDestinationFilePath(logFilePath, logFileFolderPath);
 
-            Task task = FileSystem.HelperMethods.CopyFileAsync(logFilePath, logFileBackupFilePath, logFileCopySuccessCallback);
+            Task task = FileSystem.HelperMethods.CopyFileAsync(logFilePath, logFileBackupFilePath, logFileCopySuccessCallback, overwrite);
             return task;
         }
 

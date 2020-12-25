@@ -9,7 +9,7 @@ namespace Tncvd.Logging.Serilog
     {
         public override void OnFileDeleting(string path)
         {
-            HelperMethods.TryMakeLogFileBackupCopy<IOException>(
+            HelperMethods.MakeLogFileBackupCopy(
                 path,
                 () =>
                 {
