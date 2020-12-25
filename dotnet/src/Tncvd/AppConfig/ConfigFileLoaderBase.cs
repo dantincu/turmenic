@@ -29,7 +29,7 @@ namespace Tncvd.AppConfig
         protected string GetDefaultExternalConfigFileName()
         {
             string externalConfigFileName = FileSystem.HelperMethods.GetFileName(
-                Tncvd.Utility.ConstantValues.DEFAULT_ROOT_NAMESPACE_CAMELCASE,
+                Tncvd.Utility.ConstantValues.RootNamespaceCamelCase,
                 FileSystem.ConstantValues.CommonFileExtensions.CONFIG);
 
             return externalConfigFileName;

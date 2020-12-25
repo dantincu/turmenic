@@ -8,16 +8,16 @@ namespace Tncvd.AppConfig.Execution
     {
         public virtual void Register()
         {
-            string tncvdEnvLocationPath = ConfigurationManager.AppSettings[AppEnvConfigContainer.APP_CONFIG_ENV_LOCATION_PATH_KEY];
+            string tncvdEnvLocationPath = ConfigurationManager.AppSettings[AppEnvConfigContainer.AppConfigEnvLocationPathKey];
             this.RegisterAppExecutionInfo(tncvdEnvLocationPath);
         }
 
         protected virtual void RegisterAppExecutionInfo(string tncvdEnvLocationPath)
         {
+            AppEnvConfigContainer.SetEnvRootPath(tncvdEnvLocationPath);
+
             AppExecutionInfo appExecutionInfo = this.GetAppExecutionInfo(tncvdEnvLocationPath);
             AppExecutionInfoContainer.Instance.Register(appExecutionInfo);
-
-            AppEnvConfigContainer.SetEnvRootPath(tncvdEnvLocationPath);
         }
 
         protected virtual AppExecutionInfo GetAppExecutionInfo(string tncvdEnvLocationPath)

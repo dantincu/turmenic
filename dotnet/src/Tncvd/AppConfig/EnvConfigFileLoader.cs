@@ -23,7 +23,7 @@ namespace Tncvd.AppConfig
         protected string GetDefaultEnvConfigFileName()
         {
             string envConfigFileName = FileSystem.HelperMethods.GetFileName(
-                Tncvd.Utility.ConstantValues.DEFAULT_ROOT_NAMESPACE_CAMELCASE,
+                Tncvd.Utility.ConstantValues.RootNamespaceCamelCase,
                 ENV_CONFIG_FILE_NAME_SUFFIX,
                 FileSystem.ConstantValues.CommonFileExtensions.CONFIG);
 

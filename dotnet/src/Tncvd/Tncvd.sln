@@ -15,11 +15,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.AppConfig", "..\Tncvd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Logging", "..\Tncvd.Logging\Tncvd.Logging.csproj", "{6CDD743F-735E-400B-95F6-D431B2090E3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Logging.Test.Xunit", "..\Tncvd.Logging.Test.Xunit\Tncvd.Logging.Test.Xunit.csproj", "{B9CD610D-15F0-4DAB-893C-A8D14CFDECBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Logging.Test.Xunit", "..\Tncvd.Logging.Test.Xunit\Tncvd.Logging.Test.Xunit.csproj", "{B9CD610D-15F0-4DAB-893C-A8D14CFDECBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Testing", "..\Tncvd.Testing\Tncvd.Testing.csproj", "{B48D1461-B76A-4205-B0F9-3174C5CBC698}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Testing", "..\Tncvd.Testing\Tncvd.Testing.csproj", "{B48D1461-B76A-4205-B0F9-3174C5CBC698}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.AppSettings", "..\Tncvd.AppSettings\Tncvd.AppSettings.csproj", "{960EB3B7-A198-4AB2-923C-778743A040F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.AppSettings", "..\Tncvd.AppSettings\Tncvd.AppSettings.csproj", "{960EB3B7-A198-4AB2-923C-778743A040F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tncvd.ReckoNotes", "Tncvd.ReckoNotes", "{3F5E06CC-A5AE-4392-B5FD-80154D023DE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.ReckoNotes", "..\Tncvd.ReckoNotes\Tncvd.ReckoNotes.csproj", "{1B9AC263-B1FD-4219-85C5-4A6D25B48845}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.ReckoNotes.WinForms", "..\Tncvd.ReckoNotes.WinForms\Tncvd.ReckoNotes.WinForms.csproj", "{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.ReckoNotes.WinForms.App", "..\Tncvd.ReckoNotes.WinForms.App\Tncvd.ReckoNotes.WinForms.App.csproj", "{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,9 +71,26 @@ Global
 		{960EB3B7-A198-4AB2-923C-778743A040F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{960EB3B7-A198-4AB2-923C-778743A040F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{960EB3B7-A198-4AB2-923C-778743A040F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B9AC263-B1FD-4219-85C5-4A6D25B48845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B9AC263-B1FD-4219-85C5-4A6D25B48845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B9AC263-B1FD-4219-85C5-4A6D25B48845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B9AC263-B1FD-4219-85C5-4A6D25B48845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1B9AC263-B1FD-4219-85C5-4A6D25B48845} = {3F5E06CC-A5AE-4392-B5FD-80154D023DE7}
+		{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C} = {3F5E06CC-A5AE-4392-B5FD-80154D023DE7}
+		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA} = {3F5E06CC-A5AE-4392-B5FD-80154D023DE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1281E2AD-BCF6-41E1-B368-6DF4BDFFA820}

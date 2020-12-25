@@ -7,6 +7,8 @@ namespace Tncvd.Reflection
 {
     public static class ConstantValues
     {
+        public const string NAMESPACE_ALIAS_DELIMITER = "::";
+
         public const char NAMESPACE_PARTS_DELIMITER = '.';
 
         /*
