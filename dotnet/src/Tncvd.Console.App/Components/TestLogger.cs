@@ -20,8 +20,6 @@ namespace Tncvd.Console.App.Components
                 logger.Error(new Exception("asdfasdf"), "Testing logger {0}, {1}", 16, 32);
                 logger.Error(new Exception("asdfasdf"), "Testing logger {0}, {1}", 16, 32);
             }
-
-            LoggerFactory.Instance.CloseAndFlushGlobal();
         }
     }
 }

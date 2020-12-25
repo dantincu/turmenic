@@ -24,11 +24,11 @@ namespace Tncvd.FileSystem
             return thread;
         }
 
-        public static Task CopyFileAsync(string sourceFilePath, string destinationFilePath, Action copyFileSuccessCallback, bool isLongRunning = true)
+        public static Task CopyFileAsync(string sourceFilePath, string destinationFilePath, Action copyFileSuccessCallback, bool overwrite = false, bool isLongRunning = true)
         {
             Task task = Task.Factory.StartNew(() =>
             {
-                File.Copy(sourceFilePath, destinationFilePath);
+                File.Copy(sourceFilePath, destinationFilePath, overwrite);
                 copyFileSuccessCallback.Invoke();
             }, isLongRunning ? TaskCreationOptions.LongRunning : TaskCreationOptions.None);
 

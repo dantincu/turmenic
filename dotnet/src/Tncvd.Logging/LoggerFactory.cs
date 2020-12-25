@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tncvd.Reflection;
 
 namespace Tncvd.Logging
 {
-    public class LoggerFactory
+    public class LoggerFactory : IDisposable
     {
         private static LoggerFactory _instance;
 
@@ -36,12 +32,12 @@ namespace Tncvd.Logging
 
         public FileLogger GetFileLogger(Type type)
         {
-            FileLogger fileLogger = this.GetFileLogger(type);
+            FileLogger fileLogger = this.GetFileLogger(type.GetTypeFullName());
 
             return fileLogger;
         }
 
-        public void CloseAndFlushGlobal()
+        public void Dispose()
         {
             global::Serilog.Log.CloseAndFlush();
         }
