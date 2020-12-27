@@ -6,7 +6,7 @@ using Tncvd.Reflection;
 
 namespace Tncvd.Utility.DataTypeConversion
 {
-    public class DataTypesParserHelper : InstanceContainer<DataTypesParserHelper>
+    public class DataTypesParserHelper : StaticInstanceContainer<DataTypesParserHelper>
     {
         private readonly Dictionary<Type, Func<string, object>> _parserMethods = new Dictionary<Type, Func<string, object>>
         {

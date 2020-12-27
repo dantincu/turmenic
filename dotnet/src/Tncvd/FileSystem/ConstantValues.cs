@@ -52,15 +52,6 @@ namespace Tncvd.FileSystem
             public const string MDX = "mdx";
         }
 
-        public static class CommonImageFileExtensions
-        {
-            public const string JPG = "jpg";
-            public const string BMP = "bmp";
-            public const string PNG = "png";
-            public const string ICO = "ico";
-            public const string GIF = "gif";
-        }
-
         public static class CommonAudioFileExtensions
         {
             public const string MP3 = "mp3";

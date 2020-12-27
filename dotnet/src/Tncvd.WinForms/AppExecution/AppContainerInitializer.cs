@@ -5,7 +5,7 @@ namespace Tncvd.WinForms.AppExecution
 {
     public class AppContainerInitializer
     {
-        public Func<MainAppFormBase> MainAppFormCreator { get; set; }
+        public Func<AppMainFormBase> MainAppFormCreator { get; set; }
         public Action<AppContainerForm> AppContainerFormPropsAssigner { get; set; }
     }
 }

@@ -5,8 +5,27 @@ using Tncvd.AppConfig.Utility;
 
 namespace Tncvd.AppConfig.Config
 {
-    public class AppConfigContainer : AppConfigContainerBase<AppConfigContainer, AppConfigFileLoader>
+    public class AppConfigContainer : AppConfigContainerBase<AppConfigFileLoader>
     {
+        private static AppConfigContainer _instance;
+
+        private AppConfigContainer()
+        {
+        }
+
+        public static AppConfigContainer Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new AppConfigContainer();
+                }
+
+                return _instance;
+            }
+        }
+
         public SpecialDirDelimiters SpecialDirDelimiters { get; private set; }
         public SpecialDirNames SpecialDirNames { get; private set; }
 

@@ -2,7 +2,7 @@
 
 namespace Tncvd.Console.App.AppExecution
 {
-    public class AppExecutionInfoRegistrar : AppExecutionInfoRegistrarBase<AppExecutionInfoRegistrar>
+    public class AppExecutionInfoRegistrar : AppExecutionInfoRegistrarBase
     {
     }
 }

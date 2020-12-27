@@ -13,7 +13,7 @@ namespace Tncvd.AppConfig.Env
         public string GetEnvRelativePath(string rootEnvDirName, Assembly assembly, params string[] relPathParts)
         {
             string path = this.GetEnvRelativePath(
-                ArrayHelperMethods.ConcatArraysAsStrings(
+                Collections.HelperMethods.ConcatArraysAsStrings(
                     new string[] {
                         rootEnvDirName,
                         assembly.GetAssemblyFullName()

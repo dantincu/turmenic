@@ -2,7 +2,7 @@
 
 namespace Tncvd.ReckoNotes.WinForms.Forms
 {
-    public partial class AppMainForm : MainAppFormBase
+    public partial class AppMainForm : AppMainFormBase
     {
         public AppMainForm()
         {
@@ -14,11 +14,6 @@ namespace Tncvd.ReckoNotes.WinForms.Forms
         {
             base.InitForm();
             Utility.HelperMethods.AddMainAppFormProperties(this);
-        }
-
-        private void AppMainForm_Load(object sender, System.EventArgs e)
-        {
-            this.BringToFront();
         }
     }
 }

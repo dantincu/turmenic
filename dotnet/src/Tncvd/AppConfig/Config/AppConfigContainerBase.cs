@@ -3,7 +3,7 @@ using Tncvd.Components;
 
 namespace Tncvd.AppConfig.Config
 {
-    public abstract class AppConfigContainerBase<TAppConfigContainer, TAppConfigFileLoader> : InstanceContainer<TAppConfigContainer> where TAppConfigContainer : new() where TAppConfigFileLoader : AssemblyConfigFileLoaderBase, new()
+    public abstract class AppConfigContainerBase<TAppConfigFileLoader> where TAppConfigFileLoader : AssemblyConfigFileLoaderBase, new()
     {
         public AppConfigContainerBase()
         {

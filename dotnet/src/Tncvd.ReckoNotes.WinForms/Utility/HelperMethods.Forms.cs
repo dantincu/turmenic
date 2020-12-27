@@ -13,7 +13,7 @@ namespace Tncvd.ReckoNotes.WinForms.Utility
         {
         }
 
-        public static void AddMainAppFormProperties(MainAppFormBase mainAppForm)
+        public static void AddMainAppFormProperties(AppMainFormBase mainAppForm)
         {
             SetDefaultAppFormIconProperty(mainAppForm);
         }
@@ -27,8 +27,7 @@ namespace Tncvd.ReckoNotes.WinForms.Utility
         {
             Tncvd.WinForms.Utility.HelperMethods.SetFormIcon(
                 form,
-                ReckoNotes.Utility.HelperMethods.GetAppLogoImageFilePath(
-                    ConstantValues.AppLogoImageSizes.SIZE_32_PX));
+                GetAppLogoImageFilePath());
         }
     }
 }

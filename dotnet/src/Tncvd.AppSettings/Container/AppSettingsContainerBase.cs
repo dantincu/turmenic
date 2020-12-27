@@ -4,7 +4,7 @@ using Tncvd.Components;
 
 namespace Tncvd.AppSettings.Container
 {
-    public abstract class AppSettingsContainerBase<TAppSettingsContainer, TAppSettingsLoader> : InstanceContainer<TAppSettingsContainer> where TAppSettingsLoader : AppSettingsLoaderBase, new() where TAppSettingsContainer : new()
+    public abstract class AppSettingsContainerBase<TAppSettingsLoader> where TAppSettingsLoader : AppSettingsLoaderBase, new()
     {
         public AppSettingsContainerBase()
         {
