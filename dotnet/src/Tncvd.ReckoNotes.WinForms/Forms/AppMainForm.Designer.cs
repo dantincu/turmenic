@@ -39,7 +39,6 @@ namespace Tncvd.ReckoNotes.WinForms.Forms
             this.Name = "AppMainForm";
             this.Text = "Recko Notes";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.AppMainForm_Load);
             this.ResumeLayout(false);
 
         }

@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Tncvd.Collections
 {
-    public static class EnumerableHelperMethods
+    public static partial class HelperMethods
     {
+        #region ConcatEnumerables
+
         public static IEnumerable<T> ConcatEnumerables<T>(params IEnumerable<T>[] enumerablesArr)
         {
             foreach (IEnumerable<T> enumerable in enumerablesArr)
@@ -63,5 +64,7 @@ namespace Tncvd.Collections
             IEnumerable<string> retEnumerable = ConcatEnumerables(item => item.ToString(), enumerablesArr);
             return retEnumerable;
         }
+
+        #endregion ConcatEnumerables
     }
 }

@@ -11,7 +11,7 @@ namespace Tncvd.AppConfig.Env
         public string GetEnvRelativePath(params string[] relPathParts)
         {
             string path = Path.Combine(
-                ArrayHelperMethods.ConcatArraysAsStrings(
+                HelperMethods.ConcatArraysAsStrings(
                     new string[] {
                         this._envRootPath
                     },
@@ -23,7 +23,7 @@ namespace Tncvd.AppConfig.Env
         public string GetEnvRelativePath(string rootEnvDirName, params string[] relPathParts)
         {
             string path = this.GetEnvRelativePath(
-                ArrayHelperMethods.ConcatArraysAsStrings(
+                HelperMethods.ConcatArraysAsStrings(
                     new string[] {
                         rootEnvDirName
                     },

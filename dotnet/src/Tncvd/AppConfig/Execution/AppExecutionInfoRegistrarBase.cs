@@ -4,7 +4,7 @@ using Tncvd.Components;
 
 namespace Tncvd.AppConfig.Execution
 {
-    public class AppExecutionInfoRegistrarBase<TAppExecutionInfoRegistrar> : InstanceContainer<TAppExecutionInfoRegistrar> where TAppExecutionInfoRegistrar : new()
+    public class AppExecutionInfoRegistrarBase
     {
         public virtual void Register()
         {

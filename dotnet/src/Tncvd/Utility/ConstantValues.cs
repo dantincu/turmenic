@@ -3,7 +3,7 @@ using Tncvd.Text;
 
 namespace Tncvd.Utility
 {
-    public static class ConstantValues
+    public static partial class ConstantValues
     {
         public static readonly string RootNamespacePascalCase = typeof(ConstantValues).Assembly.GetAssemblyFullName();
         public static readonly string RootNamespaceCamelCase = RootNamespacePascalCase.FirstLetterToLower();

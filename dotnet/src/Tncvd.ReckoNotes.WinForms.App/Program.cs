@@ -16,7 +16,7 @@ namespace Tncvd.ReckoNotes.WinForms.App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            new AppLauncher().Launch();
+            AppController.Instance.Launch();
         }
     }
 }

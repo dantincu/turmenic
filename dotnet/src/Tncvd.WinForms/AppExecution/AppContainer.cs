@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 using Tncvd.Reflection;
 using Tncvd.Services;
 using Tncvd.Utility;
@@ -10,16 +9,17 @@ namespace Tncvd.WinForms.AppExecution
 {
     public class AppContainer
     {
-        private static AppContainer _instance;
-        private static AppContainerForm _appContainerForm;
+        private const string OUTPUT_TEXTBOX_LOGGER_NAME = "APP OUTPUT";
 
-        private AppTextBoxLogger _logger;
-        private Form _mainAppForm;
+        private static AppContainer _instance;
+
+        private AppContainerForm _appContainerForm;
+        private AppMainFormBase _appMainForm;
 
         private AppContainer()
         {
-            _logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().GetTypeFullName());
-            OutputLogger = TextBoxLoggerFactory.Instance.GetOutputTextBoxLogger("APP OUTPUT");
+            this.AppTextBoxLogger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().GetTypeFullName());
+            this.OutputTextBoxLogger = TextBoxLoggerFactory.Instance.GetOutputTextBoxLogger(OUTPUT_TEXTBOX_LOGGER_NAME);
         }
 
         public static AppContainer Instance
@@ -35,21 +35,22 @@ namespace Tncvd.WinForms.AppExecution
             }
         }
 
-        public AppTextBoxLogger OutputLogger { get; }
+        public AppTextBoxLogger OutputTextBoxLogger { get; }
 
-        public static void LaunchAppContainerForm(Action<AppContainerForm> assignerCallback)
+        public AppTextBoxLogger AppTextBoxLogger { get; }
+
+        public void AssignAppMainForm(AppMainFormBase appMainForm)
         {
-            AssureAppContainerFormIsNotAssigned();
+            this.AssureAppMainFormNotAssigned();
 
-            _appContainerForm = new AppContainerForm();
-            assignerCallback?.Invoke(_appContainerForm);
-
-            _appContainerForm.Show();
+            this._appMainForm = appMainForm ?? throw new ArgumentNullException(nameof(appMainForm)); ;
         }
 
-        public void SetAppMainForm(Form mainAppForm)
+        public void AssignAppContainerForm(AppContainerForm appContainerForm)
         {
-            _mainAppForm = mainAppForm;
+            this.AssureAppContainerFormNotAssigned();
+
+            this._appContainerForm = appContainerForm ?? throw new ArgumentNullException(nameof(appContainerForm));
         }
 
         public ActionResponse RunAction(Func<ActionResponse> action, AppTextBoxLogger appTextBoxLogger, string actionName = "action")
@@ -74,26 +75,34 @@ namespace Tncvd.WinForms.AppExecution
 
         public ActionResponse<TData> RunAction<TData>(Func<ActionResponse<TData>> action, AppTextBoxLogger appTextBoxLogger, string actionName = "action", bool printResultDataToOutput = false)
         {
-            OutputLogger.Clear();
+            OutputTextBoxLogger.Clear();
 
             Func<ActionResponse> unTypedAction = action;
             ActionResponse<TData> response = RunAction(unTypedAction, appTextBoxLogger, actionName) as ActionResponse<TData>;
 
             if (printResultDataToOutput && response != null && response.Data != null)
             {
-                OutputLogger.Information($"Outputting string representation for object of type {typeof(TData).GetTypeFullName()}:");
+                OutputTextBoxLogger.Information($"Outputting string representation for object of type {typeof(TData).GetTypeFullName()}:");
                 string objectString = SerializationHelperMethods.ObjectToStringOrXml(response.Data);
-                OutputLogger.Information(objectString);
+                OutputTextBoxLogger.Information(objectString);
             }
 
             return response;
         }
 
-        private static void AssureAppContainerFormIsNotAssigned()
+        private void AssureAppMainFormNotAssigned()
         {
-            if (_appContainerForm != null)
+            if (this._appMainForm != null)
             {
-                throw new InvalidOperationException("Launching the app container twice is not allowed!");
+                throw new InvalidOperationException("The app main form can only be assigned once!");
+            }
+        }
+
+        private void AssureAppContainerFormNotAssigned()
+        {
+            if (this._appContainerForm != null)
+            {
+                throw new InvalidOperationException("The app container form can only be assigned once!");
             }
         }
     }

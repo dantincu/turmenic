@@ -11,11 +11,21 @@ namespace Tncvd.WinForms.Forms
             Utility.HelperMethods.AddAppFormProperties(this);
         }
 
-        protected AppTextBoxLogger Logger { get; set; }
+        protected AppTextBoxLogger TextBoxLogger { get; set; }
+
+        protected virtual bool InitLoggerManually => false;
+
+        protected virtual void InitLogger()
+        {
+            this.TextBoxLogger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().GetTypeFullName());
+        }
 
         protected virtual void InitForm()
         {
-            this.Logger = TextBoxLoggerFactory.Instance.GetAppTextBoxLogger(GetType().GetTypeFullName());
+            if (this.InitLoggerManually == false)
+            {
+                this.InitLogger();
+            }
         }
     }
 }

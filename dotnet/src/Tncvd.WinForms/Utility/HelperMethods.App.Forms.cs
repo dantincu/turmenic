@@ -14,7 +14,7 @@ namespace Tncvd.WinForms.Utility
             AddWinFormsFormProperties(appForm);
         }
 
-        public static void AddMainAppFormProperties(MainAppFormBase mainAppForm)
+        public static void AddMainAppFormProperties(AppMainFormBase mainAppForm)
         {
         }
 

@@ -8,7 +8,7 @@ using Tncvd.Reflection;
 
 namespace Tncvd.Utility.DataTypeConversion
 {
-    public class DataTypesConverterHelper : InstanceContainer<DataTypesConverterHelper>
+    public class DataTypesConverterHelper : StaticInstanceContainer<DataTypesConverterHelper>
     {
         private readonly Dictionary<Type, Func<string, object>> _converterMethods = new Dictionary<Type, Func<string, object>>
         {

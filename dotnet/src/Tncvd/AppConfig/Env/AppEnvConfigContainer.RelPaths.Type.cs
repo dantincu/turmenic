@@ -12,7 +12,7 @@ namespace Tncvd.AppConfig.Env
         public string GetEnvRelativePath(string rootEnvDirName, Type type, params string[] relPathParts)
         {
             string path = this.GetEnvRelativePath(
-                ArrayHelperMethods.ConcatArraysAsStrings(
+                Collections.HelperMethods.ConcatArraysAsStrings(
                     new string[] {
                         rootEnvDirName,
                         type.GetTypeFullName()
