@@ -12,7 +12,7 @@ namespace Tncvd.WinForms.Logging
         public const string EXCEPTION_TYPE_DELIMITER = "[EXCEPTION-TYPE]";
         public const string EXCEPTION_STACKTRACE_DELIMITER = "[EXCEPTION-STACKTRACE]";
 
-        private readonly RichTextBox _richTextBox;
+        private RichTextBox _richTextBox;
         public RichTextBoxLogger(RichTextBox textBox, string loggerName) : base(textBox, loggerName)
         {
             this._richTextBox = textBox;
@@ -20,25 +20,32 @@ namespace Tncvd.WinForms.Logging
 
         protected RichTextBox RichTextBox => this._richTextBox;
 
-        protected override void LogExceptionInternal(LogLevel logLevel, Exception ex, string message)
+        protected override void AssignTextBoxCore(TextBoxBase textBox)
+        {
+            base.AssignTextBoxCore(textBox);
+
+            this._richTextBox = (textBox as RichTextBox) ?? throw new ArgumentException("The text box argument must be of (or of a sub-type of) type RichTextBox");
+        }
+
+        protected override void LogExceptionInternal(LogLevel logLevel, Exception ex, string message, DateTime dateTime)
         {
             Color logMessageColor = this.GetLogMessageColor(logLevel);
-            this.LogInternalCore(logLevel, message, logMessageColor);
+            this.LogInternalCore(logLevel, message, logMessageColor, dateTime);
             this.AppendException(this._richTextBox, logLevel, logMessageColor, ex);
             this.AppendLogMessageEnding(this._richTextBox, logLevel, logMessageColor);
         }
 
-        protected override void LogInternal(LogLevel logLevel, string message)
+        protected override void LogInternal(LogLevel logLevel, string message, DateTime dateTime)
         {
             Color logMessageColor = this.GetLogMessageColor(logLevel);
-            this.LogInternalCore(logLevel, message, logMessageColor);
+            this.LogInternalCore(logLevel, message, logMessageColor, dateTime);
             this.AppendLogMessageEnding(this._richTextBox, logLevel, logMessageColor);
         }
 
-        protected virtual void LogInternalCore(LogLevel logLevel, string message, Color logMessageColor)
+        protected virtual void LogInternalCore(LogLevel logLevel, string message, Color logMessageColor, DateTime dateTime)
         {
             this.AppendLogLevel(this._richTextBox, logLevel, logMessageColor);
-            this.AppendTimeStamp(this._richTextBox, DateTime.Now, logMessageColor);
+            this.AppendTimeStamp(this._richTextBox, dateTime, logMessageColor);
             this.AppendLoggerName(this._richTextBox, logLevel, logMessageColor);
             this.AppendMessageText(this._richTextBox, logLevel, logMessageColor, message);
         }

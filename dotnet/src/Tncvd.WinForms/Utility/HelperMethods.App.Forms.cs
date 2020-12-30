@@ -1,5 +1,8 @@
 ﻿using System.Windows.Forms;
-using Tncvd.WinForms.Forms;
+using Tncvd.WinForms.Forms.AppContainerWindow;
+using Tncvd.WinForms.Forms.AppForm.Base;
+using Tncvd.WinForms.Forms.AppMainWindow.Base;
+using Tncvd.WinForms.Forms.AppWindow.Base;
 
 namespace Tncvd.WinForms.Utility
 {
@@ -14,7 +17,17 @@ namespace Tncvd.WinForms.Utility
             AddWinFormsFormProperties(appForm);
         }
 
-        public static void AddMainAppFormProperties(AppMainFormBase mainAppForm)
+        public static void AddAppWindowProperties(AppWindowFormBase appWindowForm)
+        {
+            appWindowForm.Size = ConstantValues.AppWindowDefaultSize;
+            appWindowForm.WindowState = FormWindowState.Normal;
+        }
+
+        public static void AddMainAppWindowProperties(AppMainWindowFormBase mainAppForm)
+        {
+        }
+
+        public static void AddAppContainerWindowProperties(AppContainerWindowForm appContainerFormWindow)
         {
         }
 

@@ -4,49 +4,64 @@ namespace Tncvd.WinForms.Utility
 {
     public static partial class HelperMethods
     {
-        public static void AddAppUserControlProperties(AppUserControlBase userControl)
+        public static void AddAppUserControlProperties(AppUserControl appUserControl)
         {
-            AddBasicUserControlProperties(userControl);
+            AddBasicUserControlProperties(appUserControl);
         }
 
-        public static void AddAppTextBoxProperties(AppTextBox textBox)
+        public static void AddAppTextBoxProperties(AppTextBox appTextBox)
         {
-            AddBasicTextBoxProperties(textBox);
+            AddBasicTextBoxProperties(appTextBox);
         }
 
-        public static void AddAppTextAreaProperties(AppTextBox textBox)
+        public static void AddAppTextAreaProperties(AppTextBox appTextArea)
         {
-            AddTextAreaProperties(textBox);
+            AddTextAreaProperties(appTextArea);
         }
 
-        public static void AddAppRichTextBoxProperties(AppRichTextBox richTextBox)
+        public static void AddAppRichTextBoxProperties(AppRichTextBox appRichTextBox)
         {
-            AddRichTextBoxProperties(richTextBox);
+            AddRichTextBoxProperties(appRichTextBox);
         }
 
-        public static void AddAppButtonProperties(AppButton button)
+        public static void AddAppButtonProperties(AppButton appButton)
         {
-            AddButtonProperties(button);
+            AddButtonProperties(appButton);
         }
 
-        public static void AddAppLabelProperties(AppLabel label)
+        public static void AddAppLabelProperties(AppLabel appLabel)
         {
-            AddBasicControlProperties(label);
+            AddLabelProperties(appLabel);
         }
 
-        public static void AddAppCheckBoxProperties(AppCheckBox checkBox)
+        public static void AddAppCheckBoxProperties(AppCheckBox appCheckBox)
         {
-            AddBasicControlProperties(checkBox);
+            AddCheckBoxProperties(appCheckBox);
         }
 
-        public static void AddAppRadioButtonProperties(AppRadioButton radioButton)
+        public static void AddAppRadioButtonProperties(AppRadioButton appRadioButton)
         {
-            AddBasicControlProperties(radioButton);
+            AddRadioButtonProperties(appRadioButton);
         }
 
-        public static void AddAppGroupBoxProperties(AppGroupBox groupBox)
+        public static void AddAppGroupBoxProperties(AppGroupBox appGroupBox)
         {
-            AddBasicControlProperties(groupBox);
+            AddGroupBoxProperties(appGroupBox);
+        }
+
+        public static void AddAppSplitContainerProperties(AppSplitContainer appSplitContainer)
+        {
+            AddSplitContainerProperties(appSplitContainer);
+        }
+
+        public static void AddAppTabControlProperties(AppTabControl appTabControl)
+        {
+            AddTabControlProperties(appTabControl);
+        }
+
+        public static void AddAppTabPageProperties(AppTabPage tabPage)
+        {
+            AddTabPageProperties(tabPage);
         }
     }
 }

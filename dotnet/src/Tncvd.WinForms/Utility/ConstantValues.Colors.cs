@@ -2,7 +2,7 @@
 
 namespace Tncvd.WinForms.Utility
 {
-    public static class ConstantValues
+    public static partial class ConstantValues
     {
         public static class AppColors
         {

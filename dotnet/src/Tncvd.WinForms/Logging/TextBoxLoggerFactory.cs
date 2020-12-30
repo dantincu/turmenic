@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Concurrent;
 using System.Windows.Forms;
+using Tncvd.WinForms.AppExecution;
+using Tncvd.WinForms.Controls;
+using Tncvd.Collections;
 
 namespace Tncvd.WinForms.Logging
 {
@@ -12,6 +12,11 @@ namespace Tncvd.WinForms.Logging
         #region Fields
 
         private static TextBoxLoggerFactory _instance;
+
+        private readonly object syncLock = new object();
+
+        private readonly ConcurrentQueue<AppTextBoxLogger> _appTextBoxLoggerQueue = new ConcurrentQueue<AppTextBoxLogger>();
+        private readonly ConcurrentQueue<AppTextBoxLogger> _outputTextBoxLoggerQueue = new ConcurrentQueue<AppTextBoxLogger>();
 
         private RichTextBox _defaultLoggingRichTextBox;
         private RichTextBox _defaultOutputRichTextBox;
@@ -55,80 +60,109 @@ namespace Tncvd.WinForms.Logging
             return new RichTextBoxLogger(richTextBox, loggerName);
         }
 
-        public AppTextBoxLogger GetAppTextBoxLogger(RichTextBox richTextBox, string loggerName)
-        {
-            return new AppTextBoxLogger(richTextBox, loggerName);
-        }
-
-        public void RegisterDefaultLoggingRichTextBox(RichTextBox richTextBox)
-        {
-            this.AssureDefaultLoggingRichTextBoxNotYetRegistered();
-            this.ValidateRichTextBoxRegisterArgument(richTextBox);
-            this._defaultLoggingRichTextBox = richTextBox;
-        }
-
-        public void RegisterDefaultOutputRichTextBox(RichTextBox richTextBox)
-        {
-            this.AssureDefaultOutputRichTextBoxNotYetRegistered();
-            this.ValidateRichTextBoxRegisterArgument(richTextBox);
-            this._defaultOutputRichTextBox = richTextBox;
-        }
-
         public AppTextBoxLogger GetAppTextBoxLogger(string loggerName)
         {
-            this.AssureDefaultLoggingRichTextBoxRegistered();
-            return this.GetAppTextBoxLogger(this._defaultLoggingRichTextBox, loggerName);
+            AppTextBoxLogger appTextBoxLogger = new AppTextBoxLogger(this._defaultLoggingRichTextBox, loggerName);
+            this.AddAppTextBoxLoggerToQueue(appTextBoxLogger);
+
+            return appTextBoxLogger;
         }
 
         public AppTextBoxLogger GetOutputTextBoxLogger(string loggerName)
         {
-            this.AssureDefaultOutputRichTextBoxRegistered();
-            return this.GetAppTextBoxLogger(this._defaultOutputRichTextBox, loggerName);
+            AppTextBoxLogger outputTextBoxLogger = new AppTextBoxLogger(this._defaultOutputRichTextBox, loggerName);
+            this.AddOutputTextBoxLoggerToQueue(outputTextBoxLogger);
+
+            return outputTextBoxLogger;
         }
 
-        #region Methods - Validaion
-
-        private void ValidateRichTextBoxRegisterArgument(RichTextBox richTextBox)
+        public void RegisterDefaultLoggingAppTextBox(AppRichTextBox appTextBox)
         {
-            if (richTextBox == null)
+            this._defaultLoggingRichTextBox = this.AssureLoggingTextBoxNotNull(appTextBox ?? throw new ArgumentNullException(nameof(appTextBox)));
+
+            this.ConsumeLoggerQueue(this._appTextBoxLoggerQueue, appTextBox);
+        }
+
+        public void RegisterDefaultOutputAppTextBox(AppRichTextBox appTextBox)
+        {
+            this._defaultOutputRichTextBox = this.AssureOutputTextBoxNotNull(appTextBox ?? throw new ArgumentNullException(nameof(appTextBox)));
+
+            this.ConsumeLoggerQueue(this._outputTextBoxLoggerQueue, appTextBox);
+        }
+
+        private void ConsumeLoggerQueue(ConcurrentQueue<AppTextBoxLogger> concurrentQueue, AppRichTextBox appTextBox)
+        {
+            concurrentQueue.CloneAndConsume(logger =>
             {
-                throw new ArgumentNullException("The provided rich text box argument must not be null!");
-            }
+                logger.AssignTextBox(appTextBox);
+            });
         }
 
-        private void AssureDefaultLoggingRichTextBoxRegistered()
+        private void AddAppTextBoxLoggerToQueue(AppTextBoxLogger textBoxLogger)
         {
+            this._appTextBoxLoggerQueue.Enqueue(textBoxLogger);
+        }
+
+        private void AddOutputTextBoxLoggerToQueue(AppTextBoxLogger textBoxLogger)
+        {
+            this._outputTextBoxLoggerQueue.Enqueue(textBoxLogger);
+        }
+
+        private AppRichTextBox AssureLoggingTextBoxNotNull(AppRichTextBox appTextBox)
+        {
+            if (this.IsLoggingTextBoxNull() == false)
+            {
+                throw new InvalidOperationException("The default logging text box cannot be assigned twice!");
+            }
+
+            return appTextBox;
+        }
+
+        private AppRichTextBox AssureOutputTextBoxNotNull(AppRichTextBox appTextBox)
+        {
+            if (this.IsOutputTextBoxNull() == false)
+            {
+                throw new InvalidOperationException("The default output text box cannot be assigned twice!");
+            }
+
+            return appTextBox;
+        }
+
+        private bool IsLoggingTextBoxNull()
+        {
+            bool retVal = false;
+
             if (this._defaultLoggingRichTextBox == null)
             {
-                throw new InvalidOperationException("The default logging rich text box has not yet been registered!");
+                lock (this.syncLock)
+                {
+                    if (this._defaultLoggingRichTextBox == null)
+                    {
+                        retVal = true;
+                    }
+                }
             }
+
+            return retVal;
         }
 
-        private void AssureDefaultLoggingRichTextBoxNotYetRegistered()
+        private bool IsOutputTextBoxNull()
         {
-            if (this._defaultLoggingRichTextBox != null)
-            {
-                throw new InvalidOperationException("The default logging rich text box has already been registered and it cannot be registered twice!");
-            }
-        }
+            bool retVal = false;
 
-        private void AssureDefaultOutputRichTextBoxRegistered()
-        {
             if (this._defaultOutputRichTextBox == null)
             {
-                throw new InvalidOperationException("The default output rich text box has not yet been registered!");
+                lock (this.syncLock)
+                {
+                    if (this._defaultOutputRichTextBox == null)
+                    {
+                        retVal = true;
+                    }
+                }
             }
-        }
 
-        private void AssureDefaultOutputRichTextBoxNotYetRegistered()
-        {
-            if (this._defaultOutputRichTextBox != null)
-            {
-                throw new InvalidOperationException("The default output rich text box has already been registered and it cannot be registered twice!");
-            }
+            return retVal;
         }
-
-        #endregion Methods - Validaion
 
         #endregion Methods
     }
