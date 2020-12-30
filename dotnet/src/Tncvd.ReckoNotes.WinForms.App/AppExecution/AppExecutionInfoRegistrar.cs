@@ -14,7 +14,7 @@ namespace Tncvd.ReckoNotes.WinForms.App.AppExecution
     {
     }
 
-    public class AppController : AppControllerBase<AppMainForm, AppExecutionInfoRegistrar>
+    public class AppController : AppControllerBase<AppMainWindowForm, AppExecutionInfoRegistrar>
     {
         private static AppController _instance;
 
@@ -42,12 +42,12 @@ namespace Tncvd.ReckoNotes.WinForms.App.AppExecution
 
         protected override void LaunchApp()
         {
-            Application.Run(this.AppContainerForm);
+            Application.Run(this.AppContainerWindowForm);
         }
 
         protected override void OnAppContainerFormLoad()
         {
-            Utility.HelperMethods.AddAppContainerFormProperties(this.AppContainerForm);
+            Utility.HelperMethods.AddAppContainerWindowProperties(this.AppContainerWindowForm);
         }
     }
 }

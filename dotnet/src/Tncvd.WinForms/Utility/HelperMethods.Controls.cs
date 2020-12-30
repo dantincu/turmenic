@@ -30,12 +30,48 @@ namespace Tncvd.WinForms.Utility
         public static void AddRichTextBoxProperties(RichTextBox richTextBox)
         {
             AddBasicTextBoxProperties(richTextBox);
+            richTextBox.Font = ConstantValues.Fonts.DefaultMonospaceFont;
         }
 
         public static void AddButtonProperties(Button button)
         {
             AddBasicControlProperties(button);
             button.BackColor = ConstantValues.AppColors.DefaultAppButtonBackColor;
+        }
+
+        public static void AddLabelProperties(Label label)
+        {
+            AddBasicControlProperties(label);
+        }
+
+        public static void AddCheckBoxProperties(CheckBox checkBox)
+        {
+            AddBasicControlProperties(checkBox);
+        }
+
+        public static void AddRadioButtonProperties(RadioButton radioButton)
+        {
+            AddBasicControlProperties(radioButton);
+        }
+
+        public static void AddGroupBoxProperties(GroupBox groupBox)
+        {
+            AddBasicControlProperties(groupBox);
+        }
+
+        public static void AddSplitContainerProperties(SplitContainer splitContainer)
+        {
+            AddBasicControlProperties(splitContainer);
+        }
+
+        public static void AddTabControlProperties(TabControl tabControl)
+        {
+            AddBasicControlProperties(tabControl);
+        }
+
+        public static void AddTabPageProperties(TabPage tabPage)
+        {
+            AddBasicControlProperties(tabPage);
         }
     }
 }

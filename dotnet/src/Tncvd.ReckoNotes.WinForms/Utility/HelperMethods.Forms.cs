@@ -1,29 +1,22 @@
 ﻿using System.Windows.Forms;
-using Tncvd.WinForms.Forms;
+using Tncvd.ReckoNotes.WinForms.Forms;
+using Tncvd.WinForms.Forms.AppContainerWindow;
 
 namespace Tncvd.ReckoNotes.WinForms.Utility
 {
     public static partial class HelperMethods
     {
-        public static void AddFormProperties(Form form)
+        public static void AddMainAppWindowProperties(AppMainWindowForm appMainWindow)
         {
+            SetDefaultFormIconProperty(appMainWindow);
         }
 
-        public static void AddAppFormProperties(AppFormBase appForm)
+        public static void AddAppContainerWindowProperties(AppContainerWindowForm appContainerWindow)
         {
+            SetDefaultFormIconProperty(appContainerWindow);
         }
 
-        public static void AddMainAppFormProperties(AppMainFormBase mainAppForm)
-        {
-            SetDefaultAppFormIconProperty(mainAppForm);
-        }
-
-        public static void AddAppContainerFormProperties(AppContainerForm appContainerForm)
-        {
-            SetDefaultAppFormIconProperty(appContainerForm);
-        }
-
-        public static void SetDefaultAppFormIconProperty(Form form)
+        public static void SetDefaultFormIconProperty(Form form)
         {
             Tncvd.WinForms.Utility.HelperMethods.SetFormIcon(
                 form,

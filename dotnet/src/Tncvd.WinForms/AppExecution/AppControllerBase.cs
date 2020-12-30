@@ -1,9 +1,10 @@
 ﻿using System;
-using Tncvd.WinForms.Forms;
+using Tncvd.WinForms.Forms.AppContainerWindow;
+using Tncvd.WinForms.Forms.AppMainWindow.Base;
 
 namespace Tncvd.WinForms.AppExecution
 {
-    public abstract class AppControllerBase<TAppMainForm, TAppExecutionRegistrar> : IDisposable where TAppMainForm : AppMainFormBase, new() where TAppExecutionRegistrar : AppConfig.Execution.AppExecutionInfoRegistrarBase, new()
+    public abstract class AppControllerBase<TAppMainForm, TAppExecutionRegistrar> : IDisposable where TAppMainForm : AppMainWindowFormBase, new() where TAppExecutionRegistrar : AppConfig.Execution.AppExecutionInfoRegistrarBase, new()
     {
         public virtual void Launch()
         {
@@ -15,7 +16,7 @@ namespace Tncvd.WinForms.AppExecution
             this.LaunchApp();
         }
 
-        protected AppContainerForm AppContainerForm { get; private set; }
+        protected AppContainerWindowForm AppContainerWindowForm { get; private set; }
 
         protected TAppMainForm AppMainForm { get; private set; }
 
@@ -25,9 +26,9 @@ namespace Tncvd.WinForms.AppExecution
 
         protected abstract void OnAppContainerFormLoad();
 
-        private AppContainerForm GetAppContainerForm()
+        private AppContainerWindowForm GetAppContainerWindowForm()
         {
-            return new AppContainerForm();
+            return new AppContainerWindowForm();
         }
 
         private TAppMainForm GetAppMainForm()
@@ -43,17 +44,16 @@ namespace Tncvd.WinForms.AppExecution
 
         private void InitAppContainerForm()
         {
-            this.AppContainerForm = this.GetAppContainerForm();
-            this.AppContainerForm.InitTextBoxLoggers();
+            this.AppContainerWindowForm = this.GetAppContainerWindowForm();
 
             this.AttachAppContainerFormEventHandlers();
         }
 
         private void AttachAppContainerFormEventHandlers()
         {
-            this.AppContainerForm.Load += this.OnAppContainerFormLoad;
-            this.AppContainerForm.Shown += AppContainerFormShown;
-            this.AppContainerForm.FormClosed += AppContainerFormFormClosed;
+            this.AppContainerWindowForm.Load += this.OnAppContainerFormLoad;
+            this.AppContainerWindowForm.Shown += AppContainerFormShown;
+            this.AppContainerWindowForm.FormClosed += AppContainerFormFormClosed;
         }
 
         private void InitAppMainForm()
@@ -69,7 +69,7 @@ namespace Tncvd.WinForms.AppExecution
 
         private void AppMainFormFormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
         {
-            this.AppContainerForm.Close();
+            this.AppContainerWindowForm.Close();
         }
 
         private void AppContainerFormShown(object sender, System.EventArgs e)
@@ -85,13 +85,13 @@ namespace Tncvd.WinForms.AppExecution
 
         private void InitAppContainer()
         {
-            AppContainer.Instance.AssignAppContainerForm(this.AppContainerForm);
+            AppContainer.Instance.AssignAppContainerForm(this.AppContainerWindowForm);
             AppContainer.Instance.AssignAppMainForm(this.AppMainForm);
         }
 
         public void Dispose()
         {
-            this.AppContainerForm?.Dispose();
+            this.AppContainerWindowForm?.Dispose();
             this.AppMainForm?.Dispose();
         }
     }

@@ -2,7 +2,8 @@
 using Tncvd.Reflection;
 using Tncvd.Services;
 using Tncvd.Utility;
-using Tncvd.WinForms.Forms;
+using Tncvd.WinForms.Forms.AppContainerWindow;
+using Tncvd.WinForms.Forms.AppMainWindow.Base;
 using Tncvd.WinForms.Logging;
 
 namespace Tncvd.WinForms.AppExecution
@@ -13,8 +14,8 @@ namespace Tncvd.WinForms.AppExecution
 
         private static AppContainer _instance;
 
-        private AppContainerForm _appContainerForm;
-        private AppMainFormBase _appMainForm;
+        private AppContainerWindowForm _appContainerWindow;
+        private AppMainWindowFormBase _appMainWindow;
 
         private AppContainer()
         {
@@ -39,18 +40,14 @@ namespace Tncvd.WinForms.AppExecution
 
         public AppTextBoxLogger AppTextBoxLogger { get; }
 
-        public void AssignAppMainForm(AppMainFormBase appMainForm)
+        public void AssignAppMainForm(AppMainWindowFormBase appMainWindow)
         {
-            this.AssureAppMainFormNotAssigned();
-
-            this._appMainForm = appMainForm ?? throw new ArgumentNullException(nameof(appMainForm)); ;
+            this._appMainWindow = this.AssureAppMainFormNotAssigned(appMainWindow ?? throw new ArgumentNullException(nameof(appMainWindow)));
         }
 
-        public void AssignAppContainerForm(AppContainerForm appContainerForm)
+        public void AssignAppContainerForm(AppContainerWindowForm appContainerWindow)
         {
-            this.AssureAppContainerFormNotAssigned();
-
-            this._appContainerForm = appContainerForm ?? throw new ArgumentNullException(nameof(appContainerForm));
+            this._appContainerWindow = this.AssureAppContainerFormNotAssigned(appContainerWindow ?? throw new ArgumentNullException(nameof(appContainerWindow)));
         }
 
         public ActionResponse RunAction(Func<ActionResponse> action, AppTextBoxLogger appTextBoxLogger, string actionName = "action")
@@ -90,20 +87,24 @@ namespace Tncvd.WinForms.AppExecution
             return response;
         }
 
-        private void AssureAppMainFormNotAssigned()
+        private AppMainWindowFormBase AssureAppMainFormNotAssigned(AppMainWindowFormBase appMainWindow)
         {
-            if (this._appMainForm != null)
+            if (this._appMainWindow != null)
             {
                 throw new InvalidOperationException("The app main form can only be assigned once!");
             }
+
+            return appMainWindow;
         }
 
-        private void AssureAppContainerFormNotAssigned()
+        private AppContainerWindowForm AssureAppContainerFormNotAssigned(AppContainerWindowForm appContainerWindow)
         {
-            if (this._appContainerForm != null)
+            if (this._appContainerWindow != null)
             {
                 throw new InvalidOperationException("The app container form can only be assigned once!");
             }
+
+            return appContainerWindow;
         }
     }
 }

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tncvd.Ux\Tncvd.Ux.csproj" />
     <ProjectReference Include="..\Tncvd\Tncvd.csproj" />
   </ItemGroup>
 

@@ -25,9 +25,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tncvd.ReckoNotes", "Tncvd.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.ReckoNotes", "..\Tncvd.ReckoNotes\Tncvd.ReckoNotes.csproj", "{1B9AC263-B1FD-4219-85C5-4A6D25B48845}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.ReckoNotes.WinForms", "..\Tncvd.ReckoNotes.WinForms\Tncvd.ReckoNotes.WinForms.csproj", "{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.ReckoNotes.WinForms", "..\Tncvd.ReckoNotes.WinForms\Tncvd.ReckoNotes.WinForms.csproj", "{ABE64E6E-3060-4AD0-A5D6-8AA742E0A08C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.ReckoNotes.WinForms.App", "..\Tncvd.ReckoNotes.WinForms.App\Tncvd.ReckoNotes.WinForms.App.csproj", "{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.ReckoNotes.WinForms.App", "..\Tncvd.ReckoNotes.WinForms.App\Tncvd.ReckoNotes.WinForms.App.csproj", "{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Ux", "..\Tncvd.Ux\Tncvd.Ux.csproj", "{33C07F13-4E0F-40A0-B446-47497F3248F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,10 @@ Global
 		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39BA450C-F1D9-4AA4-85EA-C90D91D54FAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C07F13-4E0F-40A0-B446-47497F3248F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C07F13-4E0F-40A0-B446-47497F3248F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C07F13-4E0F-40A0-B446-47497F3248F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C07F13-4E0F-40A0-B446-47497F3248F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
