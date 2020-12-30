@@ -1,4 +1,4 @@
-﻿using Tncvd.WinForms.Forms.AppWindow.Base;
+﻿using Tncvd.WinForms.Forms.AppWindow;
 
 namespace Tncvd.WinForms.Forms.AppMainWindow.Base
 {

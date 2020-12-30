@@ -38,6 +38,7 @@ namespace Tncvd.WinForms.Forms.AppWindow.Base
             this.AutoScroll = true;
             this.Name = "AppWindowFormBase";
             this.Text = "AppWindowForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
 
         }

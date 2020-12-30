@@ -39,7 +39,7 @@ namespace Tncvd.WinForms.Forms.AppContainerWindow
         protected override void AddContentUC()
         {
             this.AppWindowContentUC = new AppContainerWindowContentUC();
-            this.WindowUC.SplitContainer.Panel2.Controls.Add(this.ContentUC);
+            this.WindowUC.MainContentPanel.Controls.Add(this.ContentUC);
             this.InitTextBoxLoggers();
         }
     }

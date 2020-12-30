@@ -31,11 +31,14 @@ namespace Tncvd.WinForms.Forms.AppMainWindow.Base
         {
             this.SuspendLayout();
             // 
-            // AppMainWindowForm
+            // AppMainWindowFormBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "AppMainWindowForm";
+            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Location = new System.Drawing.Point(100, 100);
+            this.Name = "AppMainWindowFormBase";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "AppMainWindowForm";
             this.ResumeLayout(false);
 

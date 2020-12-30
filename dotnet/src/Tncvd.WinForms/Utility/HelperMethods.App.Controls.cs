@@ -63,5 +63,20 @@ namespace Tncvd.WinForms.Utility
         {
             AddTabPageProperties(tabPage);
         }
+
+        public static void AddAppMenuStripProperties(AppMenuStrip menuStrip)
+        {
+            AddMenuStripProperties(menuStrip);
+        }
+
+        public static void AddAppStatusStripProperties(AppStatusStrip statusStrip)
+        {
+            AddStatusStripProperties(statusStrip);
+        }
+
+        public static void AddAppPanelProperties(AppPanel panel)
+        {
+            AddPanelProperties(panel);
+        }
     }
 }
