@@ -62,11 +62,13 @@ namespace Tncvd.WinForms.Utility
         public static void AddSplitContainerProperties(SplitContainer splitContainer)
         {
             AddBasicControlProperties(splitContainer);
+            splitContainer.Dock = DockStyle.Fill;
         }
 
         public static void AddTabControlProperties(TabControl tabControl)
         {
             AddBasicControlProperties(tabControl);
+            tabControl.Dock = DockStyle.Fill;
         }
 
         public static void AddTabPageProperties(TabPage tabPage)
@@ -87,6 +89,7 @@ namespace Tncvd.WinForms.Utility
         public static void AddPanelProperties(Panel panel)
         {
             AddBasicControlProperties(panel);
+            panel.Dock = DockStyle.Fill;
         }
     }
 }
