@@ -9,6 +9,8 @@ namespace Tncvd.ReckoNotes.WinForms.Forms
             this.InitializeComponent();
         }
 
+        protected AppMainWindowContentUC ContentUC => this.AppWindowContentUC as AppMainWindowContentUC;
+
         protected override void AddFormProperties()
         {
             base.AddFormProperties();
@@ -22,6 +24,8 @@ namespace Tncvd.ReckoNotes.WinForms.Forms
 
         protected override void AddContentUC()
         {
+            this.AppWindowContentUC = new AppMainWindowContentUC();
+            this.AppWindowUC.MainContentPanel.Controls.Add(this.AppWindowContentUC);
         }
     }
 }

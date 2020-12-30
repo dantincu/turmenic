@@ -6,12 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.664.37" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tncvd.ReckoNotes\Tncvd.ReckoNotes.csproj" />
-    <ProjectReference Include="..\Tncvd.WinForms.Web\Tncvd.WinForms.Web.csproj" />
     <ProjectReference Include="..\Tncvd.WinForms\Tncvd.WinForms.csproj" />
   </ItemGroup>
 

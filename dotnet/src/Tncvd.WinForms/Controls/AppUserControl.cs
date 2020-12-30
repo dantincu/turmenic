@@ -12,6 +12,7 @@ namespace Tncvd.WinForms.Controls
         protected override void OnCreateControl()
         {
             base.OnCreateControl();
+            this.AddControls();
             this.AddControlProperties();
         }
 
