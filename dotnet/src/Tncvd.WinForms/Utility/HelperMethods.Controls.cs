@@ -73,5 +73,20 @@ namespace Tncvd.WinForms.Utility
         {
             AddBasicControlProperties(tabPage);
         }
+
+        public static void AddMenuStripProperties(MenuStrip menuStrip)
+        {
+            AddBasicControlProperties(menuStrip);
+        }
+
+        public static void AddStatusStripProperties(StatusStrip statusStrip)
+        {
+            AddBasicControlProperties(statusStrip);
+        }
+
+        public static void AddPanelProperties(Panel panel)
+        {
+            AddBasicControlProperties(panel);
+        }
     }
 }

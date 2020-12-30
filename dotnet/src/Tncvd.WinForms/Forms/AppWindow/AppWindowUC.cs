@@ -1,7 +1,7 @@
 ﻿using Tncvd.WinForms.Controls;
 using Tncvd.WinForms.Forms.AppForm.Base;
 
-namespace Tncvd.WinForms.Forms.AppWindow.Base
+namespace Tncvd.WinForms.Forms.AppWindow
 {
     public partial class AppWindowUC : AppFormUCBase
     {
@@ -10,7 +10,7 @@ namespace Tncvd.WinForms.Forms.AppWindow.Base
             this.InitializeComponent();
         }
 
-        public AppSplitContainer SplitContainer => this.splitContainer;
+        public AppPanel MainContentPanel => this.mainContentPanel;
         public System.Windows.Forms.MenuStrip MainMenuStrip => this.mainMenuStrip;
         public System.Windows.Forms.StatusStrip MainStatusStrip => this.mainStatusStrip;
 

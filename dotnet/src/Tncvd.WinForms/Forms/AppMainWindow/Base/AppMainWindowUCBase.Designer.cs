@@ -29,8 +29,17 @@ namespace Tncvd.WinForms.Forms.AppMainWindow.Base
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // AppMainWindowUCBase
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "AppMainWindowUCBase";
+            this.Size = new System.Drawing.Size(1841, 834);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion

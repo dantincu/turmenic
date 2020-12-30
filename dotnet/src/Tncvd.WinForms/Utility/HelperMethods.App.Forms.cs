@@ -25,10 +25,12 @@ namespace Tncvd.WinForms.Utility
 
         public static void AddMainAppWindowProperties(AppMainWindowFormBase mainAppForm)
         {
+            mainAppForm.StartPosition = FormStartPosition.CenterParent;
         }
 
         public static void AddAppContainerWindowProperties(AppContainerWindowForm appContainerFormWindow)
         {
+            appContainerFormWindow.StartPosition = FormStartPosition.CenterScreen;
         }
 
         public static void SetFormIcon(Form form, string iconFilePath)

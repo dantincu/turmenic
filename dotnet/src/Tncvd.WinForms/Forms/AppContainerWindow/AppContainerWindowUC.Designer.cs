@@ -29,8 +29,17 @@ namespace Tncvd.WinForms.Forms.AppContainerWindow
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // AppContainerWindowUC
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "AppContainerWindowUC";
+            this.Size = new System.Drawing.Size(1841, 833);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
