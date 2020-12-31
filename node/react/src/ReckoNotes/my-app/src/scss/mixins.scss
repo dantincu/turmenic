@@ -1,0 +1,15 @@
+@import "./vars.scss";
+
+@mixin bordered-text-span($span-border-color) {
+  @include text-span-border($span-border-color);
+  @include text-span-padding();
+}
+
+@mixin text-span-border($span-border-color) {
+  border: 1px solid $span-border-color;
+  border-radius: 3px;
+}
+
+@mixin text-span-padding {
+  padding: 1px 5px;
+}

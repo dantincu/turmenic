@@ -1,0 +1,35 @@
+@import "./scss/vars.scss";
+
+html > body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  font-family: "Roboto";
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $fore-color;
+  background-color: $body-back-color;
+}
+
+code {
+  color: $fore-color;
+  background-color: $code-back-color;
+}
+
+code,
+pre {
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; */
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.95em;
+  /* font-weight: bold; */
+  /* color: $fore-color;
+  background-color: $body-back-color; */
+}
+
+pre > code {
+  font-size: 0.95em;
+  font-weight: bold;
+}

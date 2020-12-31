@@ -1,0 +1,78 @@
+@import "./scss/vars.scss";
+@import "./scss/mixins.scss";
+
+.tncvd-docs-container {
+  background-color: $back-color;
+  padding: 5px 15px 0.1px 15px;
+  border-radius: 3px;
+  margin: 14px 0px 14px 0px;
+  min-height: 95vh;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: bold;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.8em;
+  }
+
+  h3 {
+    font-size: 1.6em;
+  }
+
+  h4 {
+    font-size: 1.4em;
+  }
+
+  h5 {
+    font-size: 1.2em;
+  }
+
+  h6 {
+    font-size: 1em;
+  }
+
+  mark {
+    background-color: $text-span-back-color;
+    @include bordered-text-span($text-span-border-color);
+    /* color: black; */
+  }
+
+  code {
+    /* background-color: $code-back-color; */
+    color: $fore-color;
+    @include bordered-text-span($code-span-border-color);
+  }
+
+  pre {
+    /* background-color: $code-block-back-color; */
+    @include text-span-border($code-span-border-color);
+    @include text-span-padding();
+    text-align: left;
+    font-weight: bold;
+    background-color: #222;
+
+    code {
+      /* background-color: inherit; */
+      /* color: inherit; */
+      color: #c0c0c0ff;
+      border: none;
+      padding: 0px;
+    }
+  }
+
+  blockquote {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 5px solid $code-span-border-color;
+  }
+}

@@ -1,0 +1,41 @@
+module.exports.operatingSystemSuperGroups = [
+    {
+        uuid: "2217985d-a0c1-45ec-8212-d7998a7658ad",
+        key: "windows",
+        name: "MS Windows",
+        description: "Microsoft's Windows group of operating systems for desktop and portable computers.",
+        superGroupKey: null,
+        isMobile: false,
+    },
+    {
+        uuid: "71dfe266-7e6f-4f7f-a265-ad9c852332da",
+        key: "macOS",
+        name: "macOS/OS X",
+        description: "Apple's operating systems for macs (both portable and non-portable).",
+        superGroupKey: null,
+        isMobile: false,
+    },
+    {
+        uuid: "041da9cf-e83c-4e3e-9333-8b11ab1a264c",
+        key: "linux-distro",
+        name: "Linux Distribution",
+        description: "A family of open source operating systems, packaged in various distributions, for desktop and portable computers.",
+        isMobile: false,
+    },
+    {
+        uuid: "54664d64-227b-44a5-b91b-593748b98b7e",
+        key: "ios",
+        name: "iOS",
+        description: "Apple's operating system for its own designed and marketed smart mobile devices like iPhone, iPad and the IPod Touch.",
+        superGroupKey: null,
+        isMobile: true,
+    },
+    {
+        uuid: "35867562-b970-40d3-88ea-baa8360d035a",
+        key: "android",
+        name: "Android",
+        description: "The most popular open source operating system for mobile devices that is sponsored by Google.",
+        superGroupKey: null,
+        isMobile: true,
+    },
+];
