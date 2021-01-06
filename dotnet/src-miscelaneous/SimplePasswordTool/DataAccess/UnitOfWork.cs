@@ -1,7 +1,8 @@
-﻿using DataAccess;
+﻿using Common.Collection;
+using DataAccess;
 using SimplePasswordTool.DataModels;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace SimplePasswordTool.DataAccess
 {
@@ -12,52 +13,73 @@ namespace SimplePasswordTool.DataAccess
 
         public UnitOfWork(DbSession dbSession) : base(dbSession)
         {
-            this.PasswordDataRepository = new PasswordDataRepository(dbSession, PASSWORD_DATA_DATABASE_NUMBER);
-            this.PasswordOptionsRepository = new PasswordOptionsRepository(dbSession, PASSWORD_OPTIONS_DATABASE_NUMBER);
+            this.PasswordDataRepository = new PasswordDataAsyncRepository(dbSession, PASSWORD_DATA_DATABASE_NUMBER);
+            this.PasswordOptionsRepository = new PasswordOptionsAsyncRepository(dbSession, PASSWORD_OPTIONS_DATABASE_NUMBER);
         }
 
-        protected PasswordDataRepository PasswordDataRepository { get; }
+        protected PasswordDataAsyncRepository PasswordDataRepository { get; }
 
-        protected PasswordOptionsRepository PasswordOptionsRepository { get; }
+        protected PasswordOptionsAsyncRepository PasswordOptionsRepository { get; }
 
-        public PasswordOptionsDataModel GetPasswordOptions()
+        public Task<PasswordOptionsDataModel> GetPasswordOptionsAsync()
         {
-            return this.PasswordOptionsRepository.GetAll().SingleOrDefault();
+            return this.PasswordOptionsRepository.TryGetSingleAsync(true).ContinueWith(
+                task => task.IsCompletedSuccessfully ? task.Result.Item1 : null);
         }
 
-        public PasswordOptionsDataModel SavePasswordOptions(PasswordOptionsDataModel passwordOptionsDataModel)
+        public Task<PasswordOptionsDataModel> SavePasswordOptionsAsync(PasswordOptionsDataModel passwordOptionsDataModel)
         {
-            return this.PasswordOptionsRepository.Save(passwordOptionsDataModel);
+            return this.PasswordOptionsRepository.SaveOrUpdateSingleAsync(passwordOptionsDataModel, (sourceData, destData) =>
+            {
+                destData.AllowedNonAlphaNumericChars = sourceData.AllowedNonAlphaNumericChars;
+                destData.MaxLength = sourceData.MaxLength;
+                destData.RequiredLength = sourceData.RequiredLength;
+                destData.RequiredUniqueChars = sourceData.RequiredUniqueChars;
+                destData.RequireNonAlphanumeric = sourceData.RequireNonAlphanumeric;
+                destData.RequireDigit = sourceData.RequireDigit;
+                destData.RequireLowercase = sourceData.RequireLowercase;
+                destData.RequireUppercase = sourceData.RequireUppercase;
+            });
         }
 
-        public void DeletePasswordOptions()
+        public Task DeletePasswordOptionsAsync()
         {
-            this.PasswordOptionsRepository.DeleteAll();
+            return this.PasswordOptionsRepository.DeleteAllAsync();
         }
 
-        public List<PasswordDataModel> GetAllPasswords()
+        public Task<List<PasswordDataModel>> GetAllPasswordsAsync()
         {
-            return this.PasswordDataRepository.GetAll();
+            return this.PasswordDataRepository.GetAllAsync((itemLeft, itemRight) => itemLeft.SortIndex.CompareTo(itemRight.SortIndex));
         }
 
-        public PasswordDataModel SavePassword(PasswordDataModel passwordDataModel)
+        public Task<PasswordDataModel> SavePasswordAsync(PasswordDataModel passwordDataModel)
         {
-            return this.PasswordDataRepository.Save(passwordDataModel);
+            return this.PasswordDataRepository.SaveAsync(passwordDataModel);
         }
 
-        public IEnumerable<PasswordDataModel> SaveAllPasswords(IEnumerable<PasswordDataModel> passwordsColl)
+        public Task<IEnumerable<PasswordDataModel>> SaveAllPasswordsAsync(IEnumerable<PasswordDataModel> passwordsColl)
         {
-            return this.PasswordDataRepository.SaveAll(passwordsColl);
+            return this.PasswordDataRepository.SaveAllAsync(passwordsColl);
         }
 
-        public void DeletePassword(ulong oid)
+        public Task DeletePasswordAsync(ulong oid)
         {
-            this.PasswordDataRepository.DeleteWithId(oid);
+            return this.PasswordDataRepository.DeleteWithIdAsync(oid);
         }
 
-        public void DeletePasswords(IEnumerable<ulong> oidColl)
+        public Task DeletePasswordValueAsync(ulong oid)
         {
-            this.PasswordDataRepository.DeleteAll(oidColl);
+            return this.PasswordDataRepository.UpdatePropsForIdAsync(oid, item => item.PasswordValue = null);
+        }
+
+        public Task DeletePasswordsAsync(IEnumerable<ulong> oidColl)
+        {
+            return this.PasswordDataRepository.DeleteAllAsync(oidColl);
+        }
+
+        public Task UpdatePasswordCollectionOrderAsync(ulong[] oids)
+        {
+            return this.PasswordDataRepository.UpdateIndexesAsync(oids.KeysToDictionary((oid, idx) => idx));
         }
 
         public override void Dispose()

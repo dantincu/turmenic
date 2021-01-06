@@ -1,5 +1,5 @@
 ﻿
-namespace SimplePasswordTool
+namespace SimplePasswordTool.UC
 {
     partial class PasswordListUC
     {
@@ -30,6 +30,7 @@ namespace SimplePasswordTool
         private void InitializeComponent()
         {
             this.topPnlPasswordList = new System.Windows.Forms.Panel();
+            this.btnSaveOrder = new System.Windows.Forms.Button();
             this.btnMoveListItemToTop = new System.Windows.Forms.Button();
             this.btnMoveListItemUp = new System.Windows.Forms.Button();
             this.lblPasswordList = new System.Windows.Forms.Label();
@@ -45,6 +46,7 @@ namespace SimplePasswordTool
             // 
             // topPnlPasswordList
             // 
+            this.topPnlPasswordList.Controls.Add(this.btnSaveOrder);
             this.topPnlPasswordList.Controls.Add(this.btnMoveListItemToTop);
             this.topPnlPasswordList.Controls.Add(this.btnMoveListItemUp);
             this.topPnlPasswordList.Controls.Add(this.lblPasswordList);
@@ -54,6 +56,21 @@ namespace SimplePasswordTool
             this.topPnlPasswordList.Padding = new System.Windows.Forms.Padding(5);
             this.topPnlPasswordList.Size = new System.Drawing.Size(309, 35);
             this.topPnlPasswordList.TabIndex = 2;
+            // 
+            // btnSaveOrder
+            // 
+            this.btnSaveOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnSaveOrder.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnSaveOrder.Enabled = false;
+            this.btnSaveOrder.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnSaveOrder.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnSaveOrder.Location = new System.Drawing.Point(157, 5);
+            this.btnSaveOrder.Name = "btnSaveOrder";
+            this.btnSaveOrder.Size = new System.Drawing.Size(78, 25);
+            this.btnSaveOrder.TabIndex = 9;
+            this.btnSaveOrder.Text = "Save Order";
+            this.btnSaveOrder.UseVisualStyleBackColor = false;
+            this.btnSaveOrder.Click += new System.EventHandler(this.BtnSaveOrder_Click);
             // 
             // btnMoveListItemToTop
             // 
@@ -67,6 +84,7 @@ namespace SimplePasswordTool
             this.btnMoveListItemToTop.TabIndex = 8;
             this.btnMoveListItemToTop.Text = "Move To Top";
             this.btnMoveListItemToTop.UseVisualStyleBackColor = false;
+            this.btnMoveListItemToTop.Click += new System.EventHandler(this.btnMoveListItemToTop_Click);
             // 
             // btnMoveListItemUp
             // 
@@ -80,6 +98,7 @@ namespace SimplePasswordTool
             this.btnMoveListItemUp.TabIndex = 7;
             this.btnMoveListItemUp.Text = "Move Up";
             this.btnMoveListItemUp.UseVisualStyleBackColor = false;
+            this.btnMoveListItemUp.Click += new System.EventHandler(this.btnMoveListItemUp_Click);
             // 
             // lblPasswordList
             // 
@@ -118,6 +137,7 @@ namespace SimplePasswordTool
             this.btnMoveListItemToBottom.TabIndex = 9;
             this.btnMoveListItemToBottom.Text = "Move To Bottom";
             this.btnMoveListItemToBottom.UseVisualStyleBackColor = false;
+            this.btnMoveListItemToBottom.Click += new System.EventHandler(this.btnMoveListItemToBottom_Click);
             // 
             // btnMoveListItemDown
             // 
@@ -131,6 +151,7 @@ namespace SimplePasswordTool
             this.btnMoveListItemDown.TabIndex = 8;
             this.btnMoveListItemDown.Text = "Move Down";
             this.btnMoveListItemDown.UseVisualStyleBackColor = false;
+            this.btnMoveListItemDown.Click += new System.EventHandler(this.btnMoveListItemDown_Click);
             // 
             // btnDeletePassword
             // 
@@ -144,6 +165,7 @@ namespace SimplePasswordTool
             this.btnDeletePassword.TabIndex = 6;
             this.btnDeletePassword.Text = "Delete";
             this.btnDeletePassword.UseVisualStyleBackColor = false;
+            this.btnDeletePassword.Click += new System.EventHandler(this.btnDeletePassword_Click);
             // 
             // btnAddNewPassword
             // 
@@ -157,17 +179,19 @@ namespace SimplePasswordTool
             this.btnAddNewPassword.TabIndex = 5;
             this.btnAddNewPassword.Text = "Add";
             this.btnAddNewPassword.UseVisualStyleBackColor = false;
+            this.btnAddNewPassword.Click += new System.EventHandler(this.btnAddNewPassword_Click);
             // 
             // listBoxPasswords
             // 
             this.listBoxPasswords.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxPasswords.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.listBoxPasswords.FormattingEnabled = true;
             this.listBoxPasswords.ItemHeight = 15;
             this.listBoxPasswords.Location = new System.Drawing.Point(0, 35);
             this.listBoxPasswords.Name = "listBoxPasswords";
             this.listBoxPasswords.Size = new System.Drawing.Size(309, 614);
             this.listBoxPasswords.TabIndex = 4;
-            this.listBoxPasswords.SelectedIndexChanged += new System.EventHandler(this.listBoxPasswords_SelectedIndexChanged);
+            this.listBoxPasswords.SelectedIndexChanged += new System.EventHandler(this.ListBoxPasswords_SelectedIndexChanged);
             // 
             // PasswordListUC
             // 
@@ -197,5 +221,6 @@ namespace SimplePasswordTool
         private System.Windows.Forms.Button btnMoveListItemToBottom;
         private System.Windows.Forms.Button btnMoveListItemToTop;
         private System.Windows.Forms.ListBox listBoxPasswords;
+        private System.Windows.Forms.Button btnSaveOrder;
     }
 }

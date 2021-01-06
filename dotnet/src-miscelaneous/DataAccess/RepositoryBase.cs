@@ -12,6 +12,8 @@ namespace DataAccess
         {
             this.DbSession = dbSession ?? throw new ArgumentNullException(nameof(dbSession));
             this.DatabaseNumber = databaseNumber > 0 ? databaseNumber : throw new ArgumentException(nameof(databaseNumber));
+
+            this.AssureDatabaseExists();
         }
 
         protected DbSession DbSession { get; }
@@ -22,43 +24,130 @@ namespace DataAccess
         {
             TCollectionType item = default;
 
-            this.PerformReadOperation(() =>
+            this.Execute(dbSession =>
             {
-                item = this.DbSession.Session.AllObjects<TCollectionType>().SingleOrDefault();
-            });
+                item = this.DbSession.Session.AllObjects<TCollectionType>().SingleOrDefault(item => item.Id == oid);
+            }, false);
 
             return item;
         }
 
-        public List<TCollectionType> GetAll()
+        public TCollectionType GetSingle()
+        {
+            TCollectionType item = default;
+
+            this.Execute(dbSession =>
+            {
+                item = dbSession.Session.AllObjects<TCollectionType>().SingleOrDefault();
+            }, false);
+
+            return item;
+        }
+
+        public bool TryGetSingle(out TCollectionType collectionType, bool forceSingle = false)
+        {
+            bool isSingle = false;
+            TCollectionType item = default;
+
+            this.Execute(dbSession =>
+            {
+                if (this.IsSingleCollection(dbSession))
+                {
+                    isSingle = true;
+                    item = dbSession.Session.AllObjects<TCollectionType>().SingleOrDefault();
+                }
+                else if (forceSingle)
+                {
+                    this.AssureSingleCore(dbSession);
+                }
+            }, false);
+
+            collectionType = item;
+            return isSingle;
+        }
+
+        public bool AssureSingle()
+        {
+            bool isSingle = false;
+
+            this.Execute(dbSession =>
+            {
+                this.AssureSingleCore(dbSession);
+            });
+
+            return isSingle;
+        }
+
+        public List<TCollectionType> GetAll(Comparison<TCollectionType> sortDelegate = null, bool sortOrderAscending = true)
         {
             List<TCollectionType> list = null;
+            sortDelegate = sortDelegate ?? this.GetDefaultSortDelegate();
 
-            this.PerformReadOperation(() =>
+            this.Execute(dbSession =>
             {
-                list = this.DbSession.Session.AllObjects<TCollectionType>().ToList();
-            });
+                list = dbSession.Session.AllObjects<TCollectionType>().ToList();
+
+                list.Sort(sortDelegate);
+            }, false);
 
             return list;
         }
 
-        public List<TCollectionType> GetList(Func<TCollectionType, bool> predicate)
+        public List<TCollectionType> GetList(Func<TCollectionType, bool> predicate, Comparison<TCollectionType> sortDelegate = null, bool sortOrderAscending = true)
         {
             List<TCollectionType> list = null;
+            sortDelegate = sortDelegate ?? this.GetDefaultSortDelegate();
 
-            this.PerformReadOperation(() =>
+            this.Execute(dbSession =>
             {
-                list = this.DbSession.Session.AllObjects<TCollectionType>().Where(predicate).ToList();
-            });
+                list = dbSession.Session.AllObjects<TCollectionType>().Where(predicate).ToList();
+            }, false);
 
             return list;
+        }
+
+        public TCollectionType Update(TCollectionType item, Action<TCollectionType, TCollectionType> propsUpdatePredicate)
+        {
+            TCollectionType existingItem = default;
+
+            this.Execute(dbSession =>
+            {
+                TCollectionType existingItem = dbSession.Session.AllObjects<TCollectionType>().Single(obj => obj.Id == item.Id);
+
+                propsUpdatePredicate(item, existingItem);
+                dbSession.Session.UpdateObject(existingItem);
+            });
+
+            return existingItem;
+        }
+
+        public TCollectionType SaveOrUpdate(TCollectionType item, Action<TCollectionType, TCollectionType> propsUpdatePredicate)
+        {
+            TCollectionType existingItem = default;
+
+            this.Execute(dbSession =>
+            {
+                TCollectionType existingItem = dbSession.Session.AllObjects<TCollectionType>().SingleOrDefault(obj => obj.Id == item.Id);
+
+                if (existingItem != null)
+                {
+                    propsUpdatePredicate(item, existingItem);
+                    dbSession.Session.UpdateObject(existingItem);
+                }
+                else
+                {
+                    dbSession.Session.Persist(item);
+                }
+            });
+
+            return existingItem ?? item;
         }
 
         public TCollectionType Save(TCollectionType item)
         {
-            this.PerformWriteOperation(() =>
+            this.Execute(dbSession =>
             {
-                this.DbSession.Session.Persist(item);
+                dbSession.Session.Persist(item);
             });
 
             return item;
@@ -66,143 +155,215 @@ namespace DataAccess
 
         public IEnumerable<TCollectionType> SaveAll(IEnumerable<TCollectionType> itemColl)
         {
-            this.PerformWriteOperation(() =>
+            this.Execute(dbSession =>
             {
                 foreach (TCollectionType item in itemColl)
                 {
-                    this.DbSession.Session.Persist(item);
+                    dbSession.Session.Persist(item);
                 }
             });
 
             return itemColl;
         }
 
+        public TCollectionType SaveOrUpdateSingle(TCollectionType item, Action<TCollectionType, TCollectionType> propsUpdatePredicate)
+        {
+            this.Execute(dbSession =>
+            {
+                TCollectionType existingItem = dbSession.Session.AllObjects<TCollectionType>().SingleOrDefault();
+
+                if (existingItem != null)
+                {
+                    propsUpdatePredicate(item, existingItem);
+                    dbSession.Session.UpdateObject(existingItem);
+                }
+                else
+                {
+                    dbSession.Session.Persist(item);
+                }
+            });
+
+            return item;
+        }
+
         public void DeleteWithId(ulong oid)
         {
-            this.PerformWriteOperation(() =>
+            this.Execute(dbSession =>
             {
-                this.DbSession.Session.DeleteObject(oid);
+                dbSession.Session.DeleteObject(oid);
+            });
+        }
+
+        public void UpdatePropsForId(ulong oid, Action<TCollectionType> updateDelegate)
+        {
+            this.Execute(dbSession =>
+            {
+                TCollectionType item = dbSession.Session.AllObjects<TCollectionType>().SingleOrDefault(item => item.Id == oid);
+
+                if (item != null)
+                {
+                    updateDelegate(item);
+                    dbSession.Session.UpdateObject(item);
+                }
+            });
+        }
+
+        public void UpdatePropsForId<TObject>(ulong oid, TObject value, Action<TCollectionType, TObject> updateDelegate)
+        {
+            this.Execute(dbSession =>
+            {
+                TCollectionType item = dbSession.Session.AllObjects<TCollectionType>().SingleOrDefault(item => item.Id == oid);
+
+                if (item != null)
+                {
+                    updateDelegate(item, value);
+                    dbSession.Session.UpdateObject(item);
+                }
+            });
+        }
+
+        public void UpdatePropsForIdArr(ulong[] oids, Action<TCollectionType> updateDelegate)
+        {
+            this.Execute(dbSession =>
+            {
+                TCollectionType[] itemArr = dbSession.Session.AllObjects<TCollectionType>().Where(item => oids.Contains(item.Id)).ToArray();
+
+                foreach (TCollectionType item in itemArr)
+                {
+                    updateDelegate(item);
+                    dbSession.Session.UpdateObject(item);
+                }
+            });
+        }
+
+        public void UpdatePropsForIdArr<TObject>(Dictionary<ulong, TObject> oidsDict, Action<TCollectionType, TObject> updateDelegate)
+        {
+            ulong[] oids = oidsDict.Keys.ToArray();
+
+            this.Execute(dbSession =>
+            {
+                TCollectionType[] itemArr = dbSession.Session.AllObjects<TCollectionType>().Where(item => oids.Contains(item.Id)).ToArray();
+
+                foreach (TCollectionType item in itemArr)
+                {
+                    updateDelegate(item, oidsDict[item.Id]);
+                    dbSession.Session.UpdateObject(item);
+                }
             });
         }
 
         public void DeleteAll(IEnumerable<ulong> oidsColl = null)
         {
-            this.PerformWriteOperation(() =>
+            this.Execute(dbSession =>
             {
-                oidsColl = oidsColl ?? this.DbSession.Session.AllObjects<TCollectionType>().Select(item => item.Id).ToArray();
-
-                foreach (ulong oid in oidsColl)
-                {
-                    this.DbSession.Session.DeleteObject(oid);
-                }
+                this.DeleteAllCore(dbSession, oidsColl);
             });
         }
 
-        public void Dispose()
+        public void DeleteSingle()
+        {
+            this.Execute(dbSession =>
+            {
+                TCollectionType existingItem = dbSession.Session.AllObjects<TCollectionType>().SingleOrDefault();
+
+                if (existingItem != null)
+                {
+                    dbSession.Session.DeleteObject(existingItem.Id);
+                }
+            }, false);
+        }
+
+        public virtual void Dispose()
         {
             this.DbSession.Dispose();
         }
 
-        protected void PerformReadOperation(Action operation)
+        protected void Execute(Action<DbSession> operation, bool readMode = false)
+        {
+            using (Transaction transaction = this.GetTransaction(readMode))
+            {
+                try
+                {
+                    operation.Invoke(this.DbSession);
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+
+                    throw;
+                }
+            }
+        }
+
+        protected Transaction GetTransaction(bool readMode)
         {
             Transaction transaction;
-            Database database;
-            bool forcedUpdate;
 
-            if (this.DbSession.CreateDatabaseSystem)
+            if (this.DbSession.Session.InTransaction)
             {
-                if (this.TryOpenDatabase(out transaction, out database))
-                {
-                    operation.Invoke();
-                    this.DbSession.CreateDatabaseSystem = false;
-                }
+            }
+
+            if (readMode)
+            {
+                transaction = this.DbSession.Session.BeginRead();
             }
             else
             {
-                if (this.TryOpenDatabaseReadonly(out transaction, out database, out forcedUpdate))
-                {
-                    operation.Invoke();
-                }
-            }
-        }
-
-        protected void PerformWriteOperation(Action operation)
-        {
-            Transaction transaction;
-            Database database;
-
-            if (this.TryOpenDatabase(out transaction, out database))
-            {
-                operation.Invoke();
-                transaction.Commit();
-            }
-        }
-
-        protected bool TryOpenDatabaseReadonly(out Transaction transaction, out Database database, out bool forcedUpdateMode)
-        {
-            transaction = null;
-            database = null;
-            forcedUpdateMode = false;
-
-            bool success = false;
-            
-            try
-            {
-                transaction = this.DbSession.Session.BeginRead();
-                database = this.DbSession.Session.OpenDatabase(this.DatabaseNumber);
-            }
-            catch (VelocityDb.Exceptions.SystemDatabaseNotFoundWithReadonlyTransactionException ex)
-            {
-                transaction?.Rollback();
                 transaction = this.DbSession.Session.BeginUpdate();
-
-                database = this.DbSession.Session.OpenDatabase(this.DatabaseNumber);
-                forcedUpdateMode = true;
-            }
-            finally
-            {
-                if (database == null && this.DbSession.Session.InTransaction)
-                {
-                    transaction?.Rollback();
-                    transaction?.Dispose();
-                    transaction = null;
-                }
-                else
-                {
-                    success = true;
-                }
             }
 
-            return success;
+            return transaction;
         }
 
-        protected bool TryOpenDatabase(out Transaction transaction, out Database database)
+        protected virtual Comparison<TCollectionType> GetDefaultSortDelegate()
         {
-            transaction = null;
-            database = null;
+            return (leftItem, rightItem) => leftItem.Id.CompareTo(rightItem.Id);
+        }
 
-            bool success = false;
+        protected virtual void DeleteAllCore(DbSession dbSession, IEnumerable<ulong> oidsColl = null)
+        {
+            oidsColl = oidsColl ?? dbSession.Session.AllObjects<TCollectionType>().Select(item => item.Id).ToArray();
 
-            try
+            foreach (ulong oid in oidsColl)
             {
-                transaction = this.DbSession.Session.BeginUpdate();
-                database = this.DbSession.Session.OpenDatabase(this.DatabaseNumber);
+                dbSession.Session.DeleteObject(oid);
             }
-            finally
+        }
+
+        protected bool AssureSingleCore(DbSession dbSession)
+        {
+            bool isSingle = false;
+
+            if (this.IsSingleCollection(dbSession))
             {
-                if (database == null && this.DbSession.Session.InTransaction)
-                {
-                    this.DbSession.Session.Abort();
-                    transaction?.Dispose();
-                    transaction = null;
-                }
-                else
-                {
-                    success = true;
-                }
+                isSingle = true;
+            }
+            else
+            {
+                this.DeleteAllCore(dbSession);
             }
 
-            return success;
+            return isSingle;
+        }
+
+        protected void AssureDatabaseExists()
+        {
+            if (this.DbSession.CreateDatabaseSystem)
+            {
+                this.Execute(dbSession =>
+                {
+                    dbSession.Session.FlushUpdates();
+                });
+            }
+        }
+
+        protected bool IsSingleCollection(DbSession dbSession)
+        {
+            /* This doesn't work as Linq method Skip() is not safe and assumes there are at least that many elements in the collection, or it throws an exception
+            return dbSession.Session.AllObjects<TCollectionType>().Skip(1).Any() == false; */
+
+            return dbSession.Session.AllObjects<TCollectionType>().Count() <= 1;
         }
     }
 }

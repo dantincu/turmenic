@@ -1,5 +1,5 @@
 ﻿
-namespace SimplePasswordTool
+namespace SimplePasswordTool.UC
 {
     partial class CreatePasswordUC
     {
@@ -47,12 +47,16 @@ namespace SimplePasswordTool
             this.btnGenerateRandomPassword = new System.Windows.Forms.Button();
             this.btnShowCreatePassword = new System.Windows.Forms.Button();
             this.lblCreatePassword = new System.Windows.Forms.Label();
+            this.lblPasswordName = new System.Windows.Forms.Label();
+            this.txtPasswordName = new System.Windows.Forms.TextBox();
+            this.pnlPasswordName = new System.Windows.Forms.Panel();
             this.pnlBtnCreatePasswordAction.SuspendLayout();
             this.pnlCreatePasswordMsg.SuspendLayout();
             this.pnlConfirmCreatePassword.SuspendLayout();
             this.pnlLblConfirmCreatePassword.SuspendLayout();
             this.pnlTxtCreatePassword.SuspendLayout();
             this.pnlLblCreatePassword.SuspendLayout();
+            this.pnlPasswordName.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlBtnCreatePasswordAction
@@ -60,7 +64,7 @@ namespace SimplePasswordTool
             this.pnlBtnCreatePasswordAction.Controls.Add(this.btnCreatePasswordCancel);
             this.pnlBtnCreatePasswordAction.Controls.Add(this.btnCreatePasswordSave);
             this.pnlBtnCreatePasswordAction.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlBtnCreatePasswordAction.Location = new System.Drawing.Point(0, 127);
+            this.pnlBtnCreatePasswordAction.Location = new System.Drawing.Point(0, 156);
             this.pnlBtnCreatePasswordAction.Name = "pnlBtnCreatePasswordAction";
             this.pnlBtnCreatePasswordAction.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.pnlBtnCreatePasswordAction.Size = new System.Drawing.Size(636, 23);
@@ -75,7 +79,7 @@ namespace SimplePasswordTool
             this.btnCreatePasswordCancel.TabIndex = 10;
             this.btnCreatePasswordCancel.Text = "Cancel";
             this.btnCreatePasswordCancel.UseVisualStyleBackColor = true;
-            this.btnCreatePasswordCancel.Click += new System.EventHandler(this.btnCreatePasswordCancel_Click);
+            this.btnCreatePasswordCancel.Click += new System.EventHandler(this.BtnCreatePasswordCancel_Click);
             // 
             // btnCreatePasswordSave
             // 
@@ -86,14 +90,14 @@ namespace SimplePasswordTool
             this.btnCreatePasswordSave.TabIndex = 8;
             this.btnCreatePasswordSave.Text = "Save";
             this.btnCreatePasswordSave.UseVisualStyleBackColor = true;
-            this.btnCreatePasswordSave.Click += new System.EventHandler(this.btnCreatePasswordSave_Click);
+            this.btnCreatePasswordSave.Click += new System.EventHandler(this.BtnCreatePasswordSave_Click);
             // 
             // pnlCreatePasswordMsg
             // 
             this.pnlCreatePasswordMsg.Controls.Add(this.lblPasswordsMatchMsg);
             this.pnlCreatePasswordMsg.Controls.Add(this.lblCreatePasswordErrorMsg);
             this.pnlCreatePasswordMsg.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlCreatePasswordMsg.Location = new System.Drawing.Point(0, 102);
+            this.pnlCreatePasswordMsg.Location = new System.Drawing.Point(0, 131);
             this.pnlCreatePasswordMsg.Name = "pnlCreatePasswordMsg";
             this.pnlCreatePasswordMsg.Padding = new System.Windows.Forms.Padding(5, 5, 5, 1);
             this.pnlCreatePasswordMsg.Size = new System.Drawing.Size(636, 25);
@@ -128,10 +132,10 @@ namespace SimplePasswordTool
             // 
             this.pnlConfirmCreatePassword.Controls.Add(this.txtConfirmCreatePassword);
             this.pnlConfirmCreatePassword.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlConfirmCreatePassword.Location = new System.Drawing.Point(0, 78);
+            this.pnlConfirmCreatePassword.Location = new System.Drawing.Point(0, 106);
             this.pnlConfirmCreatePassword.Name = "pnlConfirmCreatePassword";
             this.pnlConfirmCreatePassword.Padding = new System.Windows.Forms.Padding(5, 1, 5, 1);
-            this.pnlConfirmCreatePassword.Size = new System.Drawing.Size(636, 24);
+            this.pnlConfirmCreatePassword.Size = new System.Drawing.Size(636, 25);
             this.pnlConfirmCreatePassword.TabIndex = 6;
             // 
             // txtConfirmCreatePassword
@@ -141,16 +145,16 @@ namespace SimplePasswordTool
             this.txtConfirmCreatePassword.Location = new System.Drawing.Point(5, 1);
             this.txtConfirmCreatePassword.MaxLength = 128;
             this.txtConfirmCreatePassword.Name = "txtConfirmCreatePassword";
-            this.txtConfirmCreatePassword.PasswordChar = '*';
             this.txtConfirmCreatePassword.Size = new System.Drawing.Size(626, 22);
             this.txtConfirmCreatePassword.TabIndex = 2;
+            this.txtConfirmCreatePassword.TextChanged += new System.EventHandler(this.TxtConfirmCreatePassword_TextChanged);
             // 
             // pnlLblConfirmCreatePassword
             // 
             this.pnlLblConfirmCreatePassword.Controls.Add(this.btnShowConfirmCreatePassword);
             this.pnlLblConfirmCreatePassword.Controls.Add(this.lblConfirmCreatePassword);
             this.pnlLblConfirmCreatePassword.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlLblConfirmCreatePassword.Location = new System.Drawing.Point(0, 51);
+            this.pnlLblConfirmCreatePassword.Location = new System.Drawing.Point(0, 79);
             this.pnlLblConfirmCreatePassword.Name = "pnlLblConfirmCreatePassword";
             this.pnlLblConfirmCreatePassword.Padding = new System.Windows.Forms.Padding(5);
             this.pnlLblConfirmCreatePassword.Size = new System.Drawing.Size(636, 27);
@@ -179,7 +183,7 @@ namespace SimplePasswordTool
             // 
             this.pnlTxtCreatePassword.Controls.Add(this.txtCreatePassword);
             this.pnlTxtCreatePassword.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTxtCreatePassword.Location = new System.Drawing.Point(0, 27);
+            this.pnlTxtCreatePassword.Location = new System.Drawing.Point(0, 55);
             this.pnlTxtCreatePassword.Name = "pnlTxtCreatePassword";
             this.pnlTxtCreatePassword.Padding = new System.Windows.Forms.Padding(5, 1, 5, 1);
             this.pnlTxtCreatePassword.Size = new System.Drawing.Size(636, 24);
@@ -192,9 +196,9 @@ namespace SimplePasswordTool
             this.txtCreatePassword.Location = new System.Drawing.Point(5, 1);
             this.txtCreatePassword.MaxLength = 128;
             this.txtCreatePassword.Name = "txtCreatePassword";
-            this.txtCreatePassword.PasswordChar = '*';
             this.txtCreatePassword.Size = new System.Drawing.Size(626, 22);
             this.txtCreatePassword.TabIndex = 2;
+            this.txtCreatePassword.TextChanged += new System.EventHandler(this.TxtCreatePassword_TextChanged);
             // 
             // pnlLblCreatePassword
             // 
@@ -203,7 +207,7 @@ namespace SimplePasswordTool
             this.pnlLblCreatePassword.Controls.Add(this.btnShowCreatePassword);
             this.pnlLblCreatePassword.Controls.Add(this.lblCreatePassword);
             this.pnlLblCreatePassword.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlLblCreatePassword.Location = new System.Drawing.Point(0, 0);
+            this.pnlLblCreatePassword.Location = new System.Drawing.Point(0, 28);
             this.pnlLblCreatePassword.Name = "pnlLblCreatePassword";
             this.pnlLblCreatePassword.Padding = new System.Windows.Forms.Padding(5);
             this.pnlLblCreatePassword.Size = new System.Drawing.Size(636, 27);
@@ -226,7 +230,7 @@ namespace SimplePasswordTool
             this.btnGenerateRandomPassword.TabIndex = 8;
             this.btnGenerateRandomPassword.Text = "Generate";
             this.btnGenerateRandomPassword.UseVisualStyleBackColor = true;
-            this.btnGenerateRandomPassword.Click += new System.EventHandler(this.btnGenerateRandomPassword_Click);
+            this.btnGenerateRandomPassword.Click += new System.EventHandler(this.BtnGenerateRandomPassword_Click);
             // 
             // btnShowCreatePassword
             // 
@@ -247,6 +251,33 @@ namespace SimplePasswordTool
             this.lblCreatePassword.TabIndex = 0;
             this.lblCreatePassword.Text = "Type your password";
             // 
+            // lblPasswordName
+            // 
+            this.lblPasswordName.AutoSize = true;
+            this.lblPasswordName.Location = new System.Drawing.Point(5, 6);
+            this.lblPasswordName.Name = "lblPasswordName";
+            this.lblPasswordName.Size = new System.Drawing.Size(119, 15);
+            this.lblPasswordName.TabIndex = 10;
+            this.lblPasswordName.Text = "Name your password";
+            // 
+            // txtPasswordName
+            // 
+            this.txtPasswordName.Location = new System.Drawing.Point(130, 3);
+            this.txtPasswordName.Name = "txtPasswordName";
+            this.txtPasswordName.Size = new System.Drawing.Size(501, 23);
+            this.txtPasswordName.TabIndex = 11;
+            this.txtPasswordName.TextChanged += new System.EventHandler(this.TxtPasswordName_TextChanged);
+            // 
+            // pnlPasswordName
+            // 
+            this.pnlPasswordName.Controls.Add(this.lblPasswordName);
+            this.pnlPasswordName.Controls.Add(this.txtPasswordName);
+            this.pnlPasswordName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlPasswordName.Location = new System.Drawing.Point(0, 0);
+            this.pnlPasswordName.Name = "pnlPasswordName";
+            this.pnlPasswordName.Size = new System.Drawing.Size(636, 28);
+            this.pnlPasswordName.TabIndex = 1;
+            // 
             // CreatePasswordUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -257,8 +288,9 @@ namespace SimplePasswordTool
             this.Controls.Add(this.pnlLblConfirmCreatePassword);
             this.Controls.Add(this.pnlTxtCreatePassword);
             this.Controls.Add(this.pnlLblCreatePassword);
+            this.Controls.Add(this.pnlPasswordName);
             this.Name = "CreatePasswordUC";
-            this.Size = new System.Drawing.Size(636, 157);
+            this.Size = new System.Drawing.Size(636, 181);
             this.pnlBtnCreatePasswordAction.ResumeLayout(false);
             this.pnlCreatePasswordMsg.ResumeLayout(false);
             this.pnlCreatePasswordMsg.PerformLayout();
@@ -270,6 +302,8 @@ namespace SimplePasswordTool
             this.pnlTxtCreatePassword.PerformLayout();
             this.pnlLblCreatePassword.ResumeLayout(false);
             this.pnlLblCreatePassword.PerformLayout();
+            this.pnlPasswordName.ResumeLayout(false);
+            this.pnlPasswordName.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -294,5 +328,8 @@ namespace SimplePasswordTool
         private System.Windows.Forms.Button btnGenerateRandomPassword;
         private System.Windows.Forms.Button btnShowCreatePassword;
         private System.Windows.Forms.Label lblCreatePassword;
+        private System.Windows.Forms.Label lblPasswordName;
+        private System.Windows.Forms.TextBox txtPasswordName;
+        private System.Windows.Forms.Panel pnlPasswordName;
     }
 }

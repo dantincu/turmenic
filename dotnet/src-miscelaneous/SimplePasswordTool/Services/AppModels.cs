@@ -17,16 +17,25 @@ namespace SimplePasswordTool.Services
         public bool RequireLowercase { get; set; }
         public bool RequireNonAlphanumeric { get; set; }
         public bool RequireUppercase { get; set; }
+        public string AllowedNonAlphaNumericChars { get; set; }
     }
 
     public class PasswordData
     {
+        public PasswordData()
+        {
+            this.IsBlank = true;
+            this.IsDirty = false;
+        }
+
         public PasswordData(ulong id, string passwordName, string passwordValue, string passwordHash)
         {
             this.Id = id;
             this.PasswordName = !string.IsNullOrWhiteSpace(passwordName) ? passwordName : throw new ArgumentNullException(nameof(passwordName));
-            this.PasswordValue = !string.IsNullOrWhiteSpace(passwordValue) ? passwordValue : throw new ArgumentNullException(nameof(passwordValue));
+            this.PasswordValue = passwordValue;
             this.PasswordHash = !string.IsNullOrWhiteSpace(passwordHash) ? passwordHash : throw new ArgumentNullException(nameof(passwordHash));
+            this.IsBlank = false;
+            this.IsDirty = false;
         }
 
         public ulong Id { get; }
@@ -36,6 +45,10 @@ namespace SimplePasswordTool.Services
         public string PasswordValue { get; private set; }
 
         public string PasswordHash { get; }
+
+        public bool IsBlank { get; }
+
+        public bool IsDirty { get; set; }
 
         public void DeleteValue()
         {

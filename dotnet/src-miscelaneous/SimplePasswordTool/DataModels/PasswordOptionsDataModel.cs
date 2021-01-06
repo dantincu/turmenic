@@ -1,28 +1,30 @@
-﻿using VelocityDb;
+﻿using System.Collections.Generic;
+using VelocityDb;
 
 namespace SimplePasswordTool.DataModels
 {
     public class PasswordOptionsDataModel : OptimizedPersistable
     {
-        private int _maxLength;
-        private int _requiredLength;
-        private int _requiredUniqueChars;
-        private bool _requireDigit;
-        private bool _requireLowercase;
-        private bool _requireNonAlphanumeric;
-        private bool _requireUppercase;
+        private int maxLength;
+        private int requiredLength;
+        private int requiredUniqueChars;
+        private bool requireDigit;
+        private bool requireLowercase;
+        private bool requireNonAlphanumeric;
+        private bool requireUppercase;
+        private string allowedNonAlphaNumericChars;
 
         public int MaxLength
         {
             get
             {
-                return this._maxLength;
+                return this.maxLength;
             }
 
             set
             {
                 this.Update();
-                this._maxLength = value;
+                this.maxLength = value;
             }
         }
 
@@ -30,13 +32,13 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._requiredLength;
+                return this.requiredLength;
             }
 
             set
             {
                 this.Update();
-                this._requiredLength = value;
+                this.requiredLength = value;
             }
         }
 
@@ -44,13 +46,13 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._requiredUniqueChars;
+                return this.requiredUniqueChars;
             }
 
             set
             {
                 this.Update();
-                this._requiredUniqueChars = value;
+                this.requiredUniqueChars = value;
             }
         }
 
@@ -58,13 +60,13 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._requireDigit;
+                return this.requireDigit;
             }
 
             set
             {
                 this.Update();
-                this._requireDigit = value;
+                this.requireDigit = value;
             }
         }
 
@@ -72,13 +74,13 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._requireLowercase;
+                return this.requireLowercase;
             }
 
             set
             {
                 this.Update();
-                this._requireLowercase = value;
+                this.requireLowercase = value;
             }
         }
 
@@ -86,13 +88,13 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._requireNonAlphanumeric;
+                return this.requireNonAlphanumeric;
             }
 
             set
             {
                 this.Update();
-                this._requireNonAlphanumeric = value;
+                this.requireNonAlphanumeric = value;
             }
         }
 
@@ -100,13 +102,27 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._requireUppercase;
+                return this.requireUppercase;
             }
 
             set
             {
                 this.Update();
-                this._requireUppercase = value;
+                this.requireUppercase = value;
+            }
+        }
+
+        public string AllowedNonAlphaNumericChars
+        {
+            get
+            {
+                return this.allowedNonAlphaNumericChars;
+            }
+
+            set
+            {
+                this.Update();
+                this.allowedNonAlphaNumericChars = value;
             }
         }
     }

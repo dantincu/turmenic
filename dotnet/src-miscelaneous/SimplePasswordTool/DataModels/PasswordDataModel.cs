@@ -4,21 +4,36 @@ namespace SimplePasswordTool.DataModels
 {
     public class PasswordDataModel : OptimizedPersistable
     {
-        private string _passwordName;
-        private string _passwordValue;
-        private string _passwordHash;
+        private int sortIndex;
+        private string passwordName;
+        private string passwordValue;
+        private string passwordHash;
 
-        public string PasswordName
+        public int SortIndex
         {
             get
             {
-                return this._passwordName;
+                return this.sortIndex;
             }
 
             set
             {
                 this.Update();
-                this._passwordName = value;
+                this.sortIndex = value;
+            }
+        }
+
+        public string PasswordName
+        {
+            get
+            {
+                return this.passwordName;
+            }
+
+            set
+            {
+                this.Update();
+                this.passwordName = value;
             }
         }
 
@@ -26,13 +41,13 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._passwordValue;
+                return this.passwordValue;
             }
 
             set
             {
                 this.Update();
-                this._passwordName = value;
+                this.passwordValue = value;
             }
         }
 
@@ -40,13 +55,13 @@ namespace SimplePasswordTool.DataModels
         {
             get
             {
-                return this._passwordHash;
+                return this.passwordHash;
             }
 
             set
             {
                 this.Update();
-                this._passwordHash = value;
+                this.passwordHash = value;
             }
         }
     }

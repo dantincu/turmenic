@@ -1,5 +1,5 @@
 ﻿
-namespace SimplePasswordTool
+namespace SimplePasswordTool.UC
 {
     partial class CheckPasswordUC
     {
@@ -81,7 +81,6 @@ namespace SimplePasswordTool
             this.txtActualPassword.Location = new System.Drawing.Point(0, 0);
             this.txtActualPassword.MaxLength = 128;
             this.txtActualPassword.Name = "txtActualPassword";
-            this.txtActualPassword.PasswordChar = '*';
             this.txtActualPassword.ReadOnly = true;
             this.txtActualPassword.Size = new System.Drawing.Size(626, 22);
             this.txtActualPassword.TabIndex = 4;
@@ -107,7 +106,7 @@ namespace SimplePasswordTool
             this.btnDeletePasswordValue.TabIndex = 8;
             this.btnDeletePasswordValue.Text = "Delete";
             this.btnDeletePasswordValue.UseVisualStyleBackColor = true;
-            this.btnDeletePasswordValue.Click += new System.EventHandler(this.btnDeletePasswordValue_Click);
+            this.btnDeletePasswordValue.Click += new System.EventHandler(this.BtnDeletePasswordValue_Click);
             // 
             // lblDeletePasswordValue
             // 
@@ -191,10 +190,9 @@ namespace SimplePasswordTool
             this.txtTypedPassword.Location = new System.Drawing.Point(5, 1);
             this.txtTypedPassword.MaxLength = 128;
             this.txtTypedPassword.Name = "txtTypedPassword";
-            this.txtTypedPassword.PasswordChar = '*';
             this.txtTypedPassword.Size = new System.Drawing.Size(626, 22);
             this.txtTypedPassword.TabIndex = 2;
-            this.txtTypedPassword.TextChanged += new System.EventHandler(this.txtTypedPassword_TextChanged);
+            this.txtTypedPassword.TextChanged += new System.EventHandler(this.TxtTypedPassword_TextChanged);
             // 
             // topPnlCheckPassword
             // 
@@ -235,7 +233,7 @@ namespace SimplePasswordTool
             this.btnCheckPassword.TabIndex = 4;
             this.btnCheckPassword.Text = "Check";
             this.btnCheckPassword.UseVisualStyleBackColor = true;
-            this.btnCheckPassword.Click += new System.EventHandler(this.btnCheckPassword_Click);
+            this.btnCheckPassword.Click += new System.EventHandler(this.BtnCheckPassword_Click);
             // 
             // CheckPasswordUC
             // 

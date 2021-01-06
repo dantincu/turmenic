@@ -7,11 +7,11 @@ namespace DataAccess
     {
         public DbSession(string dbSystemDirPath, bool createDatabaseSystem = false)
         {
-            this.Session = new SessionNoServer(dbSystemDirPath);
+            this.Session = new SessionNoServerShared(dbSystemDirPath);
             this.CreateDatabaseSystem = createDatabaseSystem;
         }
 
-        public SessionNoServer Session { get; }
+        public SessionNoServerShared Session { get; }
 
         public bool CreateDatabaseSystem { get; set; }
 

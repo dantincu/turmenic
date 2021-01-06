@@ -31,9 +31,9 @@ namespace Common
 
         public static readonly string EnvRootFolderName = HelperMethods.DeserializeJson<EnvLocatorSerializable>(ENV_LOCATOR_FILE_NAME).AppsSuiteFolderName;
 
-        private readonly string _envRootPathProdValue = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EnvRootFolderName);
+        private readonly string envRootPathProdValue = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EnvRootFolderName);
 
-        private static AppEnvConfigContainer _instance;
+        private static AppEnvConfigContainer instance;
 
         private AppEnvConfigContainer()
         {
@@ -48,12 +48,12 @@ namespace Common
         {
             get
             {
-                if (_instance == null)
+                if (instance == null)
                 {
-                    _instance = new AppEnvConfigContainer();
+                    instance = new AppEnvConfigContainer();
                 }
 
-                return _instance;
+                return instance;
             }
         }
 
@@ -93,7 +93,7 @@ namespace Common
             }
             else
             {
-                retVal = this._envRootPathProdValue;
+                retVal = this.envRootPathProdValue;
             }
 
             return retVal;
@@ -121,12 +121,12 @@ namespace Common
 
         private string GetDevEnvRootPath()
         {
-            return Path.Combine(this._envRootPathProdValue, APP_MISC_ENV_DEV_DIR_NAME);
+            return Path.Combine(this.envRootPathProdValue, APP_MISC_ENV_DEV_DIR_NAME);
         }
 
         private string GetTestEnvRootPath()
         {
-            return Path.Combine(this._envRootPathProdValue, APP_MISC_ENV_TEST_DIR_NAME);
+            return Path.Combine(this.envRootPathProdValue, APP_MISC_ENV_TEST_DIR_NAME);
         }
 
         private void CreateEnvDirs()

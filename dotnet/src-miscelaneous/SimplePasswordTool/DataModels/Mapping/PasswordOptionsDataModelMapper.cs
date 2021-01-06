@@ -1,4 +1,5 @@
 ﻿using SimplePasswordTool.Services;
+using System.Linq;
 
 namespace SimplePasswordTool.DataModels.Mapping
 {
@@ -15,7 +16,8 @@ namespace SimplePasswordTool.DataModels.Mapping
                 RequiredUniqueChars = appModel.RequiredUniqueChars,
                 RequireLowercase = appModel.RequireLowercase,
                 RequireNonAlphanumeric = appModel.RequireNonAlphanumeric,
-                RequireUppercase = appModel.RequireUppercase
+                RequireUppercase = appModel.RequireUppercase,
+                AllowedNonAlphaNumericChars = appModel.AllowedNonAlphaNumericChars
             };
         }
 
@@ -29,7 +31,8 @@ namespace SimplePasswordTool.DataModels.Mapping
                 RequiredUniqueChars = dataModel.RequiredUniqueChars,
                 RequireLowercase = dataModel.RequireLowercase,
                 RequireNonAlphanumeric = dataModel.RequireNonAlphanumeric,
-                RequireUppercase = dataModel.RequireUppercase
+                RequireUppercase = dataModel.RequireUppercase,
+                AllowedNonAlphaNumericChars = dataModel.AllowedNonAlphaNumericChars
             };
         }
     }
