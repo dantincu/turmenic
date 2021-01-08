@@ -1,0 +1,104 @@
+{
+  "specialDirs": {
+    "names": {
+      "people": {
+        "val": "##people#",
+        "altVal": "__PEOPLE__"
+      },
+      "shared": {
+        "val": "##shared#",
+        "altVal": "__SHARED__"
+      },
+      "archive": {
+        "val": "#archive#",
+        "altVal": "__ARCHIVE__"
+      },
+      "content": {
+        "val": "#content#",
+        "altVal": "__CONTENT__"
+      },
+      "eDocs": {
+        "val": "#e-docs#",
+        "altVal": "__E_DOCS__"
+      },
+      "files": {
+        "val": "#files#",
+        "altVal": "__FILES__"
+      },
+      "webFiles": {
+        "val": "#web-files#",
+        "altVal": "__WEB_FILES__"
+      },
+      "images": {
+        "val": "#images#",
+        "altVal": "__IMGS__"
+      },
+      "imagesDocs": {
+        "val": "#images-docs#",
+        "altVal": "__IMGS_DOCS__"
+      },
+      "photoDocs": {
+        "val": "#photo-docs#",
+        "altVal": "__P_DOCS__"
+      },
+      "photoImages": {
+        "val": "#photo-images#",
+        "altVal": "__P_IMGS__"
+      },
+      "infoPhotoDocs": {
+        "val": "#info-photo-docs#",
+        "altVal": "__IP_DOCS__"
+      },
+      "infoPhotoImages": {
+        "val": "#info-photo-images#",
+        "altVal": "__IP_IMGS__"
+      },
+      "documentScanDocs": {
+        "val": "#doc-scan-docs#",
+        "altVal": "__DS_DOCS__"
+      },
+      "documentScanImages": {
+        "val": "#doc-scan-images#",
+        "altVal": "__DS_IMGS__"
+      },
+      "documentPhotoDocs": {
+        "val": "#doc-photo-docs#",
+        "altVal": "__DP_DOCS__"
+      },
+      "documentPhotoImages": {
+        "val": "#doc-photo-images#",
+        "altVal": "__DP_IMGS__"
+      },
+      "documentProcessedPhotoDocs": {
+        "val": "#doc-proc-photo-docs#",
+        "altVal": "__DPS_DOCS__"
+      },
+      "documentProcessedPhotoImages": {
+        "val": "#doc-proc-photo-images#",
+        "altVal": "__DPS_IMGS__"
+      }
+    },
+    "delimiters": {
+      "l1DirNameStartDelimiter": {
+        "val": "#",
+        "altVal": "__"
+      },
+      "l1DirNameEndDelimiter": {
+        "val": "#",
+        "altVal": "__"
+      },
+      "dirNameSegmentsDelimiter": {
+        "val": "-",
+        "altVal": "_"
+      },
+      "l2DirNameStartDelimiter": {
+        "val": "##",
+        "altVal": "__"
+      },
+      "l2DirNameEndDelimiter": {
+        "val": "#",
+        "altVal": "__"
+      }
+    }
+  }
+}
