@@ -1,5 +1,6 @@
-﻿using DataAccess;
+﻿using Tncvd.DataAccess.NoServer.Repository;
 using SimplePasswordTool.DataModels;
+using Tncvd.DataAccess.NoServer.UnitOfWork;
 
 namespace SimplePasswordTool.DataAccess
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace Tncvd.Core.FileSystem
+﻿namespace Tncvd.Core.FileSystem
 {
     public static partial class ConstantValues
     {
@@ -18,11 +15,6 @@ namespace Tncvd.Core.FileSystem
         public const string ROOT_PATH_START_WITH_FORMAT_WINDOWS = "{0}:";
 
         public const int WINDOWS_32BIT_MAX_FILE_PATH_LENGTH = 260;
-
-        public static readonly string MachineAppDataRootFolder = Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.ApplicationData),
-            Utils.ConstantValues.RootNamespacePascalCase);
 
         public static class CommonFileExtensions
         {

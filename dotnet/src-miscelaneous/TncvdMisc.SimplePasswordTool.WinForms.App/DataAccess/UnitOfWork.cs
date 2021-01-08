@@ -1,5 +1,5 @@
-﻿using Common.Collection;
-using DataAccess;
+﻿using Tncvd.Core.Collection;
+using Tncvd.DataAccess.NoServer.UnitOfWork;
 using SimplePasswordTool.DataModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;

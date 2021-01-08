@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace Tncvd.Core.FileSystem
@@ -16,6 +17,18 @@ namespace Tncvd.Core.FileSystem
                 .Any();
 
             return (dirNotEmpty == false);
+        }
+
+        public static string GetMachineAppDataFolderPath(params string[] relPathParts)
+        {
+            string path = Path.Combine(relPathParts);
+
+            path = Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.ApplicationData),
+                path);
+
+            return path;
         }
 
         #region Slug

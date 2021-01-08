@@ -1,4 +1,4 @@
-﻿using Common.Collection;
+﻿using Tncvd.Core.Collection;
 using SimplePasswordTool.Services;
 using System;
 using System.Collections.Generic;

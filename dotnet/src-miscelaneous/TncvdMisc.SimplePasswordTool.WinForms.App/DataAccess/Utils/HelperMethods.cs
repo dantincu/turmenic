@@ -1,6 +1,6 @@
-﻿using Common;
-using DataAccess;
+﻿using Tncvd.DataAccess.NoServer.UnitOfWork;
 using System.IO;
+using Tncvd.Core.AppConfig;
 
 namespace SimplePasswordTool.DataAccess.Utils
 {
@@ -14,14 +14,14 @@ namespace SimplePasswordTool.DataAccess.Utils
 
             DbSession dbSession = new DbSession(
                 dbDirPath,
-                Common.FileSystem.HelperMethods.IsDirEmpty(dbDirPath));
+                Tncvd.Core.FileSystem.HelperMethods.IsDirEmpty(dbDirPath));
 
             return dbSession;
         }
 
         public static string AssureDbSystemDirPath()
         {
-            string dirPath = AppEnvConfigContainer.Instance.GetEnvPath(typeof(HelperMethods).Assembly, AppEnvFolderType.Data, DATABASE_LOCATION_DIR_NAME); ;
+            string dirPath = EnvConfigContainer.Instance.GetEnvRelPath(EnvDir.Data, typeof(HelperMethods).Assembly, DATABASE_LOCATION_DIR_NAME); ;
 
             if (Directory.Exists(dirPath) == false)
             {
