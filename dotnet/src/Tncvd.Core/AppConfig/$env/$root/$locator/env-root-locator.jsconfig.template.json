@@ -1,4 +1,5 @@
 {
   "envRootPath": "./",
-  "useMachineDefaultAppDataDir": true
+  "useMachineDefaultAppDataDir": true,
+  "machineAppDataEnvDirRelPath": "./Tncvd"
 }

@@ -7,6 +7,7 @@ namespace Tncvd.Core.AppConfig
     {
         public string EnvRootPath { get; set; }
         public bool UseMachineDefaultAppDataDir { get; set; }
+        public string MachineAppDataEnvDirRelPath { get; set; }
     }
 
     public class RootEnvPathRetriever
@@ -25,7 +26,8 @@ namespace Tncvd.Core.AppConfig
 
             if (rootEnvLocator.UseMachineDefaultAppDataDir)
             {
-                rootEnvDirPath = ConstantValues.MachineAppDataRootFolder;
+                rootEnvDirPath = HelperMethods.GetMachineAppDataFolderPath(
+                    rootEnvLocator.MachineAppDataEnvDirRelPath ?? Utils.ConstantValues.RootNamespacePascalCase);
             }
 
             return rootEnvDirPath;

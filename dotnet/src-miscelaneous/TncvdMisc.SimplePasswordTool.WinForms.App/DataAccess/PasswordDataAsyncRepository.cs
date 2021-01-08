@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using Tncvd.DataAccess.NoServer.Repository;
+using Tncvd.DataAccess.NoServer.UnitOfWork;
 using SimplePasswordTool.DataModels;
 using System;
 using System.Collections.Generic;

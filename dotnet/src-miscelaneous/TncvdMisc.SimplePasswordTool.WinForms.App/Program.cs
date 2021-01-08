@@ -1,6 +1,7 @@
 using SimplePasswordTool.Forms;
 using System;
 using System.Windows.Forms;
+using Tncvd.Core.AppConfig.ExecutionInfo;
 
 namespace SimplePasswordTool
 {
@@ -15,6 +16,8 @@ namespace SimplePasswordTool
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            AppExecutionInfoContainer.Instance.Register(typeof(Program).Assembly);
             Application.Run(new MainForm());
         }
     }
