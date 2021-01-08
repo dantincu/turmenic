@@ -5,13 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Settings\Json\JsConfig\Env\Locator\env.locator.jsconfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="AppConfig\$env\$root\$locator\env-root-locator.jsconfig.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
+    <Folder Include="Collection\%40Const\" />
+    <Folder Include="DataTypes\%40Const\" />
+    <Folder Include="Threading\%40Const\" />
+    <Folder Include="Validators\%40Const\" />
+    <Folder Include="Validators\%40Helpers\" />
   </ItemGroup>
 
   <ItemGroup>
