@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Tncvd.Core.Serialization
 {
-    public class JsonHelperMethods
+    public static partial class HelperMethods
     {
         public static void SerializeJson(object value, string filePath)
         {

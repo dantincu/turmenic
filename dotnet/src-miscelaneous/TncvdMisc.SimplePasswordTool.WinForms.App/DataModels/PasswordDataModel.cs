@@ -7,7 +7,7 @@ namespace SimplePasswordTool.DataModels
         private int sortIndex;
         private string passwordName;
         private string passwordValue;
-        private string passwordHash;
+        private byte[] passwordHash;
 
         public int SortIndex
         {
@@ -51,7 +51,7 @@ namespace SimplePasswordTool.DataModels
             }
         }
 
-        public string PasswordHash
+        public byte[] PasswordHash
         {
             get
             {

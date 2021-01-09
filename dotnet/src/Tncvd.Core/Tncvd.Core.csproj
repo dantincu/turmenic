@@ -12,7 +12,9 @@
 
   <ItemGroup>
     <Folder Include="Collection\%40Const\" />
+    <Folder Include="Components\" />
     <Folder Include="DataTypes\%40Const\" />
+    <Folder Include="Math\%40Const\" />
     <Folder Include="Threading\%40Const\" />
     <Folder Include="Validators\%40Const\" />
     <Folder Include="Validators\%40Helpers\" />

@@ -5,11 +5,11 @@ using System.Xml.Serialization;
 
 namespace Tncvd.Core.Serialization
 {
-    public static partial class XmlHelperMethods
+    public static partial class HelperMethods
     {
         public static string GetXPathFromSegments(params string[] segments)
         {
-            string xPath = segments.Aggregate((leftStr, rightStr) => $"{leftStr}{ConstantValues.Xml.XPATH_SEGMENTS_DELIMITER}{rightStr}");
+            string xPath = segments.Aggregate((leftStr, rightStr) => $"{leftStr}{ConstantValues.XPATH_SEGMENTS_DELIMITER}{rightStr}");
             return xPath;
         }
 

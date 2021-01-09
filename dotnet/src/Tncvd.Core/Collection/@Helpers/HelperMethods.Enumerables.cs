@@ -6,7 +6,54 @@ namespace Tncvd.Core.Collection
 {
     public static partial class HelperMethods
     {
-        #region ConcatEnumerables
+        #region IsEqualTo
+
+        public static bool IsEqualToValue<T>(T value, T comparand, bool equalIfBothNull = true)
+        {
+            bool retVal = false;
+
+            if (value == null && comparand == null && equalIfBothNull)
+            {
+                retVal = true;
+            }
+            else if (value != null && comparand != null)
+            {
+                retVal = value.Equals(comparand);
+            }
+
+            return retVal;
+        }
+
+        public static bool IsEqualTo<T>(this IEnumerable<T> enumerable, IEnumerable<T> comparandEnumerable)
+        {
+            bool retVal = true;
+
+            IEnumerator<T> enumerator = enumerable.GetEnumerator();
+            IEnumerator<T> comparandEnumerator = comparandEnumerable.GetEnumerator();
+
+            while (retVal && enumerator.MoveNext())
+            {
+                if (comparandEnumerator.MoveNext())
+                {
+                    retVal = retVal && (IsEqualToValue(enumerator.Current, comparandEnumerator.Current));
+                }
+                else
+                {
+                    retVal = false;
+                }
+            }
+
+            if (retVal == true && comparandEnumerator.MoveNext())
+            {
+                retVal = false;
+            }
+
+            return retVal;
+        }
+
+        #endregion IsEqualTo
+
+        #region Concat
 
         public static IEnumerable<T> ConcatEnumerables<T>(params IEnumerable<T>[] enumerablesArr)
         {
@@ -64,6 +111,6 @@ namespace Tncvd.Core.Collection
             return retEnumerable;
         }
 
-        #endregion ConcatEnumerables
+        #endregion Concat
     }
 }

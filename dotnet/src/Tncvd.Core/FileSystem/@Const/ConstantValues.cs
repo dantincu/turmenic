@@ -85,5 +85,14 @@
             public const string CS = "cs";
             public const string CSHTML = "cshtml";
         }
+
+        public static class CommonImageFileExtensions
+        {
+            public const string JPG = "jpg";
+            public const string BMP = "bmp";
+            public const string PNG = "png";
+            public const string ICO = "ico";
+            public const string GIF = "gif";
+        }
     }
 }

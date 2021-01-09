@@ -1,4 +1,4 @@
-﻿using Tncvd.Core.Components;
+﻿using Tncvd.Core.DataTypes;
 
 namespace Tncvd.Core.AppConfig
 {

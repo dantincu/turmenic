@@ -1,4 +1,4 @@
-﻿namespace Tncvd.Core.Components
+﻿namespace Tncvd.Core.DataTypes
 {
     public class AltStringSrlz : AltValueSrlz<string>
     {

@@ -1,4 +1,4 @@
-﻿namespace Tncvd.Core.Components
+﻿namespace Tncvd.Core.DataTypes
 {
     public class AltValueSrlz<TVal>
     {
@@ -13,8 +13,8 @@
         {
         }
 
-        public TVal Val => this.Data.Val;
+        public TVal Val => Data.Val;
 
-        public TVal AltVal => this.Data.AltVal;
+        public TVal AltVal => Data.AltVal;
     }
 }

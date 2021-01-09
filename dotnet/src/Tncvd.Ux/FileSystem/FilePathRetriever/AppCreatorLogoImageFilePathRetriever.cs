@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using Tncvd.Core.FileSystem.FilePathRetriever.Base;
-using Tncvd.Core.Text;
+﻿using Tncvd.Core.Text;
+using Tncvd.Ux.FileSystem.FilePathRetriever.Base;
 
-namespace Tncvd.Core.FileSystem.FilePathRetriever
+namespace Tncvd.Ux.FileSystem.FilePathRetriever
 {
     public class AppCreatorLogoImageFilePathRetriever : IconImageFilePathRetrieverBase
     {
@@ -10,7 +9,7 @@ namespace Tncvd.Core.FileSystem.FilePathRetriever
         public const string APP_CREATOR_LOGO_RELATIVE_DIR_NAME = "AppCreator" + LOGO_IMAGE_FILE_NAME_SUFFIX;
         public const string COMPLETE_APP_CREATOR_LOGO_FILE_NAME_SEGMENT = "complete";
 
-        public static readonly string AppCreatorLogoFileNamePrefix = Utils.ConstantValues.RootNamespacePascalCase + LOGO_IMAGE_FILE_NAME_SUFFIX;
+        public static readonly string AppCreatorLogoFileNamePrefix = Core.Utils.ConstantValues.RootNamespacePascalCase + LOGO_IMAGE_FILE_NAME_SUFFIX;
         public static readonly string CompleteAppCreatorLogoFileRelDirName = COMPLETE_APP_CREATOR_LOGO_FILE_NAME_SEGMENT.FirstLetterToUpper();
 
         public AppCreatorLogoImageFilePathRetriever(
