@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using Tncvd.Core.Components;
-using Sz_Js_HpMt = Tncvd.Core.Serialization.JsonHelperMethods;
+using Tncvd.Core.DataTypes;
+using Sz_Js_HpMt = Tncvd.Core.Serialization.HelperMethods;
 
 namespace Tncvd.Core.AppConfig
 {

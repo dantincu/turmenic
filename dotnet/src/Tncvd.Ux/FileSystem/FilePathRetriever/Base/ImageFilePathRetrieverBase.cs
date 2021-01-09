@@ -1,4 +1,4 @@
-﻿namespace Tncvd.Core.FileSystem.FilePathRetriever.Base
+﻿namespace Tncvd.Ux.FileSystem.FilePathRetriever.Base
 {
     public abstract class ImageFilePathRetrieverBase : ContentFilePathRetrieverBase
     {

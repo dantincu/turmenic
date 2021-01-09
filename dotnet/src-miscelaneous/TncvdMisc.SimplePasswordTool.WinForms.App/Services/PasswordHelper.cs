@@ -1,5 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using Tncvd.Core.Serialization;
+using Tncvd.Core.Collection;
 
 namespace SimplePasswordTool.Services
 {
@@ -7,36 +9,33 @@ namespace SimplePasswordTool.Services
     {
         private readonly SHA256 sha256 = SHA256.Create();
 
-        public bool DoPasswordsMatch(string typedPasswordValue, string actualPasswordHash)
+        public bool DoPasswordsMatch(string typedPasswordValue, byte[] actualPasswordHash)
         {
-            string computedHash = this.GenerateHash(typedPasswordValue);
-            return actualPasswordHash == computedHash;
+            byte[] computedHash = this.GenerateHash(typedPasswordValue);
+            bool retVal = actualPasswordHash.IsEqualTo(computedHash);
+
+            return retVal;
         }
 
-        public string GenerateHash(string value)
+        public string GenerateStringHash(string value)
+        {
+            byte[] hashValue = GenerateHash(value);
+
+            string hashString = hashValue.ToHexCode();
+            return hashString;
+        }
+
+        public byte[] GenerateHash(string value)
         {
             byte[] valueBytes = Encoding.UTF8.GetBytes(value);
             byte[] hashValue = this.sha256.ComputeHash(valueBytes);
 
-            string hashString = this.EncodeBase16(hashValue);
-            return hashString;
+            return hashValue;
         }
 
         public void Dispose()
         {
             this.sha256.Dispose();
-        }
-
-        private string EncodeBase16(byte[] byteArr)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < byteArr.Length; i++)
-            {
-                sb.AppendFormat("{0:x}", byteArr[i]);
-            }
-
-            return sb.ToString();
         }
     }
 }

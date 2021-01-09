@@ -41,7 +41,7 @@ namespace Tncvd.Core.AppConfig.ExecutionInfo
         private void WriteAppExecutionInfo(AppExecutionInfo info)
         {
             string filePath = this.GetAppExecutionInfoOutputFilePath(info);
-            Serialization.JsonHelperMethods.SerializeJson(info, filePath);
+            Serialization.HelperMethods.SerializeJson(info, filePath);
         }
 
         private string GetAppExecutionInfoOutputFilePath(AppExecutionInfo info)

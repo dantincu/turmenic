@@ -1,5 +1,5 @@
 ﻿using Tncvd.Core.FileSystem;
-using Sz_Js_HpMt = Tncvd.Core.Serialization.JsonHelperMethods;
+using Sz_Js_HpMt = Tncvd.Core.Serialization.HelperMethods;
 
 namespace Tncvd.Core.AppConfig
 {

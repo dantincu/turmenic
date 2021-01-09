@@ -1,6 +1,6 @@
-﻿using Tncvd.Core.FileSystem.FilePathRetriever;
+﻿using Tncvd.Ux.FileSystem.FilePathRetriever;
 
-namespace Tncvd.Core.FileSystem
+namespace Tncvd.Ux.FileSystem
 {
     public static partial class HelperMethods
     {
@@ -11,19 +11,19 @@ namespace Tncvd.Core.FileSystem
             switch (iconImageFileType)
             {
                 case ImageFileType.Ico:
-                    extension = ConstantValues.CommonImageFileExtensions.ICO;
+                    extension = Core.FileSystem.ConstantValues.CommonImageFileExtensions.ICO;
                     break;
                 case ImageFileType.Png:
-                    extension = ConstantValues.CommonImageFileExtensions.PNG;
+                    extension = Core.FileSystem.ConstantValues.CommonImageFileExtensions.PNG;
                     break;
                 case ImageFileType.Jpg:
-                    extension = ConstantValues.CommonImageFileExtensions.JPG;
+                    extension = Core.FileSystem.ConstantValues.CommonImageFileExtensions.JPG;
                     break;
                 case ImageFileType.Bmp:
-                    extension = ConstantValues.CommonImageFileExtensions.BMP;
+                    extension = Core.FileSystem.ConstantValues.CommonImageFileExtensions.BMP;
                     break;
                 case ImageFileType.Gif:
-                    extension = ConstantValues.CommonImageFileExtensions.GIF;
+                    extension = Core.FileSystem.ConstantValues.CommonImageFileExtensions.GIF;
                     break;
             }
 

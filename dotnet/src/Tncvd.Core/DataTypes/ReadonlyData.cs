@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Tncvd.Core.Components
+namespace Tncvd.Core.DataTypes
 {
     public class ReadonlyData<TData>
     {
         public ReadonlyData(TData data)
         {
-            this.Data = data ?? throw new ArgumentNullException(nameof(data));
+            Data = data ?? throw new ArgumentNullException(nameof(data));
         }
 
         protected TData Data { get; }

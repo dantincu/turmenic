@@ -1,4 +1,4 @@
-﻿namespace Tncvd.Core.FileSystem
+﻿namespace Tncvd.Ux.FileSystem
 {
     public enum ImageFileType
     {
@@ -45,15 +45,6 @@
         {
             public const int SIZE_200_PX = 200;
             public const int SIZE_256_PX = 256;
-        }
-
-        public static class CommonImageFileExtensions
-        {
-            public const string JPG = "jpg";
-            public const string BMP = "bmp";
-            public const string PNG = "png";
-            public const string ICO = "ico";
-            public const string GIF = "gif";
         }
     }
 }

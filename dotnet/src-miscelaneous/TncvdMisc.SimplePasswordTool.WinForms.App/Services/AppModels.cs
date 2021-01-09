@@ -28,12 +28,12 @@ namespace SimplePasswordTool.Services
             this.IsDirty = false;
         }
 
-        public PasswordData(ulong id, string passwordName, string passwordValue, string passwordHash)
+        public PasswordData(ulong id, string passwordName, string passwordValue, byte[] passwordHash)
         {
             this.Id = id;
             this.PasswordName = !string.IsNullOrWhiteSpace(passwordName) ? passwordName : throw new ArgumentNullException(nameof(passwordName));
             this.PasswordValue = passwordValue;
-            this.PasswordHash = !string.IsNullOrWhiteSpace(passwordHash) ? passwordHash : throw new ArgumentNullException(nameof(passwordHash));
+            this.PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
             this.IsBlank = false;
             this.IsDirty = false;
         }
@@ -44,7 +44,7 @@ namespace SimplePasswordTool.Services
 
         public string PasswordValue { get; private set; }
 
-        public string PasswordHash { get; }
+        public byte[] PasswordHash { get; }
 
         public bool IsBlank { get; }
 

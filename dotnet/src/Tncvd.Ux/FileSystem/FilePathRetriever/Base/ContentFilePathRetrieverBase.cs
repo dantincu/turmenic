@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Tncvd.Core.AppConfig;
 
-namespace Tncvd.Core.FileSystem.FilePathRetriever.Base
+namespace Tncvd.Ux.FileSystem.FilePathRetriever.Base
 {
     public abstract class ContentFilePathRetrieverBase
     {
@@ -14,7 +14,7 @@ namespace Tncvd.Core.FileSystem.FilePathRetriever.Base
 
         protected virtual string GetFileName()
         {
-            return HelperMethods.GetSlugFileNameFromSegments(
+            return Core.FileSystem.HelperMethods.GetSlugFileNameFromSegments(
                 this.GetFileExtension(),
                 this.GetContentFileNameSegments());
         }
