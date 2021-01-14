@@ -8,12 +8,12 @@ namespace Tncvd.Test.Console.App.Components
     {
         public void Run()
         {
-            using (FileLogger logger = LoggerFactory.Instance.GetFileLogger(GetType()))
+            using (SharedFileLogger logger = LoggerFactory.Instance.GetSharedFileLogger(GetType()))
             {
                 this.RunCore(logger);
             }
 
-            using (BulkFileLogger logger = LoggerFactory.Instance.GetBulkFileLogger(GetType()))
+            using (VerboseFileLogger logger = LoggerFactory.Instance.GetVerboseFileLogger(GetType()))
             {
                 this.RunCore(logger);
             }

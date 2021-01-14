@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\**" />
+    <EmbeddedResource Remove="Components\**" />
+    <None Remove="Components\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="AppConfig\$env\$root\$locator\env-root-locator.jsconfig.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
@@ -12,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Collection\%40Const\" />
-    <Folder Include="Components\" />
     <Folder Include="DataTypes\%40Const\" />
     <Folder Include="Math\%40Const\" />
     <Folder Include="Threading\%40Const\" />

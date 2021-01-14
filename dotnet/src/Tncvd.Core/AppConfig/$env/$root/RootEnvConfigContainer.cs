@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Tncvd.Core.AppConfig
 {
@@ -42,36 +43,17 @@ namespace Tncvd.Core.AppConfig
             return basePath;
         }
 
-        private string GetRootEnvDirName(RootEnvDir rootEnvDir)
-        {
-            string rootEnvDirName = string.Empty;
-
-            switch (rootEnvDir)
+        private string GetRootEnvDirName(RootEnvDir rootEnvDir) =>
+            rootEnvDir switch
             {
-                case RootEnvDir.Base:
-                    rootEnvDirName = string.Empty;
-                    break;
-                case RootEnvDir.Dotnet:
-                    rootEnvDirName = this.Config.DotnetRelDirPath;
-                    break;
-                case RootEnvDir.Content:
-                    rootEnvDirName = this.Config.ContentRelDirPath;
-                    break;
-                case RootEnvDir.Nodejs:
-                    rootEnvDirName = this.Config.NodejsRelDirPath;
-                    break;
-                case RootEnvDir.Python:
-                    rootEnvDirName = this.Config.PythonRelDirPath;
-                    break;
-                case RootEnvDir.Powershell:
-                    rootEnvDirName = this.Config.PowershellRelDirPath;
-                    break;
-                case RootEnvDir.DotnetLgc:
-                    rootEnvDirName = this.Config.DotnetLgcRelDirPath;
-                    break;
-            }
-
-            return rootEnvDirName;
-        }
+                RootEnvDir.Base => string.Empty,
+                RootEnvDir.Dotnet => this.Config.DotnetRelDirPath,
+                RootEnvDir.Content => this.Config.ContentRelDirPath,
+                RootEnvDir.Nodejs => this.Config.NodejsRelDirPath,
+                RootEnvDir.Python => this.Config.PythonRelDirPath,
+                RootEnvDir.Powershell => this.Config.PowershellRelDirPath,
+                RootEnvDir.DotnetLgc => this.Config.DotnetLgcRelDirPath,
+                _ => throw new ArgumentException(nameof(rootEnvDir))
+            };
     }
 }

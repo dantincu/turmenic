@@ -38,12 +38,24 @@ namespace Tncvd.Core.Reflection
             return retArr;
         }
 
-        public static PropertyInfo[] GetInstPubProps(this Type type, Func<PropertyInfo, bool> filter)
+        public static PropertyInfo[] GetInstPropsWPubGttrPubSttr(this Type type, Func<PropertyInfo, bool> filter)
         {
             PropertyInfo[] retArr = type.GetRuntimeProperties().Where(prop => prop.IsInstWPubGttrPubSttr() && filter(prop)).ToArray();
             return retArr;
         }
 
+        public static PropertyInfo[] GetInstPubProps(this Type type)
+        {
+            PropertyInfo[] retArr = type.GetRuntimeProperties().Where(prop => prop.IsInstWPubGttrPubSttr()).ToArray();
+            return retArr;
+        }
+
+        public static PropertyInfo[] GetInstPubProps(this Type type, Func<PropertyInfo, bool> filter)
+        {
+            PropertyInfo[] retArr = type.GetRuntimeProperties().Where(prop => prop.IsInstWPubGttrPubSttr() && filter(prop)).ToArray();
+            return retArr;
+        }
+        
         public static PropertyInfo[] GetInstPropsWPubGttrPrtcSttr(this Type type)
         {
             PropertyInfo[] retArr = type.GetRuntimeProperties().Where(
@@ -55,6 +67,34 @@ namespace Tncvd.Core.Reflection
         {
             PropertyInfo[] retArr = type.GetRuntimeProperties().Where(
                 prop => prop.IsInstWPubGttr() && prop.IsInstWPrtcSttr() && filter(prop)).ToArray();
+            return retArr;
+        }
+
+        public static PropertyInfo[] GetInstPropsWPrtcSttr(this Type type)
+        {
+            PropertyInfo[] retArr = type.GetRuntimeProperties().Where(
+                prop => prop.IsInstWPrtcSttr()).ToArray();
+            return retArr;
+        }
+
+        public static PropertyInfo[] GetInstPropsWPrtcSttr(this Type type, Func<PropertyInfo, bool> filter)
+        {
+            PropertyInfo[] retArr = type.GetRuntimeProperties().Where(
+                prop => prop.IsInstWPrtcSttr() && filter(prop)).ToArray();
+            return retArr;
+        }
+
+        public static PropertyInfo[] GetInstPropsWPubOrPrtcSttr(this Type type)
+        {
+            PropertyInfo[] retArr = type.GetRuntimeProperties().Where(
+                prop => prop.IsInstWPubOrPrtcSttr()).ToArray();
+            return retArr;
+        }
+
+        public static PropertyInfo[] GetInstPropsWPubOrPrtcSttr(this Type type, Func<PropertyInfo, bool> filter)
+        {
+            PropertyInfo[] retArr = type.GetRuntimeProperties().Where(
+                prop => prop.IsInstWPubOrPrtcSttr() && filter(prop)).ToArray();
             return retArr;
         }
 

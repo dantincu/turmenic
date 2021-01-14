@@ -2,11 +2,8 @@
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
-using Serilog.Formatting.Compact;
-using Serilog.Formatting.Json;
 using Serilog.Sinks.File;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using Tncvd.Core.AppConfig;
@@ -34,7 +31,7 @@ namespace Tncvd.Logging.Logger
         protected virtual RollingInterval RollingInterval => RollingInterval.Day;
         protected virtual Encoding Encoding => null;
         protected virtual TimeSpan FlushedToDiskInterval => LoggerConfigurationHelper.Instance.FlushedToDiskInterval;
-        protected virtual LoggingLevelSwitch LoggingLevelSwitch => LoggerConfigurationHelper.Instance.LoggingLevelSwitch;
+        protected virtual LoggingLevelSwitch LoggingLevelSwitch => LoggerConfigurationHelper.Instance.VerboseLoggingLevelSwitch;
         protected virtual ITextFormatter TextFormatter => LoggerConfigurationHelper.Instance.TextFormatter;
 
         protected virtual FileLifecycleHooks FileLifecycleHooks => this.GetFileLifecycleHooks();
@@ -65,7 +62,16 @@ namespace Tncvd.Logging.Logger
             return hooks;
         }
 
-        
+        protected abstract string GetLoggerFileName(string loggerName);
+
+        protected string GetLogFilePath(string loggerName)
+        {
+            string retVal = Path.Combine(
+                this.AssureLoggerDir(loggerName),
+                this.GetLoggerFileName(loggerName));
+
+            return retVal;
+        }
 
         private string AssureLoggerDir(string loggerName)
         {
@@ -73,17 +79,6 @@ namespace Tncvd.Logging.Logger
             Directory.CreateDirectory(dirPath);
 
             return dirPath;
-        }
-
-        protected abstract string GetLoggerFileName(string loggerName);
-
-        protected string GetLogFilePath(string loggerName)
-        {
-            string retVal = Path.Combine(
-                AssureLoggerDir(loggerName),
-                GetLoggerFileName(loggerName));
-
-            return retVal;
         }
     }
 }

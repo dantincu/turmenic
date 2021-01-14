@@ -19,9 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Test", "..\Tncvd.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Test.Xunit", "..\Tncvd.Test.Xunit\Tncvd.Test.Xunit.csproj", "{365603F4-0500-4EE3-869C-46F220B56BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Ux", "..\Tncvd.Ux\Tncvd.Ux.csproj", "{9834CBA3-5F16-46DB-B44F-58D9F8F3C05B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Ux", "..\Tncvd.Ux\Tncvd.Ux.csproj", "{9834CBA3-5F16-46DB-B44F-58D9F8F3C05B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.WinForms", "..\Tncvd.WinForms\Tncvd.WinForms.csproj", "{AE983ED9-C6FA-468C-BF7B-278198013539}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.WinForms", "..\Tncvd.WinForms\Tncvd.WinForms.csproj", "{BE32CC5F-F504-4FAC-9385-0CE9EC7B96CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.WinForms.Test.App", "..\Tncvd.WinForms.Test.App\Tncvd.WinForms.Test.App.csproj", "{D3D1D999-A781-4D4B-B8BF-2E39EA1865BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Logging.Test.Console.App", "..\Tncvd.Logging.Test.Console.App\Tncvd.Logging.Test.Console.App.csproj", "{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +69,18 @@ Global
 		{9834CBA3-5F16-46DB-B44F-58D9F8F3C05B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9834CBA3-5F16-46DB-B44F-58D9F8F3C05B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9834CBA3-5F16-46DB-B44F-58D9F8F3C05B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE983ED9-C6FA-468C-BF7B-278198013539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE983ED9-C6FA-468C-BF7B-278198013539}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE983ED9-C6FA-468C-BF7B-278198013539}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE983ED9-C6FA-468C-BF7B-278198013539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE32CC5F-F504-4FAC-9385-0CE9EC7B96CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE32CC5F-F504-4FAC-9385-0CE9EC7B96CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE32CC5F-F504-4FAC-9385-0CE9EC7B96CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE32CC5F-F504-4FAC-9385-0CE9EC7B96CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D1D999-A781-4D4B-B8BF-2E39EA1865BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D1D999-A781-4D4B-B8BF-2E39EA1865BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D1D999-A781-4D4B-B8BF-2E39EA1865BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D1D999-A781-4D4B-B8BF-2E39EA1865BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

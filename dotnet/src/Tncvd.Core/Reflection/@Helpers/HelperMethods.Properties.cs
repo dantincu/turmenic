@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Tncvd.Core.Reflection
 {
@@ -28,12 +30,35 @@ namespace Tncvd.Core.Reflection
             return retVal;
         }
 
+        public static bool IsInstWPubOrPrtcSttr(this PropertyInfo propertyInfo)
+        {
+            bool retVal = propertyInfo.CanWrite;
+            retVal = retVal && (propertyInfo.SetMethod?.IsInstPubOrPrtc() ?? false);
+
+            return retVal;
+        }
+
         public static bool IsInstWPrtcSttr(this PropertyInfo propertyInfo)
         {
             bool retVal = propertyInfo.CanWrite;
             retVal = retVal && (propertyInfo.SetMethod?.IsInstPrtc() ?? false);
 
             return retVal;
+        }
+
+        public static Func<PropertyInfo, bool> GetSimpleTypeSelector(this Type targetType)
+        {
+            Func<PropertyInfo, bool> selector = propertyInfo =>
+            {
+                Type propType = propertyInfo.GetType();
+
+                bool retVal = targetType.IsAssignableFrom(propType);
+                retVal = retVal && propType.GetConstructors().Any(c => c.IsPublic && c.GetParameters().Length == 0);
+
+                return retVal;
+            };
+
+            return selector;
         }
 
         #endregion Extensions

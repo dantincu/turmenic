@@ -19,7 +19,7 @@ namespace SimplePasswordTool.Services
 
         public string GenerateStringHash(string value)
         {
-            byte[] hashValue = GenerateHash(value);
+            byte[] hashValue = this.GenerateHash(value);
 
             string hashString = hashValue.ToHexCode();
             return hashString;

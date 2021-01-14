@@ -65,33 +65,16 @@ namespace Tncvd.Core.AppConfig
             return path;
         }
 
-        private string GetEnvDirName(EnvDir envDir)
-        {
-            string envDirName = string.Empty;
-
-            switch (envDir)
+        private string GetEnvDirName(EnvDir envDir) =>
+            envDir switch
             {
-                case EnvDir.Base:
-                    envDirName = string.Empty;
-                    break;
-                case EnvDir.Config:
-                    envDirName = this.Config.ConfigRelDirPath;
-                    break;
-                case EnvDir.Data:
-                    envDirName = this.Config.DataRelDirPath;
-                    break;
-                case EnvDir.Logs:
-                    envDirName = this.Config.LogsRelDirPath;
-                    break;
-                case EnvDir.Metadata:
-                    envDirName = this.Config.MetadataRelDirPath;
-                    break;
-                case EnvDir.Temp:
-                    envDirName = this.Config.TempRelDirPath;
-                    break;
-            }
-
-            return envDirName;
-        }
+                EnvDir.Base => string.Empty,
+                EnvDir.Config => this.Config.ConfigRelDirPath,
+                EnvDir.Data => this.Config.DataRelDirPath,
+                EnvDir.Logs => this.Config.LogsRelDirPath,
+                EnvDir.Metadata => this.Config.MetadataRelDirPath,
+                EnvDir.Temp => this.Config.TempRelDirPath,
+                _ => throw new ArgumentException(nameof(envDir))
+            };
     }
 }

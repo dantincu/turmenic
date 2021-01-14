@@ -27,27 +27,27 @@ namespace Tncvd.Logging.Logger
             }
         }
 
-        public FileLogger GetFileLogger(string loggerName)
+        public SharedFileLogger GetSharedFileLogger(string loggerName)
         {
-            FileLogger fileLogger = new FileLogger(loggerName);
+            SharedFileLogger fileLogger = new SharedFileLogger(loggerName);
             return fileLogger;
         }
 
-        public FileLogger GetFileLogger(Type type)
+        public SharedFileLogger GetSharedFileLogger(Type type)
         {
-            FileLogger fileLogger = GetFileLogger(type.GetTypeFullName());
+            SharedFileLogger fileLogger = GetSharedFileLogger(type.GetTypeFullName());
             return fileLogger;
         }
 
-        public BulkFileLogger GetBulkFileLogger(string loggerName)
+        public VerboseFileLogger GetVerboseFileLogger(string loggerName)
         {
-            BulkFileLogger fileLogger = new BulkFileLogger(loggerName);
+            VerboseFileLogger fileLogger = new VerboseFileLogger(loggerName);
             return fileLogger;
         }
 
-        public BulkFileLogger GetBulkFileLogger(Type type)
+        public VerboseFileLogger GetVerboseFileLogger(Type type)
         {
-            BulkFileLogger fileLogger = GetBulkFileLogger(type.GetTypeFullName());
+            VerboseFileLogger fileLogger = GetVerboseFileLogger(type.GetTypeFullName());
             return fileLogger;
         }
 
