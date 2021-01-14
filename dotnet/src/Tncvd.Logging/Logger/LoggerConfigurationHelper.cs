@@ -15,13 +15,15 @@ namespace Tncvd.Logging.Logger
         public LoggerConfigurationHelper()
         {
             this.TextFormatter = this.GetTextFormatter();
-            this.LoggingLevelSwitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+            this.VerboseLoggingLevelSwitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+            this.SharedLoggingLevelSwitch = new LoggingLevelSwitch(LogEventLevel.Debug);
             this.FlushedToDiskInterval = TimeSpan.FromSeconds(2);
         }
 
         public ITextFormatter TextFormatter { get; }
 
-        public LoggingLevelSwitch LoggingLevelSwitch { get; }
+        public LoggingLevelSwitch VerboseLoggingLevelSwitch { get; }
+        public LoggingLevelSwitch SharedLoggingLevelSwitch { get; }
 
         public TimeSpan FlushedToDiskInterval { get; }
 

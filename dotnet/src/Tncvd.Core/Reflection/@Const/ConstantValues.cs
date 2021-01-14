@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Tncvd.Core.Reflection
 {
-    public static class ConstantValues
+    public static partial class ConstantValues
     {
         public const string NAMESPACE_ALIAS_DELIMITER = "::";
 

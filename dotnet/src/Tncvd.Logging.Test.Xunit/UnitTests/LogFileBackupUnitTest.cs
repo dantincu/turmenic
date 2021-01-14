@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Tncvd.Core.AppConfig;
-using Tncvd.Core.AppConfig.ExecutionInfo;
 using Tncvd.Test.Attributes;
 using Xunit;
 
@@ -21,14 +20,10 @@ namespace Tncvd.Logging.Test.Xunit.UnitTests
 
         public LogFileBackupUnitTest()
         {
+            AppStart.Start();
             this.AssureLoggerDir();
             this._sourceTestFilePath = this.GetSourceTestFilePath();
             this._destinationTestFilePath = this.GetDestinationTestFilePath();
-        }
-
-        static LogFileBackupUnitTest()
-        {
-            AppExecutionInfoContainer.Instance.Register(typeof(LogFileBackupUnitTest).Assembly);
         }
 
         [Fact]
