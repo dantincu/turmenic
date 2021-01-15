@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Tncvd.Core.Reflection;
@@ -11,6 +12,11 @@ namespace Tncvd.WinForms.Controls
         public TdUserControl()
         {
             this.InitControl();
+            this.InitComponents();
+        }
+
+        protected virtual void InitComponents()
+        {
         }
 
         #region InitControl.Protected
@@ -110,15 +116,18 @@ namespace Tncvd.WinForms.Controls
 
         protected virtual PropertyInfo[] GetAutoAssignedControlProperties()
         {
-            PropertyInfo[] propertyInfoArr = this.GetType().GetInstPropsWPubOrPrtcSttr(ConstantValues.DelegateExpressions.SimpleControlTypeSelector);
+            PropertyInfo[] propertyInfoArr = this.GetType().GetInstPropsWPubOrPrtcSttr(
+                Core.Reflection.ConstantValues.DelegateExpressions.DefaultAutoInitPropsSelector);
+
             return propertyInfoArr;
         }
 
         protected virtual Control AutoAssignControlProperty(PropertyInfo propertyInfo)
         {
             Control control = Activator.CreateInstance(propertyInfo.PropertyType) as Control;
-            propertyInfo.SetValue(this, control);
+            control.Name = propertyInfo.Name;
 
+            propertyInfo.SetValue(this, control);
             return control;
         }
 
@@ -149,12 +158,6 @@ namespace Tncvd.WinForms.Controls
 
         protected virtual void InitControlCustomProperties()
         {
-            this.SetDockStyle();
-        }
-
-        protected virtual void SetDockStyle()
-        {
-            this.Dock = DockStyle.None;
         }
 
         #endregion ControlCustomProperties

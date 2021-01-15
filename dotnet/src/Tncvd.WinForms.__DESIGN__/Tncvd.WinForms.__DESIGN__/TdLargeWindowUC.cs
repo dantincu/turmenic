@@ -14,7 +14,14 @@ namespace Tncvd.WinForms.__DESIGN__
     {
         public TdLargeWindowUC()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.toolStripButton.Click += ToolStripButton_Click;
+        }
+
+        private void ToolStripButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

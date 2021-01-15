@@ -8,66 +8,67 @@ namespace Tncvd.Core.Reflection
     public static partial class HelperMethods
     {
         public static Attribute GetAttribute(
-            this MemberInfo memberInfo,
+            this ParameterInfo parameterInfo,
             Type attributeType,
             bool inherit = true,
             bool matchExactType = false)
         {
             Attribute retVal = null;
 
-            if (memberInfo != null)
+            if (parameterInfo != null)
             {
                 if (matchExactType)
                 {
-                    retVal = memberInfo.GetCustomAttributes(inherit).SingleOrDefault(attr => attr.GetType() == attributeType) as Attribute;
+                    retVal = parameterInfo.GetCustomAttributes(inherit).SingleOrDefault(attr => attr.GetType() == attributeType) as Attribute;
                 }
 
-                retVal = memberInfo.GetCustomAttribute(attributeType, inherit);
+                retVal = parameterInfo.GetCustomAttribute(attributeType, inherit);
             }
 
             return retVal;
         }
 
-        public static bool HasAttribute(this MemberInfo memberInfo,
+        public static bool HasAttribute(
+            this ParameterInfo parameterInfo,
             Type attributeType,
             bool inherit = true,
             bool matchExactType = false)
         {
-            Attribute attr = memberInfo.GetAttribute(attributeType, inherit, matchExactType);
+            Attribute attr = parameterInfo.GetAttribute(attributeType, inherit, matchExactType);
             return attr != null;
         }
 
         public static TAttribute GetAttribute<TAttribute>(
-            this MemberInfo memberInfo,
+            this ParameterInfo parameterInfo,
             bool inherit = true,
             bool matchExactType = false) where TAttribute : Attribute
         {
             TAttribute retVal = null;
 
-            if (memberInfo != null)
+            if (parameterInfo != null)
             {
                 if (matchExactType)
                 {
-                    retVal = memberInfo.GetCustomAttributes<TAttribute>(inherit).SingleOrDefault(attr => attr.GetType() == typeof(TAttribute));
+                    retVal = parameterInfo.GetCustomAttributes<TAttribute>(inherit).SingleOrDefault(attr => attr.GetType() == typeof(TAttribute));
                 }
 
-                retVal = memberInfo.GetCustomAttribute<TAttribute>(inherit);
+                retVal = parameterInfo.GetCustomAttribute<TAttribute>(inherit);
             }
 
             return retVal;
         }
 
         public static bool HasAttribute<TAttribute>(
-            this MemberInfo memberInfo,
+            this ParameterInfo parameterInfo,
             bool inherit = true,
             bool matchExactType = false) where TAttribute : Attribute
         {
-            TAttribute attr = memberInfo.GetAttribute<TAttribute>(inherit, matchExactType);
+            TAttribute attr = parameterInfo.GetAttribute<TAttribute>(inherit, matchExactType);
             return attr != null;
         }
 
         public static IEnumerable<Attribute> GetAttributes(
-            this MemberInfo memberInfo,
+            this ParameterInfo memberInfo,
             Type attributeType,
             bool inherit = true)
         {
@@ -82,7 +83,7 @@ namespace Tncvd.Core.Reflection
         }
 
         public static IEnumerable<TAttribute> GetAttributes<TAttribute>(
-            this MemberInfo memberInfo,
+            this ParameterInfo memberInfo,
             bool inherit = true) where TAttribute : Attribute
         {
             IEnumerable<TAttribute> attrEnum = memberInfo?.GetCustomAttributes<TAttribute>(inherit);
