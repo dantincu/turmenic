@@ -59,12 +59,12 @@ namespace Tncvd.Core.Collection
 
         #region ConcatArrays
 
-        public static T[] ConcatArrays<T>(T[] firstArray, T[] secondArray)
+        public static T[] AppendItems<T>(this T[] array, params T[] appended)
         {
-            T[] retArr = new T[firstArray.Length + secondArray.Length];
+            T[] retArr = new T[array.Length + appended.Length];
 
-            firstArray.CopyTo(retArr, 0);
-            secondArray.CopyTo(retArr, firstArray.Length);
+            array.CopyTo(retArr, 0);
+            appended.CopyTo(retArr, array.Length);
 
             return retArr;
         }

@@ -5,15 +5,18 @@ namespace Tncvd.Core.Reflection
 {
     public static partial class HelperMethods
     {
-        #region Extensions
-
         public static string GetTypeFullName(this Type type)
         {
-            string retVal = type.Name;
+            string retVal = null;
 
-            if (type.Namespace != null)
+            if (type != null)
             {
-                retVal = $"{type.Namespace}{ConstantValues.NAMESPACE_PARTS_DELIMITER}{type.Name}";
+                retVal = type.Name;
+
+                if (type.Namespace != null)
+                {
+                    retVal = $"{type.Namespace}{ConstantValues.NAMESPACE_PARTS_DELIMITER}{type.Name}";
+                }
             }
 
             return retVal;
@@ -21,16 +24,19 @@ namespace Tncvd.Core.Reflection
 
         public static bool IsPrimitive(this Type type)
         {
-            bool retVal = type.IsValueType;
+            bool retVal = false;
 
-            if (retVal == true)
+            if (type != null)
             {
-                retVal = type.IsValueTypePrimitive();
-            }
-            else
-            {
-                retVal = type == typeof(string);
-                retVal = retVal || type.IsNullablePrimitive();
+                if (type.IsValueType)
+                {
+                    retVal = type.IsValueTypePrimitive();
+                }
+                else
+                {
+                    retVal = type == typeof(string);
+                    retVal = retVal || type.IsNullablePrimitive();
+                }
             }
 
             return retVal;
@@ -38,18 +44,29 @@ namespace Tncvd.Core.Reflection
 
         public static bool IsValueTypePrimitive(this Type type)
         {
-            bool retVal = ConstantValues.PrimitiveTypes.Contains(type);
+            bool retVal = false;
+
+            if (type != null)
+            {
+                retVal = ConstantValues.PrimitiveTypes.Contains(type);
+            }
+
             return retVal;
         }
 
         public static bool IsNullablePrimitive(this Type type)
         {
-            bool retVal = type.IsNullableType();
+            bool retVal = false;
 
-            if (retVal == true)
+            if (type != null)
             {
-                Type genericTypeParameter = type.GetGenericArguments().Single();
-                retVal = IsValueTypePrimitive(genericTypeParameter);
+                retVal = type.IsNullableType();
+
+                if (retVal == true)
+                {
+                    Type genericTypeParameter = type.GetGenericArguments().Single();
+                    retVal = IsValueTypePrimitive(genericTypeParameter);
+                }
             }
 
             return retVal;
@@ -57,11 +74,15 @@ namespace Tncvd.Core.Reflection
 
         public static bool IsNullableType(this Type type)
         {
-            bool retVal = type.IsGenericType && TypesHaveSameNameAndNs(type, typeof(int?));
+            bool retVal = false;
+
+            if (type != null)
+            {
+                retVal = type.IsGenericType && TypesHaveSameNameAndNs(type, typeof(int?));
+            }
+            
             return retVal;
         }
-
-        #endregion Extensions
 
         public static bool TypesHaveSameNameAndNs(params Type[] types)
         {

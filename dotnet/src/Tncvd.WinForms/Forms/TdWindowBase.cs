@@ -9,7 +9,7 @@ namespace Tncvd.WinForms.Forms
             // this.InitializeComponent();
         }
 
-        protected override void SetClientSize()
+        protected override void SetFormClientSize()
         {
             this.ClientSize = ConstantValues.Forms.DefaultWindowSize;
         }

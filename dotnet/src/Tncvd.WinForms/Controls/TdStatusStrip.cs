@@ -7,6 +7,17 @@ namespace Tncvd.WinForms.Controls
         public TdStatusStrip()
         {
             this.AddDefaultProperties();
+            this.InitControlProperties();
+        }
+
+        protected virtual void InitControlProperties()
+        {
+            this.SetDockStyle();
+        }
+
+        protected virtual void SetDockStyle()
+        {
+            this.Dock = DockStyle.Bottom;
         }
     }
 }

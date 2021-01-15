@@ -6,8 +6,6 @@ namespace Tncvd.Core.Reflection
 {
     public static partial class HelperMethods
     {
-        #region Extensions
-
         public static bool IsInstWPubGttrPubSttr(this PropertyInfo propertyInfo)
         {
             bool retVal = propertyInfo.IsInstWPubGttr() && propertyInfo.IsInstWPubSttr();
@@ -17,7 +15,7 @@ namespace Tncvd.Core.Reflection
         public static bool IsInstWPubGttr(this PropertyInfo propertyInfo)
         {
             bool retVal = propertyInfo.CanRead;
-            retVal = retVal && (propertyInfo.GetMethod?.IsInstPub() ?? false);
+            retVal = retVal && (propertyInfo.GetMethod.IsInstPub());
 
             return retVal;
         }
@@ -25,7 +23,7 @@ namespace Tncvd.Core.Reflection
         public static bool IsInstWPubSttr(this PropertyInfo propertyInfo)
         {
             bool retVal = propertyInfo.CanWrite;
-            retVal = retVal && (propertyInfo.SetMethod?.IsInstPub() ?? false);
+            retVal = retVal && (propertyInfo.SetMethod.IsInstPub());
 
             return retVal;
         }
@@ -33,7 +31,7 @@ namespace Tncvd.Core.Reflection
         public static bool IsInstWPubOrPrtcSttr(this PropertyInfo propertyInfo)
         {
             bool retVal = propertyInfo.CanWrite;
-            retVal = retVal && (propertyInfo.SetMethod?.IsInstPubOrPrtc() ?? false);
+            retVal = retVal && (propertyInfo.SetMethod.IsInstPubOrPrtc());
 
             return retVal;
         }
@@ -41,74 +39,31 @@ namespace Tncvd.Core.Reflection
         public static bool IsInstWPrtcSttr(this PropertyInfo propertyInfo)
         {
             bool retVal = propertyInfo.CanWrite;
-            retVal = retVal && (propertyInfo.SetMethod?.IsInstPrtc() ?? false);
+            retVal = retVal && (propertyInfo.SetMethod.IsInstPrtc());
 
             return retVal;
         }
 
-        public static Func<PropertyInfo, bool> GetSimpleTypeSelector(this Type targetType)
+        public static Func<PropertyInfo, bool> GetAutoInitPropsSelector(Type targetType = null, Type propertyAttributeType = null, bool matchExactAttribute = false)
         {
+            propertyAttributeType = propertyAttributeType ?? typeof(AutoInitAttribute);
+
             Func<PropertyInfo, bool> selector = propertyInfo =>
             {
-                Type propType = propertyInfo.GetType();
+                Type propType = propertyInfo.PropertyType;
 
-                bool retVal = targetType.IsAssignableFrom(propType);
+                bool retVal = propertyInfo.HasAttribute(propertyAttributeType, matchExactAttribute);
                 retVal = retVal && propType.GetConstructors().Any(c => c.IsPublic && c.GetParameters().Length == 0);
+
+                if (targetType != null)
+                {
+                    retVal = retVal && targetType.IsAssignableFrom(propType);
+                }
 
                 return retVal;
             };
 
             return selector;
-        }
-
-        #endregion Extensions
-
-        public static bool PropIsInstWPubGttrPubSttr(PropertyInfo propertyInfo)
-        {
-            bool retVal = false;
-
-            if (propertyInfo != null)
-            {
-                retVal = propertyInfo.IsInstWPubGttrPubSttr();
-            }
-
-            return retVal;
-        }
-
-        public static bool PropIsInstPubGttr(PropertyInfo propertyInfo)
-        {
-            bool retVal = false;
-
-            if (propertyInfo != null)
-            {
-                retVal = propertyInfo.IsInstWPubGttr();
-            }
-
-            return retVal;
-        }
-
-        public static bool PropIsInstWPubSttr(PropertyInfo propertyInfo)
-        {
-            bool retVal = false;
-
-            if (propertyInfo != null)
-            {
-                retVal = propertyInfo.IsInstWPubSttr();
-            }
-
-            return retVal;
-        }
-
-        public static bool PropIsInstWPrtcSttr(PropertyInfo propertyInfo)
-        {
-            bool retVal = false;
-
-            if (propertyInfo != null)
-            {
-                retVal = propertyInfo.IsInstWPrtcSttr();
-            }
-
-            return retVal;
         }
     }
 }

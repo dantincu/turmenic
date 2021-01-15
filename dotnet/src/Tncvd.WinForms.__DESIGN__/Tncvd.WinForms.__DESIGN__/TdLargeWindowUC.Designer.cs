@@ -29,17 +29,21 @@ namespace Tncvd.WinForms.__DESIGN__
         /// </summary>
         private void InitializeComponent()
         {
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TdLargeWindowUC));
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 692);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1152, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip";
+            this.statusStrip.Location = new System.Drawing.Point(0, 692);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1152, 22);
+            this.statusStrip.TabIndex = 0;
+            this.statusStrip.Text = "statusStrip";
             // 
             // menuStrip
             // 
@@ -49,14 +53,37 @@ namespace Tncvd.WinForms.__DESIGN__
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
+            // toolStrip
+            // 
+            this.toolStrip.Dock = System.Windows.Forms.DockStyle.Left;
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton});
+            this.toolStrip.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(24, 668);
+            this.toolStrip.TabIndex = 2;
+            this.toolStrip.Text = "toolStrip1";
+            // 
+            // toolStripButton
+            // 
+            this.toolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton.Image")));
+            this.toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton.Name = "toolStripButton";
+            this.toolStripButton.Size = new System.Drawing.Size(21, 20);
+            this.toolStripButton.Text = "toolStripButton";
+            // 
             // TdLargeWindowUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.Name = "TdLargeWindowUC";
             this.Size = new System.Drawing.Size(1152, 714);
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -64,7 +91,9 @@ namespace Tncvd.WinForms.__DESIGN__
 
         #endregion
 
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStrip toolStrip;
+        private System.Windows.Forms.ToolStripButton toolStripButton;
     }
 }

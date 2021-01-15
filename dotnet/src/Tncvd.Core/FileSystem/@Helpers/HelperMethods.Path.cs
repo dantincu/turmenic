@@ -21,7 +21,7 @@ namespace Tncvd.Core.FileSystem
 
         public static bool IsPathAbsolute(this string path)
         {
-            bool isPathAbsolute = IsPathLinuxStyleAbsolute(path) || IsPathWindowsStyleAbsolute(path);
+            bool isPathAbsolute = path.IsPathLinuxStyleAbsolute() || path.IsPathWindowsStyleAbsolute();
             return isPathAbsolute;
         }
 
@@ -51,6 +51,7 @@ namespace Tncvd.Core.FileSystem
 
         public static string PathToMachineStyle(this string path, bool normalize = false)
         {
+            string retPath = null;
             string[] pathParts = path.GetPathParts();
 
             if (path.IsPathAbsolute())
@@ -63,16 +64,24 @@ namespace Tncvd.Core.FileSystem
                 pathParts = pathParts.NormalizePathParts();
             }
 
-            string retPath = Path.Combine(pathParts);
+            retPath = Path.Combine(pathParts);
+
             return retPath;
         }
 
         public static string NormalizePath(this string path)
         {
-            string[] pathParts = path.GetPathParts();
-            pathParts = pathParts.NormalizePathParts();
+            string[] pathParts = null;
+            string retPath = null;
 
-            string retPath = Path.Combine(pathParts);
+            if (path != null)
+            {
+                pathParts = path.GetPathParts();
+                pathParts = pathParts.NormalizePathParts();
+
+                retPath = Path.Combine(pathParts);
+            }
+
             return retPath;
         }
 
@@ -110,12 +119,14 @@ namespace Tncvd.Core.FileSystem
             }
 
             pathParts = pathParts.TrimAll(true);
+
             return pathParts;
         }
 
         public static string PathToUnixStyle(this string path, bool normalize = false)
         {
-            string[] pathParts = path.GetPathParts();
+            string retPath;
+            string[] pathParts = pathParts = path.GetPathParts();
 
             if (path.IsPathAbsolute())
             {
@@ -127,12 +138,13 @@ namespace Tncvd.Core.FileSystem
                 pathParts = pathParts.NormalizePathParts();
             }
 
-            string retPath = pathParts.Aggregate((leftPart, rightPart) => string.Concat(leftPart, ConstantValues.PATH_DELIMITER_UNIX, rightPart));
+            retPath = pathParts.Aggregate((leftPart, rightPart) => string.Concat(leftPart, ConstantValues.PATH_DELIMITER_UNIX, rightPart));
             return retPath;
         }
 
         public static string PathToWindowsStyle(this string path, bool normalize = false)
         {
+            string retPath;
             string[] pathParts = path.GetPathParts();
 
             if (path.IsPathAbsolute())
@@ -145,9 +157,9 @@ namespace Tncvd.Core.FileSystem
                 pathParts = pathParts.NormalizePathParts();
             }
 
-            string retPath = pathParts.Aggregate((leftPart, rightPart) => string.Concat(leftPart, ConstantValues.PATH_DELIMITER_WINDOWS, rightPart));
-            return retPath;
+            retPath = pathParts.Aggregate((leftPart, rightPart) => string.Concat(leftPart, ConstantValues.PATH_DELIMITER_WINDOWS, rightPart));
 
+            return retPath;
         }
 
         public static string AbsPathRootPartToMachineStyle(this string pathPart)

@@ -65,6 +65,7 @@ namespace Tncvd.WinForms.Controls
 
         public static void AddDefaultControlProperties(ScrollableControl ctrl)
         {
+            ctrl.Dock = DockStyle.Fill;
         }
 
         public static void AddDefaultControlProperties(ContainerControl ctrl)

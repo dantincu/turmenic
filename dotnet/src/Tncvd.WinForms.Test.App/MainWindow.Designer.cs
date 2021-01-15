@@ -1,7 +1,7 @@
 ﻿
 namespace Tncvd.WinForms.Test.App
 {
-    partial class MainForm
+    partial class MainWindow
     {
         /// <summary>
         ///  Required designer variable.
