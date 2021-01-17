@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using Tncvd.Core.Reflection;
 using Tncvd.WinForms.Forms;
 
@@ -20,6 +21,8 @@ namespace Tncvd.WinForms.Test.App
 
             this.WindowUC = this.AddFormUC<MainWindowUC>();
             this.WindowState = FormWindowState.Maximized;
+            this.Text = "Test App";
+            this.Icon = new Icon(Ux.FileSystem.HelperMethods.GetAppCreatorLogoImageFilePath(Ux.FileSystem.IconImageFileNameSizePixels.Size32));
         }
     }
 }
