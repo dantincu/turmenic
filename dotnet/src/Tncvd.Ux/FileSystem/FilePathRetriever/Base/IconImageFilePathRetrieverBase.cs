@@ -44,6 +44,7 @@ namespace Tncvd.Ux.FileSystem.FilePathRetriever.Base
 
         protected abstract string GetFileNameVariantSegment();
 
+        protected abstract string GetFileBaseDirName();
         protected abstract string GetFileDirName();
 
         protected abstract string GetFileRelativeDirName();
@@ -57,6 +58,7 @@ namespace Tncvd.Ux.FileSystem.FilePathRetriever.Base
         {
             return new string[]
             {
+                this.GetFileBaseDirName(),
                 this.GetFileDirName(),
                 this.GetFileRelativeDirName()
             }.Where(item => item != null).ToArray();

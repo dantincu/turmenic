@@ -40,5 +40,10 @@ namespace Tncvd.Ux.FileSystem.FilePathRetriever
         {
             return APP_CREATOR_LOGO_RELATIVE_DIR_NAME;
         }
+
+        protected override string GetFileBaseDirName()
+        {
+            return Core.Utils.ConstantValues.RootNamespacePascalCase;
+        }
     }
 }

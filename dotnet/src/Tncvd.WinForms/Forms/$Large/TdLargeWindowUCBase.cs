@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using Tncvd.Core.Reflection;
 using Tncvd.WinForms.Components;
 using Tncvd.WinForms.Controls;
@@ -69,6 +70,7 @@ namespace Tncvd.WinForms.Forms
             base.InitCompositeProperties();
 
             this.InitToolStripProperties(this.SidePanelToolStrip);
+            this.InitSidePanelToggleButtonProps(this.SidePanelToggleButton);
         }
 
         protected override void AddComposite(Control[] controlsArr)
@@ -83,6 +85,7 @@ namespace Tncvd.WinForms.Forms
         protected virtual void InitToolStripProperties(TdToolStrip toolStrip)
         {
             this.SetToolStripDockStyle(toolStrip);
+            
         }
 
         protected virtual void SetToolStripDockStyle(TdToolStrip toolStrip)
@@ -91,6 +94,20 @@ namespace Tncvd.WinForms.Forms
         }
 
         #endregion ToolStrip
+
+        #region SidePanelToggleButton
+
+        protected virtual void InitSidePanelToggleButtonProps(ToolStripButton sidePanelToggleButton)
+        {
+            this.SetSidePanelToggleButtonFont(sidePanelToggleButton);
+        }
+
+        protected virtual void SetSidePanelToggleButtonFont(ToolStripButton sidePanelToggleButton)
+        {
+            sidePanelToggleButton.UpdateFont(FontStyle.Bold, 12);
+        }
+
+        #endregion SidePanelToggleButton
 
         #endregion Composite
 

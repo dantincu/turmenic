@@ -10,4 +10,10 @@
     <ProjectReference Include="..\Tncvd.WinForms\Tncvd.WinForms.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="env-root-locator.jsconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
