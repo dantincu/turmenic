@@ -1,13 +1,9 @@
-const path = require('path');
-const loadJsonInto = require('../fileSystem/json.js').loadJsonInto;
-const { appEnvLocator } = require('./appEnvLocator.js');
-const { envRootLocator } = require('./envRootLocator.js');
-// import path from 'path';
-// import { loadJsonInto } from '../fileSystem/json.js';
-// import appEnvLocator from './appEnvLocator.js';
-// import envRootLocator from './envRootLocator.js';
+import path from 'path';
+import { loadJsonInto } from '../fileSystem/json.js';
+import { appEnvLocator } from './appEnvLocator.js';
+import { envRootLocator } from './envRootLocator.js';
 
-const envBaseDir = {
+export const envBaseDir = {
     config: "config",
     data: "data",
     logs: "logs",
@@ -15,9 +11,7 @@ const envBaseDir = {
     temp: "temp"
 };
 
-module.exports.envBaseDir = envBaseDir;
-
-class EnvConfig {
+export class EnvConfig {
     constructor() {
         this.data = null;
         this.envBasePath = null;
@@ -43,15 +37,13 @@ class EnvConfig {
     }
 }
 
-module.exports.EnvConfig = EnvConfig;
-
 const envConfigData = {
     appEnv: null,
     namedEnv: {
     }
 };
 
-const envConfig = {
+export const envConfig = {
     get appEnv() {
         return envConfigData.appEnv;
     },
@@ -60,19 +52,19 @@ const envConfig = {
     }
 };
 
-const assureNamedNotLoaded = (name) => {
+export const assureNamedNotLoaded = (name) => {
     if (envConfig.namedEnv[name]) {
         throw new Error("Env config with name " + name + " has already been loaded!");
     }
 };
 
-const assureDefaultNotLoaded = () => {
+export const assureDefaultNotLoaded = () => {
     if (envConfig.appEnv) {
         throw new Error("Default env config has already been loaded!");
     }
 };
 
-const load = (relDirPathPartsArr) => {
+export const load = (relDirPathPartsArr) => {
     let envConfig = new EnvConfig();
     envConfig.envBasePath = envRootLocator.getEnvRootRelPath(relDirPathPartsArr);
 
@@ -83,9 +75,7 @@ const load = (relDirPathPartsArr) => {
     return envConfig;
 };
 
-module.exports.load = load;
-
-const loadNamedEnv = (name, relDirPathPartsArr) => {
+export const loadNamedEnv = (name, relDirPathPartsArr) => {
     assureNamedNotLoaded(name);
     let envConfig = load(relDirPathPartsArr);
     
@@ -93,9 +83,7 @@ const loadNamedEnv = (name, relDirPathPartsArr) => {
     return envConfig;
 };
 
-module.exports.loadNamedEnv = loadNamedEnv;
-
-const loadAppEnv = (relDirPathPartsArr) => {
+export const loadAppEnv = (relDirPathPartsArr) => {
     assureDefaultNotLoaded();
     relDirPathPartsArr = relDirPathPartsArr || [];
 
@@ -108,6 +96,3 @@ const loadAppEnv = (relDirPathPartsArr) => {
 
     return envConfig;
 };
-
-module.exports.loadAppEnv = loadAppEnv;
-module.exports.envConfig = envConfig;

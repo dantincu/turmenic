@@ -1,9 +1,9 @@
-const { loadJsonInto } = require('../fileSystem/json.js');
-const { envRootLocator } = require('./envRootLocator.js');
+import { loadJsonInto } from '../fileSystem/json.js';
+import { envRootLocator } from './envRootLocator.js';
 
 const filePath = envRootLocator.getEnvRootRelPath(["env-root.jsconfig.json"]);
 
-class EnvRootConfig {
+export class EnvRootConfig {
     constructor() {
         this.data = null;
         this.envRootPath = envRootLocator.envRootPath;
@@ -21,10 +21,8 @@ class EnvRootConfig {
     }
 }
 
-module.exports.EnvRootConfig = EnvRootConfig;
-
 let envRootConfigInstance = new EnvRootConfig();
 envRootConfigInstance.data = Object.freeze(loadJsonInto(filePath, envRootConfigInstance));
 
-const envRootConfig = Object.freeze(envRootConfigInstance);
-module.exports.envRootConfig = envRootConfig;
+export const envRootConfig = Object.freeze(envRootConfigInstance);
+

@@ -1,5 +1,5 @@
-const path = require('path');
-const process = require('process');
+import path from 'path';
+import process from 'process';
 
 const getAppDataDirPath = () => {
     let appDataDirPath = process.env.APPDATA;
@@ -15,13 +15,11 @@ const getAppDataDirPath = () => {
     return appDataDirPath;
 }
 
-const appDataEnv = {
+export const appDataEnv = {
     appDataDirPath: getAppDataDirPath(),
     platformIsWindows: process.platform == "win32",
     getAppDataRelDirPath: (relDirPathPartsArr) => {
         let filePath = path.join.apply(path, [appDataEnv.appDataDirPath, ...relDirPathPartsArr]);
         return filePath;
     }
-}
-
-module.exports.appDataEnv = appDataEnv;
+};

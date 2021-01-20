@@ -1,15 +1,13 @@
-const fs = require('fs');
+import fs from 'fs';
 
-const loadJsonFromFile = (filePath) => {
+export const loadJsonFromFile = (filePath) => {
     const rawdata = fs.readFileSync(filePath);
     const jsonData = JSON.parse(rawdata);
 
     return jsonData;
-}
+};
 
-module.exports.loadJsonFromFile = loadJsonFromFile;
-
-const loadJsonInto = (filePath, obj) => {
+export const loadJsonInto = (filePath, obj) => {
     const jsonData = loadJsonFromFile(filePath);
 
     if (typeof(obj) == "object") {
@@ -19,6 +17,4 @@ const loadJsonInto = (filePath, obj) => {
     }
 
     return jsonData;
-}
-
-module.exports.loadJsonInto = loadJsonInto;
+};

@@ -1,8 +1,7 @@
-const path = require('path');
-const fsPath = require('../fileSystem/path.js')
-const { loadJsonInto } = require('../fileSystem/json.js')
-const { appDataEnv } = require('../appDataEnv.js');
-
+import path from 'path';
+import * as fsPath from '../fileSystem/path.js'
+import { loadJsonInto } from '../fileSystem/json.js';
+import { appDataEnv } from '../appDataEnv.js';
 class EnvRootLocatorData {
     constructor() {
         this.envRootPath = null;
@@ -21,7 +20,7 @@ class EnvRootLocatorData {
     }
 }
 
-class EnvRootLocator {
+export class EnvRootLocator {
     constructor() {
         this.data = null;
         this.envRootPath = null;
@@ -33,8 +32,6 @@ class EnvRootLocator {
     }
 }
 
-module.exports.EnvRootLocator = EnvRootLocator;
-
 let envRootLocatorData = new EnvRootLocatorData();
 
 let filePath = './src/utils/appSettings/env-root-locator.jsconfig.json';
@@ -44,5 +41,5 @@ let envRootLocatorInstance = new EnvRootLocator();
 envRootLocatorInstance.data = jsonData;
 envRootLocatorInstance.envRootPath = envRootLocatorData.getEnvRootPath();
 
-const envRootLocator = Object.freeze(envRootLocatorInstance);
-module.exports.envRootLocator = envRootLocator;
+export const envRootLocator = Object.freeze(envRootLocatorInstance);
+
