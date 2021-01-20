@@ -25,7 +25,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.WinForms", "..\Tncvd.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.WinForms.Test.App", "..\Tncvd.WinForms.Test.App\Tncvd.WinForms.Test.App.csproj", "{D3D1D999-A781-4D4B-B8BF-2E39EA1865BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Logging.Test.Console.App", "..\Tncvd.Logging.Test.Console.App\Tncvd.Logging.Test.Console.App.csproj", "{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tncvd.Logging.Test.Console.App", "..\Tncvd.Logging.Test.Console.App\Tncvd.Logging.Test.Console.App.csproj", "{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Web", "..\Tncvd.Web\Tncvd.Web.csproj", "{1C2C62B6-7D88-4F00-B4A9-D943AC1AD5F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.AspNetCore", "..\Tncvd.AspNetCore\Tncvd.AspNetCore.csproj", "{875517A1-803E-49EC-9378-07EE2C18E26C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Config.WebApi.App", "..\Tncvd.Config.WebApi.App\Tncvd.Config.WebApi.App.csproj", "{C9E1140B-7375-459E-8C8F-4A35042856BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tncvd.Security", "..\Tncvd.Security\Tncvd.Security.csproj", "{15424084-ED98-4095-B36A-96D43141A1CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +89,22 @@ Global
 		{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{169B6A5F-72DC-4C8F-AD9B-1302E94807E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C2C62B6-7D88-4F00-B4A9-D943AC1AD5F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C2C62B6-7D88-4F00-B4A9-D943AC1AD5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C2C62B6-7D88-4F00-B4A9-D943AC1AD5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C2C62B6-7D88-4F00-B4A9-D943AC1AD5F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{875517A1-803E-49EC-9378-07EE2C18E26C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{875517A1-803E-49EC-9378-07EE2C18E26C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{875517A1-803E-49EC-9378-07EE2C18E26C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{875517A1-803E-49EC-9378-07EE2C18E26C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9E1140B-7375-459E-8C8F-4A35042856BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9E1140B-7375-459E-8C8F-4A35042856BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9E1140B-7375-459E-8C8F-4A35042856BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9E1140B-7375-459E-8C8F-4A35042856BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15424084-ED98-4095-B36A-96D43141A1CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15424084-ED98-4095-B36A-96D43141A1CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15424084-ED98-4095-B36A-96D43141A1CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15424084-ED98-4095-B36A-96D43141A1CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
