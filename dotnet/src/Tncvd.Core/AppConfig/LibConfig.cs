@@ -34,6 +34,7 @@ namespace Tncvd.Core.AppConfig
         public AltStringSrlz DocumentPhotoImages { get; set; }
         public AltStringSrlz DocumentProcessedPhotoDocs { get; set; }
         public AltStringSrlz DocumentProcessedPhotoImages { get; set; }
+        public AltStringSrlz Notes { get; set; }
     }
 
     public class SpecialDirDelimitersSrlz
@@ -90,6 +91,7 @@ namespace Tncvd.Core.AppConfig
             this.DocumentPhotoImages = new AltString(data.DocumentPhotoImages);
             this.DocumentProcessedPhotoDocs = new AltString(data.DocumentProcessedPhotoDocs);
             this.DocumentProcessedPhotoImages = new AltString(data.DocumentProcessedPhotoImages);
+            this.Notes = new AltString(data.Notes);
         }
 
         public AltString People { get; }
@@ -111,6 +113,7 @@ namespace Tncvd.Core.AppConfig
         public AltString DocumentPhotoImages { get; }
         public AltString DocumentProcessedPhotoDocs { get; }
         public AltString DocumentProcessedPhotoImages { get; }
+        public AltString Notes { get; }
     }
 
     public class SpecialDirDelimiters : ReadonlyData<SpecialDirDelimitersSrlz>
