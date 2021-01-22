@@ -76,6 +76,10 @@
       "documentProcessedPhotoImages": {
         "val": "#doc-proc-photo-images#",
         "altVal": "__DPS_IMGS__"
+      },
+      "notes": {
+        "val": "#notes#",
+        "altVal": "__NOTES__"
       }
     },
     "delimiters": {
