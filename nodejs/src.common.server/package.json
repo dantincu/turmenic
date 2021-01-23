@@ -1,6 +1,6 @@
 {
   "name": "tncvd.common.server",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Common server-side functionality used accross Tncvd nodejs apps",
   "type": "module",
   "main": "index.js",
