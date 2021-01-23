@@ -21,13 +21,16 @@ export class DbContainer {
 
     loadDatabase(opts) {
         throwIfNotTypeof(opts, buildInTypes.object);
-        let dbFilePath = this.getDatabaseFilePath(opts);
 
         let dbCntr = {
-            db: null
+            db: this.dbList[opts.dbName]
         }
 
-        dbCntr.db = new Datastore({ filename: dbFilePath, autoload: true, onload: this.getOnloadcallback(dbCntr, opts) })
+        if (!dbCntr.db || opts.overwrite) {
+            let dbFilePath = this.getDatabaseFilePath(opts);
+            dbCntr.db = new Datastore({ filename: dbFilePath, autoload: true, onload: this.getOnloadcallback(dbCntr, opts) })
+        }
+
         return dbCntr.db;
     }
 

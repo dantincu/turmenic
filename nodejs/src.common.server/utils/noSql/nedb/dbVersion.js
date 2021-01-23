@@ -16,13 +16,14 @@ export class DbVersionLoader {
     constructor() {
     }
 
-    getLatestDbVersionData(reqDbVersionData) {
-        reqDbVersionData = reqDbVersionData || cfg.getOrLoad({
+    getLatestDbVersionData(latestDbVersionData) {
+        
+        latestDbVersionData = latestDbVersionData || cfg.getOrLoad({
             mn: "nedb",
             obj: new DbVersionData()
-        }).cfg;
-
-        return reqDbVersionData;
+        }).cfg.dbVersion;
+        
+        return latestDbVersionData;
     }
 
     getCurrentDbVersionData(oncomplete) {
@@ -37,44 +38,33 @@ export class DbVersionLoader {
         });
     }
 
-    isDbUpToDate(opts) {
-        let isUpToDate = compareVersions(opts.currentDbVrs, opts.latestDbVrs) >= 0;
+    isDbUptodate(opts) {
+        let isUpToDate = !!opts.currentDbVrs;
+
+        if (isUpToDate) { 
+            isUpToDate = compareVersions(
+                opts.currentDbVrs,
+                opts.latestDbVrs) >= 0;
+        }
+
         return isUpToDate;
     }
 
-    updateDb(opts) {
-        let dbVersionUpdater = new DbVersionUpdater(opts);
-        dbVersionUpdater.updateDb();
-    }
-
-    assureUpToDate(opts) {
+    assertDbIsUptodate(opts) {
         opts.latestDbVrs = this.getLatestDbVersionData(opts.latestDbVrs);
         this.getCurrentDbVersionData((err, docs) => {
-            if (docs && docs[0]) {
-                opts.currentDbVrs = docs[0];
-                if (this.isDbUpToDate(opts) === false) {
-                    this.updateDb(opts)
-                }
+            if (docs) {
+                opts.currentDbVrs = docs[0]?.dbVersion;
+            }
+
+            let isUptodate = this.isDbUptodate(opts);
+
+            if (typeof(opts.oncomplete) === "function") {
+                opts.oncomplete(isUptodate, opts);
+            } else if (opts.oncomplete === true && isUptodate !== true) {
+                throw new Error("Database is not up to date! Try performing a database update prior to running the api server!");
             }
         });
-    }
-}
-
-export class DbVersionUpdaterOptions {
-    constructor() {
-        this.currentDbVrs = null;
-        this.latestDbVrs = null;
-        this.oncomplete = null;
-    }
-}
-
-export class DbVersionUpdater {
-    constructor(opts) {
-        this.opts = opts;
-    }
-
-    updateDb() {
-
     }
 }
 

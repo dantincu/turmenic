@@ -1,12 +1,14 @@
 {
-  "name": "rosmarazan-drive-explorer-api-host",
-  "version": "1.0.0",
-  "description": "Rosmarazan Drive Explorer Api Host",
+  "name": "rosmarazan-drive-explorer-api-server",
+  "version": "0.0.1",
+  "description": "Rosmarazan Drive Explorer Api Server",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "start": "nodemon index.js",
-    "start:ci": "node index.js"
+    "start:ci": "node index.js",
+    "updateDb": "node update-db.js"
   },
   "author": "Daniel Tincu",
   "license": "MIT",

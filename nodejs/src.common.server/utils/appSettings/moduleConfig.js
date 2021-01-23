@@ -9,10 +9,10 @@ export class ModuleConfig {
 
     getModCfgFilePath(moduleName, filePathParts) {
         if ((filePathParts || []).length == 0) {
-            filePathParts = [ moduleName, "module.jsconfig.js" ];
+            filePathParts = [ moduleName, "module.jsconfig.json" ];
         }
 
-        let filePath = envConfig.getEnvRelPath(envBaseDir.config, filePathParts);
+        let filePath = envConfig.appEnv.getEnvRelPath(envBaseDir.config, filePathParts);
         return filePath;
     }
 
@@ -35,12 +35,13 @@ export class ModuleConfig {
         })
     }) {
         let filePath = this.getModCfgFilePath(moduleName, filePathParts);
+        console.log("loading database version from config file", filePath);
         instance = instance || new Object();
 
-        data = loadJsonInto(filePath, instance);
+        let data = loadJsonInto(filePath, instance);
         let mod = transform(instance, data);
 
-        this.modules[modName] = mod;
+        this.modules[moduleName] = mod;
         return mod;
     }
 
