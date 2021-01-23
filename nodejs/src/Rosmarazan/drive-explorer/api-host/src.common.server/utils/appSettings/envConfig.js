@@ -52,19 +52,19 @@ export const envConfig = {
     }
 };
 
-export const assureNamedNotLoaded = (name) => {
+const assureNamedNotLoaded = name => {
     if (envConfig.namedEnv[name]) {
         throw new Error("Env config with name " + name + " has already been loaded!");
     }
 };
 
-export const assureDefaultNotLoaded = () => {
+const assureDefaultNotLoaded = () => {
     if (envConfig.appEnv) {
         throw new Error("Default env config has already been loaded!");
     }
 };
 
-export const load = (relDirPathPartsArr) => {
+export const load = relDirPathPartsArr => {
     let envConfig = new EnvConfig();
     envConfig.envBasePath = envRootLocator.getEnvRootRelPath(relDirPathPartsArr);
 
@@ -83,7 +83,7 @@ export const loadNamedEnv = (name, relDirPathPartsArr) => {
     return envConfig;
 };
 
-export const loadAppEnv = (relDirPathPartsArr) => {
+export const loadAppEnv = relDirPathPartsArr => {
     assureDefaultNotLoaded();
     relDirPathPartsArr = relDirPathPartsArr || [];
 

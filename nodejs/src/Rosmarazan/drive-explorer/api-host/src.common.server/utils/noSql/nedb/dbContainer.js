@@ -1,6 +1,7 @@
 import path from 'path';
 import Datastore from 'nedb';
 import { buildInTypes, throwIfNotTypeof } from '../../typeChecking/throwIfNotTypeof.js';
+import { envConfig, envBaseDir } from '../../appSettings/envConfig.js';
 
 export class DbContainer {
     constructor(opts) {
@@ -37,13 +38,35 @@ export class DbContainer {
                 console.error("Error when tried to load database " + dbName + " from file " + filePath, err);
             } else {
                 this.dbList[opts.dbName] = dbCntr.db;
-    
-                if (opts.onload) {
-                    opts.onload(dbCntr.db, opts.dbName);
-                }
+                console.log(opts.dbName + " database loaded successfully");
+            }
+
+            if (opts.onload) {
+                opts.onload(dbCntr.db, opts.dbName);
             }
         };
 
         return callback;
     }
 }
+
+export class DbContainerWrapper {
+    constructor() {
+        this._dbDirName = "nedb-data";
+        this._instance = null;
+    }
+
+    get instance() {
+        if (this._instance == null) {
+            this._instance = new DbContainer({ dbDataDirPath: envConfig.appEnv.getEnvRelPath(envBaseDir.data, [ this._dbDirName ]) });
+        }
+
+        return this._instance;
+    }
+
+    set dbDirName(val) {
+        this._dbDirName = val;
+    }
+}
+
+export const dbContainer = new DbContainerWrapper();
