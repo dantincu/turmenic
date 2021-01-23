@@ -52,20 +52,20 @@ export class DbContainer {
 
 export class DbContainerWrapper {
     constructor() {
-        this._dbDirName = "nedb-data";
+        this._dbRelDir = "./nedb/data";
         this._instance = null;
     }
 
     get instance() {
         if (this._instance == null) {
-            this._instance = new DbContainer({ dbDataDirPath: envConfig.appEnv.getEnvRelPath(envBaseDir.data, [ this._dbDirName ]) });
+            this._instance = new DbContainer({ dbDataDirPath: envConfig.appEnv.getEnvRelPath(envBaseDir.data, [ this._dbRelDir ] ) });
         }
 
         return this._instance;
     }
 
-    set dbDirName(val) {
-        this._dbDirName = val;
+    set dbRelDir(val) {
+        this._dbRelDir = val;
     }
 }
 
