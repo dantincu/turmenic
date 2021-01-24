@@ -1,0 +1,40 @@
+import { compareStringsAsInts, strReplaceAll, strCount } from './textUtils.js';
+
+export const compareVersions = (vrsLeft, vrsRight) => {
+    let retVal = 0;
+
+    assureVersionIsValid(vrsLeft);
+    assureVersionIsValid(vrsRight);
+
+    let vrsLeftParts = vrsLeft.trim().split('.');
+    let vrsRightParts = vrsRight.trim().split('.');
+
+    let vrsPartsCount = Math.min(vrsLeftParts.length, vrsRightParts.length);
+    
+    for (let i = 0; i < vrsPartsCount.length; i++) {
+        retVal = compareStringsAsInts(vrsLeftParts[i], vrsRightParts[i]);
+        if (retVal !== 0) {
+            break;
+        }
+    }
+
+    return retVal;
+}
+
+export const isValidVersion = (vrs, vrsPartsCount = -1) => {
+    let retVal = typeof(vrs) === "string" && vrs.length > 0 && typeof(parseInt(strReplaceAll(vrs, "."))) == "number";
+
+    if (retVal) {
+        if (vrsPartsCount > 0) {
+            retVal = strCount(vrs, ".") === vrsPartsCount;
+        }
+    }
+
+    return retVal;
+}
+
+export const assureVersionIsValid = (vrs, vrsPartsCount = 3) => {
+    if (isValidVersion(vrs, vrsPartsCount) !== true) {
+        throw new Error("Provided version has invalid format", vrs);
+    }
+}
