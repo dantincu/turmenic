@@ -1,6 +1,6 @@
 import { cfg } from '../../appSettings/moduleConfig.js';
 import { dbContainer } from './dbContainer.js';
-import { compareVersions } from '../../text-utils.js'
+import { compareVersions } from '../../pckgUtils.js'
 
 export class DbVersionData {
     constructor() {

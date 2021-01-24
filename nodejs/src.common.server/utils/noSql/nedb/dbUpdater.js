@@ -1,13 +1,6 @@
 import { dbContainer } from './dbContainer.js';
 import { dbVersion } from './dbVersion.js';
-
-export class DbVersionUpdaterOptions {
-    constructor() {
-        this.currentDbVrs = null;
-        this.latestDbVrs = null;
-        this.oncomplete = null;
-    }
-}
+import { DbVersionUpdaterOptions } from './dbUpdaterOptions.js';
 
 export class DbVersionUpdater {
     assureDbUpToDate(opts) {
@@ -39,4 +32,3 @@ export class DbVersionUpdater {
         console.log("Performing database update...");
     }
 }
-
