@@ -1,0 +1,24 @@
+{
+  "name": "turmenic.common.server.test.dbupdates",
+  "version": "1.0.0",
+  "description": "Testing app for src.common.server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js",
+    "updateDb": "node update-db.js",
+    "debug": "node --inspect index.js",
+    "debugUpdateDb": "node --inspect update-db"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dantincu/turmenic/tree/main/nodejs/test.common.server/test.dbUpdates"
+  },
+  "keywords": [
+    "test",
+    "src.common.server"
+  ],
+  "author": "Daniel Tincu",
+  "license": "MIT"
+}
