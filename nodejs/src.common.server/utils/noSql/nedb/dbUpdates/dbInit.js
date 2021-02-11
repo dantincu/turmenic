@@ -3,14 +3,14 @@ import { DbVersionUpdaterOptions } from '../dbUpdaterOptions.js';
 export class DbInit {
     constructor({
         toDbVrs,
-        onComplete
+        oncomplete
     }) {
-        if (!toDbVrs || !onComplete) {
+        if (!toDbVrs || !oncomplete) {
             throw new Error("Invalid db init parameters!");
         }
 
         this.toDbVrs = toDbVrs;
-        this.onComplete = onComplete;
+        this.oncomplete = oncomplete;
     }
 
     run() {

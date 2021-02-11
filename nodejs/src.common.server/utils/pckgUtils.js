@@ -11,7 +11,7 @@ export const compareVersions = (vrsLeft, vrsRight) => {
 
     let vrsPartsCount = Math.min(vrsLeftParts.length, vrsRightParts.length);
     
-    for (let i = 0; i < vrsPartsCount.length; i++) {
+    for (let i = 0; i < vrsPartsCount; i++) {
         retVal = compareStringsAsInts(vrsLeftParts[i], vrsRightParts[i]);
         if (retVal !== 0) {
             break;

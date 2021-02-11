@@ -31,13 +31,16 @@ export class AppDbInit extends DbInit {
 
     performDbInit(dbCtr, dbMetadataDb) {
         const dbMetadata = {
-            timeStamp: Date.now().getTime(),
+            timeStamp: new Date().getTime(),
             dbVersion: this.toDbVrs
         };
 
         dbMetadataDb.insert(dbMetadata, (err, newDoc) => {
             if (err) {
                 console.error("Error while inserting the latest database version metadata record!", err);
+            } else {
+                this.oncomplete?.call(this);
+                console.log("Database init completed successfully");
             }
         });
     }

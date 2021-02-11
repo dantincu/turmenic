@@ -15,8 +15,8 @@ export class DbUpdate {
         this.fromDbVrs = fromDbVrs;
         this.toDbVrs = toDbVrs;
         this.oncomplete = oncomplete;
-        this.getNextInstance = getNextInstance;
         this.nextUpdateOpts = nextUpdateOpts;
+        this.getNextInstance = getNextInstance;
     }
 
     run() {

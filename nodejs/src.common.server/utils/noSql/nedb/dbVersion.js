@@ -33,7 +33,7 @@ export class DbVersionLoader {
                 console.error("Error while loading the database version", err);
             }
             else if (docs && docs[0]) {
-                console.log("Database version: " + docs[0]);
+                console.log("Database version: " + docs[0].dbVersion);
             } else {
                 console.log("No database version record has been found");
             }
@@ -44,25 +44,27 @@ export class DbVersionLoader {
     }
 
     isDbUptodate(opts) {
-        let isUpToDate = !!opts.currentDbVrs;
+        let isUpToDate = !!opts.fromDbVrs;
 
         if (isUpToDate) { 
             isUpToDate = compareVersions(
-                opts.currentDbVrs,
-                opts.latestDbVrs) >= 0;
+                opts.fromDbVrs,
+                opts.toDbVrs) >= 0;
         }
 
         return isUpToDate;
     }
 
     assertDbIsUptodate(opts) {
-        opts.latestDbVrs = this.getLatestDbVersionData(opts.latestDbVrs);
+        opts.toDbVrs = this.getLatestDbVersionData(opts.toDbVrs);
         this.getCurrentDbVersionData((err, docs) => {
             if (docs) {
-                opts.currentDbVrs = docs[0]?.dbVersion;
+                opts.fromDbVrs = docs[0]?.dbVersion;
             }
 
             let isUptodate = this.isDbUptodate(opts);
+
+            console.log("Database up to date: " + isUptodate);
 
             if (typeof(opts.oncomplete) === "function") {
                 opts.oncomplete(isUptodate, opts);

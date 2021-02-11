@@ -5,9 +5,9 @@ export const compareStringsAsInts = (leftVal, rightVal) => {
     let rightNum = parseInt(rightVal);
 
     if (leftNum < rightNum) {
-        retVal = 1;
-    } else if (leftNum > rightNum) {
         retVal = -1;
+    } else if (leftNum > rightNum) {
+        retVal = 1;
     }
 
     return retVal;
