@@ -87,11 +87,15 @@ const assertUpdateIsValid = ({ fromDbVrs, toDbVrs }, update) => {
 }
 
 const assertUpdatesAreValid = (opts, updatesData) => {
-    let fromDbVrs = opts.currentDbVrs;
+    let fromDbVrs = opts.fromDbVrs;
     let toDbVrs = null;
 
+    if (updatesData.updatesChain.length === 0) {
+        throw new Error("Could not perform db update because no update has been found in the update chain");
+    }
+
     for (let key in updatesData.updatesChain) {
-        let update = updatesData[key];
+        let update = updatesData.updatesChain[key];
         toDbVrs = update.toDbVrs;
 
         assertUpdateIsValid({ fromDbVrs: fromDbVrs, toDbVrs: toDbVrs }, update);
@@ -114,8 +118,8 @@ const getDbUpdatesChain = (opts) => {
     let dbUpdatesChain = [];
     let updatesData = loadUpdates(opts);
 
-    for (let key in updatesData) {
-        let update = updatesData[key];
+    for (let key in updatesData.updatesChain) {
+        let update = updatesData.updatesChain[key];
 
         let dbUpdate = dbUpdateList.find((val, idx, arr) => {
             let retVal = val.fromDbVrs === update.fromDbVrs;
@@ -125,7 +129,7 @@ const getDbUpdatesChain = (opts) => {
         });
 
         if (!dbUpdate) {
-            throw new Error("Could not perform db update! Update from version " + opts.currentDbVrs + " to version " + opts.latestDbVrs + " could not be found!");
+            throw new Error("Could not perform db update! Update from version " + update.fromDbVrs + " to version " + update.toDbVrs + " could not be found!");
         }
 
         dbUpdatesChain.push(dbUpdate);
@@ -145,11 +149,9 @@ const cloneDbUpdatesChain = (dbUpdatesChain) => {
 
     clonedDbUpdatesChain[0].getInstance = dbUpdatesChain[0].getInstance;
 
-    for (let i = 0; i < clonedDbUpdatesChain.length; i++) {
-        if (i < clonedDbUpdatesChain.length - 2) {
-            clonedDbUpdatesChain[i].nextUpdateOpts = clonedDbUpdatesChain[i + 1];
-            clonedDbUpdatesChain[i].getNextInstance = dbUpdatesChain[i + 1].getInstance;    
-        }
+    for (let i = 0; i < clonedDbUpdatesChain.length - 1; i++) {
+        clonedDbUpdatesChain[i].nextUpdateOpts = clonedDbUpdatesChain[i + 1];
+        clonedDbUpdatesChain[i].getNextInstance = dbUpdatesChain[i + 1].getInstance;    
     }
 
     return clonedDbUpdatesChain;
@@ -166,8 +168,8 @@ export const addDbInit = (opts) => {
 }
 
 export const getDbUpdate = (opts) => {
-    assureVersionIsValid(opts.latestDbVrs, 3);
-    assureVersionIsValid(opts.currentDbVrs, 3);
+    assureVersionIsValid(opts.toDbVrs, 3);
+    assureVersionIsValid(opts.fromDbVrs, 3);
 
     let dbUpdatesChain = getDbUpdatesChain(opts);
     dbUpdatesChain = cloneDbUpdatesChain(dbUpdatesChain);
@@ -179,7 +181,7 @@ export const getDbInit = (opts) => {
     let retDbInit = getDbInitOrNull(opts);
 
     if (!retDbInit) {
-        throw new Error("Could not perform db init! Init to version " + opts.latestDbVrs + " not found!")
+        throw new Error("Could not perform db init! Init to version " + opts.toDbVrs + " not found!")
     }
 
     return retDbInit;

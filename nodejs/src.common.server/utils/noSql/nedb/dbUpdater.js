@@ -16,8 +16,8 @@ export class DbVersionUpdater {
                 if (isUptodate === false) {
                     this.loadDbUpdateData(opts);
                     this.updateDb({
-                        fromDbVrs: opts.currentDbVrs,
-                        toDbVrs: opts.latestDbVrs,
+                        fromDbVrs: opts.fromDbVrs,
+                        toDbVrs: opts.toDbVrs,
                         oncomplete: opts.oncomplete
                     });
                 }
@@ -30,7 +30,7 @@ export class DbVersionUpdater {
         console.log("From database version: ", opts.fromDbVrs)
         console.log("To database version: ", opts.toDbVrs)
 
-        if (!opts.currentDbVrs) {
+        if (!opts.fromDbVrs) {
             this.performDbInit(opts);
         } else {
             this.performDbUpdate(opts);
@@ -53,11 +53,13 @@ export class DbVersionUpdater {
         let getInitInstance = dbInit.getInstance;
         delete dbInit.getInstance;
 
-        let initInstance = dbInit.getInstance.call(this, { ...dbInit, oncomplete: () => {
+        let initInstance = getInitInstance.call(this, { ...dbInit, oncomplete: () => {
                 dbInit.oncomplete.call(dbInit);
                 opts.oncomplete?.call(this);
             }
         });
+
+        initInstance.run();
     }
 
     addDbUpdateData(opts) {
@@ -70,7 +72,8 @@ export class DbVersionUpdater {
         let dbUpdatesChain = getDbUpdate(opts);
 
         this.registerFinalCallback(opts, dbUpdatesChain);
-        this.runFirstUpdate(opts, dbUpdatesChain[i]);
+        // this.linkUpdateChain(opts, dbUpdatesChain);
+        this.runFirstUpdate(opts, dbUpdatesChain[0]);
     }
 
     registerFinalCallback(opts, dbUpdatesChain) {
@@ -81,6 +84,28 @@ export class DbVersionUpdater {
             lastCompleteCallback?.call(lastDbUpdate);
             opts.oncomplete?.call(this);
         }
+    }
+
+    linkUpdateChain(opts, dbUpdatesChain) {
+        for (let i = dbUpdatesChain.length - 2; i >= 0; i--) {
+            let currentUpdate = dbUpdatesChain[i];
+            let nextUpdate = dbUpdatesChain[i + 1];
+
+            currentUpdate.getNextInstance = nextUpdate.getInstance;
+            currentUpdate.nextUpdateOpts = this.getNextUpdateOpts(nextUpdate);
+        }
+    }
+
+    getNextUpdateOpts(nextUpdate) {
+        let nextUpdateOpts = {
+            fromDbVrs: nextUpdate.fromDbVrs,
+            toDbVrs: nextUpdate.toDbVrs,
+            oncomplete: nextUpdate.oncomplete,
+            getNextInstance: nextUpdate.getNextInstance,
+            nextUpdateOpts: nextUpdate.nextUpdateOpts
+        };
+
+        return nextUpdateOpts;
     }
 
     runFirstUpdate(opts, firstDbUpdate) {

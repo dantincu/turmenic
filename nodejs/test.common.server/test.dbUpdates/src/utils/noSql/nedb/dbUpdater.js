@@ -3,29 +3,37 @@ import { DbVersionUpdater } from '../../../../src.common.server/utils/noSql/nedb
 import { DbVersionUpdaterOptions } from '../../../../src.common.server/utils/noSql/nedb/dbUpdaterOptions.js';
 import { addDbInit, addDbUpdate } from './../../../../src.common.server/utils/noSql/nedb/dbUpdates/index.js';
 import { AppDbInit } from './dbUpdates/dbInit.js'
+import { AppDbUpdate } from './dbUpdates/dbUpdate.js'
 
 export class AppDbVersionUpdater extends DbVersionUpdater {
     constructor() {
         super();
     }
 
+    addDbInitDataItem(toDbVrs) {
+        addDbInit({ toDbVrs: toDbVrs, getInstance: dbInit => new AppDbInit(dbInit), oncomplete: () => { console.log("Finished db init") } });
+    }
+
     addDbInitData(opts) {
         super.addDbInitData(opts);
 
-        addDbInit({ toDbVrs: "0.0.1" });
-        addDbInit({ toDbVrs: "0.0.4" });
-        addDbInit({ toDbVrs: "0.0.5" });
-        addDbInit({ toDbVrs: "0.0.9" });
+        this.addDbInitDataItem("0.0.1");
+        this.addDbInitDataItem("0.0.4");
+        this.addDbInitDataItem("0.0.5");
+        this.addDbInitDataItem("0.0.9");
+    }
+
+    addDbUpdateDataItem(fromDbVrs, toDbVrs) {
+        addDbUpdate({ fromDbVrs: fromDbVrs, toDbVrs: toDbVrs, getInstance: dbInit => new AppDbUpdate(dbInit), oncomplete: () => { console.log("Finished db update") } });
     }
 
     addDbUpdateData(opts) {
         super.addDbUpdateData(opts);
 
-        addDbUpdate({ fromDbVrs: "0.0.1", toDbVrs: "0.0.2" });
-        addDbUpdate({ fromDbVrs: "0.0.2", toDbVrs: "0.0.3" });
-        addDbUpdate({ fromDbVrs: "0.0.3", toDbVrs: "0.0.4" });
-        addDbUpdate({ fromDbVrs: "0.0.4", toDbVrs: "0.0.5" });
-        addDbUpdate({ fromDbVrs: "0.0.5", toDbVrs: "0.0.6" });
+        this.addDbUpdateDataItem("0.0.14", "0.0.15");
+        this.addDbUpdateDataItem("0.0.15", "0.0.16");
+        this.addDbUpdateDataItem("0.0.16", "0.0.17");
+        this.addDbUpdateDataItem("0.0.17", "0.0.18");
     }
 
     addDbInitItem({ toDbVrs }) {
