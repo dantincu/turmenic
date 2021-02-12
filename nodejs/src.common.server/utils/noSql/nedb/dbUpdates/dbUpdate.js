@@ -27,7 +27,7 @@ export class DbUpdate {
     }
 
     getCurrentDbVersionData(dbCtr, callback) {
-        let dbMetadataDb = dbCtr.loadDatabase({ dbName: "metadata" });
+        let dbMetadataDb = dbCtr.loadDatabase({ dbName: "dbMetadata" });
         let dbMetadata = dbMetadataDb.find({}).sort({ timeStamp: -1 }).limit(1).exec((err, docs) => {
             if (err) {
                 console.error("Error while loading the database version", err);
@@ -67,5 +67,12 @@ export class DbUpdate {
     runNext() {
         let nextUpdateInstance = this.getNextInstance?.call(this, this.nextUpdateOpts);
         nextUpdateInstance?.run();
+    }
+
+    insertOrUpdate({ db, doc, callback }) {
+        db.update({ key: doc.key }, doc, {
+            multi: false,
+            upsert: true
+        });
     }
 }

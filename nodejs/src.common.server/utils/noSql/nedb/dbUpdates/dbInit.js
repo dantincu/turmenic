@@ -14,7 +14,7 @@ export class DbInit {
     }
 
     getCurrentDbVersionData(dbCtr, callback) {
-        let dbMetadataDb = dbCtr.loadDatabase({ dbName: "metadata" });
+        let dbMetadataDb = dbCtr.loadDatabase({ dbName: "dbMetadata" });
         let dbMetadata = dbMetadataDb.find({}).sort({ timeStamp: -1 }).limit(1).exec((err, docs) => {
             if (err) {
                 console.error("Error while loading the database version", err);

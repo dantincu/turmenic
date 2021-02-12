@@ -1,6 +1,5 @@
 import { dbContainer } from './dbContainer.js';
 import { dbVersion } from './dbVersion.js';
-import { DbVersionUpdaterOptions } from './dbUpdaterOptions.js';
 import { getDbInit, getDbUpdate } from './dbUpdates/index.js';
 
 export class DbVersionUpdater {
@@ -12,7 +11,7 @@ export class DbVersionUpdater {
     }
 
     assureDbIsUpToDate(opts) {
-        dbVersion.assertDbIsUptodate({ ...opts, oncomplete: (isUptodate, opts) => {
+        dbVersion.assertDbIsUptodate({ ...opts, throwIfNotUpToDate: false, oncomplete: (isUptodate, opts) => {
                 if (isUptodate === false) {
                     this.loadDbUpdateData(opts);
                     this.updateDb({

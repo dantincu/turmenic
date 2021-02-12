@@ -10,5 +10,8 @@ import { createStore } from './src/utils/utils.js'
 import { dbVersion } from './src.common.server/utils/noSql/nedb/dbVersion.js';
 
 dotenv.config();
-dbVersion.assertDbIsUptodate({ oncomplete: true });
+dbVersion.assertDbIsUptodate({ oncomplete: opts => {
+        
+    }
+});
 

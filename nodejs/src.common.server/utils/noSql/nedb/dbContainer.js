@@ -19,7 +19,7 @@ export class DbContainer {
         return dbFilePath;
     }
 
-    loadDatabase(opts) {
+    getDatabase(opts) {
         throwIfNotTypeof(opts, buildInTypes.object);
 
         let dbCntr = {
@@ -28,17 +28,24 @@ export class DbContainer {
 
         if (!dbCntr.db || opts.overwrite) {
             let dbFilePath = this.getDatabaseFilePath(opts);
-            dbCntr.db = new Datastore({ filename: dbFilePath, autoload: true, onload: this.getOnloadcallback(dbCntr, opts) })
+            dbCntr.db = new Datastore({ filename: dbFilePath, autoload: opts.autoload, onload: this.getOnloadcallback(dbCntr, opts), corruptAlertThreshold: opts.corruptAlertThreshold })
         }
 
         return dbCntr.db;
+    }
+
+    loadDatabase(opts) {
+        throwIfNotTypeof(opts, buildInTypes.object);
+
+        let db = this.getDatabase({ ...opts, autoload: true });
+        return db;
     }
 
     getOnloadcallback(dbCntr, opts) {
         
         let callback = err => {
             if (err) {
-                console.error("Error when tried to load database " + dbName + " from file " + filePath, err);
+                console.error("Error when tried to load database " + opts.dbName, err);
             } else {
                 this.dbList[opts.dbName] = dbCntr.db;
                 console.log(opts.dbName + " database loaded successfully");
