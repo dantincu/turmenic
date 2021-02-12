@@ -27,7 +27,7 @@ export class DbVersionLoader {
     }
 
     getCurrentDbVersionData(oncomplete) {
-        let dbMetadataDb = dbCtr.loadDatabase({ dbName: "metadata" });
+        let dbMetadataDb = dbCtr.loadDatabase({ dbName: "dbMetadata" });
         let dbMetadata = dbMetadataDb.find({}).sort({ timeStamp: -1 }).limit(1).exec((err, docs) => {
             if (err) {
                 console.error("Error while loading the database version", err);
@@ -62,14 +62,14 @@ export class DbVersionLoader {
                 opts.fromDbVrs = docs[0]?.dbVersion;
             }
 
-            let isUptodate = this.isDbUptodate(opts);
+            opts.isUptodate = this.isDbUptodate(opts);
 
-            console.log("Database up to date: " + isUptodate);
+            console.log("Database up to date: " + opts.isUptodate);
 
-            if (typeof(opts.oncomplete) === "function") {
-                opts.oncomplete(isUptodate, opts);
-            } else if (opts.oncomplete === true && isUptodate !== true) {
+            if (opts.isUptodate !== true && opts.throwIfNotUpToDate !== false) {
                 throw new Error("Database is not up to date! Try performing a database update prior to running the api server!");
+            } else {
+                opts.oncomplete?.call(this, opts);
             }
         });
     }

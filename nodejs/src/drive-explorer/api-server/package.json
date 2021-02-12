@@ -8,7 +8,9 @@
     "test": "jest",
     "start": "nodemon index.js",
     "start:ci": "node index.js",
-    "updateDb": "node update-db.js"
+    "updateDb": "node update-db.js",
+    "debug": "node --inspect index.js",
+    "debugUpdateDb": "node --inspect update-db.js"
   },
   "author": "Daniel Tincu",
   "license": "MIT",

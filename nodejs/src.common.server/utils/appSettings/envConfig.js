@@ -3,6 +3,8 @@ import { loadJsonInto } from '../fileSystem/json.js';
 import { appEnvLocator } from './appEnvLocator.js';
 import { envRootLocator } from './envRootLocator.js';
 
+console.log("importing env config module");
+
 export const envBaseDir = {
     config: "config",
     data: "data",
