@@ -30,10 +30,10 @@ export class AppDbVersionUpdater extends DbVersionUpdater {
     addDbUpdateData(opts) {
         super.addDbUpdateData(opts);
 
-        this.addDbUpdateDataItem("0.0.14", "0.0.15");
-        this.addDbUpdateDataItem("0.0.15", "0.0.16");
-        this.addDbUpdateDataItem("0.0.16", "0.0.17");
-        this.addDbUpdateDataItem("0.0.17", "0.0.18");
+        this.addDbUpdateDataItem("0.0.1", "0.0.2");
+        this.addDbUpdateDataItem("0.0.2", "0.0.3");
+        this.addDbUpdateDataItem("0.0.3", "0.0.4");
+        this.addDbUpdateDataItem("0.0.4", "0.0.5");
     }
 
     addDbInitItem({ toDbVrs }) {

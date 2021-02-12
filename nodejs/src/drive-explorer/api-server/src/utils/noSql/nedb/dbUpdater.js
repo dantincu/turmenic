@@ -1,6 +1,5 @@
 import { dbContainer } from '../../../../src.common.server/utils/noSql/nedb/dbContainer.js';
 import { DbVersionUpdater } from '../../../../src.common.server/utils/noSql/nedb/dbUpdater.js'
-import { DbVersionUpdaterOptions } from '../../../../src.common.server/utils/noSql/nedb/dbUpdater.js'
 
 export class AppDbVersionUpdater extends DbVersionUpdater {
     performDbInit(opts) {
