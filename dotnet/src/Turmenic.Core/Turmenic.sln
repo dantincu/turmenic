@@ -35,9 +35,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmenic.Config.WebApi.App"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmenic.Security", "..\Turmenic.Security\Turmenic.Security.csproj", "{15424084-ED98-4095-B36A-96D43141A1CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmenic.DataAccess.Sqlite", "..\Turmenic.DataAccess.Sqlite\Turmenic.DataAccess.Sqlite.csproj", "{93A71B40-09E9-4122-AF91-A3F46CC77B7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmenic.DataAccess.Sqlite", "..\Turmenic.DataAccess.Sqlite\Turmenic.DataAccess.Sqlite.csproj", "{93A71B40-09E9-4122-AF91-A3F46CC77B7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmenic.DataAccess.Sqlite.Test.Console.App", "..\Turmenic.DataAccess.Sqlite.Test.Console.App\Turmenic.DataAccess.Sqlite.Test.Console.App.csproj", "{CAD3E805-51A9-4C92-A3E5-EE7A216569A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmenic.DataAccess.Sqlite.Test.Console.App", "..\Turmenic.DataAccess.Sqlite.Test.Console.App\Turmenic.DataAccess.Sqlite.Test.Console.App.csproj", "{CAD3E805-51A9-4C92-A3E5-EE7A216569A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmenic.DataAccess.EntityFrameworkCore", "..\Turmenic.DataAccess.EntityFrameworkCore\Turmenic.DataAccess.EntityFrameworkCore.csproj", "{9455512E-CD24-4066-802D-435411D404EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{CAD3E805-51A9-4C92-A3E5-EE7A216569A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAD3E805-51A9-4C92-A3E5-EE7A216569A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAD3E805-51A9-4C92-A3E5-EE7A216569A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9455512E-CD24-4066-802D-435411D404EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9455512E-CD24-4066-802D-435411D404EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9455512E-CD24-4066-802D-435411D404EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9455512E-CD24-4066-802D-435411D404EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

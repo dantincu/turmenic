@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Turmenic.Core.Reflection
@@ -65,5 +66,64 @@ namespace Turmenic.Core.Reflection
 
             return selector;
         }
+
+        #region CopyProps
+
+        public static void CopyProps<TArg>(this TArg target, TArg source)
+        {
+            PropertyInfo[] propInfos = GetInstPropsWPubGttrPubSttr(typeof(TArg));
+            CopyProps(target, source, propInfos);
+        }
+
+        public static void CopyProps<TArg>(this TArg target, TArg source, Expression<Func<TArg, object>>[] lambdaExprArr)
+        {
+            PropertyInfo[] propInfos = lambdaExprArr.Select(expr => expr.GetMemberFromLambda() as PropertyInfo).ToArray();
+            CopyProps(target, source, propInfos);
+        }
+
+        public static void CopyProps<TArg>(this TArg target, TArg source, PropertyInfo[] propInfos)
+        {
+            foreach (PropertyInfo propInfo in propInfos)
+            {
+                object value = propInfo.GetValue(source);
+                propInfo.SetValue(target, value);
+            }
+        }
+
+        public static void CopyProps<TArg>(this TArg target, TArg source, string[] propNames)
+        {
+            PropertyInfo[] propInfos = GetInstPropsWPubGttrPubSttr(
+                typeof(TArg),
+                propInfo => propNames.Contains(propInfo.Name));
+
+            CopyProps(target, source, propInfos);
+        }
+
+        #endregion CopyProps
+
+        #region CopyPropsExcept
+
+        public static void CopyPropsExcept<TArg>(this TArg target, TArg source, Expression<Func<TArg, object>>[] expLambdaExprArr)
+        {
+            PropertyInfo[] excPropInfos = expLambdaExprArr.Select(expr => expr.GetMemberFromLambda() as PropertyInfo).ToArray();
+            CopyPropsExcept(target, source, excPropInfos);
+        }
+
+        public static void CopyPropsExcept<TArg>(this TArg target, TArg source, PropertyInfo[] excPropInfos)
+        {
+            string[] expPropNames = excPropInfos.Select(excPropInfo => excPropInfo.Name).ToArray();
+            CopyPropsExcept(target, source, expPropNames);
+        }
+
+        public static void CopyPropsExcept<TArg>(this TArg target, TArg source, string[] expPropNames)
+        {
+            PropertyInfo[] propInfos = GetInstPropsWPubGttrPubSttr(
+                typeof(TArg),
+                propInfo => expPropNames.Contains(propInfo.Name) == false);
+
+            CopyProps(target, source, propInfos);
+        }
+
+        #endregion CopyPropsExcept
     }
 }
