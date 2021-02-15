@@ -95,5 +95,17 @@ namespace Turmenic.Core.Reflection
                 prop => prop.IsInstWPubOrPrtcSttr() && filter(prop)).ToArray();
             return retArr;
         }
+
+        public static PropertyInfo[] GetInstPropsWPubGttrSameType(this Type type, Type propType)
+        {
+            PropertyInfo[] retArr = GetInstPropsWPubGttr(type, propInfo => propInfo.PropertyType == propType);
+            return retArr;
+        }
+
+        public static PropertyInfo[] GetInstPropsWPubGttrSameGenTypeDef(this Type type, Type propType)
+        {
+            PropertyInfo[] retArr = GetInstPropsWPubGttr(type, propInfo => propInfo.PropertyType.HasSameMetadataDefinitionAs(propType));
+            return retArr;
+        }
     }
 }
