@@ -2,7 +2,7 @@
 
 namespace Turmenic.DataAccess.EntityFrameworkCore.Entities
 {
-    public class LanguageI18n : EnumEntityI18nBase<short, LanguageI18nName, int>
+    public class LanguageI18n : NamedEnumEntityI18nBase<LanguageI18n, short, LanguageI18nName, int>
     {
         /// <summary>
         /// This is the language name as written in the language itself.
@@ -14,32 +14,39 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Entities
 
     public class LanguageI18nName : EnumEntityNameI18nBase<LanguageI18n, short, LanguageI18nName, int>
     {
-        public short FromLangI18nId { get; set; }
-        public LanguageI18n FromLangI18n { get; set; }
     }
 
-    public abstract class EntityI18nBase<TEntityId, TEntityName, TEntityNameId> : EntityBase<TEntityId>
+    public abstract class EntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId> : EntityBase<TEntityId>
+        where TEntity : EntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
+        where TEntityName : EntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
     {
         public List<TEntityName> I18nNames { get; set; }
     }
 
-    public abstract class NamedEntityI18nBase<TEntityId, TEntityName, TEntityNameId> : EntityI18nBase<TEntityId, TEntityName, TEntityNameId>
+    public abstract class NamedEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId> : EntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
+        where TEntity : NamedEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
+        where TEntityName : EntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
     {
         public string Name { get; set; }
     }
 
-    public abstract class EnumEntityI18nBase<TEntityId, TEntityName, TEntityNameId> : EnumEntityBase<TEntityId>
+    public abstract class EnumEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId> : EnumEntityBase<TEntityId>
+        where TEntity : EnumEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
+        where TEntityName : EnumEntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
     {
         public List<TEntityName> I18nNames { get; set; }
     }
 
-    public abstract class NamedEnumEntityI18nBase<TEntityId, TEntityName, TEntityNameId> : EnumEntityI18nBase<TEntityId, TEntityName, TEntityNameId>
+    public abstract class NamedEnumEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
+        : EnumEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
+        where TEntity : NamedEnumEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
+        where TEntityName : EnumEntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
     {
         public string Name { get; set; }
     }
 
     public abstract class EntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId> : EntityBase<TEntityNameId>
-        where TEntity : EntityI18nBase<TEntityId, TEntityName, TEntityNameId>
+        where TEntity : EntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
         where TEntityName : EntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
     {
         public TEntityId EntityId { get; set; }
@@ -49,8 +56,8 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Entities
         public LanguageI18n LangI18n { get; set; }
     }
 
-    public abstract class EnumEntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId> : EnumEntityBase<TEntityNameId>
-        where TEntity : EnumEntityI18nBase<TEntityId, TEntityName, TEntityNameId>
+    public abstract class EnumEntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId> : EntityBase<TEntityNameId>
+        where TEntity : EnumEntityI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
         where TEntityName : EnumEntityNameI18nBase<TEntity, TEntityId, TEntityName, TEntityNameId>
     {
         public TEntityId EntityId { get; set; }

@@ -3,7 +3,7 @@ using Turmenic.DataAccess.EntityFrameworkCore.Entities;
 
 namespace Turmenic.DataAccess.Sqlite.Test.Xunit.DataModels
 {
-    public class Country : NamedEntityI18nBase<short, CountryName, int>
+    public class Country : NamedEntityI18nBase<Country, short, CountryName, int>
     {
         public string CountryCode { get; set; }
         public byte ContinentId { get; set; }

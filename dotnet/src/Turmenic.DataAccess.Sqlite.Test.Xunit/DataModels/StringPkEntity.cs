@@ -2,7 +2,7 @@
 
 namespace Turmenic.DataAccess.Sqlite.Test.Xunit.DataModels
 {
-    public class StringPkEntity : NamedEntityI18nBase<string, StringPkEntityName, int>
+    public class StringPkEntity : NamedEntityI18nBase<StringPkEntity, string, StringPkEntityName, int>
     {
     }
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
-using Turmenic.DataAccess.EntityFrameworkCore.Config;
 using Turmenic.DataAccess.EntityFrameworkCore.Entities;
 
 namespace Turmenic.DataAccess.EntityFrameworkCore.EntityConfigurators
