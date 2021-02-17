@@ -3,13 +3,8 @@ using Turmenic.DataAccess.Sqlite.Test.Console.App.Entities;
 
 namespace Turmenic.DataAccess.Sqlite.Test.Console.App.Components
 {
-    public class AppDbContext : UnitOfWork.AppDbContextBase
+    public class AppDbContext : UnitOfWork.I18nAppDbContextBase<ModelConfigurator>
     {
         public DbSet<Country> Countries { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Country>().ToTable("Countries").HasKey(et => et.Id);
-        }
     }
 }

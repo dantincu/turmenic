@@ -184,6 +184,28 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
             }
         }
 
+        protected virtual void GenerateIdsIfReq(IEnumerable<TEntity> entities)
+        {
+            if (this.AutoGenerateId)
+            {
+                foreach (TEntity entity in entities)
+                {
+                    if (this.IsNewEntity(entity))
+                    {
+                        entity.Id = this.GenerateUniqueId();
+                    }
+                }
+            }
+        }
+
+        protected virtual void GenerateIdIfReq(TEntity entity)
+        {
+            if (this.AutoGenerateId && this.IsNewEntity(entity))
+            {
+                entity.Id = this.GenerateUniqueId();
+            }
+        }
+
         #endregion Protected Virtual Methods
 
         #region Protected Methods

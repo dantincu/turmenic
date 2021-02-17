@@ -1,8 +1,8 @@
-﻿namespace Turmenic.DataAccess.Sqlite.Test.Console.App.Entities
+﻿using Turmenic.DataAccess.EntityFrameworkCore.Entities;
+
+namespace Turmenic.DataAccess.Sqlite.Test.Console.App.Entities
 {
-    public class Country
+    public class Country : NamedEntityBase<int>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

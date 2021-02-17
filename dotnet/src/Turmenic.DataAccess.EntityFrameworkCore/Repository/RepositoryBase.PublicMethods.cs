@@ -85,6 +85,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity InsertSingle(TEntity entity, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.DbSet.Add(entity);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -93,6 +94,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity> InsertSingleAsync(TEntity entity, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.DbSet.Add(entity);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -105,6 +107,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public IEnumerable<TEntity> InsertAll(IEnumerable<TEntity> entities, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.DbSet.AddRange(entities);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -113,6 +116,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<IEnumerable<TEntity>> InsertAllAsync(IEnumerable<TEntity> entities, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.DbSet.AddRange(entities);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -125,6 +129,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity UpsertSingle(TEntity entity, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.AddUpsertCmd(entity);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -133,6 +138,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity> UpsertSingleAsync(TEntity entity, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.AddUpsertCmd(entity);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -141,6 +147,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity UpsertSingle(TEntity entity, Action<TEntity> updateDelegate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             entity = this.RunEntityUpsert(entity, updateDelegate);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -149,6 +156,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity> UpsertSingleAsync(TEntity entity, Action<TEntity> updateDelegate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             entity = await this.RunEntityUpsertAsync(entity, updateDelegate);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -157,6 +165,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity UpsertSingle(TEntity entity, string[] propNamesToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.AddUpsertCmd(entity, propNamesToUpdate);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -165,6 +174,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity> UpsertSingleAsync(TEntity entity, string[] propNamesToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.AddUpsertCmd(entity, propNamesToUpdate);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -173,6 +183,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity UpsertSingle(TEntity entity, Expression<Func<TEntity, object>>[] propExprsToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.AddUpsertCmd(entity, propExprsToUpdate);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -181,6 +192,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity> UpsertSingleAsync(TEntity entity, Expression<Func<TEntity, object>>[] propExprsToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdIfReq(entity);
             this.AddUpsertCmd(entity, propExprsToUpdate);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -193,6 +205,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public IEnumerable<TEntity> UpsertAll(IEnumerable<TEntity> entities, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.AddUpsertAllCmd(entities);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -201,6 +214,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<IEnumerable<TEntity>> UpsertAllAsync(IEnumerable<TEntity> entities, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.AddUpsertAllCmd(entities);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -209,6 +223,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity[] UpsertAll(IEnumerable<TEntity> entities, Action<TEntity> updateDelegate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             TEntity[] allEntities = this.RunEntitiesUpsert(entities, updateDelegate);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -217,6 +232,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity[]> UpsertAllAsync(IEnumerable<TEntity> entities, Action<TEntity> updateDelegate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             TEntity[] allEntities = await this.RunEntitiesUpsertAsync(entities, updateDelegate);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -225,6 +241,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity[] UpsertAll(IEnumerable<TEntity> entities, string[] propNamesToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.AddUpsertAllCmd(entities, propNamesToUpdate);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -233,6 +250,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity[]> UpsertAllAsync(IEnumerable<TEntity> entities, string[] propNamesToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.AddUpsertAllCmd(entities, propNamesToUpdate);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
@@ -241,6 +259,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public TEntity[] UpsertAll(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propExprsToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.AddUpsertAllCmd(entities, propExprsToUpdate);
 
             int writtenEntriesCount = this.SaveChangesIfReq(saveChanges, useTransaction);
@@ -249,6 +268,7 @@ namespace Turmenic.DataAccess.EntityFrameworkCore.Repository
 
         public async Task<TEntity[]> UpsertAllAsync(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propExprsToUpdate, bool saveChanges = true, bool useTransaction = true)
         {
+            this.GenerateIdsIfReq(entities);
             this.AddUpsertAllCmd(entities, propExprsToUpdate);
 
             int writtenEntriesCount = await this.SaveChangesIfReqAsync(saveChanges, useTransaction);
