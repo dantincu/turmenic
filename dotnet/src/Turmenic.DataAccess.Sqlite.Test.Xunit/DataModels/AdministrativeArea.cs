@@ -6,7 +6,7 @@ namespace Turmenic.DataAccess.Sqlite.Test.Xunit.DataModels
     /// <summary>
     /// Entity representing either a city, municipality, or a town.
     /// </summary>
-    public class AdministrativeArea : NamedEntityI18nBase<int, AdministrativeAreaName, int>
+    public class AdministrativeArea : NamedEntityI18nBase<AdministrativeArea, int, AdministrativeAreaName, int>
     {
         public int AdministrativeAreaTypeId { get; set; }
         public int? AdministrativeRegionId { get; set; }

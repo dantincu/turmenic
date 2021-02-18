@@ -41,7 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmenic.DataAccess.Sqlite.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmenic.DataAccess.EntityFrameworkCore", "..\Turmenic.DataAccess.EntityFrameworkCore\Turmenic.DataAccess.EntityFrameworkCore.csproj", "{9455512E-CD24-4066-802D-435411D404EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmenic.DataAccess.Sqlite.Test.Xunit", "..\Turmenic.DataAccess.Sqlite.Test.Xunit\Turmenic.DataAccess.Sqlite.Test.Xunit.csproj", "{C0EF19D2-53FB-4687-B8FB-557F9592BE22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmenic.DataAccess.Sqlite.Test.Xunit", "..\Turmenic.DataAccess.Sqlite.Test.Xunit\Turmenic.DataAccess.Sqlite.Test.Xunit.csproj", "{C0EF19D2-53FB-4687-B8FB-557F9592BE22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmenic.Test.WinForms.App", "..\Turmenic.Test.WinForms.App\Turmenic.Test.WinForms.App.csproj", "{DF20F09E-EE1C-44F4-A4B2-D312978C6110}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,10 @@ Global
 		{C0EF19D2-53FB-4687-B8FB-557F9592BE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0EF19D2-53FB-4687-B8FB-557F9592BE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0EF19D2-53FB-4687-B8FB-557F9592BE22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF20F09E-EE1C-44F4-A4B2-D312978C6110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF20F09E-EE1C-44F4-A4B2-D312978C6110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF20F09E-EE1C-44F4-A4B2-D312978C6110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF20F09E-EE1C-44F4-A4B2-D312978C6110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

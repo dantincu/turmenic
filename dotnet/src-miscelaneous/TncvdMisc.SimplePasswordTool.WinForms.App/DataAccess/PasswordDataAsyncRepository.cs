@@ -1,5 +1,5 @@
-﻿using Tncvd.DataAccess.NoServer.Repository;
-using Tncvd.DataAccess.NoServer.UnitOfWork;
+﻿using Turmenic.DataAccess.VelocityDb.Repository;
+using Turmenic.DataAccess.VelocityDb.UnitOfWork;
 using SimplePasswordTool.DataModels;
 using System;
 using System.Collections.Generic;

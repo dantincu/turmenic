@@ -1,5 +1,5 @@
 {
-  "envRootPath": "/F/C/X/TD/ENV/DEV",
-  "useMachineDefaultAppDataDir": true,
-  "machineAppDataEnvDirRelPath": "./TncvdMisc/__DEV__"
+  "envRootPath": "/F/C/X/TD/ENV/DEV/TncvdMisc",
+  "useMachineDefaultAppDataDir": false,
+  "machineAppDataEnvDirRelPath": "./TncvdMisc"
 }

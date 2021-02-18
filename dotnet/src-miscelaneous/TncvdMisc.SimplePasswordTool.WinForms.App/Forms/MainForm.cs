@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Tncvd.Core.Collection;
-using Tncvd.Logging.Logger;
+using Turmenic.Core.Collection;
+using Turmenic.Logging.Logger;
 using SimplePasswordTool.Services;
 
 namespace SimplePasswordTool.Forms
@@ -17,7 +17,7 @@ namespace SimplePasswordTool.Forms
 
         private PasswordService passwordService;
 
-        private FileLogger logger;
+        private SharedFileLogger logger;
         private PasswordHelper passwordHelper;
 
         public MainForm()
@@ -37,7 +37,7 @@ namespace SimplePasswordTool.Forms
 
         private void InitLogger()
         {
-            this.logger = new FileLogger(this.GetType());
+            this.logger = new SharedFileLogger(this.GetType());
             this.logger.Verbose("App started");
         }
 

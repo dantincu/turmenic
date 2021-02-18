@@ -1,6 +1,6 @@
-﻿using Tncvd.DataAccess.NoServer.Repository;
+﻿using Turmenic.DataAccess.VelocityDb.Repository;
 using SimplePasswordTool.DataModels;
-using Tncvd.DataAccess.NoServer.UnitOfWork;
+using Turmenic.DataAccess.VelocityDb.UnitOfWork;
 
 namespace SimplePasswordTool.DataAccess
 {
