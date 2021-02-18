@@ -1,9 +1,10 @@
-using SimplePasswordTool.Forms;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Turmenic.Core.AppConfig.ExecutionInfo;
 
-namespace SimplePasswordTool
+namespace Turmenic.Test.WinForms.App
 {
     static class Program
     {
@@ -16,9 +17,7 @@ namespace SimplePasswordTool
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            AppExecutionInfoContainer.Instance.Register(typeof(Program).Assembly);
-            Application.Run(new MainForm());
+            Application.Run(new AppMainWindow());
         }
     }
 }

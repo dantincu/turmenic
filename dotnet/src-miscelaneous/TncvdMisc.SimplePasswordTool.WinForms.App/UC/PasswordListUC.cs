@@ -1,4 +1,4 @@
-﻿using Tncvd.Core.Collection;
+﻿using Turmenic.Core.Collection;
 using SimplePasswordTool.Services;
 using System;
 using System.Collections.Generic;

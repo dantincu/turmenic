@@ -1,6 +1,6 @@
-﻿using Tncvd.DataAccess.NoServer.UnitOfWork;
+﻿using Turmenic.DataAccess.VelocityDb.UnitOfWork;
 using System.IO;
-using Tncvd.Core.AppConfig;
+using Turmenic.Core.AppConfig;
 
 namespace SimplePasswordTool.DataAccess.Utils
 {
@@ -14,7 +14,7 @@ namespace SimplePasswordTool.DataAccess.Utils
 
             DbSession dbSession = new DbSession(
                 dbDirPath,
-                Tncvd.Core.FileSystem.HelperMethods.IsDirEmpty(dbDirPath));
+                Turmenic.Core.FileSystem.HelperMethods.IsDirEmpty(dbDirPath));
 
             return dbSession;
         }

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using Tncvd.Core.Serialization;
-using Tncvd.Core.Collection;
+using Turmenic.Core.Serialization;
+using Turmenic.Core.Collection;
 
 namespace SimplePasswordTool.Services
 {

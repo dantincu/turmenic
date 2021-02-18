@@ -13,6 +13,8 @@ namespace Turmenic.DataAccess.Sqlite.Test.Xunit.DataModels
         public long? TownId { get; set; }
         public AdministrativeSubdivisionTypeCtlg AdministrativeSubdivisionType { get; set; }
         public AdministrativeArea AdministrativeArea { get; set; }
+        public City City { get; set; }
+        public Town Town { get; set; }
     }
 
     public class AdministrativeSubdivisionName : EntityNameI18nBase<AdministrativeSubdivision, long, AdministrativeSubdivisionName, long>

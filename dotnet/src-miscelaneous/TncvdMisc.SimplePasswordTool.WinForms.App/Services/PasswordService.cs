@@ -1,5 +1,5 @@
-﻿using Tncvd.Core.Async;
-using Tncvd.Logging.Logger;
+﻿using Turmenic.Core.Async;
+using Turmenic.Logging.Logger;
 using SimplePasswordTool.DataAccess;
 using SimplePasswordTool.DataModels;
 using SimplePasswordTool.DataModels.Mapping;
@@ -16,12 +16,12 @@ namespace SimplePasswordTool.Services
         public const int MAX_PASSWORD_LENGTH = 128;
         public const string DEFAULT_ALLOWED_NON_ALPHA_NUMERIC_CHARS = "!@#$%^&*()_-+=[{]};:<>|./?";
 
-        private readonly FileLogger logger;
+        private readonly SharedFileLogger logger;
         private readonly UnitOfWork unitOfWork;
 
         public PasswordService()
         {
-            this.logger = new FileLogger(this.GetType());
+            this.logger = new SharedFileLogger(this.GetType());
             this.unitOfWork = new UnitOfWork(DataAccess.Utils.HelperMethods.GetDefaultDbSession());
         }
 
