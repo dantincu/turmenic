@@ -1,0 +1,42 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.1/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
+      "Tncvd.DataAccess.VelocityDb/1.0.0": {
+        "dependencies": {
+          "VelocityDB": "10.0.0"
+        },
+        "runtime": {
+          "Tncvd.DataAccess.VelocityDb.dll": {}
+        }
+      },
+      "VelocityDB/10.0.0": {
+        "runtime": {
+          "lib/.NETStandard,Version=v2.0/VelocityDb.dll": {
+            "assemblyVersion": "9.1.1.0",
+            "fileVersion": "9.1.1.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Tncvd.DataAccess.VelocityDb/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "VelocityDB/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jrehZO2hKguKCjM9DA9qMnRqNT8zh9D3SZifwLZlJ4KiLDkXdO4BvIrcgAlN3mqHtsDpdB8/A74yJHda5WTrkg==",
+      "path": "velocitydb/10.0.0",
+      "hashPath": "velocitydb.10.0.0.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\bin\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.deps.json
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\bin\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\bin\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.pdb
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\obj\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.csprojAssemblyReference.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\obj\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.AssemblyInfoInputs.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\obj\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.AssemblyInfo.cs
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\obj\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.csproj.CoreCompileInputs.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\obj\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.NoServer\obj\Debug\netstandard2.1\Turmenic.DataAccess.NoServer.pdb

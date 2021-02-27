@@ -1,0 +1,14 @@
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\obj\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.csprojAssemblyReference.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\obj\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.AssemblyInfoInputs.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\obj\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.AssemblyInfo.cs
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\obj\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.csproj.CoreCompileInputs.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\bin\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.deps.json
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\bin\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\bin\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.pdb
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\bin\Debug\netstandard2.1\Turmenic.Core.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\bin\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\bin\Debug\netstandard2.1\Turmenic.Core.pdb
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\bin\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.pdb
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\obj\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.csproj.CopyComplete
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\obj\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.Sqlite\obj\Debug\netstandard2.1\Turmenic.DataAccess.Sqlite.pdb

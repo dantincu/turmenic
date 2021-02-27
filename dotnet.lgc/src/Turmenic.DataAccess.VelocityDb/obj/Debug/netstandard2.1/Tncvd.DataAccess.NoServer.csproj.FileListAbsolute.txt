@@ -1,0 +1,9 @@
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\bin\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.deps.json
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\bin\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.dll
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\bin\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.pdb
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\obj\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.AssemblyInfoInputs.cache
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\obj\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.AssemblyInfo.cs
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\obj\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.csproj.CoreCompileInputs.cache
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\obj\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.dll
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\obj\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.pdb
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.NoServer\obj\Debug\netstandard2.1\Tncvd.DataAccess.NoServer.csprojAssemblyReference.cache
