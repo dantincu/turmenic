@@ -1,0 +1,8 @@
+{
+  "dotnetRelDirPath": "./dotnet",
+  "contentRelDirPath": "./content",
+  "nodejsRelDirPath": "./nodejs",
+  "pythonRelDirPath": "./python",
+  "powershellRelDirPath": "./powershell",
+  "dotnetLgcRelDirPath": "./dotnet.lgc"
+}

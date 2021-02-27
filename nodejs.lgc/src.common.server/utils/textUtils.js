@@ -1,15 +1,8 @@
 export const compareStringsAsInts = (leftVal, rightVal) => {
-    let retVal = 0;
-
     let leftNum = parseInt(leftVal);
     let rightNum = parseInt(rightVal);
 
-    if (leftNum < rightNum) {
-        retVal = -1;
-    } else if (leftNum > rightNum) {
-        retVal = 1;
-    }
-
+    let retVal = leftNum - rightNum;
     return retVal;
 }
 
