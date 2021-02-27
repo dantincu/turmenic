@@ -13,14 +13,14 @@ export class ModuleConfig {
     this.modules = {};
   }
 
-  getModCfgFilePath(moduleName: string, filePathParts?: string[]): string {
+  getModCfgFilePath(moduleName: string, ...filePathParts: string[]): string {
     if ((filePathParts || []).length == 0) {
       filePathParts = [moduleName, "module.jsconfig.json"];
     }
 
     let filePath = envConfig.appEnv.getEnvRelPath(
       envBaseDir.config,
-      filePathParts
+      ...filePathParts
     );
     return filePath;
   }
@@ -50,7 +50,7 @@ export class ModuleConfig {
     let instance = opts.obj || new Object();
     let filePathParts = opts.fpp;
 
-    let filePath = this.getModCfgFilePath(moduleName, filePathParts);
+    let filePath = this.getModCfgFilePath(moduleName, ...filePathParts);
     let data = Object.freeze(loadJsonInto(filePath, instance));
     let mod = Object.freeze(opts.transform(instance, data));
 

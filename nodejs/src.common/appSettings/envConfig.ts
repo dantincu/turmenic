@@ -43,12 +43,9 @@ export class EnvConfig {
     return envDirPath;
   }
 
-  getEnvRelPath(
-    envBaseDirName: string,
-    [...relPathPartsArr]: string[]
-  ): string {
+  getEnvRelPath(envBaseDirName: string, ...relPathPartsArr: string[]): string {
     let envDirPath = this.getEnvDirPath(envBaseDirName);
-    let relPath = path.join.apply(path, [envDirPath, ...relPathPartsArr]);
+    let relPath = path.join(envDirPath, ...relPathPartsArr);
 
     return relPath;
   }
@@ -82,9 +79,11 @@ const assureDefaultNotLoaded = (): void => {
   }
 };
 
-export const load = ([...relDirPathPartsArr]: string[]): EnvConfig => {
+export const load = (...relDirPathPartsArr: string[]): EnvConfig => {
   let envConfig = new EnvConfig();
-  envConfig.envBasePath = envRootLocator.getEnvRootRelPath(relDirPathPartsArr);
+  envConfig.envBasePath = envRootLocator.getEnvRootRelPath(
+    ...relDirPathPartsArr
+  );
 
   let filePath = path.join(envConfig.envBasePath, "env.jsconfig.json");
   envConfig.data = Object.freeze(loadJsonInto(filePath, envConfig));
@@ -95,24 +94,23 @@ export const load = ([...relDirPathPartsArr]: string[]): EnvConfig => {
 
 export const loadNamedEnv = (
   name: string,
-  [...relDirPathPartsArr]: string[]
+  ...relDirPathPartsArr: string[]
 ): EnvConfig => {
   assureNamedNotLoaded(name);
-  let envConfig = load(relDirPathPartsArr);
+  let envConfig = load(...relDirPathPartsArr);
 
   setWithKey(envConfigData.namedEnv, name, envConfig);
   return envConfig;
 };
 
-export const loadAppEnv = (relDirPathPartsArr?: string[]): EnvConfig => {
+export const loadAppEnv = (...relDirPathPartsArr: string[]): EnvConfig => {
   assureDefaultNotLoaded();
-  relDirPathPartsArr = relDirPathPartsArr ?? [];
 
   if (relDirPathPartsArr.length == 0) {
     relDirPathPartsArr.push(appEnvLocator.appEnvBaseRelPath ?? "");
   }
 
-  let envConfig = load(relDirPathPartsArr);
+  let envConfig = load(...relDirPathPartsArr);
   envConfigData.appEnv = envConfig;
 
   return envConfig;

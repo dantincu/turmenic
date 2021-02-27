@@ -35,8 +35,8 @@ export class EnvRootLocator {
     this.envRootPath = null;
   }
 
-  getEnvRootRelPath([...pathArray]: string[]): string {
-    let relPath = path.join.apply(path, [this.envRootPath ?? "", ...pathArray]);
+  getEnvRootRelPath(...pathArray: string[]): string {
+    let relPath = path.join(this.envRootPath ?? "", ...pathArray);
     return relPath;
   }
 }

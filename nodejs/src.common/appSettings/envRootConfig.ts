@@ -1,7 +1,7 @@
 import { loadJsonInto } from "../fileSystem/json.js";
 import { envRootLocator } from "./envRootLocator.js";
 
-const filePath = envRootLocator.getEnvRootRelPath(["env-root.jsconfig.json"]);
+const filePath = envRootLocator.getEnvRootRelPath("env-root.jsconfig.json");
 
 export class EnvRootConfig {
   public data: any | null;
@@ -24,8 +24,8 @@ export class EnvRootConfig {
     this.dotnetLgcRelDirPath = null;
   }
 
-  getEnvRootRelPath(pathArray: string[]): string {
-    let relPath = envRootLocator.getEnvRootRelPath(pathArray);
+  getEnvRootRelPath(...pathArray: string[]): string {
+    let relPath = envRootLocator.getEnvRootRelPath(...pathArray);
     return relPath;
   }
 }

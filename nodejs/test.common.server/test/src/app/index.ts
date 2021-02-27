@@ -4,5 +4,5 @@ import { envConfig, envBaseDir } from "./src.common/appSettings/envConfig.js";
 
 appConsole.log(
   "test.common.server",
-  envConfig.appEnv?.getEnvRelPath(envBaseDir.temp, [])
+  envConfig.appEnv?.getEnvRelPath(envBaseDir.temp)
 );
