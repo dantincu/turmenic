@@ -1,4 +1,4 @@
 {
-    "appEnvBaseRelPath": "./my-app",
+    "appEnvBaseRelPath": "./app",
     "useDefaultEnvRootDir": true
 }
