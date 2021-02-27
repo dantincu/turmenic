@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "AN+AD7GT3IVhmxNJbxAUarCP4nJ4shsiWvLVfyjZt0G0ZL+/7f5WZXDqk84RI7xUEZSC/MP4soX9vC3f/Zat/w==",
+  "success": true,
+  "projectFilePath": "F:\\C\\X\\TD\\SRC\\turmenic\\dotnet\\src\\Turmenic.DataAccess.VelocityDb\\Turmenic.DataAccess.VelocityDb.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\danti\\.nuget\\packages\\velocitydb\\10.1.0\\velocitydb.10.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}

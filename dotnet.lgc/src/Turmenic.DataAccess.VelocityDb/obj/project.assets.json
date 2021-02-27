@@ -1,0 +1,104 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETStandard,Version=v2.1": {
+      "VelocityDB/10.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/.NETStandard,Version=v2.0/VelocityDb.dll": {}
+        },
+        "runtime": {
+          "lib/.NETStandard,Version=v2.0/VelocityDb.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "VelocityDB/10.1.0": {
+      "sha512": "ulfUiduUugbZgh7yk6CxWT9cxKHMVCBJUu23jDzZPLgS7P5E+8tkKWiczGXDzJmfuBVZkCSDiSQR21qG51X5+g==",
+      "type": "package",
+      "path": "velocitydb/10.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Eula.txt",
+        "lib/.NETStandard,Version=v2.0/VelocityDb.dll",
+        "lib/.NETStandard,Version=v2.0/VelocityDb.xml",
+        "velocitydb.10.1.0.nupkg.sha512",
+        "velocitydb.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETStandard,Version=v2.1": [
+      "VelocityDB >= 10.1.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\danti\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "F:\\C\\X\\TD\\SRC\\turmenic\\dotnet\\src\\Turmenic.DataAccess.VelocityDb\\Turmenic.DataAccess.VelocityDb.csproj",
+      "projectName": "Turmenic.DataAccess.VelocityDb",
+      "projectPath": "F:\\C\\X\\TD\\SRC\\turmenic\\dotnet\\src\\Turmenic.DataAccess.VelocityDb\\Turmenic.DataAccess.VelocityDb.csproj",
+      "packagesPath": "C:\\Users\\danti\\.nuget\\packages\\",
+      "outputPath": "F:\\C\\X\\TD\\SRC\\turmenic\\dotnet\\src\\Turmenic.DataAccess.VelocityDb\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\danti\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netstandard2.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netstandard2.1": {
+        "targetAlias": "netstandard2.1",
+        "dependencies": {
+          "VelocityDB": {
+            "target": "Package",
+            "version": "[10.1.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "NETStandard.Library": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.21079.7\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

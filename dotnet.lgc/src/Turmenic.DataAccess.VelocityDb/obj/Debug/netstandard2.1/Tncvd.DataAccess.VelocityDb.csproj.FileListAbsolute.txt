@@ -1,0 +1,9 @@
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\obj\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.AssemblyInfoInputs.cache
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\obj\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.AssemblyInfo.cs
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\obj\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.csproj.CoreCompileInputs.cache
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\bin\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.deps.json
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\bin\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.dll
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\bin\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.pdb
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\obj\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.dll
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\obj\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.pdb
+F:\C\X\TD\SRC\tncvd\dotnet\src\Tncvd.DataAccess.VelocityDb\obj\Debug\netstandard2.1\Tncvd.DataAccess.VelocityDb.csprojAssemblyReference.cache

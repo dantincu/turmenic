@@ -1,0 +1,12 @@
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\obj\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.csprojAssemblyReference.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\obj\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.AssemblyInfoInputs.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\obj\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.AssemblyInfo.cs
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\obj\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.csproj.CoreCompileInputs.cache
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\bin\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.deps.json
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\bin\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\bin\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.pdb
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\bin\Debug\netstandard2.1\Turmenic.Core.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\bin\Debug\netstandard2.1\Turmenic.Core.pdb
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\obj\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.csproj.CopyComplete
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\obj\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.dll
+F:\C\X\TD\SRC\turmenic\dotnet\src\Turmenic.DataAccess.EntityFrameworkCore\obj\Debug\netstandard2.1\Turmenic.DataAccess.EntityFrameworkCore.pdb
