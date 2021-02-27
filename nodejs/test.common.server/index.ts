@@ -1,3 +1,3 @@
-import { appConsole } from "./src.common.server/logging/appConsole.js";
+import { appConsole } from "./src.common/logging/appConsole.js";
 
 appConsole.log("test.common.server");
