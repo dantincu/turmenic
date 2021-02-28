@@ -1,12 +1,15 @@
 import path from "path";
-import { loadJsonInto } from "../fileSystem/json.js";
-import { envRootConfig } from "./envRootConfig.js";
+import { loadJsonAsyncInto } from "../fileSystem/json.js";
+import { envRootConfig, EnvRootConfig } from "./envRootConfig.js";
+import { AsyncSingleton } from "../async/async-singleton.js";
 
 class AppEnvLocatorData {
   public appEnvBaseRelPath: string | null;
   public useDefaultEnvRootDir: boolean | null;
+  public envRootConfig: EnvRootConfig;
 
-  constructor() {
+  constructor(envRootConfig: EnvRootConfig) {
+    this.envRootConfig = envRootConfig;
     this.appEnvBaseRelPath = null;
     this.useDefaultEnvRootDir = null;
   }
@@ -16,7 +19,7 @@ class AppEnvLocatorData {
 
     if (this.useDefaultEnvRootDir) {
       appEnvRelBasePath = path.join(
-        envRootConfig.nodejsRelDirPath ?? "",
+        this.envRootConfig.nodejsRelDirPath ?? "",
         this.appEnvBaseRelPath || ""
       );
     }
@@ -27,7 +30,7 @@ class AppEnvLocatorData {
   getAppEnvBasePath() {
     let appEnvBaseRelPath = this.getAppEnvBaseRelPath();
     let appEnvBasePath = path.join(
-      envRootConfig.envRootPath ?? "",
+      this.envRootConfig.envRootPath ?? "",
       appEnvBaseRelPath || ""
     );
 
@@ -47,15 +50,18 @@ export class AppEnvLocator {
   }
 }
 
-let appEnvLocatorData = new AppEnvLocatorData();
+export const appEnvLocator = new AsyncSingleton(async () => {
+  const envRootConfigInstance = await envRootConfig.instance();
+  let appEnvLocatorData = new AppEnvLocatorData(envRootConfigInstance);
 
-let filePath = "./src/appSettings/app-env-locator.jsconfig.json";
-loadJsonInto(filePath, appEnvLocatorData);
-appEnvLocatorData = Object.freeze(appEnvLocatorData);
+  let filePath = "./src/appSettings/app-env-locator.jsconfig.json";
+  await loadJsonAsyncInto(filePath, appEnvLocatorData);
+  appEnvLocatorData = Object.freeze(appEnvLocatorData);
 
-let appEnvLocatorInstance = new AppEnvLocator();
-appEnvLocatorInstance.data = appEnvLocatorData;
-appEnvLocatorInstance.appEnvBasePath = appEnvLocatorData.getAppEnvBasePath();
-appEnvLocatorInstance.appEnvBaseRelPath = appEnvLocatorData.getAppEnvBaseRelPath();
+  let appEnvLocatorInstance = new AppEnvLocator();
+  appEnvLocatorInstance.data = appEnvLocatorData;
+  appEnvLocatorInstance.appEnvBasePath = appEnvLocatorData.getAppEnvBasePath();
+  appEnvLocatorInstance.appEnvBaseRelPath = appEnvLocatorData.getAppEnvBaseRelPath();
 
-export const appEnvLocator = Object.freeze(appEnvLocatorInstance);
+  return Object.freeze(appEnvLocatorInstance);
+});

@@ -1,7 +1,9 @@
 import path from "path";
 import * as fsPath from "../fileSystem/path.js";
-import { loadJsonInto } from "../fileSystem/json.js";
+import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { appDataEnv } from "../appDataEnv.js";
+import { AsyncSingleton } from "../async/async-singleton.js";
+
 class EnvRootLocatorData {
   public envRootPath: string | null;
   public useMachineDefaultAppDataDir: boolean | null;
@@ -41,14 +43,16 @@ export class EnvRootLocator {
   }
 }
 
-let envRootLocatorData = new EnvRootLocatorData();
+export const envRootLocator = new AsyncSingleton<EnvRootLocator>(async () => {
+  let envRootLocatorData = new EnvRootLocatorData();
 
-let filePath = "./src/appSettings/env-root-locator.jsconfig.json";
-loadJsonInto(filePath, envRootLocatorData);
-envRootLocatorData = Object.freeze(envRootLocatorData);
+  let filePath = "./src/appSettings/env-root-locator.jsconfig.json";
+  await loadJsonAsyncInto(filePath, envRootLocatorData);
+  envRootLocatorData = Object.freeze(envRootLocatorData);
 
-let envRootLocatorInstance = new EnvRootLocator();
-envRootLocatorInstance.data = envRootLocatorData;
-envRootLocatorInstance.envRootPath = envRootLocatorData.getEnvRootPath();
+  let envRootLocatorInstance = new EnvRootLocator();
+  envRootLocatorInstance.data = envRootLocatorData;
+  envRootLocatorInstance.envRootPath = envRootLocatorData.getEnvRootPath();
 
-export const envRootLocator = Object.freeze(envRootLocatorInstance);
+  return Object.freeze(envRootLocatorInstance);
+});

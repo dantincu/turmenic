@@ -1,8 +1,43 @@
-import { appConsole } from "./src.common/logging/appConsole.js";
-import "./src.common/appSettings/appEnvAutoload.js";
-import { envConfig, envBaseDir } from "./src.common/appSettings/envConfig.js";
+import Bcrypt from "bcrypt";
 
-appConsole.log(
+import { envConfig, envBaseDir } from "./src.common/appSettings/envConfig.js";
+import { appConsole } from "./src.common/logging/appConsole.js";
+import { start } from "./src/api/hapi-start.js";
+import { appLogger } from "./src.common/logging/simple-file-logger.js";
+
+appLogger.trace(
   "test.common.server",
-  envConfig.appEnv?.getEnvRelPath(envBaseDir.temp)
+  (await envConfig.appEnv?.instance())?.getEnvRelPath(envBaseDir.temp)
 );
+
+start();
+
+process.on("unhandledRejection", (err) => {
+  console.log(err);
+  process.exit(1);
+});
+
+// const password = "myPassword";
+
+/* 
+let hash = await Bcrypt.hash(password, 10);
+appConsole.log("hash", hash);
+*/
+// hash $2b$10$tPL/1Xbj1Z25i4kiBIEY6euWMosEfPvVFmekxZhC.d9RNziKQBsbO
+// hash $2b$10$JtniJHps7YV6s/CMS9ZghOXQ2aP/.QtES8iZfclu67L/j11teHEF2
+
+/* 
+let comparisonResult = await Bcrypt.compare(
+  password,
+  "$2b$10$tPL/1Xbj1Z25i4kiBIEY6euWMosEfPvVFmekxZhC.d9RNziKQBsbO"
+);
+
+appConsole.log("comparisonResult", comparisonResult);
+
+comparisonResult = await Bcrypt.compare(
+  password,
+  "$2b$10$JtniJHps7YV6s/CMS9ZghOXQ2aP/.QtES8iZfclu67L/j11teHEF2"
+);
+
+appConsole.log("comparisonResult", comparisonResult);
+*/

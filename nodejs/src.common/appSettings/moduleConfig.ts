@@ -1,5 +1,5 @@
 import { envConfig, envBaseDir } from "./envConfig.js";
-import { loadJsonInto } from "../fileSystem/json.js";
+import { loadJsonAsyncInto } from "../fileSystem/json.js";
 
 export interface ModuleConfigOptions {
   mn: string;
@@ -13,12 +13,15 @@ export class ModuleConfig {
     this.modules = {};
   }
 
-  getModCfgFilePath(moduleName: string, ...filePathParts: string[]): string {
+  async getModCfgFilePath(
+    moduleName: string,
+    ...filePathParts: string[]
+  ): Promise<string> {
     if ((filePathParts || []).length == 0) {
       filePathParts = [moduleName, "module.jsconfig.json"];
     }
 
-    let filePath = envConfig.appEnv.getEnvRelPath(
+    let filePath = (await envConfig.appEnv.instance()).getEnvRelPath(
       envBaseDir.config,
       ...filePathParts
     );
@@ -30,7 +33,7 @@ export class ModuleConfig {
     return mod;
   }
 
-  load(
+  async load(
     opts: ModuleConfigOptions & {
       transform?: (cfg, data) => object;
     }
@@ -50,8 +53,8 @@ export class ModuleConfig {
     let instance = opts.obj || new Object();
     let filePathParts = opts.fpp;
 
-    let filePath = this.getModCfgFilePath(moduleName, ...filePathParts);
-    let data = Object.freeze(loadJsonInto(filePath, instance));
+    let filePath = await this.getModCfgFilePath(moduleName, ...filePathParts);
+    let data = Object.freeze(await loadJsonAsyncInto(filePath, instance));
     let mod = Object.freeze(opts.transform(instance, data));
 
     this.modules[moduleName] = mod;
@@ -70,12 +73,12 @@ export class ModuleConfig {
     return opts;
   }
 
-  getOrLoad(opts: ModuleConfigOptions | string): object {
+  async getOrLoad(opts: ModuleConfigOptions | string): Promise<object> {
     opts = this.normalizeOptions(opts);
     let mod: object = this.get(opts.mn);
 
     if (!mod) {
-      mod = this.load(opts);
+      mod = await this.load(opts);
     }
 
     return mod;

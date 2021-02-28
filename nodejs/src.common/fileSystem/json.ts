@@ -1,17 +1,20 @@
-import fs from "fs";
+import { readFileAsync } from "./index.js";
 
-export const loadJsonFromFile = (
+export const loadJsonFromFileAsync = async (
   filePath: string,
   reviver?: (this: any, key: string, value: any) => any
-): any => {
-  const rawdata = fs.readFileSync(filePath);
+): Promise<any> => {
+  const rawdata = await readFileAsync(filePath);
   const jsonData = JSON.parse(rawdata.toString("utf8"), reviver);
 
   return jsonData;
 };
 
-export const loadJsonInto = (filePath: string, obj: any) => {
-  const jsonData = loadJsonFromFile(filePath);
+export const loadJsonAsyncInto = async (
+  filePath: string,
+  obj: any
+): Promise<any> => {
+  const jsonData = await loadJsonFromFileAsync(filePath);
 
   if (typeof obj == "object") {
     for (const [key, value] of Object.entries(jsonData)) {
