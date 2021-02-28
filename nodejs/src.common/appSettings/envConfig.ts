@@ -1,5 +1,6 @@
 import path from "path";
-import { loadJsonInto } from "../fileSystem/json.js";
+import { AsyncSingleton } from "../async/async-singleton.js";
+import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { appEnvLocator } from "./appEnvLocator.js";
 import { envRootLocator } from "./envRootLocator.js";
 import { getWithKey, setWithKey } from "../stronglyTyped/keyIndexing.js";
@@ -52,66 +53,40 @@ export class EnvConfig {
 }
 
 const envConfigData = {
-  appEnv: <EnvConfig | null>null,
-  namedEnv: <{ string: EnvConfig }>{},
+  appEnv: <AsyncSingleton<EnvConfig> | null>null,
 };
 
 export const envConfig = {
-  get appEnv(): EnvConfig | null {
-    return envConfigData.appEnv;
-  },
-  namedEnv(name: string): EnvConfig | null {
-    return getWithKey(envConfigData.namedEnv, name);
+  get appEnv(): AsyncSingleton<EnvConfig> {
+    envConfigData.appEnv = envConfigData.appEnv || getAppEnvSingleton();
+    return <AsyncSingleton<EnvConfig>>envConfigData.appEnv;
   },
 };
 
-const assureNamedNotLoaded = (name: string): void => {
-  if (getWithKey(envConfigData.namedEnv, name)) {
-    throw new Error(
-      "Env config with name " + name + " has already been loaded!"
-    );
-  }
-};
-
-const assureDefaultNotLoaded = (): void => {
-  if (envConfig.appEnv) {
-    throw new Error("Default env config has already been loaded!");
-  }
-};
-
-export const load = (...relDirPathPartsArr: string[]): EnvConfig => {
-  let envConfig = new EnvConfig();
-  envConfig.envBasePath = envRootLocator.getEnvRootRelPath(
-    ...relDirPathPartsArr
-  );
-
-  let filePath = path.join(envConfig.envBasePath, "env.jsconfig.json");
-  envConfig.data = Object.freeze(loadJsonInto(filePath, envConfig));
-
-  Object.freeze(envConfig);
-  return envConfig;
-};
-
-export const loadNamedEnv = (
-  name: string,
+export const getAppEnvSingleton = (
   ...relDirPathPartsArr: string[]
-): EnvConfig => {
-  assureNamedNotLoaded(name);
-  let envConfig = load(...relDirPathPartsArr);
+): AsyncSingleton<EnvConfig> => {
+  let envConfigSingleton = new AsyncSingleton<EnvConfig>(async () => {
+    let envConfig = new EnvConfig();
 
-  setWithKey(envConfigData.namedEnv, name, envConfig);
-  return envConfig;
-};
+    if (relDirPathPartsArr.length == 0) {
+      relDirPathPartsArr.push(
+        (await appEnvLocator.instance()).appEnvBaseRelPath || ""
+      );
+    }
 
-export const loadAppEnv = (...relDirPathPartsArr: string[]): EnvConfig => {
-  assureDefaultNotLoaded();
+    envConfig.envBasePath = (await envRootLocator.instance()).getEnvRootRelPath(
+      ...relDirPathPartsArr
+    );
 
-  if (relDirPathPartsArr.length == 0) {
-    relDirPathPartsArr.push(appEnvLocator.appEnvBaseRelPath ?? "");
-  }
+    let filePath = path.join(envConfig.envBasePath, "env.jsconfig.json");
+    envConfig.data = Object.freeze(
+      await loadJsonAsyncInto(filePath, envConfig)
+    );
 
-  let envConfig = load(...relDirPathPartsArr);
-  envConfigData.appEnv = envConfig;
+    envConfig = Object.freeze(envConfig);
+    return envConfig;
+  });
 
-  return envConfig;
+  return envConfigSingleton;
 };
