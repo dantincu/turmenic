@@ -29,7 +29,7 @@ export const isValidVersion = (vrs: string, vrsPartsCount = -1) => {
   let retVal =
     typeof vrs === "string" &&
     vrs.length > 0 &&
-    typeof parseInt(strReplaceAll(vrs, ".", "")) == "number";
+    typeof parseInt(strReplaceAll(vrs, ".", "") ?? "") == "number";
 
   if (retVal) {
     if (vrsPartsCount > 0) {

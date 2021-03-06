@@ -1,4 +1,4 @@
-import { readFileAsync } from "./index.js";
+import { readFileAsync, writeFileAsync, readFileIfExists } from "./index.js";
 
 export const loadJsonFromFileAsync = async (
   filePath: string,
@@ -6,6 +6,17 @@ export const loadJsonFromFileAsync = async (
 ): Promise<any> => {
   const rawdata = await readFileAsync(filePath);
   const jsonData = JSON.parse(rawdata.toString("utf8"), reviver);
+
+  return jsonData;
+};
+
+export const loadJsonFromFileOrDefault = async (
+  filePath: string,
+  defaultValue?: any,
+  reviver?: (this: any, key: string, value: any) => any
+): Promise<any> => {
+  const textData = await readFileIfExists(filePath);
+  const jsonData = textData ? JSON.parse(textData, reviver) : defaultValue;
 
   return jsonData;
 };
@@ -23,4 +34,10 @@ export const loadJsonAsyncInto = async (
   }
 
   return jsonData;
+};
+
+export const saveJsonToFileAsync = async (obj: any, filePath: string) => {
+  const json = JSON.stringify(obj);
+
+  await writeFileAsync(filePath, obj);
 };

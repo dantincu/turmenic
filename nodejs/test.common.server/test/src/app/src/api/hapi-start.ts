@@ -92,7 +92,7 @@ export const start = async () => {
       },
       options: {
         auth: {
-          mode: "required",
+          mode: "try",
         },
       },
     },

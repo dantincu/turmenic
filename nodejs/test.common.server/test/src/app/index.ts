@@ -4,13 +4,15 @@ import { envConfig, envBaseDir } from "./src.common/appSettings/envConfig.js";
 import { appConsole } from "./src.common/logging/appConsole.js";
 import { start } from "./src/api/hapi-start.js";
 import { appLogger } from "./src.common/logging/simple-file-logger.js";
+import { startOAuth } from "./src/googleapis/sample.js";
 
 appLogger.trace(
   "test.common.server",
   (await envConfig.appEnv?.instance())?.getEnvRelPath(envBaseDir.temp)
 );
 
-start();
+// start();
+await startOAuth();
 
 process.on("unhandledRejection", (err) => {
   console.log(err);
