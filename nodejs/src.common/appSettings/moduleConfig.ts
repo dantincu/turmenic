@@ -8,7 +8,7 @@ export interface ModuleConfigOptions {
 }
 
 export class ModuleConfig {
-  modules: {};
+  modules: { [keyof: string]: any };
   constructor() {
     this.modules = {};
   }
@@ -28,14 +28,14 @@ export class ModuleConfig {
     return filePath;
   }
 
-  get(modName): any {
+  get(modName: string): any {
     let mod = this.modules[modName];
     return mod;
   }
 
   async load(
     opts: ModuleConfigOptions & {
-      transform?: (cfg, data) => object;
+      transform?: (cfg: ModuleConfigOptions, data: any) => object;
     }
   ) {
     opts.transform =
@@ -50,12 +50,12 @@ export class ModuleConfig {
       });
 
     let moduleName = opts.mn;
-    let instance = opts.obj || new Object();
-    let filePathParts = opts.fpp;
+    let instance = opts.obj ?? {};
+    let filePathParts = opts.fpp ?? [];
 
     let filePath = await this.getModCfgFilePath(moduleName, ...filePathParts);
     let data = Object.freeze(await loadJsonAsyncInto(filePath, instance));
-    let mod = Object.freeze(opts.transform(instance, data));
+    let mod = Object.freeze(opts.transform(opts, data));
 
     this.modules[moduleName] = mod;
     return mod;

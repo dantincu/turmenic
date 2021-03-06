@@ -1,5 +1,5 @@
 import path from "path";
-import * as fsPath from "../fileSystem/path.js";
+import * as fsPath from "../fileSystem/platform.js";
 import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { appDataEnv } from "../appDataEnv.js";
 import { AsyncSingleton } from "../async/async-singleton.js";
