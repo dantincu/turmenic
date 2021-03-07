@@ -29,6 +29,7 @@ import {
 
 export const DATA_SOURCE_DIR_REL_PATH = "./app-data";
 export const DATA_SOURCE_NAME = "localFileAppData";
+export const REQUIRED_VERSION_VALUE = "0.0.1";
 
 export class AppLocalFileCollection<
   TData,
@@ -53,7 +54,7 @@ export class CloudStorageDeviceDirLocationCollection extends AppLocalFileCollect
       new DataCollectionOptions<
         CloudStorageDeviceDirLocation,
         CloudStorageDeviceDirLocation
-      >(envConfig, DATA_SOURCE_NAME, DATA_SOURCE_DIR_REL_PATH)
+      >(envConfig, DATA_SOURCE_NAME, "cloudStorageDeviceDirLocations")
     );
   }
 }
@@ -67,7 +68,7 @@ export class DeviceDirLocationTypeCollection extends AppLocalFileCollection<
       new DataCollectionOptions<DeviceDirLocationType, DeviceDirLocationType>(
         envConfig,
         DATA_SOURCE_NAME,
-        DATA_SOURCE_DIR_REL_PATH
+        "deviceDirLocationTypes"
       )
     );
   }
@@ -82,7 +83,7 @@ export class DeviceRootDirLocationCollection extends AppLocalFileCollection<
       new DataCollectionOptions<DeviceRootDirLocation, DeviceRootDirLocation>(
         envConfig,
         DATA_SOURCE_NAME,
-        DATA_SOURCE_DIR_REL_PATH
+        "deviceRootDirLocations"
       )
     );
   }
@@ -97,7 +98,7 @@ export class CloudStoragePlatformCollection extends AppLocalFileCollection<
       new DataCollectionOptions<CloudStoragePlatform, CloudStoragePlatform>(
         envConfig,
         DATA_SOURCE_NAME,
-        DATA_SOURCE_DIR_REL_PATH
+        "cloudStoragePlatforms"
       )
     );
   }
@@ -112,7 +113,7 @@ export class ServicePlatformCollection extends AppLocalFileCollection<
       new DataCollectionOptions<ServicePlatform, ServicePlatform>(
         envConfig,
         DATA_SOURCE_NAME,
-        DATA_SOURCE_DIR_REL_PATH
+        "servicePlatforms"
       )
     );
   }
@@ -127,7 +128,7 @@ export class ServicePlatformUserAccountCollection extends AppLocalFileCollection
       new DataCollectionOptions<
         ServicePlatformUserAccount,
         ServicePlatformUserAccount
-      >(envConfig, DATA_SOURCE_NAME, DATA_SOURCE_DIR_REL_PATH)
+      >(envConfig, DATA_SOURCE_NAME, "servicePlatformUserAccounts")
     );
   }
 }
@@ -138,7 +139,7 @@ export class AppMetadataLocalFileCollection extends MetadataLocalFileCollectionB
       new DataCollectionOptions<DataSourceMetadata, DataSourceMetadata>(
         envConfig,
         DATA_SOURCE_NAME,
-        DATA_SOURCE_DIR_REL_PATH
+        "metadata"
       )
     );
   }

@@ -15,6 +15,9 @@ import {
 
 import { getValue } from "../../utils/func.js";
 import { clone, copyShallow } from "../../utils/types.js";
+import { compareVersions } from "../../text/pckg.js";
+
+export const BLANK_VERSION_VALUE = "0.0.0";
 
 export interface DataSaveOptions<TData, TJsonData> {
   uuidPropName?: string;
@@ -43,6 +46,19 @@ export interface DataSaveResultRaw<TData, TJsonData>
 export interface DataSaveResult<TData, TJsonData>
   extends DataSaveResultBase<TData, TJsonData> {
   dataList: TData[];
+}
+
+export enum DataSourceUpdateErrorType {
+  None = 0,
+  CorruptedData = 1,
+  Unknown = 2,
+}
+
+export interface DataSourceUpdateResult {
+  success: boolean;
+  alreadyUpToDate: boolean;
+  errorMessage?: string;
+  errorType: DataSourceUpdateErrorType;
 }
 
 export class DataCollectionOptions<TData, TJsonData> {
@@ -292,4 +308,70 @@ export interface DataSourceMetadata {
 export abstract class MetadataCollectionBase extends DataCollectionBase<
   DataSourceMetadata,
   DataSourceMetadata
-> {}
+> {
+  constructor(
+    opts: DataCollectionOptions<DataSourceMetadata, DataSourceMetadata>
+  ) {
+    super(opts);
+  }
+}
+
+export const assureUpToDate = async (
+  metadataCollection: DataCollectionBase<
+    DataSourceMetadata,
+    DataSourceMetadata
+  >,
+  reqVersion: string,
+  err?: Error
+) => {
+  const updateResult = await IsUpToDate(metadataCollection, reqVersion);
+
+  if (!updateResult.success || updateResult.alreadyUpToDate !== true) {
+    err = err ?? new Error(updateResult.errorMessage);
+    throw err;
+  }
+};
+
+export const IsUpToDate = async (
+  metadataCollection: DataCollectionBase<
+    DataSourceMetadata,
+    DataSourceMetadata
+  >,
+  reqVersion: string
+): Promise<DataSourceUpdateResult> => {
+  const metadataList = await metadataCollection.fetch();
+  let dataCorrupted = metadataList.length > 1;
+  let corruptedDataErrorMessage = "the loaded data is ambiguous";
+  let versionComparisonResult = 0;
+  let isUpToDate = false;
+  const metadata = metadataList.pop() ?? null;
+
+  if (!dataCorrupted) {
+    if (metadata) {
+      const currentVersion = metadata?.dataSourceVersion ?? BLANK_VERSION_VALUE;
+
+      versionComparisonResult = compareVersions(currentVersion, reqVersion);
+    }
+
+    if (versionComparisonResult > 0) {
+      dataCorrupted = true;
+      corruptedDataErrorMessage =
+        "the current version is more recent than the required version";
+    } else if (versionComparisonResult === 0) {
+      isUpToDate = true;
+    }
+  }
+
+  const result = <DataSourceUpdateResult>{
+    success: !dataCorrupted,
+    errorType: dataCorrupted
+      ? DataSourceUpdateErrorType.CorruptedData
+      : DataSourceUpdateErrorType.None,
+    errorMessage: dataCorrupted
+      ? `Data source metadata file contains corrupted data: ${corruptedDataErrorMessage}`
+      : null,
+    alreadyUpToDate: isUpToDate,
+  };
+
+  return result;
+};

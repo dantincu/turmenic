@@ -4,11 +4,7 @@ import {
 } from "../../../../../src.common/appSettings/envConfig.js";
 
 import {
-  DataSourceUpdateResult,
   DataSourceUpdateOptions,
-  BLANK_VERSION_VALUE,
-  DataSourceUpdateErrorType,
-  DataCollectionUpdateBase,
   DataSourceCollectionsUpdateBase,
   TypedDataCollectionUpdateBase,
 } from "../../../../../src.common/data/json/update/index.js";
@@ -16,6 +12,7 @@ import {
 import {
   DataCollectionOptions,
   DataSourceMetadata,
+  BLANK_VERSION_VALUE,
 } from "../../../../../src.common/data/json/data-collection.js";
 
 import { LocalFileDataSourceUpdateBase } from "../../../../../src.common/data/json/update/local-file.js";
@@ -48,59 +45,113 @@ import {
   ServicePlatformUserAccount,
 } from "../../../schema/service-providers.schema.js";
 
-const getDataCollectionUpdateList = (
-  envConfig: EnvConfig
-): DataCollectionUpdateBase[] => {
-  const dataCollectionUpdatesList: DataCollectionUpdateBase[] = [
-    new TypedDataCollectionUpdateBase<
+import {
+  cloudStorageDeviceDirLocations,
+  deviceRootDirLocations,
+  servicePlatformUserAccounts,
+} from "../../../userData.js";
+
+import { cloudStoragePlatforms } from "../../../app-data/cloudStoragePlatforms.js";
+import { deviceDirLocationTypes } from "../../../app-data/deviceDirLocationTypes";
+import { servicePlatforms } from "../../../app-data/servicePlatforms.js";
+import { env } from "node:process";
+
+export class AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate extends DataSourceCollectionsUpdateBase {
+  public metadataCollectionUpdate: TypedDataCollectionUpdateBase<
+    DataSourceMetadata,
+    DataSourceMetadata,
+    AppMetadataLocalFileCollection
+  >;
+
+  public cloudStorageDeviceDirLocationCollectionUpdate: TypedDataCollectionUpdateBase<
+    CloudStorageDeviceDirLocation,
+    CloudStorageDeviceDirLocation,
+    CloudStorageDeviceDirLocationCollection
+  >;
+
+  public deviceDirLocationTypeCollectionUpdate: TypedDataCollectionUpdateBase<
+    DeviceDirLocationType,
+    DeviceDirLocationType,
+    DeviceDirLocationTypeCollection
+  >;
+
+  public deviceRootDirLocationCollectionUpdate: TypedDataCollectionUpdateBase<
+    DeviceRootDirLocation,
+    DeviceRootDirLocation,
+    DeviceRootDirLocationCollection
+  >;
+
+  public cloudStoragePlatformCollectionUpdate: TypedDataCollectionUpdateBase<
+    CloudStoragePlatform,
+    CloudStoragePlatform,
+    CloudStoragePlatformCollection
+  >;
+
+  public servicePlatformCollectionUpdate: TypedDataCollectionUpdateBase<
+    ServicePlatform,
+    ServicePlatform,
+    ServicePlatformCollection
+  >;
+
+  public servicePlatformUserAccountCollectionUpdate: TypedDataCollectionUpdateBase<
+    ServicePlatformUserAccount,
+    ServicePlatformUserAccount,
+    ServicePlatformUserAccountCollection
+  >;
+
+  constructor(envConfig: EnvConfig) {
+    super([]);
+
+    this.metadataCollectionUpdate = new TypedDataCollectionUpdateBase<
       DataSourceMetadata,
       DataSourceMetadata,
       AppMetadataLocalFileCollection
-    >(new AppMetadataLocalFileCollection(envConfig)),
+    >(new AppMetadataLocalFileCollection(envConfig));
+    this.collectionsList.push(this.metadataCollectionUpdate);
 
-    new TypedDataCollectionUpdateBase<
+    this.cloudStorageDeviceDirLocationCollectionUpdate = new TypedDataCollectionUpdateBase<
       CloudStorageDeviceDirLocation,
       CloudStorageDeviceDirLocation,
       CloudStorageDeviceDirLocationCollection
-    >(new CloudStorageDeviceDirLocationCollection(envConfig)),
+    >(new CloudStorageDeviceDirLocationCollection(envConfig));
+    this.collectionsList.push(
+      this.cloudStorageDeviceDirLocationCollectionUpdate
+    );
 
-    new TypedDataCollectionUpdateBase<
+    this.deviceDirLocationTypeCollectionUpdate = new TypedDataCollectionUpdateBase<
       DeviceDirLocationType,
       DeviceDirLocationType,
       DeviceDirLocationTypeCollection
-    >(new DeviceDirLocationTypeCollection(envConfig)),
+    >(new DeviceDirLocationTypeCollection(envConfig));
+    this.collectionsList.push(this.deviceDirLocationTypeCollectionUpdate);
 
-    new TypedDataCollectionUpdateBase<
+    this.deviceRootDirLocationCollectionUpdate = new TypedDataCollectionUpdateBase<
       DeviceRootDirLocation,
       DeviceRootDirLocation,
       DeviceRootDirLocationCollection
-    >(new DeviceRootDirLocationCollection(envConfig)),
+    >(new DeviceRootDirLocationCollection(envConfig));
+    this.collectionsList.push(this.deviceRootDirLocationCollectionUpdate);
 
-    new TypedDataCollectionUpdateBase<
+    this.cloudStoragePlatformCollectionUpdate = new TypedDataCollectionUpdateBase<
       CloudStoragePlatform,
       CloudStoragePlatform,
       CloudStoragePlatformCollection
-    >(new CloudStoragePlatformCollection(envConfig)),
+    >(new CloudStoragePlatformCollection(envConfig));
+    this.collectionsList.push(this.cloudStoragePlatformCollectionUpdate);
 
-    new TypedDataCollectionUpdateBase<
+    this.servicePlatformCollectionUpdate = new TypedDataCollectionUpdateBase<
       ServicePlatform,
       ServicePlatform,
       ServicePlatformCollection
-    >(new ServicePlatformCollection(envConfig)),
+    >(new ServicePlatformCollection(envConfig));
+    this.collectionsList.push(this.servicePlatformCollectionUpdate);
 
-    new TypedDataCollectionUpdateBase<
+    this.servicePlatformUserAccountCollectionUpdate = new TypedDataCollectionUpdateBase<
       ServicePlatformUserAccount,
       ServicePlatformUserAccount,
       ServicePlatformUserAccountCollection
-    >(new ServicePlatformUserAccountCollection(envConfig)),
-  ];
-
-  return dataCollectionUpdatesList;
-};
-
-export class AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate extends DataSourceCollectionsUpdateBase {
-  constructor(envConfig: EnvConfig) {
-    super(getDataCollectionUpdateList(envConfig));
+    >(new ServicePlatformUserAccountCollection(envConfig));
+    this.collectionsList.push(this.servicePlatformUserAccountCollectionUpdate);
   }
 }
 
@@ -108,7 +159,7 @@ export class AppLocalFile_Init_To_V_0_0_1_UpdateOptions extends DataSourceUpdate
   constructor(
     dataSource: AppLocalFileDataSource,
     metadataCollection: AppMetadataLocalFileCollection,
-    requiredVersion?: string
+    requiredVersion: string
   ) {
     super(dataSource, metadataCollection, requiredVersion);
   }
@@ -121,7 +172,7 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
   constructor(
     dataSource: AppLocalFileDataSource,
     metadataCollection: AppMetadataLocalFileCollection,
-    requiredVersion?: string
+    requiredVersion: string
   ) {
     super(
       new AppLocalFile_Init_To_V_0_0_1_UpdateOptions(
@@ -139,23 +190,48 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
     return collectionsUpdate;
   }
 
-  getAllEngines<
-    TCollectionsUpdate extends AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate
-  >(collectionsUpdate: TCollectionsUpdate): UpdateEngineBase[] {
-    throw new Error("Method not implemented.");
+  getAllEngines<TCollectionsUpdate extends DataSourceCollectionsUpdateBase>(
+    collectionsUpdate: TCollectionsUpdate
+  ): UpdateEngineBase[] {
+    const allEngines: UpdateEngineBase[] = [
+      new AppLocalFile_Init_To_V_0_0_1_UpdateEngine(
+        new AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate(this.envConfig)
+      ),
+    ];
+
+    return allEngines;
   }
 }
 
 export class AppLocalFile_Init_To_V_0_0_1_UpdateEngine extends TypedUpdateEngineBase<AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate> {
+  constructor(
+    collectionsUpdate: AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate
+  ) {
+    super(collectionsUpdate);
+  }
+
   getFromVersion(): string {
     const fromVersion = BLANK_VERSION_VALUE;
     return fromVersion;
   }
+
   getToVersion(): string {
     const toVersion = "0.0.1";
     return toVersion;
   }
-  run(): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async run(): Promise<void> {
+    this.dataSourceCollectionsUpdate.cloudStorageDeviceDirLocationCollectionUpdate.data = cloudStorageDeviceDirLocations;
+    this.dataSourceCollectionsUpdate.deviceRootDirLocationCollectionUpdate.data = deviceRootDirLocations;
+    this.dataSourceCollectionsUpdate.servicePlatformUserAccountCollectionUpdate.data = servicePlatformUserAccounts;
+    this.dataSourceCollectionsUpdate.cloudStoragePlatformCollectionUpdate.data = cloudStoragePlatforms;
+    this.dataSourceCollectionsUpdate.deviceDirLocationTypeCollectionUpdate.data = deviceDirLocationTypes;
+    this.dataSourceCollectionsUpdate.servicePlatformCollectionUpdate.data = servicePlatforms;
+
+    this.dataSourceCollectionsUpdate.metadataCollectionUpdate.data = [
+      <DataSourceMetadata>{
+        dataSourceVersion: this.toVersion,
+      },
+    ];
   }
 }

@@ -1,18 +1,21 @@
 import {
-  BLANK_VERSION_VALUE,
-  CURRENT_VERSION_VALUE,
+  EnvConfig,
+  envBaseDir,
+} from "../../../../src.common/appSettings/envConfig.js";
+
+import {
   TypedDataCollectionUpdateBase,
   DataSourceCollectionsUpdateBase,
   DataCollectionUpdateBase,
-  DataSourceUpdateResult,
   DataSourceUpdateOptions,
-  DataSourceUpdateErrorType,
 } from "./index.js";
 
 import {
   DataCollectionBase,
   DataSourceBase,
   DataSourceMetadata,
+  DataSourceUpdateResult,
+  BLANK_VERSION_VALUE,
 } from "../data-collection.js";
 
 import { DataSourceUpdateBase } from "./data-source.js";
@@ -23,10 +26,19 @@ export abstract class UpdateManagerBase<
     DataSourceMetadata
   >
 > {
+  envConfig: EnvConfig;
+  dataSource: DataSourceBase;
   requiredVersion: string;
   currentVersion?: string;
 
-  constructor(requiredVersion: string, currentVersion?: string) {
+  constructor(
+    envConfig: EnvConfig,
+    dataSource: DataSourceBase,
+    requiredVersion: string,
+    currentVersion?: string
+  ) {
+    this.envConfig = envConfig;
+    this.dataSource = dataSource;
     this.requiredVersion = requiredVersion;
     this.currentVersion = currentVersion;
   }
@@ -56,6 +68,6 @@ export abstract class UpdateManagerBase<
     }
 
     const update = filteredUpdates.pop();
-    return update;
+    return <DataSourceUpdateBase<TMetadataCollection>>update;
   }
 }

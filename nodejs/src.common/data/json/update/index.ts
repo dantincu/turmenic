@@ -4,9 +4,6 @@ import {
   DataSourceMetadata,
 } from "../data-collection.js";
 
-export const BLANK_VERSION_VALUE = "0.0.0";
-export const CURRENT_VERSION_VALUE = "0.0.1";
-
 export class DataSourceUpdateOptions<
   TMetadataCollection extends DataCollectionBase<
     DataSourceMetadata,
@@ -15,30 +12,17 @@ export class DataSourceUpdateOptions<
 > {
   dataSource: DataSourceBase;
   metadataCollection: TMetadataCollection;
-  requiredVersion?: string;
+  requiredVersion: string;
 
   constructor(
     dataSource: DataSourceBase,
     metadataCollection: TMetadataCollection,
-    requiredVersion?: string
+    requiredVersion: string
   ) {
     this.dataSource = dataSource;
     this.metadataCollection = metadataCollection;
     this.requiredVersion = requiredVersion;
   }
-}
-
-export enum DataSourceUpdateErrorType {
-  None = 0,
-  CorruptedData = 1,
-  Unknown = 2,
-}
-
-export interface DataSourceUpdateResult {
-  success: boolean;
-  alreadyUpToDate: boolean;
-  errorMessage?: string;
-  errorType: DataSourceUpdateErrorType;
 }
 
 export abstract class DataCollectionUpdateBase {

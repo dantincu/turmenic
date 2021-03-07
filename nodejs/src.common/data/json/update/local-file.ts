@@ -16,11 +16,7 @@ import { DataCollectionBase, DataSourceBase } from "../data-collection.js";
 import { compareVersions } from "../../../text/pckg.js";
 import { UpdateEngineBase } from "./engine.js";
 
-import {
-  DataSourceUpdateOptions,
-  DataSourceUpdateErrorType,
-  DataSourceUpdateResult,
-} from "./index.js";
+import { DataSourceUpdateOptions } from "./index.js";
 
 import { DataSourceMetadata } from "../data-collection.js";
 

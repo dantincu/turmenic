@@ -9,7 +9,7 @@ import { ServicePlatform } from "../schema/service-providers.schema.js";
   hasCloudStorage: boolean; // false for Yahoo, Facebook & Vivaldi Browser & Mail.
   mainDomain: string; // google.com for Google, microsoft.com for Microsoft etc
 */
-const servicePlatforms: ServicePlatform[] = [
+export const servicePlatforms: ServicePlatform[] = [
   {
     uuid: "0ba14996-d3bb-4b1c-b61a-910458118158",
     key: "google",

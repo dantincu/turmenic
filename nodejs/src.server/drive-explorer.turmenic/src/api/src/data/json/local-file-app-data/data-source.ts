@@ -1,6 +1,7 @@
 import {
   DataCollectionOptions,
   DataSourceMetadata,
+  assureUpToDate,
 } from "../../../../src.common/data/json/data-collection.js";
 
 import {
@@ -14,6 +15,7 @@ import {
   DeviceDirLocationTypeCollection,
   DATA_SOURCE_NAME,
   DATA_SOURCE_DIR_REL_PATH,
+  REQUIRED_VERSION_VALUE,
   CloudStoragePlatformCollection,
   CloudStorageDeviceDirLocationCollection,
   DeviceRootDirLocationCollection,
@@ -23,6 +25,7 @@ import {
 } from "./index.js";
 
 export class AppLocalFileDataSource extends LocalFileDataSourceBase {
+  public readonly metadataCollection: AppMetadataLocalFileCollection;
   public readonly deviceDirLocationTypeCollection: DeviceDirLocationTypeCollection;
   public readonly cloudStoragePlatformCollection: CloudStoragePlatformCollection;
   public readonly cloudStorageDeviceDirLocationCollection: CloudStorageDeviceDirLocationCollection;
@@ -32,6 +35,10 @@ export class AppLocalFileDataSource extends LocalFileDataSourceBase {
 
   constructor(opts: LocalFileDataSourceOptions) {
     super(opts);
+
+    this.metadataCollection = new AppMetadataLocalFileCollection(
+      opts.envConfig
+    );
 
     this.deviceDirLocationTypeCollection = new DeviceDirLocationTypeCollection(
       opts.envConfig
@@ -56,5 +63,9 @@ export class AppLocalFileDataSource extends LocalFileDataSourceBase {
     this.servicePlatformUserAccountCollection = new ServicePlatformUserAccountCollection(
       opts.envConfig
     );
+  }
+
+  public async assureUpToDate(): Promise<void> {
+    await assureUpToDate(this.metadataCollection, REQUIRED_VERSION_VALUE);
   }
 }

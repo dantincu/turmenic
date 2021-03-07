@@ -6,7 +6,7 @@ import { DeviceDirLocationType } from "../schema/device-dir-locations.schema.js"
   name: string;
   description: string;
 */
-const deviceDirLocationTypes: DeviceDirLocationType[] = [
+export const deviceDirLocationTypes: DeviceDirLocationType[] = [
   {
     uuid: "84da37e7-7ddf-48e2-bb24-09720de3a060",
     key: "os-fs-dir",

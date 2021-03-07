@@ -12,7 +12,7 @@ import {
   cloudStoragePlatformKey: string; // e.g. dropbox / google-drive
   deviceLocationKey: string; // e.g. dropbox/dan.tincu@gmail.com / google-drive/dan.tincu@gmail.com
 */
-const cloudStorageDeviceDirLocations: CloudStorageDeviceDirLocation[] = [];
+export const cloudStorageDeviceDirLocations: CloudStorageDeviceDirLocation[] = [];
 
 /*
   uuid: string;
@@ -23,7 +23,7 @@ const cloudStorageDeviceDirLocations: CloudStorageDeviceDirLocation[] = [];
   isDefault: boolean;
   locationTypeKey: string;
 */
-const deviceRootDirLocations: DeviceRootDirLocation[] = [];
+export const deviceRootDirLocations: DeviceRootDirLocation[] = [];
 
 /*
   uuid: string;
@@ -34,4 +34,4 @@ const deviceRootDirLocations: DeviceRootDirLocation[] = [];
   email: string;
   servicePlatformKey: string;
 */
-const servicePlatformUserAccounts: ServicePlatformUserAccount[] = [];
+export const servicePlatformUserAccounts: ServicePlatformUserAccount[] = [];
