@@ -7,8 +7,13 @@ export interface ModuleConfigOptions {
   fpp?: string[];
 }
 
+export interface ModuleData {
+  cfg: ModuleConfigOptions;
+  data: any;
+}
+
 export class ModuleConfig {
-  modules: { [keyof: string]: any };
+  modules: { [keyof: string]: ModuleData };
   constructor() {
     this.modules = {};
   }
@@ -28,20 +33,20 @@ export class ModuleConfig {
     return filePath;
   }
 
-  get(modName: string): any {
+  get(modName: string): ModuleData {
     let mod = this.modules[modName];
     return mod;
   }
 
   async load(
     opts: ModuleConfigOptions & {
-      transform?: (cfg: ModuleConfigOptions, data: any) => object;
+      transform?: (cfg: ModuleConfigOptions, data: any) => ModuleData;
     }
   ) {
     opts.transform =
       opts.transform ??
       ((cfg, data) => {
-        let mod = {
+        let mod = <ModuleData>{
           data: data,
           cfg: cfg,
         };
@@ -73,9 +78,9 @@ export class ModuleConfig {
     return opts;
   }
 
-  async getOrLoad(opts: ModuleConfigOptions | string): Promise<object> {
+  async getOrLoad(opts: ModuleConfigOptions | string): Promise<ModuleData> {
     opts = this.normalizeOptions(opts);
-    let mod: object = this.get(opts.mn);
+    let mod: ModuleData = this.get(opts.mn);
 
     if (!mod) {
       mod = await this.load(opts);
