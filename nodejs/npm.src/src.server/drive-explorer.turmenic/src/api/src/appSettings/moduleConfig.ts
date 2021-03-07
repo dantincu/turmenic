@@ -4,7 +4,8 @@ import {
   cfg,
 } from "../../src.node.common/appSettings/moduleConfig.js";
 
-export interface HapiServerOptions {
+export interface HapiServerOptionsCfg {
+  appName?: string;
   address: string;
   port: number;
   tlsCertRelPath: string;
@@ -12,6 +13,8 @@ export interface HapiServerOptions {
   cookiePassword: string;
 }
 
-export const hapiServerOptionsCfg = <HapiServerOptions>await cfg.getOrLoad({
-  mn: "hapiServerOptions",
-});
+export const hapiServerOptionsCfg = <HapiServerOptionsCfg>(
+  await cfg.getOrLoad({
+    mn: "hapiServerOptions",
+  })
+).data;

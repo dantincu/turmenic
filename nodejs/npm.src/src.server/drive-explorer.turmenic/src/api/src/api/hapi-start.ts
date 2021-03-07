@@ -1,82 +1,31 @@
-import Hapi from "@hapi/hapi";
-import Cookie from "@hapi/cookie";
+import {
+  startServer,
+  getServerWithCookieAuth,
+  getDefaultAuthRoute,
+  getDefaultHomeRoute,
+} from "../../src.node.common.server/api/hapi/server.js";
 
 import {
-  envConfig,
-  envBaseDir,
-} from "../../src.node.common/appSettings/envConfig.js";
+  DEFAULT_AUTH_COOKIE_TTL_MILLIS,
+  normializeOpts,
+  ServerAuthSession,
+  getServerOptions,
+  HapiServerOptions,
+  HapiServerTtlOptions,
+  HapiCookieAuthOptions,
+} from "../../src.node.common.server/api/hapi/index.js";
 
-import { appLogger } from "../../src.node.common/logging/simple-file-logger.js";
-import { serverOptions } from "./hapi-options.js";
-import { hapiServerOptionsCfg } from "../appSettings/moduleConfig.js";
+import { getHapiServerOptions } from "./hapi-options.js";
 
-export const APP_NAME = "auth.drive-explorer.turmenic";
-export const COOKIE_TTL_MILLIS = 1000 * 3600 * 24 * 365;
-
-export interface CloudStoragePlatformAccount {
-  accountEmail: string;
-  accountPlatformKey: string;
-}
-
-export interface HapiServerAuthSession {
-  appName: string;
-  authenticatedAccounts: CloudStoragePlatformAccount[];
-}
+import { getRoutes } from "./hapi-routes.js";
 
 export const start = async () => {
-  const server = Hapi.server(serverOptions);
-  await server.register([Cookie]);
+  const opts = getHapiServerOptions();
+  const server = await getServerWithCookieAuth(opts);
+  const routes = await getRoutes(opts);
 
-  server.auth.strategy("session", "cookie", {
-    cookie: {
-      name: APP_NAME,
-      password: hapiServerOptionsCfg.cookiePassword,
-      isSecure: true,
-      ttl: COOKIE_TTL_MILLIS,
-    },
-    redirectTo: "/login",
-    validateFunc: async (request: any, session: HapiServerAuthSession) => {
-      const isValid = session.appName === APP_NAME;
+  server.route(routes);
+  await startServer(server);
 
-      if (!isValid) {
-        return { valid: false };
-      }
-
-      return { valid: true };
-    },
-  });
-
-  server.auth.default("session");
-
-  server.route([
-    {
-      method: "GET",
-      path: "/",
-      handler: function (request, h) {
-        return "Welcome to the Turmenic Drive Explorer api home page!";
-      },
-    },
-    {
-      method: "POST",
-      path: "/auth",
-      handler: async (request, h) => {
-        request.cookieAuth.set({
-          appName: APP_NAME,
-          authenticatedAccounts: [],
-        });
-        request.cookieAuth.ttl(COOKIE_TTL_MILLIS);
-
-        return h.redirect("/");
-      },
-      options: {
-        auth: {
-          mode: "try",
-        },
-      },
-    },
-  ]);
-
-  await server.start();
-
-  console.log("server running at: " + server.info.uri);
+  return server;
 };

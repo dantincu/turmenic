@@ -1,31 +1,34 @@
-import { ServerOptions } from "@hapi/hapi";
-
 import {
-  envConfig,
-  envBaseDir,
-} from "../../src.node.common/appSettings/envConfig.js";
-import { appConsole } from "../../src.common/logging/appConsole.js";
-import { readFileAsync } from "../../src.node.common/fileSystem/index.js";
+  HapiCookieAuthOptions,
+  HapiServerTtlOptions,
+  HapiServerOptions,
+  getServerOptions,
+  DEFAULT_AUTH_COOKIE_TTL_MILLIS,
+  ServerAuthSession,
+  normializeOpts,
+} from "../../src.node.common.server/api/hapi/index.js";
+
 import { hapiServerOptionsCfg } from "../appSettings/moduleConfig.js";
 
-const appEnv = await envConfig.appEnv.instance();
+export const APP_NAME = "api.drive-explorer.turmenic";
 
-const certFilePath = <string>(
-  appEnv.getEnvRelPath(envBaseDir.config, hapiServerOptionsCfg.tlsCertRelPath)
-);
+export const getHapiServerOptions = (): HapiServerOptions => {
+  let opts = <HapiServerOptions>{
+    appName: hapiServerOptionsCfg.appName ?? APP_NAME,
+    address: hapiServerOptionsCfg.address,
+    port: hapiServerOptionsCfg.port,
+    tlsOptions: <HapiServerTtlOptions>{
+      tlsCertRelPath: hapiServerOptionsCfg.tlsCertRelPath,
+      tlsCertKeyRelPath: hapiServerOptionsCfg.tlsCertKeyRelPath,
+    },
+    addDefaultHomeRoute: true,
+    addDefaultAuthRoute: true,
+  };
 
-const certKeyFilePath = <string>(
-  appEnv.getEnvRelPath(
-    envBaseDir.config,
-    hapiServerOptionsCfg.tlsCertKeyRelPath
-  )
-);
+  opts = normializeOpts(opts);
 
-export const serverOptions = <ServerOptions>{
-  hapiServerOptionsport: hapiServerOptionsCfg.port,
-  address: hapiServerOptionsCfg.address,
-  tls: {
-    key: (await readFileAsync(certKeyFilePath)).toString("utf8"),
-    cert: (await readFileAsync(certFilePath)).toString("utf8"),
-  },
+  const cookieAuthOptions = <HapiCookieAuthOptions>opts.cookieAuthOptions;
+  cookieAuthOptions.authCookiePassword = hapiServerOptionsCfg.cookiePassword;
+
+  return opts;
 };
