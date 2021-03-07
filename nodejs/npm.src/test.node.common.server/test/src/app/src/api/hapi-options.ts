@@ -4,7 +4,7 @@ import {
   envConfig,
   envBaseDir,
 } from "../../src.node.common/appSettings/envConfig.js";
-import { appConsole } from "../../src.node.common/logging/appConsole.js";
+import { appConsole } from "../../src.common/logging/appConsole.js";
 import { readFileAsync } from "../../src.node.common/fileSystem/index.js";
 
 const appEnv = await envConfig.appEnv.instance();

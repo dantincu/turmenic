@@ -1,7 +1,7 @@
 // @ts-ignore
 import SimpleNodeLogger from "simple-node-logger";
 import { envConfig, envBaseDir } from "../appSettings/envConfig.js";
-import { appConsole } from "./appConsole.js";
+import { appConsole } from "../../src.common/logging/appConsole.js";
 
 const appEnv = await envConfig.appEnv.instance();
 

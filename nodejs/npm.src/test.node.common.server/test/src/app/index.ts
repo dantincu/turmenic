@@ -4,7 +4,7 @@ import {
   envConfig,
   envBaseDir,
 } from "./src.node.common/appSettings/envConfig.js";
-import { appConsole } from "./src.node.common/logging/appConsole.js";
+import { appConsole } from "./src.common/logging/appConsole.js";
 import { start } from "./src/api/hapi-start.js";
 import { appLogger } from "./src.node.common/logging/simple-file-logger.js";
 import { startOAuth } from "./src/googleapis/sample.js";

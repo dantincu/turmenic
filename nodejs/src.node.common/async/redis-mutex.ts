@@ -5,7 +5,7 @@ import {
   execute,
   getValueAsync,
   getValue,
-} from "../utils/func.js";
+} from "../../src.common/utils/func.js";
 
 export const getRedisClient = (redisPort?: number) => {
   let client: Redis.Redis;

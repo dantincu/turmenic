@@ -1,7 +1,7 @@
 import path from "path";
 import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { envRootConfig, EnvRootConfig } from "./envRootConfig.js";
-import { AsyncSingleton } from "../async/async-singleton.js";
+import { AsyncSingleton } from "../../src.common/async/async-singleton.js";
 
 class AppEnvLocatorData {
   public appEnvBaseRelPath: string | null;

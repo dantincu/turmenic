@@ -1,6 +1,6 @@
 import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { envRootLocator, EnvRootLocator } from "./envRootLocator.js";
-import { AsyncSingleton } from "../async/async-singleton.js";
+import { AsyncSingleton } from "../../src.common/async/async-singleton.js";
 
 export class EnvRootConfig {
   public data: any | null;

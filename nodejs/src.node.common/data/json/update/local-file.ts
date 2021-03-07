@@ -13,7 +13,7 @@ import {
 } from "../../../../src.node.common/fileSystem/index.js";
 
 import { DataCollectionBase, DataSourceBase } from "../data-collection.js";
-import { compareVersions } from "../../../text/pckg.js";
+import { compareVersions } from "../../../../src.common/text/pckg.js";
 import { UpdateEngineBase } from "./engine.js";
 
 import { DataSourceUpdateOptions } from "./index.js";

@@ -13,9 +13,9 @@ import {
   getValueLocking,
 } from "../../async/redis-mutex.js";
 
-import { getValue } from "../../utils/func.js";
-import { clone, copyShallow } from "../../utils/types.js";
-import { compareVersions } from "../../text/pckg.js";
+import { getValue } from "../../../src.common/utils/func.js";
+import { clone, copyShallow } from "../../../src.common/utils/types.js";
+import { compareVersions } from "../../../src.common/text/pckg.js";
 
 export const BLANK_VERSION_VALUE = "0.0.0";
 

@@ -1,9 +1,12 @@
 import path from "path";
-import { AsyncSingleton } from "../async/async-singleton.js";
+import { AsyncSingleton } from "../../src.common/async/async-singleton.js";
 import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { appEnvLocator } from "./appEnvLocator.js";
 import { envRootLocator } from "./envRootLocator.js";
-import { getWithKey, setWithKey } from "../stronglyTyped/keyIndexing.js";
+import {
+  getWithKey,
+  setWithKey,
+} from "../../src.common/stronglyTyped/keyIndexing.js";
 
 console.log("importing env config module");
 

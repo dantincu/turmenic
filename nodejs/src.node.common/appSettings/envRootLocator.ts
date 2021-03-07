@@ -2,7 +2,7 @@ import path from "path";
 import * as fsPath from "../fileSystem/platform.js";
 import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { appDataEnv } from "../appDataEnv.js";
-import { AsyncSingleton } from "../async/async-singleton.js";
+import { AsyncSingleton } from "../../src.common/async/async-singleton.js";
 
 class EnvRootLocatorData {
   public envRootPath: string | null;
