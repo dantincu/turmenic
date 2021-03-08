@@ -1,0 +1,13 @@
+@import "./variables.scss";
+
+@mixin text-font($size: 12px) {
+  font-family: $data-text-font-family;
+  font-size: $size;
+  font-weight: normal;
+}
+
+@mixin text-font-mono($size: 12px) {
+  font-family: $data-text-font-family-mono;
+  font-size: $size;
+  font-weight: normal;
+}
