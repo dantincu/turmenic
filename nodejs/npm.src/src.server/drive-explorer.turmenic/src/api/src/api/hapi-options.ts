@@ -1,6 +1,6 @@
 import {
   HapiCookieAuthOptions,
-  HapiServerTtlOptions,
+  HapiServerTlsOptions,
   HapiServerOptions,
   getServerOptions,
   DEFAULT_AUTH_COOKIE_TTL_MILLIS,
@@ -8,19 +8,38 @@ import {
   normializeOpts,
 } from "../../src.node.common.server/api/hapi/index.js";
 
-import { hapiServerOptionsCfg } from "../appSettings/moduleConfig.js";
+import {
+  hapiServerOptionsCfg,
+  HapiServerTlsOptionsCfg,
+} from "../appSettings/moduleConfig.js";
 
 export const APP_NAME = "api.drive-explorer.turmenic";
+
+export const getHapiServerTlsOptions = (
+  tlsCertOpts: boolean | HapiServerTlsOptionsCfg
+) => {
+  let tlsCert: boolean | HapiServerTlsOptions = false;
+
+  if (tlsCertOpts) {
+    if (typeof tlsCertOpts === "object") {
+      tlsCert = <HapiServerTlsOptions>{
+        tlsCertRelPath: tlsCertOpts.certRelPath,
+        tlsCertKeyRelPath: tlsCertOpts.keyRelPath,
+      };
+    } else {
+      tlsCert = true;
+    }
+  }
+
+  return tlsCert;
+};
 
 export const getHapiServerOptions = (): HapiServerOptions => {
   let opts = <HapiServerOptions>{
     appName: hapiServerOptionsCfg.appName ?? APP_NAME,
     address: hapiServerOptionsCfg.address,
     port: hapiServerOptionsCfg.port,
-    tlsOptions: <HapiServerTtlOptions>{
-      tlsCertRelPath: hapiServerOptionsCfg.tlsCertRelPath,
-      tlsCertKeyRelPath: hapiServerOptionsCfg.tlsCertKeyRelPath,
-    },
+    tlsCert: getHapiServerTlsOptions(hapiServerOptionsCfg.tlsCert),
     addDefaultHomeRoute: true,
     addDefaultAuthRoute: true,
   };

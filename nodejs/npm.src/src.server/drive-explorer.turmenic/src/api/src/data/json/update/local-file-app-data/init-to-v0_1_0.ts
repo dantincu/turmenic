@@ -56,7 +56,7 @@ import { deviceDirLocationTypes } from "../../../app-data/deviceDirLocationTypes
 import { servicePlatforms } from "../../../app-data/servicePlatforms.js";
 import { env } from "node:process";
 
-export class AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate extends DataSourceCollectionsUpdateBase {
+export class AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate extends DataSourceCollectionsUpdateBase {
   public metadataCollectionUpdate: TypedDataCollectionUpdateBase<
     DataSourceMetadata,
     DataSourceMetadata,
@@ -155,7 +155,7 @@ export class AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate extends DataSourceCo
   }
 }
 
-export class AppLocalFile_Init_To_V_0_0_1_UpdateOptions extends DataSourceUpdateOptions<AppMetadataLocalFileCollection> {
+export class AppLocalFile_Init_To_V_0_1_0_UpdateOptions extends DataSourceUpdateOptions<AppMetadataLocalFileCollection> {
   constructor(
     dataSource: AppLocalFileDataSource,
     metadataCollection: AppMetadataLocalFileCollection,
@@ -175,7 +175,7 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
     requiredVersion: string
   ) {
     super(
-      new AppLocalFile_Init_To_V_0_0_1_UpdateOptions(
+      new AppLocalFile_Init_To_V_0_1_0_UpdateOptions(
         dataSource,
         metadataCollection,
         requiredVersion
@@ -183,8 +183,8 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
     );
   }
 
-  getCollectionsUpdate(): AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate {
-    const collectionsUpdate = new AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate(
+  getCollectionsUpdate(): AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate {
+    const collectionsUpdate = new AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate(
       this.envConfig
     );
     return collectionsUpdate;
@@ -194,8 +194,8 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
     collectionsUpdate: TCollectionsUpdate
   ): UpdateEngineBase[] {
     const allEngines: UpdateEngineBase[] = [
-      new AppLocalFile_Init_To_V_0_0_1_UpdateEngine(
-        new AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate(this.envConfig)
+      new AppLocalFile_Init_To_V_0_1_0_UpdateEngine(
+        new AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate(this.envConfig)
       ),
     ];
 
@@ -203,9 +203,9 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
   }
 }
 
-export class AppLocalFile_Init_To_V_0_0_1_UpdateEngine extends TypedUpdateEngineBase<AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate> {
+export class AppLocalFile_Init_To_V_0_1_0_UpdateEngine extends TypedUpdateEngineBase<AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate> {
   constructor(
-    collectionsUpdate: AppLocalFile_Init_To_V_0_0_1_CollectionsUpdate
+    collectionsUpdate: AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate
   ) {
     super(collectionsUpdate);
   }
@@ -216,7 +216,7 @@ export class AppLocalFile_Init_To_V_0_0_1_UpdateEngine extends TypedUpdateEngine
   }
 
   getToVersion(): string {
-    const toVersion = "0.0.1";
+    const toVersion = "0.1.0";
     return toVersion;
   }
 

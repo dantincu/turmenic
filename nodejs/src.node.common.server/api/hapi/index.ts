@@ -13,7 +13,7 @@ export interface ServerAuthSession {
   appName: string;
 }
 
-export interface HapiServerTtlOptions {
+export interface HapiServerTlsOptions {
   tlsCertRelPath: string;
   tlsCertKeyRelPath: string;
 }
@@ -39,7 +39,7 @@ export interface HapiServerOptions {
   port: number;
   appName: string;
   cookieAuthOptions?: HapiCookieAuthOptions;
-  tlsOptions?: HapiServerTtlOptions;
+  tlsCert?: boolean | HapiServerTlsOptions;
   addDefaultHomeRoute?: boolean;
   addDefaultAuthRoute?: boolean;
 }
@@ -70,21 +70,25 @@ export const getServerOptions = async (
     address: opts.address,
   };
 
-  if (opts.tlsOptions) {
-    const certFilePath = envConfig.getEnvRelPath(
-      envBaseDir.config,
-      <string>opts.tlsOptions.tlsCertRelPath
-    );
+  if (opts.tlsCert) {
+    if (typeof opts.tlsCert === "object") {
+      const certFilePath = envConfig.getEnvRelPath(
+        envBaseDir.config,
+        <string>opts.tlsCert.tlsCertRelPath
+      );
 
-    const certKeyFilePath = envConfig.getEnvRelPath(
-      envBaseDir.config,
-      <string>opts.tlsOptions.tlsCertKeyRelPath
-    );
+      const certKeyFilePath = envConfig.getEnvRelPath(
+        envBaseDir.config,
+        <string>opts.tlsCert.tlsCertKeyRelPath
+      );
 
-    serverOptions.tls = {
-      cert: (await readFileAsync(certFilePath)).toString("utf8"),
-      key: (await readFileAsync(certKeyFilePath)).toString("utf8"),
-    };
+      serverOptions.tls = {
+        cert: (await readFileAsync(certFilePath)).toString("utf8"),
+        key: (await readFileAsync(certKeyFilePath)).toString("utf8"),
+      };
+    } else {
+      serverOptions.tls = true;
+    }
   }
 
   return serverOptions;
