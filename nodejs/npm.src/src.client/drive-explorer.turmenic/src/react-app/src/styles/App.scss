@@ -1,0 +1,26 @@
+@import "../styles/mixins.scss";
+
+.txqk-app {
+  text-align: center;
+}
+
+.txqk-app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+a.txqk-app-link.nav-link {
+  color: rgb(255, 102, 0);
+}
+
+.txqk-app-main {
+  background-color: #000f;
+}
+
+.txqk-app-cntr {
+  color: #aaaf;
+  background-color: #161616ff;
+  border-radius: 0px 0px 5px 5px;
+}

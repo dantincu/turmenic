@@ -11,7 +11,7 @@ import {
   ServerAuthSession,
   getServerOptions,
   HapiServerOptions,
-  HapiServerTtlOptions,
+  HapiServerTlsOptions,
   HapiCookieAuthOptions,
 } from "../../src.node.common.server/api/hapi/index.js";
 

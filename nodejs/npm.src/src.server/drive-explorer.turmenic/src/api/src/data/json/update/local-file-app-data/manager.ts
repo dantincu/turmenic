@@ -28,7 +28,7 @@ import { DataSourceUpdateBase } from "../../../../../src.node.common/data/json/u
 import { AppLocalFileDataSource } from "../../local-file-app-data/data-source.js";
 
 import { REQUIRED_VERSION_VALUE } from "../../local-file-app-data/index.js";
-import { AppLocalFile_Init_To_V_0_0_1_Update } from "./init-to-v0_0_1.js";
+import { AppLocalFile_Init_To_V_0_0_1_Update } from "./init-to-v0_1_0.js";
 
 export class AppLocalFileUpdateManager extends UpdateManagerBase<AppMetadataLocalFileCollection> {
   constructor(envConfig: EnvConfig, dataSource: AppLocalFileDataSource) {

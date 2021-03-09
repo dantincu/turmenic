@@ -29,7 +29,7 @@ import {
 
 export const DATA_SOURCE_DIR_REL_PATH = "./app-data";
 export const DATA_SOURCE_NAME = "localFileAppData";
-export const REQUIRED_VERSION_VALUE = "0.0.1";
+export const REQUIRED_VERSION_VALUE = "0.1.0";
 
 export class AppLocalFileCollection<
   TData,

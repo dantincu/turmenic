@@ -10,7 +10,7 @@ import { appLogger } from "../../../src.node.common/logging/simple-file-logger.j
 import {
   HapiServerOptions,
   HapiCookieAuthOptions,
-  HapiServerTtlOptions,
+  HapiServerTlsOptions,
   ServerAuthSession,
   getServerOptions,
   normializeOpts,

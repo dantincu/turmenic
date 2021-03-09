@@ -4,12 +4,16 @@ import {
   cfg,
 } from "../../src.node.common/appSettings/moduleConfig.js";
 
+export interface HapiServerTlsOptionsCfg {
+  certRelPath: string;
+  keyRelPath: string;
+}
+
 export interface HapiServerOptionsCfg {
   appName?: string;
   address: string;
   port: number;
-  tlsCertRelPath: string;
-  tlsCertKeyRelPath: string;
+  tlsCert: boolean | HapiServerTlsOptionsCfg;
   cookiePassword: string;
 }
 

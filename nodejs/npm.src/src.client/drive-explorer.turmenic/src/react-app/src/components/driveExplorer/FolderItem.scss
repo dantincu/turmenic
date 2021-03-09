@@ -1,0 +1,33 @@
+@import "../../styles/mixins.scss";
+
+.txqk-folder-item {
+  label {
+    margin: 0px;
+    padding: 0px;
+    line-height: 20px;
+  }
+
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+
+  .txqk-toggle {
+    margin: 0px;
+    float: left;
+    padding: 0px 0px 0px 0px;
+    @include text-font-mono(20px);
+    font-weight: bold;
+    line-height: 15px;
+    color: rgba(0, 128, 0, 255);
+    cursor: pointer;
+    width: 15px;
+  }
+
+  .txqk-toggle.txqk-toggle-collapsed {
+    padding: 0px 0px 0px 0px;
+  }
+
+  .txqk-toggle.txqk-toggle-expanded {
+    padding: 0px 0px 0px 0px;
+  }
+}
