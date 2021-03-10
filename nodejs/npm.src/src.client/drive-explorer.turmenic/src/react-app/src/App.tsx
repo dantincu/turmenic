@@ -1,29 +1,48 @@
-import React from 'react';
-import { Container, Nav, NavItem, NavLink } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Container } from 'reactstrap';
 import './styles/App.scss';
 
 import DriveExplorer from './components/driveExplorer/DriveExplorer';
+import ThemePicker from './components/themePicker/ThemePicker';
+import { AppTheme, setThemeAsync, selectTheme, defaultAppTheme } from './features/appTheme/appTheme';
+import { replaceClassList } from './utils/dom';
 
 const App = () => {
+    const currentAppTheme = useSelector(selectTheme) ?? defaultAppTheme;
+    const [ appThemeId, setAppThemeId ] = useState<string | null>(null);
+
+    const setCurrentAppTheme = (themeId?: string) => {
+        setAppThemeId(themeId ?? null);
+        dispatch(setThemeAsync(themeId));
+    }
+
+    const dispatch = useDispatch();
+
+    const onThemePicked = (themeId: string) => {
+        setCurrentAppTheme(themeId);
+    }
+
+    const applyThemeCssClass = (appTheme: AppTheme) => {
+        replaceClassList(document.body.classList, ["txqk"], `txqk-theme-${appTheme.id}`);
+    }
+
+    useEffect(() => {
+        if (appThemeId !== currentAppTheme.id) {
+            setCurrentAppTheme(currentAppTheme.id);
+        }
+
+        applyThemeCssClass(currentAppTheme);
+    });
+
     return (
         <div className="txqk-app">
             <header className="txqk-app-header"></header>
             <main className="txqk-app-main">
                 <Container className="txqk-app-cntr">
-                    <Nav>
-                        <NavItem>
-                            <NavLink className="txqk-app-link" href="#">Link</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink className="txqk-app-link" href="#">Link</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink className="txqk-app-link" href="#">Another Link</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink className="txqk-app-link" disabled href="#">Disabled Link</NavLink>
-                        </NavItem>
-                    </Nav>
+                    <ThemePicker
+                        currentThemeId={currentAppTheme.id}
+                        onThemePicked={onThemePicked}></ThemePicker>
                     <DriveExplorer></DriveExplorer>
                 </Container>
             </main>

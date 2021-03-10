@@ -1,0 +1,21 @@
+@import "../../styles/mixins.scss";
+@import "./themes/themes.scss";
+
+.txqk-theme-picker {
+  .txqk-dropdown-item {
+    font-weight: bold;
+
+    &.txqk-current-item {
+      background-color: rgb(255, 202, 164);
+
+      &:hover {
+        background-color: rgb(255, 160, 92);
+      }
+    }
+
+    &:hover {
+      background-color: rgb(255, 144, 0);
+      color: white;
+    }
+  }
+}

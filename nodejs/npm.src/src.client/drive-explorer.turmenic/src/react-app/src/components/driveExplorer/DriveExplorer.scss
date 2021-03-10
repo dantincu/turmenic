@@ -1,8 +1,11 @@
 @import "../../styles/mixins.scss";
+@import "./themes/themes.scss";
 
 .txqk-folder-list {
-  color: rgb(255, 128, 0);
   list-style-type: none;
   text-align: left;
   display: block;
+}
+
+.txqk-drive-explorer {
 }

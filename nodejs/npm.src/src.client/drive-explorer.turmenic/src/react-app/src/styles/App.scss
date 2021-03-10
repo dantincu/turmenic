@@ -1,4 +1,5 @@
-@import "../styles/mixins.scss";
+@import "./mixins.scss";
+@import "./themes/themes.scss";
 
 .txqk-app {
   text-align: center;
@@ -11,16 +12,6 @@
   justify-content: center;
 }
 
-a.txqk-app-link.nav-link {
-  color: rgb(255, 102, 0);
-}
-
-.txqk-app-main {
-  background-color: #000f;
-}
-
 .txqk-app-cntr {
-  color: #aaaf;
-  background-color: #161616ff;
   border-radius: 0px 0px 5px 5px;
 }
