@@ -1,4 +1,5 @@
 @import "../../styles/mixins.scss";
+@import "./themes/themes.scss";
 
 .txqk-folder-item {
   label {
@@ -18,7 +19,6 @@
     @include text-font-mono(20px);
     font-weight: bold;
     line-height: 15px;
-    color: rgba(0, 128, 0, 255);
     cursor: pointer;
     width: 15px;
   }

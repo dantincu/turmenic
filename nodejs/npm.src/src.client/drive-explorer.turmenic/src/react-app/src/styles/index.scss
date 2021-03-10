@@ -5,9 +5,8 @@ body.txqk {
   @include text-font();
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #000000ff;
 }
 
-code {
-  font-family: Consolas;
+body.txqk code {
+  @include text-font-mono();
 }

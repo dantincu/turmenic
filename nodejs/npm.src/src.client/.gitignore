@@ -8,3 +8,5 @@ src.node.common.client
 */src.node.common
 */src.node.common.server
 */src.node.common.client
+
+*.scss.css
