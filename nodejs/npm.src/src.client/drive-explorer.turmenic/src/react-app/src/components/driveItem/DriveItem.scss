@@ -1,0 +1,81 @@
+@import "../../styles/mixins.scss";
+@import "./themes/themes.scss";
+
+$toggle-width: 15px;
+$toggle-height: 15px;
+
+.txqk-drive-item {
+  text-align: left;
+  margin: 0px;
+  padding: 0px;
+
+  .txqk-btstrp-col {
+    /* width: 100%;
+    max-width: 100%; */
+    min-width: 95%;
+
+    &.txqk-item-name {
+      margin: 0px;
+      padding: 0px;
+      padding-left: 0px;
+      line-height: $toggle-height;
+
+      > .txqk-btstrp-row {
+        padding-left: 0px;
+        margin-left: 0px;
+
+        > .txqk-btstrp-col {
+          padding-left: 0px;
+          cursor: pointer;
+
+          &:hover {
+            color: #ffff00ff;
+          }
+        }
+      }
+    }
+
+    &.txqk-toggle {
+      margin: 0px;
+      padding: 0px;
+      min-height: $toggle-height;
+      max-height: $toggle-height;
+      min-width: $toggle-width;
+      max-width: $toggle-width;
+      display: block;
+    }
+
+    &.txqk-toggle > label {
+      margin: 0px 0px 0px 0px;
+      padding-right: 1px;
+      margin-top: -2px;
+      @include text-font-mono(20px);
+      cursor: pointer;
+      font-weight: bold;
+      line-height: $toggle-height;
+      width: $toggle-width;
+      height: $toggle-width;
+    }
+
+    &.txqk-toggle > label:hover {
+      border-color: lime;
+      color: lime;
+    }
+
+    &.txqk-toggle.txqk-toggle-collapsed {
+      padding: 0px 0px 0px 0px;
+    }
+
+    &.txqk-toggle.txqk-toggle-expanded {
+      padding: 0px 0px 0px 0px;
+    }
+  }
+
+  .txqk-item-children {
+    ul {
+      list-style-type: none;
+      text-align: left;
+      display: block;
+    }
+  }
+}
