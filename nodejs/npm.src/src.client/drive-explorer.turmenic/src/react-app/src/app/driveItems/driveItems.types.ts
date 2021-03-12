@@ -20,7 +20,7 @@ export interface DriveFile extends DriveItem {
 }
 
 export interface AppDriveData {
-  rootFolder?: DriveFolder;
+  rootFolders?: DriveFolder[];
   allFolders: DriveFolder[];
 }
 

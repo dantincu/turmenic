@@ -113,8 +113,8 @@ export const appDrivesSlice = createSlice({
   },
 });
 
-export const selectRootFolder = (state: RootState) => {
-  const value = state.appDrive.rootFolder;
+export const selectRootFolders = (state: RootState) => {
+  const value = state.appDrive.rootFolders;
   return value;
 };
 

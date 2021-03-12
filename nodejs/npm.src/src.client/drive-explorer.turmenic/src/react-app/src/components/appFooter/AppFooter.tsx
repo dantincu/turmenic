@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container } from 'reactstrap';
 
+import './AppFooter.scss';
 import { AppFooterProps } from './AppFooterProps';
 
 const AppFooter = (props: AppFooterProps) => {

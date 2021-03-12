@@ -1,17 +1,17 @@
 @import "./mixins.scss";
 @import "./themes/themes.scss";
+@import "../pages/pages.scss";
 
 .txqk-app {
   text-align: center;
+  position: relative;
 }
 
-.txqk-app-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.txqk-app-main {
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
 .txqk-app-cntr {
-  border-radius: 0px 0px 5px 5px;
+  padding: 10px 10px 1px 10px;
 }

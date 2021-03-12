@@ -4,15 +4,18 @@
 $toggle-width: 15px;
 $toggle-height: 15px;
 
+$drive-item-width: 97%;
+
 .txqk-drive-item {
   text-align: left;
   margin: 0px;
   padding: 0px;
+  min-width: $drive-item-width;
+  max-width: $drive-item-width;
 
   .txqk-btstrp-col {
     /* width: 100%;
     max-width: 100%; */
-    min-width: 95%;
 
     &.txqk-item-name {
       margin: 0px;

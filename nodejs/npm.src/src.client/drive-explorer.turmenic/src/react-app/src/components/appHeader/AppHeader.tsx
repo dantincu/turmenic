@@ -1,5 +1,6 @@
 import React from 'react';
 
+import './AppHeader.scss';
 import { AppHeaderProps } from './AppHeaderProps';
 import AppThemePicker from '../appThemePicker/appThemePicker';
 
