@@ -1,45 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container } from 'reactstrap';
+import {
+    useLocation,
+    Switch,
+    Route,
+    Link,
+    useParams
+  } from "react-router-dom";
+
 import './styles/App.scss';
 
+import { urlQueryParams } from './components/components';
 import DriveRootFolder from './components/driveRootFolder/DriveRootFolder';
-import { DriveRootFolderProps } from './components/driveRootFolder/DriveRootFolderProps';
-import ThemePicker from './components/themePicker/ThemePicker';
-import { AppTheme, setThemeAsync, selectTheme, defaultAppTheme } from './app/appTheme/appTheme';
-import { replaceClassList } from './utils/dom';
-import { appDrivesSlice, moveFile, moveFolder, renameFile, renameFolder, selectRootFolder } from './app/driveItems/driveItems';
-import { AppDriveData, DriveItem, DriveFolder, DriveFile } from './app/driveItems/driveItems.types';
+
+import { selectRootFolder } from './app/driveItems/driveItems';
+import { DriveFolder } from './app/driveItems/driveItems.types';
 import { toDriveItemProps } from './app/driveItems/driveItems.converters';
 
+import AppHeader from './components/appHeader/AppHeader';
+import AppFooter from './components/appFooter/AppFooter';
+
+import DriveExplorerPage from './pages/drive-explorer/DriveExplorerPage';
+import DashboardPage from './pages/dashboard/DashboardPage';
+
 const App = () => {
-    const currentAppTheme = useSelector(selectTheme) ?? defaultAppTheme;
-    const [ appThemeId, setAppThemeId ] = useState<string | null>(null);
-
     const rootFolder = useSelector(selectRootFolder);
-
-    const setCurrentAppTheme = (themeId?: string) => {
-        setAppThemeId(themeId ?? null);
-        dispatch(setThemeAsync(themeId));
-    }
-
-    const dispatch = useDispatch();
-
-    const onThemePicked = (themeId: string) => {
-        setCurrentAppTheme(themeId);
-    }
-
-    const applyThemeCssClass = (appTheme: AppTheme) => {
-        replaceClassList(document.body.classList, ["txqk"], `txqk-theme-${appTheme.id}`);
-    }
-
-    useEffect(() => {
-        if (appThemeId !== currentAppTheme.id) {
-            setCurrentAppTheme(currentAppTheme.id);
-        }
-
-        applyThemeCssClass(currentAppTheme);
-    });
 
     const getRootFolderComponent = (rootFolder?: DriveFolder) => {
         let retComp = null;
@@ -54,18 +40,12 @@ const App = () => {
 
     return (
         <div className="txqk-app">
-            <header className="txqk-app-header">
-            <ThemePicker
-                        currentThemeId={currentAppTheme.id}
-                        onThemePicked={onThemePicked}></ThemePicker>
-            </header>
-            <main className="txqk-app-main">
-                <Container className="txqk-app-cntr">
-                    
-                    { getRootFolderComponent(rootFolder) }
-                </Container>
-            </main>
-            <footer className="txqk-app-footer"></footer>
+            <AppHeader></AppHeader>
+            <Switch>
+                <Route path="/drive/:id"><DriveExplorerPage></DriveExplorerPage></Route>
+                <Route path="/"><DashboardPage></DashboardPage></Route>
+            </Switch>
+            <AppFooter></AppFooter>
         </div>
     );
 };
