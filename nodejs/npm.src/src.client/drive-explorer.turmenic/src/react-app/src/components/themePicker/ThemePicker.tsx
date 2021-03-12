@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { appThemes, AppTheme } from '../../features/appTheme/appTheme';
+import { appThemes, AppTheme } from '../../app/appTheme/appTheme';
 import './ThemePicker.scss';
 
-export interface ThemePickerProps {
-    currentThemeId?: string;
-    onThemePicked?: (themeId: string) => void;
-}
+import { ThemePickerProps } from './ThemePickerProps';
 
 const ThemePicker = (props: ThemePickerProps) => {
   const getDropDownItemClassName = (appTheme: AppTheme) => {
