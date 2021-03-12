@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../app/store";
 
-export const DEFAULT_APP_THEME_ID = "dark";
-
+export const DEFAULT_APP_THEME_ID = "light";
 export interface AppTheme {
   id: string;
   name: string;

@@ -1,3 +1,7 @@
+export const urlQueryParams = {
+  themeId: "theme_id",
+};
+
 export const cssClss = {
   txqk: {
     toggle: {
