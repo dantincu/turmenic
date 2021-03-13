@@ -1,13 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
 import appThemeReducer from "./appTheme/appTheme";
-import appDriveReducer from "./driveItems/driveItems";
+import { appSessionDrivesReducer } from "./driveItems/driveItems";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     appTheme: appThemeReducer,
-    appDrive: appDriveReducer,
+    appSessionDrives: appSessionDrivesReducer,
   },
 });
 

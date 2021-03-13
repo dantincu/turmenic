@@ -1,10 +1,6 @@
 export interface DriveItemProps {
-  uxIntId: number;
-  name: string;
-  isFolder: boolean;
-  collapsed?: boolean;
+  itemUxIntId: number;
+  parentFolderUxIntId?: number;
   cssClass?: string;
-  files?: DriveItemProps[];
-  subFolders?: DriveItemProps[];
-  onToggled?: (collapsed: boolean) => void;
+  onFolderToggled?: (folderUxIntId: number) => void;
 }

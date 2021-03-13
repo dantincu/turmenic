@@ -2,13 +2,14 @@ export interface DriveItem {
   uxIntId: number;
   name: string;
   displayName?: string;
-  parentFolder?: DriveFolder;
+  parentFolderUxIntId?: number;
   path?: string;
   orderIdx?: number;
 }
 
 export interface DriveFolder extends DriveItem {
   files: DriveFile[];
+  collapsed?: boolean;
   isRoot?: boolean;
   subFolders?: DriveFolder[];
   children?: DriveItem[];
@@ -19,8 +20,12 @@ export interface DriveFile extends DriveItem {
   extension?: string;
 }
 
-export interface AppDriveData {
-  rootFolder?: DriveFolder;
+export interface AppDrive {
+  rootFolder: DriveFolder;
+}
+
+export interface AppSessionDrives {
+  appDrives: AppDrive[];
   allFolders: DriveFolder[];
 }
 

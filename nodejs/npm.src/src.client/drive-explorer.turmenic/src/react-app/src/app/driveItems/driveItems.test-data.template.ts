@@ -1,11 +1,6 @@
-import {
-  AppDriveData,
-  DriveFile,
-  DriveFolder,
-  DriveItem,
-} from "./driveItems.types";
-import { defaultIntIdGenerator } from "../../utils/intIdGenerator";
+import { AppSessionDrives } from "./driveItems.types";
 
-export const testData: AppDriveData = {
+export const testData: AppSessionDrives = {
   allFolders: [],
+  appDrives: [],
 };
