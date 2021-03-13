@@ -1,1 +1,3 @@
-export interface DriveExplorerPageProps {}
+export interface DriveExplorerPageProps {
+  onFolderToggled?: (folderUxIntId: number) => void;
+}

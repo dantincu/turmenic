@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container } from 'reactstrap';
 import {
     useLocation,
-    Switch,
-    Route,
-    Link,
-    useParams
   } from "react-router-dom";
 
 import ThemePicker from '../themePicker/ThemePicker';
-import { AppTheme, setThemeAsync, selectTheme, defaultAppTheme } from '../../app/appTheme/appTheme';
+import { AppTheme, setTheme, selectTheme, defaultAppTheme } from '../../app/appTheme/appTheme';
 
 import { urlQueryParams } from '../components';
 import { replaceClassList } from '../../utils/dom';
@@ -25,38 +20,28 @@ const AppThemePicker = (props: AppThemePickerProps) => {
     const queryParams = useQuery();
     const queryParamsThemeId = queryParams.get(urlQueryParams.themeId)
 
-    const currentAppTheme = useSelector(selectTheme) ?? defaultAppTheme;
-    const [ appThemeId, setAppThemeId ] = useState<string | null>(null);
+    const currentTheme = useSelector(selectTheme);
+    const currentAppTheme = currentTheme ?? defaultAppTheme;
 
     const dispatch = useDispatch();
 
-    if (!appThemeId) {
-        if (queryParamsThemeId) {
-            setAppThemeId(queryParamsThemeId);
-        }
-    } else {
-        if (currentAppTheme.id !== appThemeId) {
-            dispatch(setThemeAsync(appThemeId));
-        }
+    if (!currentTheme && queryParamsThemeId) {
+        dispatch(setTheme(queryParamsThemeId));
     }
 
     const onThemePicked = (themeId: string) => {
-        setAppThemeId(themeId);
+        dispatch(setTheme(themeId));
     }
 
     const applyThemeCssClass = (appTheme: AppTheme) => {
-        replaceClassList(document.body.classList, ["txqk"], `txqk-theme-${appTheme.id}`);
+        const themeCssClass = `txqk-theme-${appTheme.id}`;
+
+        if (document.body.classList.contains(themeCssClass) !== true) {
+            replaceClassList(document.body.classList, ["txqk"], themeCssClass);
+        }
     }
 
     useEffect(() => {
-        if (appThemeId) {
-            if (appThemeId !== currentAppTheme.id) {
-                setAppThemeId(currentAppTheme.id);
-            }
-        } else if (queryParamsThemeId) {
-            setAppThemeId(queryParamsThemeId);
-        }
-
         applyThemeCssClass(currentAppTheme);
     });
 

@@ -1,17 +1,8 @@
 @import "./mixins.scss";
 @import "./themes/themes.scss";
-@import "../pages/pages.scss";
+@import "./pages.scss";
 
 .txqk-app {
   text-align: center;
   position: relative;
-}
-
-.txqk-app-main {
-  padding-top: 0px;
-  margin-top: 0px;
-}
-
-.txqk-app-cntr {
-  padding: 10px 10px 1px 10px;
 }

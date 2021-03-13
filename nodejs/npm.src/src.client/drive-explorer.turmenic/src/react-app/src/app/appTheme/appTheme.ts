@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "../../app/store";
+import { RootState } from "../../app/store";
 
 export const DEFAULT_APP_THEME_ID = "light";
 export interface AppTheme {
@@ -44,10 +44,6 @@ export const { setTheme } = appThemeSlice.actions;
 export const selectTheme = (state: RootState) => {
   const value = state.appTheme?.value;
   return value;
-};
-
-export const setThemeAsync = (themeId?: string): AppThunk => (dispatch) => {
-  dispatch(setTheme(themeId ?? DEFAULT_APP_THEME_ID));
 };
 
 export default appThemeSlice.reducer;

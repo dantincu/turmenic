@@ -1,24 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "../store";
-import { defaultIntIdGenerator } from "../../utils/intIdGenerator";
+import { RootState } from "../store";
 import { testData } from "./driveItems.test-data";
-import {
-  AppDriveData,
-  DriveItem,
-  DriveFile,
-  DriveFolder,
-  assureIsFolder,
-  isFolder,
-} from "./driveItems.types";
+import { DriveFolder, AppSessionDrives } from "./driveItems.types";
 
-const initialState: AppDriveData = testData;
+const initialState: AppSessionDrives = testData;
 
 const getFolder = (
   allFolders: DriveFolder[],
-  folderIntId: number,
-  errMsg = `Folder with id ${folderIntId} not found`
+  folderUxIntId: number,
+  errMsg = `Folder with id ${folderUxIntId} not found`
 ) => {
-  const folder = allFolders.find((fd) => fd.uxIntId === folderIntId);
+  const folder = allFolders.find((fd) => fd.uxIntId === folderUxIntId);
 
   if (!folder) {
     throw new Error(errMsg);
@@ -29,11 +21,11 @@ const getFolder = (
 
 const getFile = (
   allFolders: DriveFolder[],
-  folderIntId: number,
+  folderUxIntId: number,
   fileIntId: number,
   errMsg = `File with id ${fileIntId} not found`
 ) => {
-  const folder = getFolder(allFolders, folderIntId);
+  const folder = getFolder(allFolders, folderUxIntId);
   const file = folder.files.find((fl) => fl.uxIntId === fileIntId);
 
   if (!file) {
@@ -43,46 +35,63 @@ const getFile = (
   return file;
 };
 
-export const appDrivesSlice = createSlice({
-  name: "appDrives",
+export const appSessionDrivesSlice = createSlice({
+  name: "appSessionDrives",
   initialState,
   reducers: {
+    toggleFolder: (state, action: PayloadAction<{ folderUxIntId: number }>) => {
+      const folder = getFolder(state.allFolders, action.payload.folderUxIntId);
+      const currentlyCollapsed = folder.collapsed ?? true;
+
+      folder.collapsed = !currentlyCollapsed;
+    },
     renameFolder: (
       state,
-      action: PayloadAction<{ folderIntId: number; newName: string }>
+      action: PayloadAction<{ folderUxIntId: number; newName: string }>
     ) => {
-      const folder = getFolder(state.allFolders, action.payload.folderIntId);
+      const folder = getFolder(state.allFolders, action.payload.folderUxIntId);
       folder.name = action.payload.newName;
     },
 
     moveFolder: (
       state,
       action: PayloadAction<{
-        folderIntId: number;
-        destParentFolderIntId: number;
+        folderUxIntId: number;
+        destParentfolderUxIntId: number;
       }>
     ) => {
-      const folder = getFolder(state.allFolders, action.payload.folderIntId);
+      const folder = getFolder(state.allFolders, action.payload.folderUxIntId);
+
+      const currentParentFolder = getFolder(
+        state.allFolders,
+        folder.parentFolderUxIntId as number
+      );
 
       const destParentFolder = getFolder(
         state.allFolders,
-        action.payload.destParentFolderIntId
+        action.payload.destParentfolderUxIntId
       );
 
-      folder.parentFolder = destParentFolder;
+      folder.parentFolderUxIntId = destParentFolder.uxIntId;
+
+      currentParentFolder.subFolders = currentParentFolder.subFolders?.filter(
+        (fd) => fd.uxIntId !== folder.uxIntId
+      );
+
+      destParentFolder.subFolders?.push(folder);
     },
 
     renameFile: (
       state,
       action: PayloadAction<{
         fileIntId: number;
-        folderIntId: number;
+        folderUxIntId: number;
         newName: string;
       }>
     ) => {
       const file = getFile(
         state.allFolders,
-        action.payload.folderIntId,
+        action.payload.folderUxIntId,
         action.payload.fileIntId
       );
 
@@ -93,36 +102,66 @@ export const appDrivesSlice = createSlice({
       state,
       action: PayloadAction<{
         fileIntId: number;
-        folderIntId: number;
-        destParentFolderIntId: number;
+        folderUxIntId: number;
+        destParentfolderUxIntId: number;
       }>
     ) => {
       const file = getFile(
         state.allFolders,
-        action.payload.folderIntId,
+        action.payload.folderUxIntId,
         action.payload.fileIntId
+      );
+
+      const currentParentFolder = getFolder(
+        state.allFolders,
+        file.parentFolderUxIntId as number
       );
 
       const destParentFolder = getFolder(
         state.allFolders,
-        action.payload.destParentFolderIntId
+        action.payload.destParentfolderUxIntId
       );
 
-      file.parentFolder = destParentFolder;
+      file.parentFolderUxIntId = destParentFolder.uxIntId;
+
+      currentParentFolder.files = currentParentFolder.files?.filter(
+        (fl) => fl.uxIntId !== file.uxIntId
+      );
+
+      destParentFolder.files?.push(file);
     },
   },
 });
 
-export const selectRootFolders = (state: RootState) => {
-  const value = state.appDrive.rootFolders;
+export const selectAppDrives = (state: RootState) => {
+  const value = state.appSessionDrives.appDrives;
+  return value;
+};
+
+export const selectFolder = (folderUxIntId: number) => (state: RootState) => {
+  const value = state.appSessionDrives.allFolders.find(
+    (fd) => fd.uxIntId === folderUxIntId
+  );
+
+  return value;
+};
+
+export const selectFile = (folderUxIntId: number, fileUxIntId: number) => (
+  state: RootState
+) => {
+  const value = state.appSessionDrives.allFolders
+    .find((fd) => fd.uxIntId === folderUxIntId)
+    ?.files.find((fl) => fl.uxIntId === fileUxIntId);
+
   return value;
 };
 
 export const {
+  toggleFolder,
   renameFolder,
   renameFile,
   moveFolder,
   moveFile,
-} = appDrivesSlice.actions;
+} = appSessionDrivesSlice.actions;
 
-export default appDrivesSlice.reducer;
+export const appSessionDrivesReducer = appSessionDrivesSlice.reducer;
