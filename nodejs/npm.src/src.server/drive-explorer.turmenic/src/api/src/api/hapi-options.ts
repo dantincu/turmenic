@@ -6,11 +6,13 @@ import {
   DEFAULT_AUTH_COOKIE_TTL_MILLIS,
   ServerAuthSession,
   normializeOpts,
+  HapiServerCorsOptions,
 } from "../../src.node.common.server/api/hapi/index.js";
 
 import {
   hapiServerOptionsCfg,
   HapiServerTlsOptionsCfg,
+  HapiServerCorsOptionsCfg,
 } from "../appSettings/moduleConfig.js";
 
 export const APP_NAME = "api.drive-explorer.turmenic";
@@ -34,6 +36,13 @@ export const getHapiServerTlsOptions = (
   return tlsCert;
 };
 
+export const getHapiServerCorsOptions = (
+  corsOpts: HapiServerCorsOptionsCfg
+): HapiServerCorsOptions => {
+  const opts: HapiServerCorsOptions = corsOpts;
+  return opts;
+};
+
 export const getHapiServerOptions = (): HapiServerOptions => {
   let opts = <HapiServerOptions>{
     appName: hapiServerOptionsCfg.appName ?? APP_NAME,
@@ -41,7 +50,8 @@ export const getHapiServerOptions = (): HapiServerOptions => {
     port: hapiServerOptionsCfg.port,
     tlsCert: getHapiServerTlsOptions(hapiServerOptionsCfg.tlsCert),
     addDefaultHomeRoute: true,
-    addDefaultAuthRoute: true,
+    addDefaultAuthRoute: false,
+    cors: getHapiServerCorsOptions(hapiServerOptionsCfg.cors),
   };
 
   opts = normializeOpts(opts);

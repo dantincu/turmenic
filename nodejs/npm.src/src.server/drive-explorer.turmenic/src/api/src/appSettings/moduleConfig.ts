@@ -9,12 +9,17 @@ export interface HapiServerTlsOptionsCfg {
   keyRelPath: string;
 }
 
+export interface HapiServerCorsOptionsCfg {
+  allowedOrigins: string[];
+}
+
 export interface HapiServerOptionsCfg {
   appName?: string;
   address: string;
   port: number;
   tlsCert: boolean | HapiServerTlsOptionsCfg;
   cookiePassword: string;
+  cors: HapiServerCorsOptionsCfg;
 }
 
 export const hapiServerOptionsCfg = <HapiServerOptionsCfg>(

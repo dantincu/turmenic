@@ -6,3 +6,27 @@
   text-align: center;
   position: relative;
 }
+
+.txqk-app-error {
+  padding-top: 100px;
+  text-align: center;
+  background-color: white;
+
+  .txqk-error-msg {
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+.txqk-app-loading {
+  padding-top: 100px;
+  text-align: center;
+  background-color: white;
+
+  .txqk-info-title {
+    color: #333f;
+    font-weight: bold;
+    font-size: 30px;
+  }
+}

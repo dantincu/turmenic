@@ -1,6 +1,8 @@
 import {
   startServer,
   getServerWithCookieAuth,
+  getCorsConfig,
+  getServer,
   getDefaultAuthRoute,
   getDefaultHomeRoute,
 } from "../../src.node.common.server/api/hapi/server.js";
@@ -21,7 +23,7 @@ import { getRoutes } from "./hapi-routes.js";
 
 export const start = async () => {
   const opts = getHapiServerOptions();
-  const server = await getServerWithCookieAuth(opts);
+  const server = await getServer(opts);
   const routes = await getRoutes(opts);
 
   server.route(routes);
