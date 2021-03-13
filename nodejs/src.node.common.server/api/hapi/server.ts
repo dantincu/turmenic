@@ -1,5 +1,7 @@
 import Hapi from "@hapi/hapi";
 import Cookie from "@hapi/cookie";
+// @ts-ignore
+import HapiCors from "hapi-cors";
 
 import {
   envConfig,
@@ -15,6 +17,20 @@ import {
   getServerOptions,
   normializeOpts,
 } from "./index.js";
+import { appConsole } from "../../../src.common/logging/appConsole.js";
+
+export const getServer = async (
+  opts: HapiServerOptions
+): Promise<Hapi.Server> => {
+  opts = normializeOpts(opts);
+  const appEnv = await envConfig.appEnv.instance();
+  const serverOptions = await getServerOptions(appEnv, opts);
+
+  const server = Hapi.server(serverOptions);
+  await server.register([HapiCors]);
+
+  return server;
+};
 
 export const getServerWithCookieAuth = async (
   opts: HapiServerOptions
@@ -31,7 +47,7 @@ export const getServerWithCookieAuth = async (
   );
 
   const server = Hapi.server(serverOptions);
-  await server.register([Cookie]);
+  await server.register([Cookie, HapiCors]);
 
   server.auth.strategy(cookieAuthOpts.authStrategyName, "cookie", {
     cookie: {
@@ -39,6 +55,7 @@ export const getServerWithCookieAuth = async (
       password: cookieAuthOpts.authCookiePassword,
       isSecure: cookieAuthOpts.isAuthCookieSecure,
       ttl: cookieAuthOpts.authCookieTtlMillis,
+      isSameSite: "None",
     },
     validateFunc: async (request: any, session: any) => {
       const isValid: boolean =
@@ -52,12 +69,26 @@ export const getServerWithCookieAuth = async (
   return server;
 };
 
+export const getCorsConfig = (
+  opts: HapiServerOptions
+): Hapi.RouteOptionsCors => {
+  const corsConfig: Hapi.RouteOptionsCors = {
+    origin: opts.cors.allowedOrigins,
+  };
+
+  return corsConfig;
+};
+
 export const getDefaultHomeRoute = (
+  opts: HapiServerOptions,
   homeRouteResponse?: string
 ): Hapi.ServerRoute => {
   const route = <Hapi.ServerRoute>{
     method: "GET",
     path: "/",
+    options: {
+      cors: getCorsConfig(opts),
+    },
     handler: function (request, h) {
       return homeRouteResponse ?? "Api home page";
     },
@@ -75,6 +106,12 @@ export const getDefaultAuthRoute = (opts: HapiServerOptions) => {
         opts.cookieAuthOptions
       );
 
+      /* h.state(opts.appName, cookieAuthOpts.appSessionData, {
+        password: cookieAuthOpts.authCookiePassword,
+        isSecure: cookieAuthOpts.isAuthCookieSecure,
+        ttl: cookieAuthOpts.authCookieTtlMillis,
+      });*/
+
       request.cookieAuth.set(cookieAuthOpts.appSessionData);
       request.cookieAuth.ttl(cookieAuthOpts.authCookieTtlMillis);
 
@@ -86,6 +123,7 @@ export const getDefaultAuthRoute = (opts: HapiServerOptions) => {
       auth: {
         mode: "try",
       },
+      cors: getCorsConfig(opts),
     },
   };
 

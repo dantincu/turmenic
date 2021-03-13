@@ -25,7 +25,7 @@ export const getRoutes = async (
 
   if (opts.addDefaultHomeRoute === true) {
     routes.push(
-      getDefaultHomeRoute("Welcome to the Turmenic Drive Explorer Api")
+      getDefaultHomeRoute(opts, "Welcome to the Turmenic Drive Explorer Api")
     );
   }
 

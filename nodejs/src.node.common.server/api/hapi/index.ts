@@ -18,6 +18,10 @@ export interface HapiServerTlsOptions {
   tlsCertKeyRelPath: string;
 }
 
+export interface HapiServerCorsOptions {
+  allowedOrigins: string[];
+}
+
 export class HapiCookieAuthOptions {
   appSessionData: ServerAuthSession;
   authCookiePassword?: string;
@@ -42,6 +46,7 @@ export interface HapiServerOptions {
   tlsCert?: boolean | HapiServerTlsOptions;
   addDefaultHomeRoute?: boolean;
   addDefaultAuthRoute?: boolean;
+  cors: HapiServerCorsOptions;
 }
 
 export const normializeOpts = (opts: HapiServerOptions): HapiServerOptions => {

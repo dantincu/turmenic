@@ -29,6 +29,11 @@ export interface AppSessionDrives {
   allFolders: DriveFolder[];
 }
 
+export interface DeviceAppDrives {
+  allAppDrives: AppDrive[];
+  appSessionDrives: AppSessionDrives;
+}
+
 export const isFolder = (driveItem: DriveItem): boolean | null => {
   let retVal: boolean | null = null;
 
