@@ -1,4 +1,3 @@
-import { v4 as uuidV4 } from "uuid";
 import slug from "slug";
 
 import {
@@ -6,14 +5,15 @@ import {
   envBaseDir,
 } from "../../../src.node.common/appSettings/envConfig.js";
 
+/*
 import {
   executeLockingAsync,
   getValueLockingAsync,
   executeLocking,
   getValueLocking,
-} from "../../async/redis-mutex.js";
+} from "../../async/redis-mutex.js"; */
 
-import { getValue } from "../../../src.common/utils/func.js";
+import { uStrId } from "../../../src.common/text/uStrId.js";
 import { clone, copyShallow } from "../../../src.common/utils/types.js";
 import { compareVersions } from "../../../src.common/text/pckg.js";
 
@@ -56,7 +56,7 @@ export enum DataSourceUpdateErrorType {
 
 export interface DataSourceUpdateResult {
   success: boolean;
-  alreadyUpToDate: boolean;
+  isUpToDate: boolean;
   errorMessage?: string;
   errorType: DataSourceUpdateErrorType;
 }
@@ -129,7 +129,7 @@ export abstract class DataCollectionBase<TData, TJsonData> {
   ): Promise<DataSaveResultRaw<TData, TJsonData>>;
 
   public async fetch(): Promise<TData[]> {
-    const jsonData: JsonDataContainer<TJsonData> = await getValueLockingAsync(
+    /* const jsonData: JsonDataContainer<TJsonData> = await getValueLockingAsync(
       this.syncLockName,
       async () => {
         await this.onDataAccess();
@@ -138,7 +138,11 @@ export abstract class DataCollectionBase<TData, TJsonData> {
 
         return jsonData;
       }
-    );
+    );*/
+
+    await this.onDataAccess();
+    const jsonData = await this.loadJsonData();
+    this.lastModifiedTime = jsonData.lastModifiedTime;
 
     const dataItems = this.getDataForFetch(jsonData);
     return dataItems;
@@ -149,14 +153,17 @@ export abstract class DataCollectionBase<TData, TJsonData> {
   ): Promise<DataSaveResult<TData, TJsonData>> {
     const jsonData = this.getJsonDataForSave(dataList);
 
-    const dataSaveResultRaw = await getValueLockingAsync(
+    /* const dataSaveResultRaw = await getValueLockingAsync(
       this.syncLockName,
       async () => {
         await this.onDataAccess();
         const dataSaveResultRaw = await this.saveJsonData(jsonData);
         return dataSaveResultRaw;
       }
-    );
+    ); */
+
+    await this.onDataAccess();
+    const dataSaveResultRaw = await this.saveJsonData(jsonData);
 
     const dataSaveResult = <DataSaveResult<TData, TJsonData>>(
       (<unknown>dataSaveResultRaw)
@@ -189,7 +196,7 @@ export abstract class DataCollectionBase<TData, TJsonData> {
 
     const jsonDataContainer = <JsonDataContainer<TJsonData>>{
       collection: jsonData,
-      lastModifiedTime: this.lastModifiedTime,
+      lastModifiedTime: new Date(),
     };
 
     return jsonDataContainer;
@@ -204,10 +211,10 @@ export abstract class DataCollectionBase<TData, TJsonData> {
   }
 
   getDataItemForSave(dataItem: TData, dataList: TData[]): TJsonData {
-    dataItem = clone(dataItem);
+    const clonedDataItem = clone(dataItem);
 
     this.assureDataItemHasUuid(dataItem);
-    this.assureDataItemHasUniqueKey(dataItem, dataList);
+    this.assureDataItemHasUniqueKey(clonedDataItem, dataItem, dataList);
 
     const jsonData = copyShallow<TJsonData, TData>(<TJsonData>{}, dataItem);
     return jsonData;
@@ -228,25 +235,31 @@ export abstract class DataCollectionBase<TData, TJsonData> {
     }
   }
 
-  assureDataItemHasUniqueKey(dataItem: TData, dataList: TData[]) {
+  assureDataItemHasUniqueKey(
+    clonedDataItem: TData,
+    dataItem: TData,
+    dataList: TData[]
+  ) {
     if (this.dataSaveOptions.keyPropName) {
-      if (!dataItem[<keyof TData>this.dataSaveOptions.keyPropName]) {
-        dataItem[<keyof TData>this.dataSaveOptions.keyPropName] = <
+      if (!clonedDataItem[<keyof TData>this.dataSaveOptions.keyPropName]) {
+        clonedDataItem[<keyof TData>this.dataSaveOptions.keyPropName] = <
           TData[keyof TData]
-        >(<unknown>this.generateUniqueKey(dataItem, dataList));
+        >(<unknown>this.generateUniqueKey(clonedDataItem, dataList));
       } else {
-        this.assureKeyUnique(dataItem, dataList);
+        this.assureKeyUnique(clonedDataItem, dataItem, dataList);
       }
     }
   }
 
   generateUuid(): string {
-    const uuid = uuidV4();
+    const uuid = uStrId();
     return uuid;
   }
 
   generateKey(item: TData) {
-    const key = slug((<any>item).name);
+    const itemName: string | null = (<any>item).name;
+
+    const key = itemName ? slug(itemName) : null;
     return key;
   }
 
@@ -271,8 +284,8 @@ export abstract class DataCollectionBase<TData, TJsonData> {
     return key;
   }
 
-  assureKeyUnique(dataItem: TData, dataList: TData[]) {
-    if (this.isKeyUnique(dataItem, dataList) !== true) {
+  assureKeyUnique(clonedDataItem: TData, dataItem: TData, dataList: TData[]) {
+    if (this.isKeyUnique(clonedDataItem, dataItem, dataList) !== true) {
       throw new Error(
         `Duplicate key found: key prop name: ${
           this.dataSaveOptions.keyPropName
@@ -283,12 +296,12 @@ export abstract class DataCollectionBase<TData, TJsonData> {
     }
   }
 
-  isKeyUnique(dataItem: TData, dataList: TData[]) {
+  isKeyUnique(clonedDataItem: TData, dataItem: TData, dataList: TData[]) {
     const collidingItem = dataList.find(
       (item) =>
         item !== dataItem &&
         item[<keyof TData>this.dataSaveOptions.keyPropName] ===
-          dataItem[<keyof TData>this.dataSaveOptions.keyPropName]
+          clonedDataItem[<keyof TData>this.dataSaveOptions.keyPropName]
     );
 
     const isUnique = !collidingItem;
@@ -326,7 +339,7 @@ export const assureUpToDate = async (
 ) => {
   const updateResult = await IsUpToDate(metadataCollection, reqVersion);
 
-  if (!updateResult.success || updateResult.alreadyUpToDate !== true) {
+  if (!updateResult.success || updateResult.isUpToDate !== true) {
     err = err ?? new Error(updateResult.errorMessage);
     throw err;
   }
@@ -351,14 +364,16 @@ export const IsUpToDate = async (
       const currentVersion = metadata?.dataSourceVersion ?? BLANK_VERSION_VALUE;
 
       versionComparisonResult = compareVersions(currentVersion, reqVersion);
-    }
 
-    if (versionComparisonResult > 0) {
-      dataCorrupted = true;
-      corruptedDataErrorMessage =
-        "the current version is more recent than the required version";
-    } else if (versionComparisonResult === 0) {
-      isUpToDate = true;
+      if (versionComparisonResult > 0) {
+        dataCorrupted = true;
+        corruptedDataErrorMessage =
+          "the current version is more recent than the required version";
+      } else if (versionComparisonResult === 0) {
+        isUpToDate = true;
+      }
+    } else {
+      isUpToDate = false;
     }
   }
 
@@ -370,7 +385,7 @@ export const IsUpToDate = async (
     errorMessage: dataCorrupted
       ? `Data source metadata file contains corrupted data: ${corruptedDataErrorMessage}`
       : null,
-    alreadyUpToDate: isUpToDate,
+    isUpToDate: isUpToDate,
   };
 
   return result;

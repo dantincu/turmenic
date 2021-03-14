@@ -42,7 +42,7 @@ export class AppLocalFileUpdateManager extends UpdateManagerBase<AppMetadataLoca
 
     const allUpdateComponents: DataSourceUpdateBase<AppMetadataLocalFileCollection>[] = [
       new AppLocalFile_Init_To_V_0_0_1_Update(
-        <AppLocalFileDataSource>this.dataSource,
+        this.dataSource as AppLocalFileDataSource,
         appMetadataLocalFileCollection,
         this.requiredVersion
       ),

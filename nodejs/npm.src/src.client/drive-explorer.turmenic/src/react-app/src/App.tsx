@@ -15,7 +15,7 @@ import DashboardPage from './pages/dashboard/DashboardPage';
 import { driveApi } from './api/drives.api';
 
 const App = () => {
-    const [ authenticated, setAuthenticated ] = useState(false);
+    const [ authenticated, setAuthenticated ] = useState(true);
     const [ error, setError ] = useState(false);
 
     useEffect(() => {

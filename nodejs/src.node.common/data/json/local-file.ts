@@ -56,10 +56,12 @@ export abstract class LocalFileCollectionBase<
 > extends DataCollectionBase<TData, TJsonData> {
   readonly dataJsonFilePath: string;
   readonly dataDirRelPath: string;
+  readonly dataDirPath: string;
 
   constructor(opts: DataCollectionOptions<TData, TJsonData>) {
     super(opts);
     this.dataDirRelPath = this.getDataDirRelPath();
+    this.dataDirPath = this.getDataDirPath();
     this.dataJsonFilePath = this.getDataJsonFilePath(opts.collectionName);
   }
 
@@ -89,7 +91,9 @@ export abstract class LocalFileCollectionBase<
 
     if (currentLastModifiedTime.getTime() === 0) {
       await saveJsonToFileAsync(jsonData, this.dataJsonFilePath);
-      newLastModifiedTime = await this.getCurrentLastModifiedTime();
+      newLastModifiedTime = await getFileLastModifiedTime(
+        this.dataJsonFilePath
+      );
     }
 
     const dataSaveResultRaw = <DataSaveResultRaw<TData, TJsonData>>{
@@ -111,7 +115,7 @@ export abstract class LocalFileCollectionBase<
   }
 
   async onDataAccess(): Promise<void> {
-    await createDirIfNotExisting(this.dataDirRelPath);
+    await createDirIfNotExisting(this.dataDirPath);
   }
 
   getDataJsonFilePath(collectionName: string): string {
@@ -124,6 +128,15 @@ export abstract class LocalFileCollectionBase<
     );
 
     return filePath;
+  }
+
+  getDataDirPath() {
+    const dirPath = this.envConfig.getEnvRelPath(
+      envBaseDir.data,
+      this.dataDirRelPath
+    );
+
+    return dirPath;
   }
 
   getDataJsonFileName(collectionName: string): string {

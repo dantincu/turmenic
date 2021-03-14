@@ -52,7 +52,7 @@ import {
 } from "../../../userData.js";
 
 import { cloudStoragePlatforms } from "../../../app-data/cloudStoragePlatforms.js";
-import { deviceDirLocationTypes } from "../../../app-data/deviceDirLocationTypes";
+import { deviceDirLocationTypes } from "../../../app-data/deviceDirLocationTypes.js";
 import { servicePlatforms } from "../../../app-data/servicePlatforms.js";
 import { env } from "node:process";
 
@@ -99,21 +99,21 @@ export class AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate extends DataSourceCo
     ServicePlatformUserAccountCollection
   >;
 
-  constructor(envConfig: EnvConfig) {
+  constructor(envConfig: EnvConfig, dataSource: AppLocalFileDataSource) {
     super([]);
 
     this.metadataCollectionUpdate = new TypedDataCollectionUpdateBase<
       DataSourceMetadata,
       DataSourceMetadata,
       AppMetadataLocalFileCollection
-    >(new AppMetadataLocalFileCollection(envConfig));
+    >(dataSource.metadataCollection);
     this.collectionsList.push(this.metadataCollectionUpdate);
 
     this.cloudStorageDeviceDirLocationCollectionUpdate = new TypedDataCollectionUpdateBase<
       CloudStorageDeviceDirLocation,
       CloudStorageDeviceDirLocation,
       CloudStorageDeviceDirLocationCollection
-    >(new CloudStorageDeviceDirLocationCollection(envConfig));
+    >(dataSource.cloudStorageDeviceDirLocationCollection);
     this.collectionsList.push(
       this.cloudStorageDeviceDirLocationCollectionUpdate
     );
@@ -122,35 +122,35 @@ export class AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate extends DataSourceCo
       DeviceDirLocationType,
       DeviceDirLocationType,
       DeviceDirLocationTypeCollection
-    >(new DeviceDirLocationTypeCollection(envConfig));
+    >(dataSource.deviceDirLocationTypeCollection);
     this.collectionsList.push(this.deviceDirLocationTypeCollectionUpdate);
 
     this.deviceRootDirLocationCollectionUpdate = new TypedDataCollectionUpdateBase<
       DeviceRootDirLocation,
       DeviceRootDirLocation,
       DeviceRootDirLocationCollection
-    >(new DeviceRootDirLocationCollection(envConfig));
+    >(dataSource.deviceRootDirLocationCollection);
     this.collectionsList.push(this.deviceRootDirLocationCollectionUpdate);
 
     this.cloudStoragePlatformCollectionUpdate = new TypedDataCollectionUpdateBase<
       CloudStoragePlatform,
       CloudStoragePlatform,
       CloudStoragePlatformCollection
-    >(new CloudStoragePlatformCollection(envConfig));
+    >(dataSource.cloudStoragePlatformCollection);
     this.collectionsList.push(this.cloudStoragePlatformCollectionUpdate);
 
     this.servicePlatformCollectionUpdate = new TypedDataCollectionUpdateBase<
       ServicePlatform,
       ServicePlatform,
       ServicePlatformCollection
-    >(new ServicePlatformCollection(envConfig));
+    >(dataSource.servicePlatformCollection);
     this.collectionsList.push(this.servicePlatformCollectionUpdate);
 
     this.servicePlatformUserAccountCollectionUpdate = new TypedDataCollectionUpdateBase<
       ServicePlatformUserAccount,
       ServicePlatformUserAccount,
       ServicePlatformUserAccountCollection
-    >(new ServicePlatformUserAccountCollection(envConfig));
+    >(dataSource.servicePlatformUserAccountCollection);
     this.collectionsList.push(this.servicePlatformUserAccountCollectionUpdate);
   }
 }
@@ -185,7 +185,8 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
 
   getCollectionsUpdate(): AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate {
     const collectionsUpdate = new AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate(
-      this.envConfig
+      this.envConfig,
+      this.dataSource as AppLocalFileDataSource
     );
     return collectionsUpdate;
   }
@@ -195,7 +196,7 @@ export class AppLocalFile_Init_To_V_0_0_1_Update extends LocalFileDataSourceUpda
   ): UpdateEngineBase[] {
     const allEngines: UpdateEngineBase[] = [
       new AppLocalFile_Init_To_V_0_1_0_UpdateEngine(
-        new AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate(this.envConfig)
+        (collectionsUpdate as DataSourceCollectionsUpdateBase) as AppLocalFile_Init_To_V_0_1_0_CollectionsUpdate
       ),
     ];
 

@@ -46,10 +46,13 @@ export abstract class LocalFileDataSourceUpdateBase<
     super(opts);
 
     this.envConfig = this.dataSource.envConfig;
-    this.localFileDataSource = <TDataSource>this.dataSource;
+    this.localFileDataSource = this.dataSource as TDataSource;
 
     this.dataSourceDirRelPath = this.localFileDataSource.dataSourceDirRelPath;
-    this.dataSourceDirPath = this.envConfig.getEnvRelPath(envBaseDir.data);
+    this.dataSourceDirPath = this.envConfig.getEnvRelPath(
+      envBaseDir.data,
+      this.dataSourceDirRelPath
+    );
     this.updateTime = new Date();
     this.dataDirEntries = [];
   }
@@ -69,7 +72,10 @@ export abstract class LocalFileDataSourceUpdateBase<
   }
 
   async backupDataDir() {
-    this.dataDirEntries = await readdirAsync(this.dataSourceDirPath);
+    const dataDirEntries = await readdirAsync(this.dataSourceDirPath);
+    this.dataDirEntries = dataDirEntries.filter(
+      (entry) => entry.startsWith("__") == false
+    );
     const backupDirPath = await this.createBackupDir(this.updateTime);
     await this.backupEntries(this.dataDirEntries, backupDirPath);
   }
@@ -86,14 +92,15 @@ export abstract class LocalFileDataSourceUpdateBase<
     }
   }
 
-  async copyEntry(entryPath: string, backupDirPath: string) {
-    const fileName = path.basename(entryPath);
-    const destFilePath = path.join(backupDirPath, fileName);
+  async copyEntry(entryName: string, backupDirPath: string) {
+    const sourceEntryPath = path.join(this.dataSourceDirPath, entryName);
+    const destEntryPath = path.join(backupDirPath, entryName);
 
-    await copyAsync(entryPath, destFilePath);
+    await copyAsync(sourceEntryPath, destEntryPath);
   }
 
-  async deleteEntry(entryPath: string) {
+  async deleteEntry(entryName: string) {
+    const entryPath = path.join(this.dataSourceDirPath, entryName);
     await removeEntryAsync(entryPath);
   }
 
