@@ -1,12 +1,12 @@
 export interface DeviceDirLocationType {
-  uuid: string;
+  uuid?: string;
   key: string;
   name: string;
   description: string;
 }
 
 export interface DeviceRootDirLocation {
-  uuid: string;
+  uuid?: string;
   key: string;
   name: string;
   description: string;
@@ -16,7 +16,7 @@ export interface DeviceRootDirLocation {
 }
 
 export interface CloudStorageDeviceDirLocation {
-  uuid: string;
+  uuid?: string;
   key: string;
   servicePlatformAccountKey: string; // e.g. google
   cloudStoragePlatformKey: string; // e.g. dropbox / google-drive

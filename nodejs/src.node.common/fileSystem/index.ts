@@ -14,8 +14,17 @@ export const emptyDirAsync = util.promisify(fsExtra.emptyDir);
 export const removeFileAsync = util.promisify(fs.rm);
 
 export const getFileLastModifiedTime = async (filePath: string) => {
-  const fileStats = await getEntryStatsAsync(filePath);
-  return fileStats.mtime;
+  let fileStats: fs.Stats | null = null;
+
+  try {
+    fileStats = await getEntryStatsAsync(filePath);
+  } catch (err) {
+    if (err.code !== "ENOENT") {
+      throw err;
+    }
+  }
+
+  return fileStats?.mtime ?? new Date(0);
 };
 
 export const createDirIfNotExisting = async (dirPath: string) => {

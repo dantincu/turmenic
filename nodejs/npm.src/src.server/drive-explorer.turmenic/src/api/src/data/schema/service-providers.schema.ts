@@ -1,5 +1,5 @@
 export interface ServicePlatform {
-  uuid: string; // Guid generated with powershell
+  uuid?: string; // Guid generated with powershell
   key: string; // unique short & rememberable string identifier
   name: string; // Display name
   description: string; // Informative description
@@ -9,7 +9,7 @@ export interface ServicePlatform {
 }
 
 export interface ServicePlatformUserAccount {
-  uuid: string;
+  uuid?: string;
   key: string;
   name: string;
   description: string;
@@ -19,7 +19,7 @@ export interface ServicePlatformUserAccount {
 }
 
 export interface CloudStoragePlatform {
-  uuid: string;
+  uuid?: string;
   key: string;
   name: string;
   description: string;

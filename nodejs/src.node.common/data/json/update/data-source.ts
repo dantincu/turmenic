@@ -103,12 +103,13 @@ export abstract class DataSourceUpdateBase<
     let isUpToDateResult = await this.IsUpToDateCore(reqVersion);
 
     if (isUpToDateResult.success) {
-      if (isUpToDateResult.alreadyUpToDate !== true) {
+      if (isUpToDateResult.isUpToDate !== true) {
         this.collectionsUpdate = this.getCollectionsUpdate();
         const engine = this.getEngine(this.collectionsUpdate);
         await this.loadAllData();
         await engine.run();
         await this.saveAllData();
+        isUpToDateResult.isUpToDate = true;
       }
     }
 

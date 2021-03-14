@@ -21,7 +21,7 @@ export const strReplaceAll = (
 
     while (replVal !== val) {
       val = replVal;
-      replVal = val.replace(val, replExpr);
+      replVal = val.replace(str, replExpr);
     }
   }
 

@@ -11,7 +11,6 @@ import { ServicePlatform } from "../schema/service-providers.schema.js";
 */
 export const servicePlatforms: ServicePlatform[] = [
   {
-    uuid: "0ba14996-d3bb-4b1c-b61a-910458118158",
     key: "google",
     name: "Google",
     description:
@@ -21,7 +20,6 @@ export const servicePlatforms: ServicePlatform[] = [
     mainDomain: "google.com",
   },
   {
-    uuid: "26bcf9ee-ad43-45df-8e03-254bb35085e4",
     key: "microsoft",
     name: "Microsoft",
     description:
@@ -31,7 +29,6 @@ export const servicePlatforms: ServicePlatform[] = [
     mainDomain: "microsoft.com",
   },
   {
-    uuid: "ceda7f79-bd78-4504-b488-15748ef180d7",
     key: "icloud",
     name: "iCloud",
     description:
@@ -41,7 +38,6 @@ export const servicePlatforms: ServicePlatform[] = [
     mainDomain: "icloud.com",
   },
   {
-    uuid: "e72acfa9-b391-4cef-88e0-fe0ce8f3abde",
     key: "dropbox",
     name: "Dropbox",
     description:
@@ -51,7 +47,6 @@ export const servicePlatforms: ServicePlatform[] = [
     mainDomain: "yahoo.com",
   },
   {
-    uuid: "a8442825-52c4-400b-98c8-d401d6a1cf64",
     key: "yahoo",
     name: "Yahoo",
     description:
@@ -61,7 +56,6 @@ export const servicePlatforms: ServicePlatform[] = [
     mainDomain: "yahoo.com",
   },
   {
-    uuid: "41774abe-fb8b-4b5b-8be0-daf3ac1b66b4",
     key: "facebook",
     name: "Facebook",
     description:
