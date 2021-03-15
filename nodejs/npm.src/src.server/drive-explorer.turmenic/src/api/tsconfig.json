@@ -71,6 +71,7 @@
     "src/**/*",
     "index.ts",
     "tests/*",
+    "tests/FileSystem/*",
   ],
   "exclude":[
       "node_modules",
