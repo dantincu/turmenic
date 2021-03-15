@@ -7,7 +7,7 @@ import {
   DirEntry,
   DirEntryWrapper,
 } from "../../src.node.common/fileSystem/index.js";
-import { DeviceRootFolders } from "../../src.node.common/fileSystem/deviceRootFolders.js";
+import { DeviceRootFolders } from "../../src.node.common.server/fileSystem/deviceRootFolders.js";
 
 const runTest = async () => {
   const deviceRootFolders = new DeviceRootFolders();

@@ -11,7 +11,7 @@ import {
   DeviceRootFolders,
   DeviceSpecialFolder,
   SpecialFolderTypeKey,
-} from "../../src.node.common/fileSystem/deviceRootFolders.js";
+} from "../../src.node.common.server/fileSystem/deviceRootFolders.js";
 
 export class DeviceAppRootFolders extends DeviceRootFolders {
   constructor() {

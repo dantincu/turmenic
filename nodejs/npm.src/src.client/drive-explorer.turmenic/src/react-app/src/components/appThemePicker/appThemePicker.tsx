@@ -8,7 +8,7 @@ import ThemePicker from '../themePicker/ThemePicker';
 import { AppTheme, setTheme, selectTheme, defaultAppTheme } from '../../app/appTheme/appTheme';
 
 import { urlQueryParams } from '../components';
-import { replaceClassList } from '../../utils/dom';
+import { replaceClassList } from '../../src.common.browser/dom';
 
 import { AppThemePickerProps } from './appThemePickerProps';
 

@@ -3,7 +3,7 @@ import driveList from "drivelist";
 import * as pf from "platform-folders";
 
 import { strReplaceAll } from "../../src.common/text/utils.js";
-import { getDirEntries, DirEntry } from "./index.js";
+import { getDirEntries, DirEntry } from "../../src.node.common/fileSystem/index.js";
 
 export const getPath = (name: SpecialFolderTypeKey): string | null => {
   let func: () => string;
