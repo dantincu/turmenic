@@ -12,8 +12,8 @@ const DriveFile = (props: DriveItemProps) => {
     const file = useSelector(selectFile(props.parentFolderUxIntId as number, props.itemUxIntId)) as DriveFileVm;
 
     const getNameCol = () => {
-        return (<Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>
-            <Row className={cssClss.txqk.bootstrap.row}><Col className={cssClss.txqk.bootstrap.col}>{ file.name }</Col></Row>
+        return (<Col className={cssClss.txqk.bootstrap.col}>
+            <Row className={cssClss.txqk.bootstrap.row}><Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ file.name }</Col></Row>
         </Col>);
     }
 

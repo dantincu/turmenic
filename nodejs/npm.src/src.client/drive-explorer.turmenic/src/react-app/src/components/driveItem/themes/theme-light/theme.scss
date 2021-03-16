@@ -1,9 +1,32 @@
 .txqk.txqk-theme-light {
-  .txqk-drive-item {
+  .txqk-drive-folder:hover {
+    > .txqk-btstrp-col {
+      > .txqk-btstrp-row {
+        > .txqk-btstrp-col.txqk-item-name {
+          color: #baba00ff;
+        }
+      }
+    }
+  }
+
+  .txqk-drive-folder {
     color: rgb(196, 128, 0);
+
+    > .txqk-btstrp-col {
+      > .txqk-btstrp-row {
+        > .txqk-btstrp-col.txqk-item-name:hover {
+          color: #ffff00ff;
+        }
+      }
+    }
   }
 
   .txqk-toggle {
     color: rgba(0, 128, 0, 255);
+
+    > label:hover {
+      border: 1px solid rgba(0, 128, 0, 255);
+      color: lime;
+    }
   }
 }

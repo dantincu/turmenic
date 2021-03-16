@@ -64,9 +64,9 @@ const DriveFolder = (props: DriveItemProps) => {
         return childrenRow;
     }
 
-    const getNameCol = () => {
-        return (<Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>
-            <Row className={cssClss.txqk.bootstrap.row}><Col className={cssClss.txqk.bootstrap.col}>{ folder.name }</Col></Row>
+    const getMainCol = () => {
+        return (<Col className={cssClss.txqk.bootstrap.col}>
+            <Row className={cssClss.txqk.bootstrap.row}><Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ folder.name }</Col></Row>
             { getChildrenRow() }
         </Col>);
     }
@@ -75,7 +75,7 @@ const DriveFolder = (props: DriveItemProps) => {
         let arr: JSX.Element[] = [];
 
         arr = arr.concat(getToggleCol(folder.collapsed));
-        arr = arr.concat(getNameCol());
+        arr = arr.concat(getMainCol());
 
         return arr;
     }

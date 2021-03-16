@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-// import { testData } from "./driveItems.test-data";
+import { testData } from "./driveItems.test-data";
 import { DriveFolder, DeviceAppDrives } from "./driveItems.types";
 
-// const initialState: AppSessionDrives = testData;
-const initialState: DeviceAppDrives = {
+const initialState: DeviceAppDrives = testData;
+
+/*const initialState: DeviceAppDrives = {
   allAppDrives: [],
   appSessionDrives: {
     allFolders: [],
     appDrives: [],
   },
-};
+};*/
 
 const getFolder = (
   allFolders: DriveFolder[],
