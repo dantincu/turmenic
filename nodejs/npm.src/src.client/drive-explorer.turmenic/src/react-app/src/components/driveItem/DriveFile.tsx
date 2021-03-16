@@ -9,7 +9,7 @@ import { DriveItemProps } from './DriveItemProps';
 import { cssClss } from '../components';
 
 const DriveFile = (props: DriveItemProps) => {
-    const file = useSelector(selectFile(props.parentFolderUxIntId as number, props.itemUxIntId)) as DriveFileVm;
+    const file = useSelector(selectFile(props.parentFolderUuidB64 as string, props.itemUuidB64)) as DriveFileVm;
 
     const getNameCol = () => {
         return (<Col className={cssClss.txqk.bootstrap.col}>

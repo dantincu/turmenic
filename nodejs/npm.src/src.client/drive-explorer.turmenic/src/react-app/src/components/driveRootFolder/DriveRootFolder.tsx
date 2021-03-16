@@ -5,15 +5,15 @@ import DriveFolder from '../driveItem/DriveFolder';
 import { DriveRootFolderProps } from './DriveRootFolderProps';
 
 const DriveRootFolder = (props: DriveRootFolderProps) => {
-    const onFolderToggled = (folderUxIntId: number) => {
+    const onFolderToggled = (folderUuidB64: string) => {
         if (props.onFolderToggled) {
-            props.onFolderToggled(folderUxIntId);
+            props.onFolderToggled(folderUuidB64);
         }
     }
 
     return (
         <div className="txqk-drive-root-folder">
-            <DriveFolder key={props.rootFolder.itemUxIntId} onFolderToggled={onFolderToggled} {...props.rootFolder}></DriveFolder>
+            <DriveFolder key={props.rootFolder.itemUuidB64} onFolderToggled={onFolderToggled} {...props.rootFolder}></DriveFolder>
         </div>
     );
 };

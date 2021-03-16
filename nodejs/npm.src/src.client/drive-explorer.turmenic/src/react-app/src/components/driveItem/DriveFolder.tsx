@@ -11,18 +11,18 @@ import { cssClss } from '../components';
 import DriveFile from './DriveFile';
 
 const DriveFolder = (props: DriveItemProps) => {
-    const folder = useSelector(selectFolder(props.itemUxIntId)) as DriveFolderVm;
+    const folder = useSelector(selectFolder(props.itemUuidB64)) as DriveFolderVm;
     const dispatch = useDispatch();
 
-    const onFolderToggled = (folderUxIntId: number) => {
+    const onFolderToggled = (folderUuidB64: string) => {
         if (props.onFolderToggled) {
-            props.onFolderToggled(folderUxIntId);
+            props.onFolderToggled(folderUuidB64);
         }
     }
 
     const onToggleClick = () => {
-        dispatch(toggleFolder({ folderUxIntId: folder.uxIntId }));
-        onFolderToggled(folder.uxIntId);
+        dispatch(toggleFolder({ folderUuidB64: folder.uuidB64 }));
+        onFolderToggled(folder.uuidB64);
     }
 
     const getToggleCol = (collapsed?: boolean) => {
@@ -43,7 +43,7 @@ const DriveFolder = (props: DriveItemProps) => {
     }
 
     const getSubFolders = (subFolders?: DriveFolderVm[]) => {
-        const arr = subFolders?.map(item => (<DriveFolder onFolderToggled={onFolderToggled} key={item.uxIntId} {...toDriveItemProps(item)}></DriveFolder>)) ?? [];
+        const arr = subFolders?.map(item => (<DriveFolder onFolderToggled={onFolderToggled} key={item.uuidB64} {...toDriveItemProps(item)}></DriveFolder>)) ?? [];
         return arr;
     }
 

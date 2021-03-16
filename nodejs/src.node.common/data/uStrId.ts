@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from "uuid";
 
-import { uuidToBase64 } from "./uuid-to-base64.js";
+import { uuidToBase64 } from "../../src.common/text/uuid-to-base64.js";
 
 export const uStrId = (): string => {
   const uuid = uuidV4();

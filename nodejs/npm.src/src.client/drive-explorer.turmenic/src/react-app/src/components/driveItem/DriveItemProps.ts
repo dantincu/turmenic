@@ -1,6 +1,7 @@
 export interface DriveItemProps {
-  itemUxIntId: number;
-  parentFolderUxIntId?: number;
+  itemUuidB64: string;
+  parentFolderUuidB64?: string;
   cssClass?: string;
-  onFolderToggled?: (folderUxIntId: number) => void;
+  onFolderToggled?: (folderUuidB64: string) => void;
+  onItemSelected?: (itemUuidB64: string) => void;
 }

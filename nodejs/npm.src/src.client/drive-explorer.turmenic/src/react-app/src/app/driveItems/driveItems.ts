@@ -15,10 +15,10 @@ const initialState: DeviceAppDrives = testData;
 
 const getFolder = (
   allFolders: DriveFolder[],
-  folderUxIntId: number,
-  errMsg = `Folder with id ${folderUxIntId} not found`
+  folderUuidB64: string,
+  errMsg = `Folder with id ${folderUuidB64} not found`
 ) => {
-  const folder = allFolders.find((fd) => fd.uxIntId === folderUxIntId);
+  const folder = allFolders.find((fd) => fd.uuidB64 === folderUuidB64);
 
   if (!folder) {
     throw new Error(errMsg);
@@ -29,12 +29,12 @@ const getFolder = (
 
 const getFile = (
   allFolders: DriveFolder[],
-  folderUxIntId: number,
-  fileIntId: number,
-  errMsg = `File with id ${fileIntId} not found`
+  folderUuidB64: string,
+  fileUuidB64: string,
+  errMsg = `File with id ${fileUuidB64} not found`
 ) => {
-  const folder = getFolder(allFolders, folderUxIntId);
-  const file = folder.files.find((fl) => fl.uxIntId === fileIntId);
+  const folder = getFolder(allFolders, folderUuidB64);
+  const file = folder.files.find((fl) => fl.uuidB64 === fileUuidB64);
 
   if (!file) {
     throw new Error(errMsg);
@@ -47,10 +47,10 @@ export const deviceAppDrivesSlice = createSlice({
   name: "deviceAppDrives",
   initialState,
   reducers: {
-    toggleFolder: (state, action: PayloadAction<{ folderUxIntId: number }>) => {
+    toggleFolder: (state, action: PayloadAction<{ folderUuidB64: string }>) => {
       const folder = getFolder(
         state.appSessionDrives.allFolders,
-        action.payload.folderUxIntId
+        action.payload.folderUuidB64
       );
       const currentlyCollapsed = folder.collapsed ?? true;
 
@@ -58,11 +58,11 @@ export const deviceAppDrivesSlice = createSlice({
     },
     renameFolder: (
       state,
-      action: PayloadAction<{ folderUxIntId: number; newName: string }>
+      action: PayloadAction<{ folderUuidB64: string; newName: string }>
     ) => {
       const folder = getFolder(
         state.appSessionDrives.allFolders,
-        action.payload.folderUxIntId
+        action.payload.folderUuidB64
       );
       folder.name = action.payload.newName;
     },
@@ -70,29 +70,29 @@ export const deviceAppDrivesSlice = createSlice({
     moveFolder: (
       state,
       action: PayloadAction<{
-        folderUxIntId: number;
-        destParentfolderUxIntId: number;
+        folderUuidB64: string;
+        destParentfolderUuidB64: string;
       }>
     ) => {
       const folder = getFolder(
         state.appSessionDrives.allFolders,
-        action.payload.folderUxIntId
+        action.payload.folderUuidB64
       );
 
       const currentParentFolder = getFolder(
         state.appSessionDrives.allFolders,
-        folder.parentFolderUxIntId as number
+        folder.parentFolderUuidB64 as string
       );
 
       const destParentFolder = getFolder(
         state.appSessionDrives.allFolders,
-        action.payload.destParentfolderUxIntId
+        action.payload.destParentfolderUuidB64
       );
 
-      folder.parentFolderUxIntId = destParentFolder.uxIntId;
+      folder.parentFolderUuidB64 = destParentFolder.uuidB64;
 
       currentParentFolder.subFolders = currentParentFolder.subFolders?.filter(
-        (fd) => fd.uxIntId !== folder.uxIntId
+        (fd) => fd.uuidB64 !== folder.uuidB64
       );
 
       destParentFolder.subFolders?.push(folder);
@@ -101,15 +101,15 @@ export const deviceAppDrivesSlice = createSlice({
     renameFile: (
       state,
       action: PayloadAction<{
-        fileIntId: number;
-        folderUxIntId: number;
+        fileUuidB64: string;
+        folderUuidB64: string;
         newName: string;
       }>
     ) => {
       const file = getFile(
         state.appSessionDrives.allFolders,
-        action.payload.folderUxIntId,
-        action.payload.fileIntId
+        action.payload.folderUuidB64,
+        action.payload.fileUuidB64
       );
 
       file.name = action.payload.newName;
@@ -118,31 +118,31 @@ export const deviceAppDrivesSlice = createSlice({
     moveFile: (
       state,
       action: PayloadAction<{
-        fileIntId: number;
-        folderUxIntId: number;
-        destParentfolderUxIntId: number;
+        fileUuidB64: string;
+        folderUuidB64: string;
+        destParentfolderUuidB64: string;
       }>
     ) => {
       const file = getFile(
         state.appSessionDrives.allFolders,
-        action.payload.folderUxIntId,
-        action.payload.fileIntId
+        action.payload.folderUuidB64,
+        action.payload.fileUuidB64
       );
 
       const currentParentFolder = getFolder(
         state.appSessionDrives.allFolders,
-        file.parentFolderUxIntId as number
+        file.parentFolderUuidB64 as string
       );
 
       const destParentFolder = getFolder(
         state.appSessionDrives.allFolders,
-        action.payload.destParentfolderUxIntId
+        action.payload.destParentfolderUuidB64
       );
 
-      file.parentFolderUxIntId = destParentFolder.uxIntId;
+      file.parentFolderUuidB64 = destParentFolder.uuidB64;
 
       currentParentFolder.files = currentParentFolder.files?.filter(
-        (fl) => fl.uxIntId !== file.uxIntId
+        (fl) => fl.uuidB64 !== file.uuidB64
       );
 
       destParentFolder.files?.push(file);
@@ -155,20 +155,20 @@ export const selectAppDrives = (state: RootState) => {
   return value;
 };
 
-export const selectFolder = (folderUxIntId: number) => (state: RootState) => {
+export const selectFolder = (folderUuidB64: string) => (state: RootState) => {
   const value = state.deviceAppDrives.appSessionDrives.allFolders.find(
-    (fd) => fd.uxIntId === folderUxIntId
+    (fd) => fd.uuidB64 === folderUuidB64
   );
 
   return value;
 };
 
-export const selectFile = (folderUxIntId: number, fileUxIntId: number) => (
+export const selectFile = (folderUuidB64: string, fileUuidB64: string) => (
   state: RootState
 ) => {
   const value = state.deviceAppDrives.appSessionDrives.allFolders
-    .find((fd) => fd.uxIntId === folderUxIntId)
-    ?.files.find((fl) => fl.uxIntId === fileUxIntId);
+    .find((fd) => fd.uuidB64 === folderUuidB64)
+    ?.files.find((fl) => fl.uuidB64 === fileUuidB64);
 
   return value;
 };
