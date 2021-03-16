@@ -28,6 +28,6 @@ import "./src.node.common/fileSystem/index.js";
 import "./src.node.common/fileSystem/json.js";
 import "./src.node.common/fileSystem/platform.js";
 import "./src.node.common/logging/simple-file-logger.js";
-import "./src.node.common.client/index.js";
+import "./src.node.common.client/dom.js";
 import "./src.node.common.client/utils/imports.js";
 import "./src.node.common.client/utils/intIdGenerator.js";

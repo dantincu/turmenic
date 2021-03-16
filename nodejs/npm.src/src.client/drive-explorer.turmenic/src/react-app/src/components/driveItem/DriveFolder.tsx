@@ -38,7 +38,7 @@ const DriveFolder = (props: DriveItemProps) => {
     }
 
     const getFiles = (files?: DriveFileVm[]) => {
-        const arr = files?.map(item => (<DriveFile {...toDriveItemProps(item)}></DriveFile>)) ?? [];
+        const arr = files?.map(item => (<DriveFile key={item.uuidB64} {...toDriveItemProps(item)}></DriveFile>)) ?? [];
         return arr;
     }
 
@@ -66,7 +66,7 @@ const DriveFolder = (props: DriveItemProps) => {
 
     const getMainCol = () => {
         return (<Col className={cssClss.txqk.bootstrap.col}>
-            <Row className={cssClss.txqk.bootstrap.row}><Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ folder.name }</Col></Row>
+            <Row className={`${cssClss.txqk.bootstrap.row} txqk-main-row`}><Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ folder.name }</Col></Row>
             { getChildrenRow() }
         </Col>);
     }

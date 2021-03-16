@@ -3,7 +3,18 @@
     > .txqk-btstrp-col {
       > .txqk-btstrp-row {
         > .txqk-btstrp-col.txqk-item-name {
-          color: #b0b000ff;
+          font-weight: bold;
+          color: #a0a000ff;
+        }
+      }
+    }
+  }
+
+  .txqk-drive-item {
+    > .txqk-btstrp-col:hover {
+      > .txqk-btstrp-row.txqk-main-row {
+        > .txqk-btstrp-col.txqk-item-name {
+          color: #c0c000ff;
         }
       }
     }
@@ -13,9 +24,9 @@
     color: rgb(192, 128, 0);
 
     > .txqk-btstrp-col {
-      > .txqk-btstrp-row {
+      > .txqk-btstrp-row.txqk-main-row {
         > .txqk-btstrp-col.txqk-item-name:hover {
-          font-weight: bold;
+          color: #f0f000ff;
         }
       }
     }

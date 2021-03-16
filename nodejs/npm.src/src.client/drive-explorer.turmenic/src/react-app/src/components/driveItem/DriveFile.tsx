@@ -13,7 +13,7 @@ const DriveFile = (props: DriveItemProps) => {
 
     const getNameCol = () => {
         return (<Col className={cssClss.txqk.bootstrap.col}>
-            <Row className={cssClss.txqk.bootstrap.row}><Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ file.name }</Col></Row>
+            <Row className={`${cssClss.txqk.bootstrap.row} txqk-main-row`}><Col className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ file.name }</Col></Row>
         </Col>);
     }
 

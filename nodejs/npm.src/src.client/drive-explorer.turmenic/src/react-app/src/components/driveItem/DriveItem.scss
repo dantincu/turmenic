@@ -13,6 +13,10 @@ $drive-item-width: 97%;
   min-width: $drive-item-width;
   max-width: $drive-item-width;
 
+  &.txqk-drive-file {
+    font-family: $alt-text-font-family;
+  }
+
   .txqk-btstrp-col {
     margin: 0px;
     padding: 0px;

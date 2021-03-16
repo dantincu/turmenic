@@ -1,5 +1,5 @@
 .txqk.txqk-theme-light {
-  .txqk-drive-item:hover {
+  /* .txqk-drive-item:hover {
     > .txqk-btstrp-col {
       > .txqk-btstrp-row {
         > .txqk-btstrp-col.txqk-item-name {
@@ -16,6 +16,39 @@
       > .txqk-btstrp-row {
         > .txqk-btstrp-col.txqk-item-name:hover {
           font-weight: bold;
+        }
+      }
+    }
+  } */
+
+  .txqk-drive-item:hover {
+    > .txqk-btstrp-col {
+      > .txqk-btstrp-row {
+        > .txqk-btstrp-col.txqk-item-name {
+          font-weight: bold;
+          color: #8080ffff;
+        }
+      }
+    }
+  }
+
+  .txqk-drive-item {
+    > .txqk-btstrp-col:hover {
+      > .txqk-btstrp-row.txqk-main-row {
+        > .txqk-btstrp-col.txqk-item-name {
+          color: #0000a0ff;
+        }
+      }
+    }
+  }
+
+  .txqk-drive-item {
+    color: rgb(192, 128, 0);
+
+    > .txqk-btstrp-col {
+      > .txqk-btstrp-row.txqk-main-row {
+        > .txqk-btstrp-col.txqk-item-name:hover {
+          color: #0000ffff;
         }
       }
     }
