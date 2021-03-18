@@ -11,9 +11,25 @@ const DriveRootFolder = (props: DriveRootFolderProps) => {
         }
     }
 
+    const onItemSelected = (itemUuidB64: string, previewSelection: boolean) => {
+        if (props.onItemSelected) {
+            props.onItemSelected(itemUuidB64, previewSelection);
+        }
+    }
+
+    const onItemRightClick = (itemUuidB64: string) => {
+        if (props.onItemRightClick) {
+            props.onItemRightClick(itemUuidB64);
+        }
+    }
+
     return (
         <div className="txqk-drive-root-folder">
-            <DriveFolder key={props.rootFolder.itemUuidB64} onFolderToggled={onFolderToggled} {...props.rootFolder}></DriveFolder>
+            <DriveFolder
+                onFolderToggled={onFolderToggled}
+                onItemSelected={onItemSelected}
+                onItemRightClick={onItemRightClick}
+                {...props.rootFolder}></DriveFolder>
         </div>
     );
 };

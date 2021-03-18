@@ -68,11 +68,15 @@
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
   "include":[
-    "index.ts",
+    "src.common/**/*",
+    "src.node.common/**/*",
+    "src.node.common.client/**/*",
+    "tests/**/*"
   ],
   "exclude":[
       "node_modules",
-       "dist"
+       "dist",
+       "src.node.common.client/jsx-templates/component/Component.tsx"
   ],
   "compileOnSave":false
 }

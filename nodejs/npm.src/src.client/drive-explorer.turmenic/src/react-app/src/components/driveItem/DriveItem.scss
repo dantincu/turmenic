@@ -12,6 +12,7 @@ $drive-item-width: 97%;
   padding: 0px;
   min-width: $drive-item-width;
   max-width: $drive-item-width;
+  user-select: none;
 
   &.txqk-drive-file {
     font-family: $alt-text-font-family;

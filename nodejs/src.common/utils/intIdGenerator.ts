@@ -7,4 +7,4 @@ export class IntIdGenerator {
   }
 }
 
-export const defaultIntIdGenerator = new IntIdGenerator();
+export const intIdGenerator = new IntIdGenerator();

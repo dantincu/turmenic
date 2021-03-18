@@ -1,4 +1,4 @@
-import "./src.common/async/async-singleton.js";
+/* import "./src.common/async/async-singleton.js";
 import "./src.common/logging/appConsole.js";
 import "./src.common/stronglyTyped/keyIndexing.js";
 import "./src.common/text/pckg.js";
@@ -31,3 +31,4 @@ import "./src.node.common/logging/simple-file-logger.js";
 import "./src.node.common.server/api/hapi/index.js";
 import "./src.node.common.server/api/hapi/server.js";
 import "./src.node.common.server/fileSystem/deviceRootFolders.js";
+*/

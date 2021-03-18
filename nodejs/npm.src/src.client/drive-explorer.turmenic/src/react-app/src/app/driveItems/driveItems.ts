@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { stat } from "fs-extra";
 import { RootState } from "../store";
 import { testData } from "./driveItems.test-data";
-import { DriveFolder, DeviceAppDrives } from "./driveItems.types";
+import {
+  DriveFolder,
+  DeviceAppDrives,
+  AppSessionDrives,
+  AppDrive,
+} from "./driveItems.types";
 
 const initialState: DeviceAppDrives = testData;
 
@@ -43,6 +49,23 @@ const getFile = (
   return file;
 };
 
+const getAppDrive = (
+  appSessionDrives: AppSessionDrives,
+  rootFolderUuidB64: string,
+  errMsg = `App drive with root folder id ${rootFolderUuidB64} not found`
+) => {
+  const appDrive: AppDrive | null =
+    appSessionDrives.appDrives.find(
+      (drive) => drive.rootFolder.uuidB64 === rootFolderUuidB64
+    ) ?? null;
+
+  if (!appDrive) {
+    throw new Error(errMsg);
+  }
+
+  return appDrive;
+};
+
 export const deviceAppDrivesSlice = createSlice({
   name: "deviceAppDrives",
   initialState,
@@ -66,7 +89,6 @@ export const deviceAppDrivesSlice = createSlice({
       );
       folder.name = action.payload.newName;
     },
-
     moveFolder: (
       state,
       action: PayloadAction<{
@@ -97,7 +119,62 @@ export const deviceAppDrivesSlice = createSlice({
 
       destParentFolder.subFolders?.push(folder);
     },
+    setSelectedFolder: (
+      state,
+      action: PayloadAction<{
+        rootFolderUuidB64: string;
+        folderUuidB64?: string;
+      }>
+    ) => {
+      const folder = action.payload.folderUuidB64
+        ? getFolder(
+            state.appSessionDrives.allFolders,
+            action.payload.folderUuidB64
+          )
+        : null;
 
+      const appDrive = getAppDrive(
+        state.appSessionDrives,
+        action.payload.rootFolderUuidB64
+      );
+
+      if (appDrive.selectedFolder) {
+        appDrive.selectedFolder.isSelected = false;
+      }
+
+      if (folder) {
+        folder.isSelected = true;
+        appDrive.selectedFolder = folder;
+      }
+    },
+    setCurrentFolder: (
+      state,
+      action: PayloadAction<{
+        rootFolderUuidB64: string;
+        folderUuidB64?: string;
+      }>
+    ) => {
+      const folder = action.payload.folderUuidB64
+        ? getFolder(
+            state.appSessionDrives.allFolders,
+            action.payload.folderUuidB64
+          )
+        : null;
+
+      const appDrive = getAppDrive(
+        state.appSessionDrives,
+        action.payload.rootFolderUuidB64
+      );
+
+      if (appDrive.currentFolder) {
+        appDrive.currentFolder.isCurrent = false;
+      }
+
+      if (folder) {
+        folder.isCurrent = true;
+        appDrive.currentFolder = folder;
+      }
+    },
     renameFile: (
       state,
       action: PayloadAction<{
@@ -114,7 +191,6 @@ export const deviceAppDrivesSlice = createSlice({
 
       file.name = action.payload.newName;
     },
-
     moveFile: (
       state,
       action: PayloadAction<{
@@ -146,6 +222,68 @@ export const deviceAppDrivesSlice = createSlice({
       );
 
       destParentFolder.files?.push(file);
+    },
+    setSelectedFile: (
+      state,
+      action: PayloadAction<{
+        rootFolderUuidB64: string;
+        folderUuidB64?: string;
+        fileUuidB64?: string;
+      }>
+    ) => {
+      const file =
+        action.payload.fileUuidB64 && action.payload.folderUuidB64
+          ? getFile(
+              state.appSessionDrives.allFolders,
+              action.payload.folderUuidB64,
+              action.payload.fileUuidB64
+            )
+          : null;
+
+      const appDrive = getAppDrive(
+        state.appSessionDrives,
+        action.payload.rootFolderUuidB64
+      );
+
+      if (appDrive.selectedFile) {
+        appDrive.selectedFile.isSelected = false;
+      }
+
+      if (file) {
+        file.isSelected = true;
+        appDrive.selectedFile = file;
+      }
+    },
+    setCurrentFile: (
+      state,
+      action: PayloadAction<{
+        rootFolderUuidB64: string;
+        folderUuidB64?: string;
+        fileUuidB64?: string;
+      }>
+    ) => {
+      const file =
+        action.payload.fileUuidB64 && action.payload.folderUuidB64
+          ? getFile(
+              state.appSessionDrives.allFolders,
+              action.payload.folderUuidB64,
+              action.payload.fileUuidB64
+            )
+          : null;
+
+      const appDrive = getAppDrive(
+        state.appSessionDrives,
+        action.payload.rootFolderUuidB64
+      );
+
+      if (appDrive.currentFile) {
+        appDrive.currentFile.isCurrent = false;
+      }
+
+      if (file) {
+        file.isCurrent = true;
+        appDrive.currentFile = file;
+      }
     },
   },
 });
@@ -179,6 +317,10 @@ export const {
   renameFile,
   moveFolder,
   moveFile,
+  setCurrentFile,
+  setCurrentFolder,
+  setSelectedFile,
+  setSelectedFolder,
 } = deviceAppDrivesSlice.actions;
 
 export const deviceAppDrivesReducer = deviceAppDrivesSlice.reducer;

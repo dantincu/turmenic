@@ -4,7 +4,7 @@
       > .txqk-btstrp-row {
         > .txqk-btstrp-col.txqk-item-name {
           font-weight: bold;
-          color: #a0a000ff;
+          color: #b0b080ff;
         }
       }
     }
@@ -14,7 +14,7 @@
     > .txqk-btstrp-col:hover {
       > .txqk-btstrp-row.txqk-main-row {
         > .txqk-btstrp-col.txqk-item-name {
-          color: #c0c000ff;
+          color: #b0b000ff;
         }
       }
     }
@@ -26,7 +26,7 @@
     > .txqk-btstrp-col {
       > .txqk-btstrp-row.txqk-main-row {
         > .txqk-btstrp-col.txqk-item-name:hover {
-          color: #f0f000ff;
+          color: #ffff00ff;
         }
       }
     }
@@ -36,7 +36,8 @@
     color: rgba(0, 128, 0, 255);
 
     > label:hover {
-      border: 1px solid rgba(0, 128, 0, 255);
+      background-color: rgba(0, 128, 0, 255);
+      color: rgba(0, 255, 0, 255);
     }
   }
 }

@@ -4,6 +4,10 @@ export const urlQueryParams = {
 
 export const cssClss = {
   txqk: {
+    item: {
+      selected: "txqk-selected",
+      current: "txqk-current",
+    },
     toggle: {
       base: "txqk-toggle",
       collapsed: "txqk-toggle-collapsed",

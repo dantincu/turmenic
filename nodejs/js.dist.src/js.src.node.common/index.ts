@@ -1,4 +1,4 @@
-import "./src.common/async/async-singleton.js";
+/* import "./src.common/async/async-singleton.js";
 import "./src.common/logging/appConsole.js";
 import "./src.common/stronglyTyped/keyIndexing.js";
 import "./src.common/text/pckg.js";
@@ -28,3 +28,4 @@ import "./src.node.common/fileSystem/index.js";
 import "./src.node.common/fileSystem/json.js";
 import "./src.node.common/fileSystem/platform.js";
 import "./src.node.common/logging/simple-file-logger.js";
+*/
