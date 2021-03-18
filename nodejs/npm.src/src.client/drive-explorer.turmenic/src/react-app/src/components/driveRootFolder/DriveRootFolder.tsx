@@ -5,15 +5,31 @@ import DriveFolder from '../driveItem/DriveFolder';
 import { DriveRootFolderProps } from './DriveRootFolderProps';
 
 const DriveRootFolder = (props: DriveRootFolderProps) => {
-    const onFolderToggled = (folderUxIntId: number) => {
+    const onFolderToggled = (folderUuidB64: string) => {
         if (props.onFolderToggled) {
-            props.onFolderToggled(folderUxIntId);
+            props.onFolderToggled(folderUuidB64);
+        }
+    }
+
+    const onItemSelected = (itemUuidB64: string, previewSelection: boolean) => {
+        if (props.onItemSelected) {
+            props.onItemSelected(itemUuidB64, previewSelection);
+        }
+    }
+
+    const onItemRightClick = (itemUuidB64: string) => {
+        if (props.onItemRightClick) {
+            props.onItemRightClick(itemUuidB64);
         }
     }
 
     return (
         <div className="txqk-drive-root-folder">
-            <DriveFolder key={props.rootFolder.itemUxIntId} onFolderToggled={onFolderToggled} {...props.rootFolder}></DriveFolder>
+            <DriveFolder
+                onFolderToggled={onFolderToggled}
+                onItemSelected={onItemSelected}
+                onItemRightClick={onItemRightClick}
+                {...props.rootFolder}></DriveFolder>
         </div>
     );
 };

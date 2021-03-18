@@ -7,8 +7,8 @@ import {
 import ThemePicker from '../themePicker/ThemePicker';
 import { AppTheme, setTheme, selectTheme, defaultAppTheme } from '../../app/appTheme/appTheme';
 
-import { urlQueryParams } from '../components';
-import { replaceClassList } from '../../utils/dom';
+import { urlQueryParams } from '../const';
+import { replaceClassList } from '../../js.common/dist/src.node.common.client/dom';
 
 import { AppThemePickerProps } from './appThemePickerProps';
 

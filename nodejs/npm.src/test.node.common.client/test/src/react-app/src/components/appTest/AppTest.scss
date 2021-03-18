@@ -1,0 +1,59 @@
+.tttt {
+  padding-left: 10px;
+  min-height: 100vh;
+
+  .tttt-cmpnt-cntr {
+    padding-top: 10px;
+    .tttt-cmpnt {
+    }
+  }
+  .tttt-msg-cntr {
+    height: 100%;
+    padding-top: 10px;
+
+    .tttt-msg {
+      font-size: 10px;
+      font-family: "Verdana";
+      font-weight: bold;
+      width: 100%;
+
+      .tttt-msg-label {
+        max-width: 10px;
+        padding: 2px 0px 2px 0px;
+        margin: 2px 0px 2px 0px;
+        height: 10px;
+      }
+
+      &.tttt-msg-t1 {
+        .tttt-msg-label {
+          background-color: orangered;
+        }
+      }
+      &.tttt-msg-t2 {
+        .tttt-msg-label {
+          background-color: green;
+        }
+      }
+      &.tttt-msg-t3 {
+        .tttt-msg-label {
+          background-color: chocolate;
+        }
+      }
+      &.tttt-msg-t4 {
+        .tttt-msg-label {
+          background-color: blue;
+        }
+      }
+      &.tttt-msg-t5 {
+        .tttt-msg-label {
+          background-color: brown;
+        }
+      }
+      &.tttt-msg-t6 {
+        .tttt-msg-label {
+          background-color: orange;
+        }
+      }
+    }
+  }
+}

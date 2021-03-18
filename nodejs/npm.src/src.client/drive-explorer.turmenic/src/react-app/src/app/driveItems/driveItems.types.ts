@@ -1,10 +1,12 @@
 export interface DriveItem {
-  uxIntId: number;
+  uuidB64: string;
   name: string;
   displayName?: string;
-  parentFolderUxIntId?: number;
+  parentFolderUuidB64?: string;
   path?: string;
   orderIdx?: number;
+  isSelected?: boolean;
+  isCurrent?: boolean;
 }
 
 export interface DriveFolder extends DriveItem {
@@ -22,6 +24,10 @@ export interface DriveFile extends DriveItem {
 
 export interface AppDrive {
   rootFolder: DriveFolder;
+  selectedFolder?: DriveFolder;
+  currentFolder?: DriveFolder;
+  selectedFile?: DriveFile;
+  currentFile?: DriveFile;
 }
 
 export interface AppSessionDrives {

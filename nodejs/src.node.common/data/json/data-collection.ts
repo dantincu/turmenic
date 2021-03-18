@@ -13,7 +13,7 @@ import {
   getValueLocking,
 } from "../../async/redis-mutex.js"; */
 
-import { uStrId } from "../../../src.common/text/uStrId.js";
+import { uStrId } from "../uStrId.js";
 import { clone, copyShallow } from "../../../src.common/utils/types.js";
 import { compareVersions } from "../../../src.common/text/pckg.js";
 

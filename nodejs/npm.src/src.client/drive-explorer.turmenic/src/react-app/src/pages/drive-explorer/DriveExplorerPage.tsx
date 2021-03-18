@@ -12,9 +12,9 @@ import { DriveExplorerPageProps } from './DriveExplorerPageProps';
 const DriveExplorerPage = (props: DriveExplorerPageProps) => {
     const appDrives = useSelector(selectAppDrives);
 
-    const onFolderToggled = (folderUxIntId: number) => {
+    const onFolderToggled = (folderUuidB64: string) => {
         if (props.onFolderToggled) {
-            props.onFolderToggled(folderUxIntId);
+            props.onFolderToggled(folderUuidB64);
         }
     }
 
@@ -23,7 +23,7 @@ const DriveExplorerPage = (props: DriveExplorerPageProps) => {
         const rootFolderProps = rootFolder ? toDriveItemProps(rootFolder) : null;
 
         if (rootFolderProps) {
-            retComp = (<DriveRootFolder key={rootFolderProps.itemUxIntId} onFolderToggled={onFolderToggled} rootFolder={rootFolderProps}></DriveRootFolder>);
+            retComp = (<DriveRootFolder key={rootFolderProps.itemUuidB64} onFolderToggled={onFolderToggled} rootFolder={rootFolderProps}></DriveRootFolder>);
         }
 
         return retComp;

@@ -1,4 +1,4 @@
-import { uStrId } from "../src.common/text/uStrId.js";
+import { uStrId } from "../src.node.common/data/uStrId.js";
 
 export const genBase64Charset = () => {
   const charsArr: string[] = [];

@@ -15,7 +15,7 @@ export const readdirAsync = util.promisify(fs.readdir);
 export const copyAsync = util.promisify(fsExtra.copy);
 export const removeDirAsync = util.promisify(fsExtra.remove);
 export const emptyDirAsync = util.promisify(fsExtra.emptyDir);
-export const removeFileAsync = util.promisify(fs.rm);
+export const removeFileAsync = util.promisify(fs.unlink);
 
 export const winattrGetAsync = util.promisify(winattr.get);
 

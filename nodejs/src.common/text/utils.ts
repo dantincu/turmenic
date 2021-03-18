@@ -47,3 +47,13 @@ export const strCount = (val: string, str: string): number => {
 
   return replVal;
 };
+
+export const strContainsDigits = (str: string) => {
+  const containsDigits = /\d+/.test(str);
+  return containsDigits;
+};
+
+export const strIsAllDigits = (str: string) => {
+  const isAllDigits = /^\d+$/.test(str);
+  return isAllDigits;
+};

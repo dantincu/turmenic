@@ -4,13 +4,13 @@ export class AppConsole {
 
   log(...data: any[]) {
     if (this.logEnabled) {
-      console.log.apply(this, data);
+      console.log(...data);
     }
   }
 
   debug(...data: any[]) {
     if (this.debugEnabled) {
-      console.debug.apply(this, data);
+      console.debug(...data);
     }
   }
 }

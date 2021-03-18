@@ -5,7 +5,7 @@ import {
   SpecialFolderTypeKey,
   specialFolderTypesList,
   DeviceDrive,
-} from "../../src.node.common/fileSystem/deviceRootFolders.js";
+} from "../../src.node.common.server/fileSystem/deviceRootFolders.js";
 
 import {
   DirEntry,
