@@ -1,5 +1,5 @@
 {
-  "name": "test-turmenic-common-server",
+  "name": "test-app.server.turmeric",
   "version": "1.0.0",
   "description": "Test package for Turmenic server side functionality",
   "main": "index.ts",
