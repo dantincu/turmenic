@@ -3,5 +3,7 @@ src.node.common
 src.node.common.server
 src.node.common.client
 
+jsx-cmp
+
 *.jsconfig.json
 */*.jsconfig.json
