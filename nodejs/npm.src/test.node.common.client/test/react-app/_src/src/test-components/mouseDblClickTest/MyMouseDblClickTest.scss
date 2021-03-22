@@ -1,0 +1,13 @@
+.tttt .tttt-cmpnt-cntr .tttt-cmpnt {
+  &.leftMouseDown {
+    background-color: red;
+  }
+
+  &.middleMouseDown {
+    background-color: blue;
+  }
+
+  &.rightMouseDown {
+    background-color: green;
+  }
+}
