@@ -1,3 +1,9 @@
+import {
+  DriveItemEvts,
+  DriveItemIdentity,
+} from "../../components/driveItem/DriveItemProps";
+
 export interface DriveExplorerPageProps {
-  onFolderToggled?: (folderUuidB64: string) => void;
+  events?: DriveItemEvts;
+  onFolderToggled?: (idntty: DriveItemIdentity) => void;
 }

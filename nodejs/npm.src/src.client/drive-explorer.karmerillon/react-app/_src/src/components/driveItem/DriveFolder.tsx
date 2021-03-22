@@ -2,70 +2,70 @@ import React, { MouseEvent } from 'react';
 import { Row, Col, Label } from 'reactstrap';
 import './DriveItem.scss';
 
-import { DriveFolder as DriveFolderVm, DriveFile as DriveFileVm } from '../../app/driveItems/driveItems.types';
+import { DriveFolder as DriveFolderVm, DriveItem as DriveItemVm } from '../../app/driveItems/driveItems.types';
+import { driveItemToProps } from '../../app/driveItems/driveItems.converters';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleFolder, selectFolder, setCurrentFile, setCurrentFolder, setSelectedFile, setSelectedFolder } from '../../app/driveItems/driveItems';
-import { toDriveItemProps } from '../../app/driveItems/driveItems.converters';
-import { DriveItemProps } from './DriveItemProps';
+import { toggleFolder, selectFolder, setCurrentFolder, setSelectedFolder } from '../../app/driveItems/driveItems';
+import { DriveItemProps, DriveItemIdentity } from './DriveItemProps';
 import { cssClss } from '../const';
 import DriveFile from './DriveFile';
-import { MouseDblClick } from '../../js.common/dist/src.node.common.client/domEvents/MouseDblClick';
+import DriveItemName from './DriveItemName';
 
 const DriveFolder = (props: DriveItemProps) => {
-    const folder = useSelector(selectFolder(props.itemUuidB64)) as DriveFolderVm;
+    const folder = useSelector(selectFolder(props.idntty.itemId)) as DriveFolderVm;
     const dispatch = useDispatch();
 
-    const componentEvents = {
-        itemNameMouseDblClick: new MouseDblClick()
+    if ([typeof folder.isSelected, typeof folder.isCurrent].indexOf("boolean") >= 0) {
+        console.log(" >>>> ", folder.isSelected, folder.isCurrent);
     }
 
-    componentEvents.itemNameMouseDblClick.singleClickSubject.subscribe(() => {
-        if (props.onItemSelected) {
-            props.onItemSelected(props.itemUuidB64, true);
+    const onFolderSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
+        if (previewSelection) {
+            dispatch(setSelectedFolder({ rootFolderId: idntty.rootFolderId, folderId: idntty.itemId }));
+        } else {
+            dispatch(setCurrentFolder({ rootFolderId: idntty.rootFolderId, folderId: idntty.itemId }));
         }
-    });
 
-    componentEvents.itemNameMouseDblClick.doubleClickSubject.subscribe(() => {
-        if (props.onItemSelected) {
-            props.onItemSelected(props.itemUuidB64, false);
-        }
-    });
+        onItemSelected(idntty, previewSelection);
+    }
 
-    const onItemNameMouseDown = (e: MouseEvent) => {
-        if (e.button === 0) {
-            componentEvents.itemNameMouseDblClick.onMouseDown();
-        } else if(e.button === 1) {
-            if (props.onItemSelected) {
-                props.onItemSelected(props.itemUuidB64, false);
-            }
-        } else if (e.button === 2) {
-            if (props.onItemRightClick) {
-                props.onItemRightClick(props.itemUuidB64);
-            }
+    const onItemSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
+        if (props.events.onItemSelected) {
+            props.events.onItemSelected(idntty, previewSelection);
         }
     }
 
-    const onItemSelected = (itemUuidB64: string, previewSelection: boolean) => {
-        if (props.onItemSelected) {
-            props.onItemSelected(itemUuidB64, previewSelection);
+    const onItemCtxMenu = (idntty: DriveItemIdentity) => {
+        if (props.events.onItemCtxMenu) {
+            props.events.onItemCtxMenu(idntty);
         }
     }
 
-    const onItemRightClick = (itemUuidB64: string) => {
-        if (props.onItemRightClick) {
-            props.onItemRightClick(itemUuidB64);
-        }
+    const onItemNameClick = (e: MouseEvent) => {
+        onFolderSelected(props.idntty, true);
     }
 
-    const onFolderToggled = (folderUuidB64: string) => {
+    const onItemNameDblClick = (e: MouseEvent) => {
+        onFolderSelected(props.idntty, false);
+    }
+
+    const onItemNameMiddleClick = (e: MouseEvent) => {
+        onFolderSelected(props.idntty, true);
+    }
+
+    const onItemNameRightClick = (e: MouseEvent) => {
+        onItemCtxMenu(props.idntty);
+    }
+
+    const onFolderToggled = (idntty: DriveItemIdentity) => {
         if (props.onFolderToggled) {
-            props.onFolderToggled(folderUuidB64);
+            props.onFolderToggled(idntty);
         }
     }
 
     const onToggleClick = (e: MouseEvent) => {
-        dispatch(toggleFolder({ folderUuidB64: folder.uuidB64 }));
-        onFolderToggled(folder.uuidB64);
+        dispatch(toggleFolder({ folderId: folder.id }));
+        onFolderToggled(props.idntty);
     }
 
     const getToggleCol = (collapsed?: boolean) => {
@@ -80,19 +80,32 @@ const DriveFolder = (props: DriveItemProps) => {
         return (<Col className={togglCssClass}><Label onClick={onToggleClick}>{ toggleChar }</Label></Col>);
     }
 
-    const getFiles = (files?: DriveFileVm[]) => {
-        const arr = files?.map(item => (<DriveFile key={item.uuidB64} {...toDriveItemProps(item)}></DriveFile>)) ?? [];
-        return arr;
+    const fileToComp = (drItm: DriveItemVm) => {
+        const fileProps = driveItemToProps({
+            drItm: drItm,
+            events: props.events,
+            rootFolderId: props.idntty.rootFolderId
+        });
+
+        const fileComp = (<DriveFile key={fileProps.idntty.itemId} {...fileProps}></DriveFile>);
+        return fileComp;
     }
 
-    const getSubFolders = (subFolders?: DriveFolderVm[]) => {
-        const arr = subFolders?.map(item => (<DriveFolder onFolderToggled={onFolderToggled} onItemSelected={onItemSelected} onItemRightClick={onItemRightClick} key={item.uuidB64} {...toDriveItemProps(item)}></DriveFolder>)) ?? [];
-        return arr;
+    const folderToComp = (drItm: DriveItemVm) => {
+        const folderProps = driveItemToProps({
+            drItm: drItm,
+            events: props.events,
+            rootFolderId: props.idntty.rootFolderId,
+            onFolderToggled: onFolderToggled,
+        });
+
+        const folderComp = (<DriveFolder key={folderProps.idntty.itemId} {...folderProps} />);
+        return folderComp;
     }
 
     const getChildrenCol = () => {
-        let arr = getSubFolders(folder.subFolders);
-        arr = arr.concat(getFiles(folder.files));
+        let arr = folder.subFolders?.map(folderToComp) ?? [];
+        arr = arr.concat(folder.files?.map(fileToComp) ?? []);
 
         return <Col className={`${cssClss.txqk.bootstrap.col}`}>{ arr }</Col>;
     }
@@ -109,14 +122,16 @@ const DriveFolder = (props: DriveItemProps) => {
 
     const getMainCol = () => {
         return (<Col className={cssClss.txqk.bootstrap.col}>
-            <Row className={`${cssClss.txqk.bootstrap.row} txqk-main-row`}><Col onMouseDown={onItemNameMouseDown} className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ folder.name }</Col></Row>
+            <Row className={`${cssClss.txqk.bootstrap.row} txqk-main-row`}>
+                <DriveItemName
+                        itemName={folder.name}
+                        onClick={onItemNameClick}
+                        onDoubleClick={onItemNameDblClick}
+                        onMiddleClick={onItemNameMiddleClick}
+                        onRightClick={onItemNameRightClick} />
+                </Row>
             { getChildrenRow() }
         </Col>);
-    }
-
-    const getCols = () => {
-        let arr: JSX.Element[] = [getToggleCol(folder.collapsed), getMainCol()];
-        return arr;
     }
 
     const getCssClassName = () => {
@@ -129,6 +144,10 @@ const DriveFolder = (props: DriveItemProps) => {
         if (folder.isSelected === true) {
             cssClassArr.push(cssClss.txqk.item.selected);
         }
+        
+        if (folder.isCurrent === true) {
+            cssClassArr.push(cssClss.txqk.item.current);
+        }
 
         if (props.cssClass) {
             cssClassArr.push(props.cssClass);
@@ -140,7 +159,7 @@ const DriveFolder = (props: DriveItemProps) => {
 
     return (
         <Row className={getCssClassName()}>
-            { getCols() }
+            { [getToggleCol(folder.collapsed), getMainCol()] }
         </Row>
     );
 };

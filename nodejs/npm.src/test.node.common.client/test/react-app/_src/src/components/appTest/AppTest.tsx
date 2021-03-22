@@ -4,14 +4,14 @@ import {
     Route,
 } from "react-router-dom";
 import { Container, Row, Col } from 'reactstrap';
+import { Subject } from 'rxjs';
 
-import { intIdGenerator } from '../../js.common/dist/src.common/utils/intIdGenerator';
-import { AppTestMsg } from './AppTestData';
 import './AppTest.scss';
 
-import { appTestRoute, AppTestMsgProps, AppTestMsgTypes, appTestMsgTypesEnumKeys } from './AppTestData';
-import MouseDblClickTest from '../../test-components/mouseDblClickTest/MouseDblClickTest';
-import AppMessage from '../appMessage/AppMessage';
+import { AppTestMsg } from '../../app/appMessagesSlice';
+import { appTestRoute } from './AppTestData';
+import MyMouseDblClickTest from '../../test-components/mouseDblClickTest/MyMouseDblClickTest';
+import AppMessagesCntr from '../appMessage/AppMessagesCntr';
 
 interface AppTestRouteData {
     relPath: string;
@@ -19,39 +19,27 @@ interface AppTestRouteData {
 }
 
 const AppTest = () => {
-    const [ appTestMessages, setAppTestMessages ] = useState<AppTestMsg[]>([]);
+    const $appTestMsgSubject = new Subject<AppTestMsg>();
 
     const onAppMessage = (msg: AppTestMsg) => {
-        msg.intIdx = msg.intIdx ?? intIdGenerator.getNextId();
-        const msgArr = appTestMessages.slice(0, appTestMessages.length);
-        console.log("msgArr", msgArr);
-
-        msgArr.splice(0, 0, msg);
-        console.log("msgArr", msgArr);
-        setAppTestMessages(msgArr);
+        $appTestMsgSubject.next(msg);
     }
 
     const routesArr: AppTestRouteData[] = [
         {
             relPath: "mouse-dbl-click",
-            component: (<MouseDblClickTest onAppMessage={onAppMessage}></MouseDblClickTest>)
+            component: (<MyMouseDblClickTest onAppMessage={onAppMessage}></MyMouseDblClickTest>)
         }
     ];
 
-    return (<Container className="tttt">
+    return (
+    <Container className="tttt">
         <Row className="tttt-cmpnt-cntr">
             <Switch>
                 { routesArr.map(data => <Route path={appTestRoute.getRoutePath(data.relPath)}>{data.component}</Route>) }
             </Switch>
         </Row>
-        <Row className="tttt-msg-cntr">
-            { appTestMessages.map((msg, idx, arr) => {
-                return {
-                    msg: msg,
-                    msgType: appTestMsgTypesEnumKeys[(arr.length - 1 - idx) % appTestMsgTypesEnumKeys.length] as unknown as AppTestMsgTypes
-                } as AppTestMsgProps
-            }).map(msg => <AppMessage key={msg.msg.intIdx} {...msg}></AppMessage>) }
-        </Row>
+        <AppMessagesCntr $appTestMsgSubject={$appTestMsgSubject}></AppMessagesCntr>
     </Container>);
 }
 

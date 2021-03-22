@@ -4,14 +4,12 @@
 $toggle-width: 15px;
 $toggle-height: 15px;
 
-$drive-item-width: 97%;
-
 .txqk-drive-item {
   text-align: left;
   margin: 0px;
   padding: 0px;
-  min-width: $drive-item-width;
-  max-width: $drive-item-width;
+  min-width: 100%;
+  max-width: 100%;
   user-select: none;
 
   &.txqk-drive-file {
@@ -23,6 +21,7 @@ $drive-item-width: 97%;
     padding: 0px;
     padding-left: 0px;
     line-height: $toggle-height;
+    width: 100%;
 
     > .txqk-btstrp-row {
       padding-left: 0px;

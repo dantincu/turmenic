@@ -1,289 +1,97 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs-extra";
 import { RootState } from "../store";
+import { DeviceAppDrives } from "./driveItems.types";
+
 import { testData } from "./driveItems.test-data";
-import {
-  DriveFolder,
-  DeviceAppDrives,
-  AppSessionDrives,
-  AppDrive,
-} from "./driveItems.types";
+import { DriveItemsService } from "./driveItems.service";
 
 const initialState: DeviceAppDrives = testData;
-
-/*const initialState: DeviceAppDrives = {
-  allAppDrives: [],
-  appSessionDrives: {
-    allFolders: [],
-    appDrives: [],
-  },
-};*/
-
-const getFolder = (
-  allFolders: DriveFolder[],
-  folderUuidB64: string,
-  errMsg = `Folder with id ${folderUuidB64} not found`
-) => {
-  const folder = allFolders.find((fd) => fd.uuidB64 === folderUuidB64);
-
-  if (!folder) {
-    throw new Error(errMsg);
-  }
-
-  return folder;
-};
-
-const getFile = (
-  allFolders: DriveFolder[],
-  folderUuidB64: string,
-  fileUuidB64: string,
-  errMsg = `File with id ${fileUuidB64} not found`
-) => {
-  const folder = getFolder(allFolders, folderUuidB64);
-  const file = folder.files.find((fl) => fl.uuidB64 === fileUuidB64);
-
-  if (!file) {
-    throw new Error(errMsg);
-  }
-
-  return file;
-};
-
-const getAppDrive = (
-  appSessionDrives: AppSessionDrives,
-  rootFolderUuidB64: string,
-  errMsg = `App drive with root folder id ${rootFolderUuidB64} not found`
-) => {
-  const appDrive: AppDrive | null =
-    appSessionDrives.appDrives.find(
-      (drive) => drive.rootFolder.uuidB64 === rootFolderUuidB64
-    ) ?? null;
-
-  if (!appDrive) {
-    throw new Error(errMsg);
-  }
-
-  return appDrive;
-};
+const driveItemsService = new DriveItemsService();
 
 export const deviceAppDrivesSlice = createSlice({
   name: "deviceAppDrives",
   initialState,
   reducers: {
-    toggleFolder: (state, action: PayloadAction<{ folderUuidB64: string }>) => {
-      const folder = getFolder(
-        state.appSessionDrives.allFolders,
-        action.payload.folderUuidB64
-      );
-      const currentlyCollapsed = folder.collapsed ?? true;
-
-      folder.collapsed = !currentlyCollapsed;
+    toggleFolder: (state, action: PayloadAction<{ folderId: number }>) => {
+      driveItemsService.toggleFolder(state, action.payload);
+      state.appSessionDrives.allFolders.forEach((fd) => {
+        if (fd.isSelected || fd.isCurrent) {
+          console.log("onToggle >>>> ", fd.isSelected, fd.isCurrent);
+        }
+      });
     },
     renameFolder: (
       state,
-      action: PayloadAction<{ folderUuidB64: string; newName: string }>
+      action: PayloadAction<{ folderId: number; newName: string }>
     ) => {
-      const folder = getFolder(
-        state.appSessionDrives.allFolders,
-        action.payload.folderUuidB64
-      );
-      folder.name = action.payload.newName;
+      driveItemsService.renameFolder(state, action.payload);
     },
     moveFolder: (
       state,
       action: PayloadAction<{
-        folderUuidB64: string;
-        destParentfolderUuidB64: string;
+        folderId: number;
+        destParentfolderId: number;
       }>
     ) => {
-      const folder = getFolder(
-        state.appSessionDrives.allFolders,
-        action.payload.folderUuidB64
-      );
-
-      const currentParentFolder = getFolder(
-        state.appSessionDrives.allFolders,
-        folder.parentFolderUuidB64 as string
-      );
-
-      const destParentFolder = getFolder(
-        state.appSessionDrives.allFolders,
-        action.payload.destParentfolderUuidB64
-      );
-
-      folder.parentFolderUuidB64 = destParentFolder.uuidB64;
-
-      currentParentFolder.subFolders = currentParentFolder.subFolders?.filter(
-        (fd) => fd.uuidB64 !== folder.uuidB64
-      );
-
-      destParentFolder.subFolders?.push(folder);
+      driveItemsService.moveFolder(state, action.payload);
     },
     setSelectedFolder: (
       state,
       action: PayloadAction<{
-        rootFolderUuidB64: string;
-        folderUuidB64?: string;
+        rootFolderId: number;
+        folderId?: number;
       }>
     ) => {
-      const folder = action.payload.folderUuidB64
-        ? getFolder(
-            state.appSessionDrives.allFolders,
-            action.payload.folderUuidB64
-          )
-        : null;
-
-      const appDrive = getAppDrive(
-        state.appSessionDrives,
-        action.payload.rootFolderUuidB64
-      );
-
-      if (appDrive.selectedFolder) {
-        appDrive.selectedFolder.isSelected = false;
-      }
-
-      if (folder) {
-        folder.isSelected = true;
-        appDrive.selectedFolder = folder;
-      }
+      driveItemsService.setSelectedFolder(state, action.payload);
     },
     setCurrentFolder: (
       state,
       action: PayloadAction<{
-        rootFolderUuidB64: string;
-        folderUuidB64?: string;
+        rootFolderId: number;
+        folderId?: number;
       }>
     ) => {
-      const folder = action.payload.folderUuidB64
-        ? getFolder(
-            state.appSessionDrives.allFolders,
-            action.payload.folderUuidB64
-          )
-        : null;
-
-      const appDrive = getAppDrive(
-        state.appSessionDrives,
-        action.payload.rootFolderUuidB64
-      );
-
-      if (appDrive.currentFolder) {
-        appDrive.currentFolder.isCurrent = false;
-      }
-
-      if (folder) {
-        folder.isCurrent = true;
-        appDrive.currentFolder = folder;
-      }
+      driveItemsService.setCurrentFolder(state, action.payload);
     },
     renameFile: (
       state,
       action: PayloadAction<{
-        fileUuidB64: string;
-        folderUuidB64: string;
+        fileId: number;
+        folderId: number;
         newName: string;
       }>
     ) => {
-      const file = getFile(
-        state.appSessionDrives.allFolders,
-        action.payload.folderUuidB64,
-        action.payload.fileUuidB64
-      );
-
-      file.name = action.payload.newName;
+      driveItemsService.renameFile(state, action.payload);
     },
     moveFile: (
       state,
       action: PayloadAction<{
-        fileUuidB64: string;
-        folderUuidB64: string;
-        destParentfolderUuidB64: string;
+        fileId: number;
+        folderId: number;
+        destParentfolderId: number;
       }>
     ) => {
-      const file = getFile(
-        state.appSessionDrives.allFolders,
-        action.payload.folderUuidB64,
-        action.payload.fileUuidB64
-      );
-
-      const currentParentFolder = getFolder(
-        state.appSessionDrives.allFolders,
-        file.parentFolderUuidB64 as string
-      );
-
-      const destParentFolder = getFolder(
-        state.appSessionDrives.allFolders,
-        action.payload.destParentfolderUuidB64
-      );
-
-      file.parentFolderUuidB64 = destParentFolder.uuidB64;
-
-      currentParentFolder.files = currentParentFolder.files?.filter(
-        (fl) => fl.uuidB64 !== file.uuidB64
-      );
-
-      destParentFolder.files?.push(file);
+      driveItemsService.moveFile(state, action.payload);
     },
     setSelectedFile: (
       state,
       action: PayloadAction<{
-        rootFolderUuidB64: string;
-        folderUuidB64?: string;
-        fileUuidB64?: string;
+        rootFolderId: number;
+        folderId?: number;
+        fileId?: number;
       }>
     ) => {
-      const file =
-        action.payload.fileUuidB64 && action.payload.folderUuidB64
-          ? getFile(
-              state.appSessionDrives.allFolders,
-              action.payload.folderUuidB64,
-              action.payload.fileUuidB64
-            )
-          : null;
-
-      const appDrive = getAppDrive(
-        state.appSessionDrives,
-        action.payload.rootFolderUuidB64
-      );
-
-      if (appDrive.selectedFile) {
-        appDrive.selectedFile.isSelected = false;
-      }
-
-      if (file) {
-        file.isSelected = true;
-        appDrive.selectedFile = file;
-      }
+      driveItemsService.setSelectedFile(state, action.payload);
     },
     setCurrentFile: (
       state,
       action: PayloadAction<{
-        rootFolderUuidB64: string;
-        folderUuidB64?: string;
-        fileUuidB64?: string;
+        rootFolderId: number;
+        folderId?: number;
+        fileId?: number;
       }>
     ) => {
-      const file =
-        action.payload.fileUuidB64 && action.payload.folderUuidB64
-          ? getFile(
-              state.appSessionDrives.allFolders,
-              action.payload.folderUuidB64,
-              action.payload.fileUuidB64
-            )
-          : null;
-
-      const appDrive = getAppDrive(
-        state.appSessionDrives,
-        action.payload.rootFolderUuidB64
-      );
-
-      if (appDrive.currentFile) {
-        appDrive.currentFile.isCurrent = false;
-      }
-
-      if (file) {
-        file.isCurrent = true;
-        appDrive.currentFile = file;
-      }
+      driveItemsService.setCurrentFile(state, action.payload);
     },
   },
 });
@@ -293,20 +101,20 @@ export const selectAppDrives = (state: RootState) => {
   return value;
 };
 
-export const selectFolder = (folderUuidB64: string) => (state: RootState) => {
+export const selectFolder = (folderId: number) => (state: RootState) => {
   const value = state.deviceAppDrives.appSessionDrives.allFolders.find(
-    (fd) => fd.uuidB64 === folderUuidB64
+    (fd) => fd.id === folderId
   );
 
   return value;
 };
 
-export const selectFile = (folderUuidB64: string, fileUuidB64: string) => (
+export const selectFile = (folderId: number, fileId: number) => (
   state: RootState
 ) => {
   const value = state.deviceAppDrives.appSessionDrives.allFolders
-    .find((fd) => fd.uuidB64 === folderUuidB64)
-    ?.files.find((fl) => fl.uuidB64 === fileUuidB64);
+    .find((fd) => fd.id === folderId)
+    ?.files?.find((fl) => fl.id === fileId);
 
   return value;
 };

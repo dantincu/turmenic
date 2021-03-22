@@ -1,4 +1,20 @@
 .txqk.txqk-theme-dark {
+  .txqk-drive-item {
+    .txqk-item-name {
+      &.mouseBtn0Pressed {
+        background-color: black;
+      }
+
+      &.mouseBtn1Pressed {
+        background-color: black;
+      }
+
+      &.mouseBtn2Pressed {
+        background-color: black;
+      }
+    }
+  }
+
   .txqk-drive-item:hover {
     > .txqk-btstrp-col {
       > .txqk-btstrp-row {

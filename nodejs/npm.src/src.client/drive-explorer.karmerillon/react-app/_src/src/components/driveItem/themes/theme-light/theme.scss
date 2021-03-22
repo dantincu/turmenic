@@ -1,25 +1,40 @@
 .txqk.txqk-theme-light {
-  /* .txqk-drive-item:hover {
-    > .txqk-btstrp-col {
-      > .txqk-btstrp-row {
-        > .txqk-btstrp-col.txqk-item-name {
-          color: #0000e0ff;
+  .txqk-drive-item {
+    .txqk-item-name {
+      &.mouseBtn0Pressed {
+        background-color: white;
+      }
+
+      &.mouseBtn1Pressed {
+        background-color: white;
+      }
+
+      &.mouseBtn2Pressed {
+        background-color: white;
+      }
+    }
+
+    &.txqk-current {
+      background-color: white;
+      > .txqk-btstrp-col {
+        > .txqk-btstrp-row {
+          > .txqk-btstrp-col.txqk-item-name {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    &.txqk-selected {
+      > .txqk-btstrp-col {
+        > .txqk-btstrp-row {
+          > .txqk-btstrp-col.txqk-item-name {
+            font-style: italic;
+          }
         }
       }
     }
   }
-
-  .txqk-drive-item {
-    color: #606060ff;
-
-    > .txqk-btstrp-col {
-      > .txqk-btstrp-row {
-        > .txqk-btstrp-col.txqk-item-name:hover {
-          font-weight: bold;
-        }
-      }
-    }
-  } */
 
   .txqk-drive-item:hover {
     > .txqk-btstrp-col {

@@ -1,20 +1,20 @@
 export interface DriveItem {
-  uuidB64: string;
+  id: number;
   name: string;
   displayName?: string;
-  parentFolderUuidB64?: string;
+  parentFolderId?: number;
   path?: string;
   orderIdx?: number;
   isSelected?: boolean;
   isCurrent?: boolean;
+  itemIsFolder?: boolean;
 }
 
 export interface DriveFolder extends DriveItem {
-  files: DriveFile[];
+  files?: DriveFile[];
   collapsed?: boolean;
   isRoot?: boolean;
   subFolders?: DriveFolder[];
-  children?: DriveItem[];
 }
 
 export interface DriveFile extends DriveItem {
@@ -22,17 +22,42 @@ export interface DriveFile extends DriveItem {
   extension?: string;
 }
 
+export interface DriveNode {
+  itemId: number;
+  itemIsFolder?: boolean;
+}
+
+export interface DriveFileNode extends DriveNode {}
+
+export interface DriveFolderNode extends DriveNode {
+  fileNodes?: DriveFileNode[];
+  subFolderNodes?: DriveFolderNode[];
+}
+
 export interface AppDrive {
+  uuidB64: string;
+
   rootFolder: DriveFolder;
-  selectedFolder?: DriveFolder;
-  currentFolder?: DriveFolder;
-  selectedFile?: DriveFile;
-  currentFile?: DriveFile;
+  rootFolderNode: DriveFolderNode;
+
+  selectedFolder?: DriveFolder | null;
+  selectedFolderNode?: DriveFolderNode | null;
+
+  currentFolder?: DriveFolder | null;
+  currentFolderNode?: DriveFolderNode | null;
+
+  selectedFile?: DriveFile | null;
+  selectedFileNode?: DriveFileNode | null;
+
+  currentFile?: DriveFile | null;
+  currentFileNode?: DriveFileNode | null;
 }
 
 export interface AppSessionDrives {
   appDrives: AppDrive[];
   allFolders: DriveFolder[];
+  allFolderIds: number[];
+  allFolderNodes: DriveFolderNode[];
 }
 
 export interface DeviceAppDrives {

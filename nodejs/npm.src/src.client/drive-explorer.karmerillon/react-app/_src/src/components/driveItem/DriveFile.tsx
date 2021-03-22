@@ -2,49 +2,69 @@ import React, { MouseEvent } from 'react';
 import { Row, Col } from 'reactstrap';
 import './DriveItem.scss';
 
-import { useSelector } from 'react-redux';
-import { selectFile, setCurrentFile, setCurrentFolder, setSelectedFile, setSelectedFolder } from '../../app/driveItems/driveItems';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectFile, setCurrentFile, setSelectedFile } from '../../app/driveItems/driveItems';
 import { DriveFile as DriveFileVm } from '../../app/driveItems/driveItems.types';
-import { DriveItemProps } from './DriveItemProps';
+import { DriveItemProps, DriveItemIdentity } from './DriveItemProps';
 import { cssClss } from '../const';
-import { MouseDblClick } from '../../js.common/dist/src.node.common.client/domEvents/MouseDblClick';
+import DriveItemName from './DriveItemName';
 
 const DriveFile = (props: DriveItemProps) => {
-    const file = useSelector(selectFile(props.parentFolderUuidB64 as string, props.itemUuidB64)) as DriveFileVm;
+    const dispatch = useDispatch();
+    const file = useSelector(selectFile(props.idntty.parentFolderId as number, props.idntty.itemId)) as DriveFileVm;
 
-    const componentEvents = {
-        itemNameMouseDblClick: new MouseDblClick()
+    if ([typeof file.isSelected, typeof file.isCurrent].indexOf("boolean") >= 0) {
+        console.log(" >>>> ", file.isSelected, file.isCurrent);
     }
 
-    componentEvents.itemNameMouseDblClick.singleClickSubject.subscribe(() => {
-        if (props.onItemSelected) {
-            props.onItemSelected(props.itemUuidB64, true);
+    const onFileSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
+        if (previewSelection) {
+            dispatch(setSelectedFile({ rootFolderId: idntty.rootFolderId, folderId: idntty.parentFolderId, fileId: idntty.itemId }));
+        } else {
+            dispatch(setCurrentFile({ rootFolderId: idntty.rootFolderId, folderId: idntty.parentFolderId, fileId: idntty.itemId }));
         }
-    });
 
-    componentEvents.itemNameMouseDblClick.doubleClickSubject.subscribe(() => {
-        if (props.onItemSelected) {
-            props.onItemSelected(props.itemUuidB64, false);
-        }
-    });
+        onItemSelected(idntty, previewSelection);
+    }
 
-    const onItemNameMouseDown = (e: MouseEvent) => {
-        if (e.button === 0) {
-            componentEvents.itemNameMouseDblClick.onMouseDown();
-        } else if(e.button === 1) {
-            if (props.onItemSelected) {
-                props.onItemSelected(props.itemUuidB64, false);
-            }
-        } else if (e.button === 2) {
-            if (props.onItemRightClick) {
-                props.onItemRightClick(props.itemUuidB64);
-            }
+    const onItemSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
+        if (props.events.onItemSelected) {
+            props.events.onItemSelected(idntty, previewSelection);
         }
+    }
+
+    const onItemCtxMenu = (idntty: DriveItemIdentity) => {
+        if (props.events.onItemCtxMenu) {
+            props.events.onItemCtxMenu(idntty);
+        }
+    }
+
+    const onItemNameClick = (e: MouseEvent) => {
+        onFileSelected(props.idntty, true);
+    }
+
+    const onItemNameDblClick = (e: MouseEvent) => {
+        onFileSelected(props.idntty, false);
+    }
+
+    const onItemNameMiddleClick = (e: MouseEvent) => {
+        onFileSelected(props.idntty, true);
+    }
+
+    const onItemNameRightClick = (e: MouseEvent) => {
+        onItemCtxMenu(props.idntty);
     }
 
     const getNameCol = () => {
         return (<Col className={cssClss.txqk.bootstrap.col}>
-            <Row className={`${cssClss.txqk.bootstrap.row} txqk-main-row`}><Col onMouseDown={onItemNameMouseDown} className={`${cssClss.txqk.bootstrap.col} txqk-item-name`}>{ file.name }</Col></Row>
+            <Row className={`${cssClss.txqk.bootstrap.row} txqk-main-row`}>
+                <DriveItemName
+                    itemName={file.name}
+                    onClick={onItemNameClick}
+                    onDoubleClick={onItemNameDblClick}
+                    onMiddleClick={onItemNameMiddleClick}
+                    onRightClick={onItemNameRightClick} />
+            </Row>
         </Col>);
     }
 
@@ -64,6 +84,10 @@ const DriveFile = (props: DriveItemProps) => {
 
         if (file.isSelected === true) {
             cssClassArr.push(cssClss.txqk.item.selected);
+        }
+        
+        if (file.isCurrent === true) {
+            cssClassArr.push(cssClss.txqk.item.current);
         }
 
         if (props.cssClass) {

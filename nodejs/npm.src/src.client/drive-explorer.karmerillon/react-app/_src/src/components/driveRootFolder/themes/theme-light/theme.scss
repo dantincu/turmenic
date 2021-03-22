@@ -1,2 +1,25 @@
 .txqk.txqk-theme-light {
+  .txqk-drive-root-folder {
+    border: 2px solid white;
+  }
+
+  .txqk-drive-root-folder::-webkit-scrollbar {
+    width: 12px; /* width of the entire scrollbar */
+  }
+
+  .txqk-drive-root-folder::-webkit-scrollbar-track {
+    background: #dddf; /* color of the tracking area */
+  }
+
+  .txqk-drive-root-folder::-webkit-scrollbar-thumb {
+    background-color: white; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 3px solid #dddf; /* creates padding around scroll thumb */
+  }
+
+  .txqk-drive-root-folder::-webkit-scrollbar-corner {
+    background-color: white;
+    border: 2px solid #dddf;
+    border-radius: 5px;
+  }
 }

@@ -1,8 +1,33 @@
+import { MouseEvent } from "react";
+
+export interface DriveItemIdentity {
+  itemId: number;
+  itemIsFile: boolean;
+  parentFolderId?: number;
+  rootFolderId: number;
+}
+
+export interface DriveItemEvts {
+  onItemSelected?: (
+    idntty: DriveItemIdentity,
+    previewSelection: boolean
+  ) => void;
+  onItemCtxMenu?: (idntty: DriveItemIdentity) => void;
+}
+
 export interface DriveItemProps {
-  itemUuidB64: string;
-  parentFolderUuidB64?: string;
+  idntty: DriveItemIdentity;
+  events: DriveItemEvts;
+  onFolderToggled?: (idntty: DriveItemIdentity) => void;
   cssClass?: string;
-  onFolderToggled?: (folderUuidB64: string) => void;
-  onItemSelected?: (itemUuidB64: string, previewSelection: boolean) => void;
-  onItemRightClick?: (itemUuidB64: string) => void;
+}
+
+export interface DriveItemNameProps {
+  itemName: string;
+  selected?: boolean;
+  current?: boolean;
+  onClick?: (e: MouseEvent) => void;
+  onDoubleClick?: (e: MouseEvent) => void;
+  onMiddleClick?: (e: MouseEvent) => void;
+  onRightClick?: (e: MouseEvent) => void;
 }
