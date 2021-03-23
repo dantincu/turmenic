@@ -14,22 +14,23 @@
       }
     }
 
+    &.txqk-selected {
+      background-color: #eeef;
+      > .txqk-btstrp-col {
+        > .txqk-btstrp-row {
+          > .txqk-btstrp-col.txqk-item-name {
+            font-style: italic;
+          }
+        }
+      }
+    }
+
     &.txqk-current {
       background-color: white;
       > .txqk-btstrp-col {
         > .txqk-btstrp-row {
           > .txqk-btstrp-col.txqk-item-name {
             text-decoration: underline;
-          }
-        }
-      }
-    }
-
-    &.txqk-selected {
-      > .txqk-btstrp-col {
-        > .txqk-btstrp-row {
-          > .txqk-btstrp-col.txqk-item-name {
-            font-style: italic;
           }
         }
       }

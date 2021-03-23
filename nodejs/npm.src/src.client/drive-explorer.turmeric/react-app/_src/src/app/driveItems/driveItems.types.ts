@@ -12,7 +12,7 @@ export interface DriveItem {
 
 export interface DriveFolder extends DriveItem {
   files?: DriveFile[];
-  collapsed?: boolean;
+  expanded?: boolean;
   isRoot?: boolean;
   subFolders?: DriveFolder[];
 }
@@ -39,18 +39,6 @@ export interface AppDrive {
 
   rootFolder: DriveFolder;
   rootFolderNode: DriveFolderNode;
-
-  selectedFolder?: DriveFolder | null;
-  selectedFolderNode?: DriveFolderNode | null;
-
-  currentFolder?: DriveFolder | null;
-  currentFolderNode?: DriveFolderNode | null;
-
-  selectedFile?: DriveFile | null;
-  selectedFileNode?: DriveFileNode | null;
-
-  currentFile?: DriveFile | null;
-  currentFileNode?: DriveFileNode | null;
 }
 
 export interface AppSessionDrives {
@@ -58,6 +46,11 @@ export interface AppSessionDrives {
   allFolders: DriveFolder[];
   allFolderIds: number[];
   allFolderNodes: DriveFolderNode[];
+
+  selectedFolder?: DriveFolder | null;
+  currentFolder?: DriveFolder | null;
+  selectedFile?: DriveFile | null;
+  currentFile?: DriveFile | null;
 }
 
 export interface DeviceAppDrives {

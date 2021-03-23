@@ -68,6 +68,7 @@ export const createFile = (
     id: genId(),
     name: `${fileNameWithoutExtension}.txt`,
     nameWithoutExtension: fileNameWithoutExtension,
+    parentFolderId: parentFolder.id,
   };
 
   parentFolder.files = parentFolder.files ?? [];

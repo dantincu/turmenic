@@ -5,7 +5,7 @@ import './DriveItem.scss';
 import { DriveFolder as DriveFolderVm, DriveItem as DriveItemVm } from '../../app/driveItems/driveItems.types';
 import { driveItemToProps } from '../../app/driveItems/driveItems.converters';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleFolder, selectFolder, setCurrentFolder, setSelectedFolder } from '../../app/driveItems/driveItems';
+import { toggleFolder, selectFolder, setCurrentFolder, setSelectedFolder, selectSubFolders } from '../../app/driveItems/driveItems';
 import { DriveItemProps, DriveItemIdentity } from './DriveItemProps';
 import { cssClss } from '../const';
 import DriveFile from './DriveFile';
@@ -15,15 +15,13 @@ const DriveFolder = (props: DriveItemProps) => {
     const folder = useSelector(selectFolder(props.idntty.itemId)) as DriveFolderVm;
     const dispatch = useDispatch();
 
-    if ([typeof folder.isSelected, typeof folder.isCurrent].indexOf("boolean") >= 0) {
-        console.log(" >>>> ", folder.isSelected, folder.isCurrent);
-    }
+    const subFolders: DriveFolderVm[] = useSelector(selectSubFolders(folder.expanded === true ? props.idntty.itemId : null));
 
     const onFolderSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
         if (previewSelection) {
-            dispatch(setSelectedFolder({ rootFolderId: idntty.rootFolderId, folderId: idntty.itemId }));
+            dispatch(setSelectedFolder({ folderId: idntty.itemId }));
         } else {
-            dispatch(setCurrentFolder({ rootFolderId: idntty.rootFolderId, folderId: idntty.itemId }));
+            dispatch(setCurrentFolder({ folderId: idntty.itemId }));
         }
 
         onItemSelected(idntty, previewSelection);
@@ -68,14 +66,14 @@ const DriveFolder = (props: DriveItemProps) => {
         onFolderToggled(props.idntty);
     }
 
-    const getToggleCol = (collapsed?: boolean) => {
+    const getToggleCol = (expanded?: boolean) => {
         const togglCssClassArr = [
             cssClss.txqk.bootstrap.col,
             cssClss.txqk.toggle.base,
-            (collapsed ?? true) ? cssClss.txqk.toggle.collapsed : cssClss.txqk.toggle.expanded];
+            (expanded ?? false) ? cssClss.txqk.toggle.expanded : cssClss.txqk.toggle.collapsed];
 
         const togglCssClass = togglCssClassArr.join(" ");
-        const toggleChar = (collapsed ?? true) ? "+" : '\u2014';
+        const toggleChar = (expanded ?? false) ? '\u2014' : "+";
 
         return (<Col className={togglCssClass}><Label onClick={onToggleClick}>{ toggleChar }</Label></Col>);
     }
@@ -86,6 +84,8 @@ const DriveFolder = (props: DriveItemProps) => {
             events: props.events,
             rootFolderId: props.idntty.rootFolderId
         });
+
+        fileProps.idntty.parentFolderId = folder.id;
 
         const fileComp = (<DriveFile key={fileProps.idntty.itemId} {...fileProps}></DriveFile>);
         return fileComp;
@@ -104,7 +104,7 @@ const DriveFolder = (props: DriveItemProps) => {
     }
 
     const getChildrenCol = () => {
-        let arr = folder.subFolders?.map(folderToComp) ?? [];
+        let arr = subFolders.map(folderToComp);
         arr = arr.concat(folder.files?.map(fileToComp) ?? []);
 
         return <Col className={`${cssClss.txqk.bootstrap.col}`}>{ arr }</Col>;
@@ -113,7 +113,7 @@ const DriveFolder = (props: DriveItemProps) => {
     const getChildrenRow = () => {
         let childrenRow: JSX.Element | null = null;
 
-        if (folder.collapsed === false) {
+        if (folder.expanded === true) {
             childrenRow = (<Row className={cssClss.txqk.bootstrap.row}>{ getChildrenCol() }</Row>);
         }
 
@@ -159,7 +159,7 @@ const DriveFolder = (props: DriveItemProps) => {
 
     return (
         <Row className={getCssClassName()}>
-            { [getToggleCol(folder.collapsed), getMainCol()] }
+            { [getToggleCol(folder.expanded), getMainCol()] }
         </Row>
     );
 };
