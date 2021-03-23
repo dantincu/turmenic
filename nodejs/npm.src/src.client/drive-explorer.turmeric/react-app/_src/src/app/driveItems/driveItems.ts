@@ -36,7 +36,7 @@ export const deviceAppDrivesSlice = createSlice({
       state,
       action: PayloadAction<{
         rootFolderId: number;
-        folderId?: number;
+        folderId: number;
       }>
     ) => {
       driveItemsService.setSelectedFolder(state, action.payload);
@@ -45,7 +45,7 @@ export const deviceAppDrivesSlice = createSlice({
       state,
       action: PayloadAction<{
         rootFolderId: number;
-        folderId?: number;
+        folderId: number;
       }>
     ) => {
       driveItemsService.setCurrentFolder(state, action.payload);
@@ -74,8 +74,8 @@ export const deviceAppDrivesSlice = createSlice({
       state,
       action: PayloadAction<{
         rootFolderId: number;
-        folderId?: number;
-        fileId?: number;
+        folderId: number;
+        fileId: number;
       }>
     ) => {
       driveItemsService.setSelectedFile(state, action.payload);
@@ -84,8 +84,8 @@ export const deviceAppDrivesSlice = createSlice({
       state,
       action: PayloadAction<{
         rootFolderId: number;
-        folderId?: number;
-        fileId?: number;
+        folderId: number;
+        fileId: number;
       }>
     ) => {
       driveItemsService.setCurrentFile(state, action.payload);
@@ -106,19 +106,22 @@ export const selectFolder = (folderId: number) => (state: RootState) => {
   return value;
 };
 
-export const selectSubFolders = (parentFolderId: number) => (
+export const selectSubFolders = (parentFolderId?: number | null) => (
   state: RootState
 ) => {
-  const subFolderNodes =
-    state.deviceAppDrives.appSessionDrives.allFolderNodes.find(
-      (node) => node.itemId === parentFolderId
-    )?.subFolderNodes ?? [];
+  const subFolderNodes = parentFolderId
+    ? state.deviceAppDrives.appSessionDrives.allFolderNodes.find(
+        (node) => node.itemId === parentFolderId
+      )?.subFolderNodes ?? []
+    : [];
 
   const subFolderIds = subFolderNodes.map((node) => node.itemId);
 
-  const subFolders = state.deviceAppDrives.appSessionDrives.allFolders.filter(
-    (folder) => contains(subFolderIds, folder.id)
-  );
+  const subFolders = parentFolderId
+    ? state.deviceAppDrives.appSessionDrives.allFolders.filter((folder) =>
+        contains(subFolderIds, folder.id)
+      )
+    : [];
 
   return subFolders;
 };

@@ -15,7 +15,7 @@ const DriveFolder = (props: DriveItemProps) => {
     const folder = useSelector(selectFolder(props.idntty.itemId)) as DriveFolderVm;
     const dispatch = useDispatch();
 
-    const subFolders: DriveFolderVm[] = useSelector(selectSubFolders(props.idntty.itemId));
+    const subFolders: DriveFolderVm[] = useSelector(selectSubFolders(folder.expanded === true ? props.idntty.itemId : null));
 
     const onFolderSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
         if (previewSelection) {
@@ -66,14 +66,14 @@ const DriveFolder = (props: DriveItemProps) => {
         onFolderToggled(props.idntty);
     }
 
-    const getToggleCol = (collapsed?: boolean) => {
+    const getToggleCol = (expanded?: boolean) => {
         const togglCssClassArr = [
             cssClss.txqk.bootstrap.col,
             cssClss.txqk.toggle.base,
-            (collapsed ?? true) ? cssClss.txqk.toggle.collapsed : cssClss.txqk.toggle.expanded];
+            (expanded ?? false) ? cssClss.txqk.toggle.expanded : cssClss.txqk.toggle.collapsed];
 
         const togglCssClass = togglCssClassArr.join(" ");
-        const toggleChar = (collapsed ?? true) ? "+" : '\u2014';
+        const toggleChar = (expanded ?? false) ? '\u2014' : "+";
 
         return (<Col className={togglCssClass}><Label onClick={onToggleClick}>{ toggleChar }</Label></Col>);
     }
@@ -113,7 +113,7 @@ const DriveFolder = (props: DriveItemProps) => {
     const getChildrenRow = () => {
         let childrenRow: JSX.Element | null = null;
 
-        if (folder.collapsed === false) {
+        if (folder.expanded === true) {
             childrenRow = (<Row className={cssClss.txqk.bootstrap.row}>{ getChildrenCol() }</Row>);
         }
 
@@ -159,7 +159,7 @@ const DriveFolder = (props: DriveItemProps) => {
 
     return (
         <Row className={getCssClassName()}>
-            { [getToggleCol(folder.collapsed), getMainCol()] }
+            { [getToggleCol(folder.expanded), getMainCol()] }
         </Row>
     );
 };

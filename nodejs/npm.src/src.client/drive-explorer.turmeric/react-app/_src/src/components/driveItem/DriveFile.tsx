@@ -15,9 +15,9 @@ const DriveFile = (props: DriveItemProps) => {
 
     const onFileSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
         if (previewSelection) {
-            dispatch(setSelectedFile({ rootFolderId: idntty.rootFolderId, folderId: idntty.parentFolderId, fileId: idntty.itemId }));
+            dispatch(setSelectedFile({ rootFolderId: idntty.rootFolderId, folderId: idntty.parentFolderId as number, fileId: idntty.itemId }));
         } else {
-            dispatch(setCurrentFile({ rootFolderId: idntty.rootFolderId, folderId: idntty.parentFolderId, fileId: idntty.itemId }));
+            dispatch(setCurrentFile({ rootFolderId: idntty.rootFolderId, folderId: idntty.parentFolderId as number, fileId: idntty.itemId }));
         }
 
         onItemSelected(idntty, previewSelection);
