@@ -14,10 +14,8 @@ import { findIndex } from "../../js.common/dist/src.common/utils/arrays";
 
 export class DriveItemsService {
   public toggleFolder(state: DeviceAppDrives, payload: { folderId: number }) {
-    const folder = this.getFolder(
-      state.appSessionDrives.allFolders,
-      payload.folderId
-    );
+    const asd = state.appSessionDrives;
+    const folder = this.getFolder(asd.allFolders, payload.folderId);
 
     folder.expanded = folder.expanded ?? false;
     folder.expanded = !folder.expanded;
@@ -35,63 +33,31 @@ export class DriveItemsService {
 
   public setSelectedFolder(
     state: DeviceAppDrives,
-    payload: { rootFolderId: number; folderId: number }
+    payload: { folderId: number }
   ) {
-    const folder = this.getFolder(
-      state.appSessionDrives.allFolders,
-      payload.folderId
-    );
+    const asd = state.appSessionDrives;
+    const folder = this.getFolder(asd.allFolders, payload.folderId);
 
-    if (
-      state.appSessionDrives.selectedFolder &&
-      state.appSessionDrives.selectedFolder.id !== folder.id
-    ) {
-      state.appSessionDrives.selectedFolder.isSelected = false;
-
-      this.updateFolder(
-        state.appSessionDrives.allFolders,
-        state.appSessionDrives.selectedFolder
-      );
-    }
+    this.clearPreviousSelectedFile(asd);
+    this.clearPreviousSelectedFolder(asd, folder);
 
     folder.expanded = folder.expanded ?? false;
     folder.expanded = !folder.expanded;
     folder.isSelected = true;
-    state.appSessionDrives.selectedFolder = folder;
+    asd.selectedFolder = folder;
   }
 
   public setCurrentFolder(
     state: DeviceAppDrives,
-    payload: { rootFolderId: number; folderId: number }
+    payload: { folderId: number }
   ) {
-    const folder = this.getFolder(
-      state.appSessionDrives.allFolders,
-      payload.folderId
-    );
+    const asd = state.appSessionDrives;
+    const folder = this.getFolder(asd.allFolders, payload.folderId);
 
-    if (
-      state.appSessionDrives.currentFolder &&
-      state.appSessionDrives.currentFolder.id !== folder.id
-    ) {
-      state.appSessionDrives.currentFolder.isCurrent = false;
-
-      this.updateFolder(
-        state.appSessionDrives.allFolders,
-        state.appSessionDrives.currentFolder
-      );
-    }
-
-    if (
-      state.appSessionDrives.selectedFolder &&
-      state.appSessionDrives.selectedFolder.id !== folder.id
-    ) {
-      state.appSessionDrives.selectedFolder.isSelected = false;
-
-      this.updateFolder(
-        state.appSessionDrives.allFolders,
-        state.appSessionDrives.selectedFolder
-      );
-    }
+    this.clearPreviousCurrentFile(asd);
+    this.clearPreviousSelectedFile(asd);
+    this.clearPreviousCurrentFolder(asd, folder);
+    this.clearPreviousSelectedFolder(asd, folder);
 
     folder.expanded = true;
     folder.isCurrent = true;
@@ -117,33 +83,16 @@ export class DriveItemsService {
   public setSelectedFile(
     state: DeviceAppDrives,
     payload: {
-      rootFolderId: number;
       folderId: number;
       fileId: number;
     }
   ) {
-    const file = this.getFile(
-      state.appSessionDrives.allFolders,
-      payload.folderId,
-      payload.fileId
-    );
+    const asd = state.appSessionDrives;
+    const file = this.getFile(asd.allFolders, payload.folderId, payload.fileId);
+    const folder = this.getFolder(asd.allFolders, payload.folderId);
 
-    if (
-      state.appSessionDrives.selectedFile &&
-      file.id !== state.appSessionDrives.selectedFile.id
-    ) {
-      state.appSessionDrives.selectedFile.isSelected = false;
-
-      const folderOfSelectedFile = this.getFolder(
-        state.appSessionDrives.allFolders,
-        state.appSessionDrives.selectedFile.parentFolderId as number
-      );
-
-      this.updateFile(
-        folderOfSelectedFile,
-        state.appSessionDrives.selectedFile
-      );
-    }
+    this.clearPreviousSelectedFolder(asd, folder);
+    this.clearPreviousSelectedFile(asd, file);
 
     file.isSelected = true;
     state.appSessionDrives.selectedFile = file;
@@ -152,52 +101,71 @@ export class DriveItemsService {
   public setCurrentFile(
     state: DeviceAppDrives,
     payload: {
-      rootFolderId: number;
       folderId: number;
       fileId: number;
     }
   ) {
-    const file = this.getFile(
-      state.appSessionDrives.allFolders,
-      payload.folderId,
-      payload.fileId
-    );
+    const asd = state.appSessionDrives;
+    const file = this.getFile(asd.allFolders, payload.folderId, payload.fileId);
+    const folder = this.getFolder(asd.allFolders, payload.folderId);
 
-    if (
-      state.appSessionDrives.currentFile &&
-      file.id !== state.appSessionDrives.currentFile.id
-    ) {
-      state.appSessionDrives.currentFile.isCurrent = false;
-
-      const folderOfCurrentFile = this.getFolder(
-        state.appSessionDrives.allFolders,
-        state.appSessionDrives.currentFile.parentFolderId as number
-      );
-
-      this.updateFile(folderOfCurrentFile, state.appSessionDrives.currentFile);
-    }
-
-    if (
-      state.appSessionDrives.selectedFile &&
-      file.id !== state.appSessionDrives.selectedFile.id
-    ) {
-      state.appSessionDrives.selectedFile.isSelected = false;
-
-      const folderOfSelectedFile = this.getFolder(
-        state.appSessionDrives.allFolders,
-        state.appSessionDrives.selectedFile.parentFolderId as number
-      );
-
-      this.updateFile(
-        folderOfSelectedFile,
-        state.appSessionDrives.selectedFile
-      );
-    }
+    this.clearPreviousCurrentFolder(asd, folder);
+    this.clearPreviousSelectedFolder(asd, folder);
+    this.clearPreviousCurrentFile(asd, file);
+    this.clearPreviousSelectedFile(asd, file);
 
     file.isSelected = true;
     file.isCurrent = true;
-    state.appSessionDrives.selectedFile = file;
-    state.appSessionDrives.currentFile = file;
+    asd.selectedFile = file;
+    asd.currentFile = file;
+  }
+
+  clearPreviousSelectedFolder(asd: AppSessionDrives, folder: DriveFolder) {
+    if (asd.selectedFolder && asd.selectedFolder.id !== folder.id) {
+      asd.selectedFolder.isSelected = false;
+
+      this.updateFolder(asd.allFolders, asd.selectedFolder);
+      asd.selectedFolder = null;
+    }
+  }
+
+  clearPreviousCurrentFolder(asd: AppSessionDrives, folder: DriveFolder) {
+    if (asd.currentFolder && asd.currentFolder.id !== folder.id) {
+      asd.currentFolder.isCurrent = false;
+      asd.currentFolder.isSelected = false;
+
+      this.updateFolder(asd.allFolders, asd.currentFolder);
+      asd.currentFolder = null;
+    }
+  }
+
+  clearPreviousSelectedFile(asd: AppSessionDrives, file?: DriveFile) {
+    if (asd.selectedFile && (!file || file.id !== asd.selectedFile.id)) {
+      asd.selectedFile.isSelected = false;
+
+      const folderOfSelectedFile = this.getFolder(
+        asd.allFolders,
+        asd.selectedFile.parentFolderId as number
+      );
+
+      this.updateFile(folderOfSelectedFile, asd.selectedFile);
+      asd.selectedFile = null;
+    }
+  }
+
+  clearPreviousCurrentFile(asd: AppSessionDrives, file?: DriveFile) {
+    if (asd.currentFile && (!file || file.id !== asd.currentFile.id)) {
+      asd.currentFile.isCurrent = false;
+      asd.currentFile.isSelected = false;
+
+      const folderOfCurrentFile = this.getFolder(
+        asd.allFolders,
+        asd.currentFile.parentFolderId as number
+      );
+
+      this.updateFile(folderOfCurrentFile, asd.currentFile);
+      asd.currentFile = null;
+    }
   }
 
   getFolder(

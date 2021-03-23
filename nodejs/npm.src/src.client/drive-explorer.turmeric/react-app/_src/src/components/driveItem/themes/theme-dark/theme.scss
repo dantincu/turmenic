@@ -13,6 +13,28 @@
         background-color: black;
       }
     }
+
+    &.txqk-selected {
+      background-color: #111f;
+      > .txqk-btstrp-col {
+        > .txqk-btstrp-row {
+          > .txqk-btstrp-col.txqk-item-name {
+            font-style: italic;
+          }
+        }
+      }
+    }
+
+    &.txqk-current {
+      background-color: black;
+      > .txqk-btstrp-col {
+        > .txqk-btstrp-row {
+          > .txqk-btstrp-col.txqk-item-name {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
   }
 
   .txqk-drive-item:hover {

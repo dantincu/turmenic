@@ -19,9 +19,9 @@ const DriveFolder = (props: DriveItemProps) => {
 
     const onFolderSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
         if (previewSelection) {
-            dispatch(setSelectedFolder({ rootFolderId: idntty.rootFolderId, folderId: idntty.itemId }));
+            dispatch(setSelectedFolder({ folderId: idntty.itemId }));
         } else {
-            dispatch(setCurrentFolder({ rootFolderId: idntty.rootFolderId, folderId: idntty.itemId }));
+            dispatch(setCurrentFolder({ folderId: idntty.itemId }));
         }
 
         onItemSelected(idntty, previewSelection);

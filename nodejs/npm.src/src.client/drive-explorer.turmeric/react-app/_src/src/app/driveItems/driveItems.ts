@@ -35,7 +35,6 @@ export const deviceAppDrivesSlice = createSlice({
     setSelectedFolder: (
       state,
       action: PayloadAction<{
-        rootFolderId: number;
         folderId: number;
       }>
     ) => {
@@ -44,7 +43,6 @@ export const deviceAppDrivesSlice = createSlice({
     setCurrentFolder: (
       state,
       action: PayloadAction<{
-        rootFolderId: number;
         folderId: number;
       }>
     ) => {
@@ -73,7 +71,6 @@ export const deviceAppDrivesSlice = createSlice({
     setSelectedFile: (
       state,
       action: PayloadAction<{
-        rootFolderId: number;
         folderId: number;
         fileId: number;
       }>
@@ -83,7 +80,6 @@ export const deviceAppDrivesSlice = createSlice({
     setCurrentFile: (
       state,
       action: PayloadAction<{
-        rootFolderId: number;
         folderId: number;
         fileId: number;
       }>

@@ -48,16 +48,9 @@ export interface AppSessionDrives {
   allFolderNodes: DriveFolderNode[];
 
   selectedFolder?: DriveFolder | null;
-  selectedFolderNode?: DriveFolderNode | null;
-
   currentFolder?: DriveFolder | null;
-  currentFolderNode?: DriveFolderNode | null;
-
   selectedFile?: DriveFile | null;
-  selectedFileNode?: DriveFileNode | null;
-
   currentFile?: DriveFile | null;
-  currentFileNode?: DriveFileNode | null;
 }
 
 export interface DeviceAppDrives {
