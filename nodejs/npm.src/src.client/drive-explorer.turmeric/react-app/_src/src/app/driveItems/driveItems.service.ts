@@ -10,7 +10,15 @@ import {
 } from "./driveItems.types";
 
 export class DriveItemsService {
-  public toggleFolder(state: DeviceAppDrives, payload: { folderId: number }) {}
+  public toggleFolder(state: DeviceAppDrives, payload: { folderId: number }) {
+    const folder = this.getFolder(
+      state.appSessionDrives.allFolders,
+      payload.folderId
+    );
+
+    folder.collapsed = folder.collapsed ?? true;
+    folder.collapsed = !folder.collapsed;
+  }
 
   public renameFolder(
     state: DeviceAppDrives,

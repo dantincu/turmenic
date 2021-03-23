@@ -5,7 +5,7 @@ import './DriveItem.scss';
 import { DriveFolder as DriveFolderVm, DriveItem as DriveItemVm } from '../../app/driveItems/driveItems.types';
 import { driveItemToProps } from '../../app/driveItems/driveItems.converters';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleFolder, selectFolder, setCurrentFolder, setSelectedFolder } from '../../app/driveItems/driveItems';
+import { toggleFolder, selectFolder, setCurrentFolder, setSelectedFolder, selectSubFolders } from '../../app/driveItems/driveItems';
 import { DriveItemProps, DriveItemIdentity } from './DriveItemProps';
 import { cssClss } from '../const';
 import DriveFile from './DriveFile';
@@ -15,9 +15,7 @@ const DriveFolder = (props: DriveItemProps) => {
     const folder = useSelector(selectFolder(props.idntty.itemId)) as DriveFolderVm;
     const dispatch = useDispatch();
 
-    if ([typeof folder.isSelected, typeof folder.isCurrent].indexOf("boolean") >= 0) {
-        console.log(" >>>> ", folder.isSelected, folder.isCurrent);
-    }
+    const subFolders: DriveFolderVm[] = useSelector(selectSubFolders(props.idntty.itemId));
 
     const onFolderSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
         if (previewSelection) {
@@ -87,6 +85,8 @@ const DriveFolder = (props: DriveItemProps) => {
             rootFolderId: props.idntty.rootFolderId
         });
 
+        fileProps.idntty.parentFolderId = folder.id;
+
         const fileComp = (<DriveFile key={fileProps.idntty.itemId} {...fileProps}></DriveFile>);
         return fileComp;
     }
@@ -104,7 +104,7 @@ const DriveFolder = (props: DriveItemProps) => {
     }
 
     const getChildrenCol = () => {
-        let arr = folder.subFolders?.map(folderToComp) ?? [];
+        let arr = subFolders.map(folderToComp);
         arr = arr.concat(folder.files?.map(fileToComp) ?? []);
 
         return <Col className={`${cssClss.txqk.bootstrap.col}`}>{ arr }</Col>;

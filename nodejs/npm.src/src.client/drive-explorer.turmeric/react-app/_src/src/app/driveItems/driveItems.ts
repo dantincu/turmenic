@@ -5,6 +5,8 @@ import { DeviceAppDrives } from "./driveItems.types";
 import { testData } from "./driveItems.test-data";
 import { DriveItemsService } from "./driveItems.service";
 
+import { contains } from "../../js.common/dist/src.common/utils/arrays";
+
 const initialState: DeviceAppDrives = testData;
 const driveItemsService = new DriveItemsService();
 
@@ -14,11 +16,6 @@ export const deviceAppDrivesSlice = createSlice({
   reducers: {
     toggleFolder: (state, action: PayloadAction<{ folderId: number }>) => {
       driveItemsService.toggleFolder(state, action.payload);
-      state.appSessionDrives.allFolders.forEach((fd) => {
-        if (fd.isSelected || fd.isCurrent) {
-          console.log("onToggle >>>> ", fd.isSelected, fd.isCurrent);
-        }
-      });
     },
     renameFolder: (
       state,
@@ -107,6 +104,23 @@ export const selectFolder = (folderId: number) => (state: RootState) => {
   );
 
   return value;
+};
+
+export const selectSubFolders = (parentFolderId: number) => (
+  state: RootState
+) => {
+  const subFolderNodes =
+    state.deviceAppDrives.appSessionDrives.allFolderNodes.find(
+      (node) => node.itemId === parentFolderId
+    )?.subFolderNodes ?? [];
+
+  const subFolderIds = subFolderNodes.map((node) => node.itemId);
+
+  const subFolders = state.deviceAppDrives.appSessionDrives.allFolders.filter(
+    (folder) => contains(subFolderIds, folder.id)
+  );
+
+  return subFolders;
 };
 
 export const selectFile = (folderId: number, fileId: number) => (

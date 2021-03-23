@@ -79,6 +79,7 @@ const MouseDblClickable = (props: MouseDblClickableProps) => {
 
     const abstrCmpProps: TrmrCompProps = {
         domElTagName: props.domElTagName,
+        btstrpElType: props.btstrpElType,
         domElAttrs: domElAttrs,
     };
 

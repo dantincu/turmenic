@@ -13,10 +13,6 @@ const DriveFile = (props: DriveItemProps) => {
     const dispatch = useDispatch();
     const file = useSelector(selectFile(props.idntty.parentFolderId as number, props.idntty.itemId)) as DriveFileVm;
 
-    if ([typeof file.isSelected, typeof file.isCurrent].indexOf("boolean") >= 0) {
-        console.log(" >>>> ", file.isSelected, file.isCurrent);
-    }
-
     const onFileSelected = (idntty: DriveItemIdentity, previewSelection: boolean) => {
         if (previewSelection) {
             dispatch(setSelectedFile({ rootFolderId: idntty.rootFolderId, folderId: idntty.parentFolderId, fileId: idntty.itemId }));

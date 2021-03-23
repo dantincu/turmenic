@@ -6,6 +6,8 @@ import {
 
 import './styles/App.scss';
 
+import { ErrorBoundary } from './jsx-cmp/errorBoundary/ErrorBoundary';
+
 import AppHeader from './components/appHeader/AppHeader';
 import AppFooter from './components/appFooter/AppFooter';
 
@@ -17,6 +19,8 @@ import { driveApi } from './api/drives.api';
 const App = () => {
     const [ authenticated, setAuthenticated ] = useState(true);
     const [ error, setError ] = useState(false);
+
+    const showErrorDetails: boolean = process.env.REACT_APP_DEV_MODE === "true";
 
     useEffect(() => {
         if (authenticated !== true && error === false) {
@@ -32,15 +36,17 @@ const App = () => {
     let appElement: JSX.Element;
 
     if (authenticated === true) {
-        appElement = (
-            <div className="txqk-app">
-                <AppHeader></AppHeader>
-                <Switch>
-                    <Route path="/drive/:id"><DriveExplorerPage></DriveExplorerPage></Route>
-                    <Route path="/"><DashboardPage></DashboardPage></Route>
-                </Switch>
-                <AppFooter></AppFooter>
-            </div>);    
+        appElement = (<div className="txqk-app">
+                <ErrorBoundary showDetails={showErrorDetails}>
+                    <AppHeader></AppHeader>
+                    <Switch>
+                        <Route path="/drive/:id"><DriveExplorerPage></DriveExplorerPage></Route>
+                        <Route path="/"><DashboardPage></DashboardPage></Route>
+                    </Switch>
+                    <AppFooter></AppFooter>
+                </ErrorBoundary>
+            </div>);
+           
     } else if (error) {
         appElement = (<div className="txqk-app-error">
             <p className="txqk-error-msg">Something went wrong and the app could not start...</p>
