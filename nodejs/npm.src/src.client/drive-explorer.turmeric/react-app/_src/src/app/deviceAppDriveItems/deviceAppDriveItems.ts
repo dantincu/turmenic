@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { DeviceAppDrives } from "./driveItems.types";
+import { DeviceAppDrives } from "./deviceAppDriveItems.types";
 
-import { testData } from "./driveItems.test-data";
-import { DriveItemsService } from "./driveItems.service";
+import { testData } from "./deviceAppDriveItems.test-data";
+import { DriveItemsService } from "./deviceAppDriveItems.service";
 
 import { contains } from "../../js.common/dist/src.common/utils/arrays";
 
@@ -89,8 +89,13 @@ export const deviceAppDrivesSlice = createSlice({
   },
 });
 
-export const selectAppDrives = (state: RootState) => {
+export const selectSessionAppDrives = (state: RootState) => {
   const value = state.deviceAppDrives.appSessionDrives.appDrives;
+  return value;
+};
+
+export const selectAllAppDrives = (state: RootState) => {
+  const value = state.deviceAppDrives.allAppDrives;
   return value;
 };
 

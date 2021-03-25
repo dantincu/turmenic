@@ -8,7 +8,7 @@ import {
   DriveNode,
   DeviceAppDrives,
   AppSessionDrives,
-} from "./driveItems.types";
+} from "./deviceAppDriveItems.types";
 
 import {
   testData as baseTestData,
@@ -16,7 +16,7 @@ import {
   createFolder,
   genId,
   genUuid,
-} from "./driveItems.test-data.base";
+} from "./deviceAppDriveItems.test-data.base";
 
 const createSubFoldersArr = (
   appSessionDrives: AppSessionDrives,
@@ -81,8 +81,11 @@ const createAppDrive = (
 ) => {
   const { folder, node } = createRootFolder(appSessionDrives, depth, breadth);
 
+  const uuidB64 = genUuid();
+
   appSessionDrives.appDrives.push({
-    uuidB64: genUuid(),
+    uuidB64: uuidB64,
+    label: uuidB64,
     rootFolder: folder,
     rootFolderNode: node,
   });

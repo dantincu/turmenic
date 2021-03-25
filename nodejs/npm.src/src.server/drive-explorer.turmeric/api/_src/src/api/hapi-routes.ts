@@ -6,6 +6,7 @@ import {
   getServerWithCookieAuth,
   getDefaultAuthRoute,
   getDefaultHomeRoute,
+  getCorsConfig,
 } from "../../src.node.common.server/api/hapi/server.js";
 
 import {
@@ -17,6 +18,8 @@ import {
   HapiServerTlsOptions,
   HapiCookieAuthOptions,
 } from "../../src.node.common.server/api/hapi/index.js";
+
+import { getDeviceRootFolders } from "./api.js";
 
 export const getRoutes = async (
   opts: HapiServerOptions
@@ -32,6 +35,18 @@ export const getRoutes = async (
   if (opts.addDefaultAuthRoute === true) {
     routes.push(getDefaultAuthRoute(opts));
   }
+
+  routes.push({
+    method: "GET",
+    path: "/device-root-folders",
+    options: {
+      cors: getCorsConfig(opts),
+    },
+    handler: async function (request, h) {
+      const result = await getDeviceRootFolders(request.query.refresh);
+      return result;
+    },
+  });
 
   return routes;
 };

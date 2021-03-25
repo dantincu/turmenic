@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { appThemes, AppTheme } from '../../app/appTheme/appTheme';
-import './ThemePicker.scss';
+import React, { useState } from "react";
+import {
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import { appThemes, AppTheme } from "../../app/appTheme/appTheme";
+import "./ThemePicker.scss";
 
-import { ThemePickerProps } from './ThemePickerProps';
+import { ThemePickerProps } from "./ThemePickerProps";
 
 const ThemePicker = (props: ThemePickerProps) => {
   const getDropDownItemClassName = (appTheme: AppTheme) => {
-    let className = "txqk-dropdown-item";
+    let className = "trmr-dropdown-item";
 
     if (props.currentThemeId === appTheme.id) {
-      className += " txqk-current-item";
+      className += " trmr-current-item";
     }
 
     return className;
-  }
+  };
 
-  const dropDownMenuItems = appThemes.map(appTheme => {
+  const dropDownMenuItems = appThemes.map((appTheme) => {
     return {
       theme: appTheme,
       onClick: () => {
@@ -24,7 +29,7 @@ const ThemePicker = (props: ThemePickerProps) => {
           props.onThemePicked(appTheme.id);
         }
       },
-      className: getDropDownItemClassName(appTheme)
+      className: getDropDownItemClassName(appTheme),
     };
   });
 
@@ -32,22 +37,22 @@ const ThemePicker = (props: ThemePickerProps) => {
   const toggle = () => setOpen(!dropdownOpen);
 
   return (
-    <ButtonDropdown className="txqk-theme-picker" isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle caret>
-        App theme
-      </DropdownToggle>
+    <ButtonDropdown
+      className="trmr-theme-picker"
+      isOpen={dropdownOpen}
+      toggle={toggle}
+    >
+      <DropdownToggle caret>App theme</DropdownToggle>
       <DropdownMenu>
-        {
-          dropDownMenuItems.map(item => (
-              <DropdownItem
-                key={ item.theme.id }
-                className={ item.className }
-                onClick={ item.onClick }>
-                  { item.theme.name }
-              </DropdownItem>
-            )
-          )
-        }
+        {dropDownMenuItems.map((item) => (
+          <DropdownItem
+            key={item.theme.id}
+            className={item.className}
+            onClick={item.onClick}
+          >
+            {item.theme.name}
+          </DropdownItem>
+        ))}
       </DropdownMenu>
     </ButtonDropdown>
   );

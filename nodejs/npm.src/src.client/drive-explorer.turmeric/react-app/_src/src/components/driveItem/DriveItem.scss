@@ -4,7 +4,7 @@
 $toggle-width: 15px;
 $toggle-height: 15px;
 
-.txqk-drive-item {
+.trmr-drive-item {
   text-align: left;
   margin: 0px;
   padding: 0px;
@@ -12,28 +12,28 @@ $toggle-height: 15px;
   max-width: 100%;
   user-select: none;
 
-  &.txqk-drive-file {
+  &.trmr-drive-file {
     font-family: $alt-text-font-family;
   }
 
-  .txqk-btstrp-col {
+  .trmr-btstrp-col {
     margin: 0px;
     padding: 0px;
     padding-left: 0px;
     line-height: $toggle-height;
     width: 100%;
 
-    > .txqk-btstrp-row {
+    > .trmr-btstrp-row {
       padding-left: 0px;
       margin-left: 0px;
 
-      > .txqk-btstrp-col {
+      > .trmr-btstrp-col {
         padding-left: 0px;
         cursor: pointer;
       }
     }
 
-    &.txqk-toggle {
+    &.trmr-toggle {
       margin: 0px;
       padding: 0px;
       min-height: $toggle-height;
@@ -43,7 +43,7 @@ $toggle-height: 15px;
       display: block;
     }
 
-    &.txqk-toggle > label {
+    &.trmr-toggle > label {
       margin: 0px 0px 0px 0px;
       padding-right: 1px;
       margin-top: -2px;
@@ -56,16 +56,16 @@ $toggle-height: 15px;
       border-radius: 3px;
     }
 
-    &.txqk-toggle.txqk-toggle-collapsed {
+    &.trmr-toggle.trmr-toggle-collapsed {
       padding: 0px 0px 0px 0px;
     }
 
-    &.txqk-toggle.txqk-toggle-expanded {
+    &.trmr-toggle.trmr-toggle-expanded {
       padding: 0px 0px 0px 0px;
     }
   }
 
-  .txqk-item-children {
+  .trmr-item-children {
     ul {
       list-style-type: none;
       text-align: left;

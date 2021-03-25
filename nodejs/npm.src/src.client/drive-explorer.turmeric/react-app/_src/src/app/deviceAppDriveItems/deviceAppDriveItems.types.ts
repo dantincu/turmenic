@@ -1,7 +1,6 @@
 export interface DriveItem {
   id: number;
   name: string;
-  displayName?: string;
   parentFolderId?: number;
   path?: string;
   orderIdx?: number;
@@ -36,6 +35,7 @@ export interface DriveFolderNode extends DriveNode {
 
 export interface AppDrive {
   uuidB64: string;
+  label: string;
 
   rootFolder: DriveFolder;
   rootFolderNode: DriveFolderNode;

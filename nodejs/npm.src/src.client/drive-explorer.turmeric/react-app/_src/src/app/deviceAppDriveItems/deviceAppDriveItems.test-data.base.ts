@@ -12,7 +12,7 @@ import {
   DriveNode,
   DeviceAppDrives,
   AppSessionDrives,
-} from "./driveItems.types";
+} from "./deviceAppDriveItems.types";
 
 import { strReplaceAll } from "../../js.common/dist/src.common/text/utils";
 

@@ -1,40 +1,12 @@
 import { DeviceAppRootFolders } from "./deviceRootFolders.js";
-import {
-  DeviceSpecialFolder,
-  SpecialFolderType,
-  SpecialFolderTypeKey,
-  specialFolderTypesList,
-  DeviceDrive,
-} from "../../src.node.common.server/fileSystem/deviceRootFolders.js";
+import { DeviceDrive } from "../../src.node.common/app-data/fileSystem.types.js";
 
 import {
-  DirEntry,
-  DirEntryAttrs,
-} from "../../src.node.common/fileSystem/index.js";
-
-export interface FileSystemRootFolder {
-  absolutePath: string;
-  driveLetter?: string;
-  label?: string | null;
-  deviceSpecialFolder?: DeviceSpecialFolder;
-}
-
-export interface FileSystemEntry {
-  absolutePath: string;
-  rootFolderRelPath?: string;
-  rootFolder?: FileSystemRootFolder;
-  attrs?: DirEntryAttrs;
-}
-
-export interface FileSystemFile extends FileSystemEntry {
-  nameWithoutExtension: string;
-  extension?: string;
-}
-
-export interface FileSystemFolder extends FileSystemEntry {
-  files: FileSystemFile[];
-  subFolders?: FileSystemFolder[];
-}
+  FileSystemEntry,
+  FileSystemRootFolder,
+  FileSystemFile,
+  FileSystemFolder,
+} from "../../src.node.common/app-data/fileSystem.types.js";
 
 export class FileSystem {
   private deviceRootFoldersComponent: DeviceAppRootFolders;
@@ -73,13 +45,13 @@ export class FileSystem {
 
   public async getFileSystemRootFolders(): Promise<FileSystemRootFolder[]> {
     if (!this.fileSystemRootFolders) {
-      this.fileSystemRootFolders = await this.resetFileSystemRootFolders();
+      this.fileSystemRootFolders = await this.refreshFileSystemRootFolders();
     }
 
     return this.fileSystemRootFolders;
   }
 
-  public async resetFileSystemRootFolders(): Promise<FileSystemRootFolder[]> {
+  public async refreshFileSystemRootFolders(): Promise<FileSystemRootFolder[]> {
     const deviceSpecialFolders = this.getDeviceSpecialFolders();
     const deviceDriveMountPoints = await this.getDeviceDriveMountPoints();
 

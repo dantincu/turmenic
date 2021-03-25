@@ -1,5 +1,8 @@
-import { DriveItemProps } from "../driveItem/DriveItemProps";
+import { DriveFolderProps } from "../driveItem/DriveItemProps";
 
 export interface DriveRootFolderProps {
-  rootFolder: DriveItemProps;
+  uuidB64: string;
+  label: string;
+  rootFolder: DriveFolderProps;
+  rootFolderCompCreator: (rootFolder: DriveFolderProps) => JSX.Element;
 }

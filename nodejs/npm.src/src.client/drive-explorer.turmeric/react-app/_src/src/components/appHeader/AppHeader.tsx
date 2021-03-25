@@ -1,13 +1,22 @@
-import React from 'react';
+import React from "react";
 
-import './AppHeader.scss';
-import { AppHeaderProps } from './AppHeaderProps';
-import AppThemePicker from '../appThemePicker/appThemePicker';
+import "./AppHeader.scss";
+import { AppHeaderProps } from "./AppHeaderProps";
+import AppThemePicker from "../appThemePicker/appThemePicker";
 
 const AppHeader = (props: AppHeaderProps) => {
-    return (<header className="txqk-app-header">
-                <AppThemePicker></AppThemePicker>
-            </header>);
+  if (props.devMode) {
+    return (
+      <header className="trmr-app-header">
+        <AppThemePicker></AppThemePicker>
+      </header>
+    );            
+  } else {
+    return (
+      <header className="trmr-app-header">
+      </header>
+    );  
+  }
 };
 
 export default AppHeader;

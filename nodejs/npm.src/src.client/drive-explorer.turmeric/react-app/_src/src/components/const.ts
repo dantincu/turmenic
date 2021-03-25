@@ -3,19 +3,19 @@ export const urlQueryParams = {
 };
 
 export const cssClss = {
-  txqk: {
+  trmr: {
     item: {
-      selected: "txqk-selected",
-      current: "txqk-current",
+      selected: "trmr-selected",
+      current: "trmr-current",
     },
     toggle: {
-      base: "txqk-toggle",
-      collapsed: "txqk-toggle-collapsed",
-      expanded: "txqk-toggle-expanded",
+      base: "trmr-toggle",
+      collapsed: "trmr-toggle-collapsed",
+      expanded: "trmr-toggle-expanded",
     },
     bootstrap: {
-      row: "txqk-btstrp-row",
-      col: "txqk-btstrp-col",
+      row: "trmr-btstrp-row",
+      col: "trmr-btstrp-col",
     },
   },
 };

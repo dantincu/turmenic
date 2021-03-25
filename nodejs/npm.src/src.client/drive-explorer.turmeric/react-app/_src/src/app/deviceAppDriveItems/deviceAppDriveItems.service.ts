@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { testData } from "./driveItems.test-data.base";
+import { testData } from "./deviceAppDriveItems.test-data.base";
 
 import {
   DriveFolder,
@@ -8,7 +8,7 @@ import {
   DeviceAppDrives,
   AppSessionDrives,
   AppDrive,
-} from "./driveItems.types";
+} from "./deviceAppDriveItems.types";
 
 import { findIndex } from "../../js.common/dist/src.common/utils/arrays";
 

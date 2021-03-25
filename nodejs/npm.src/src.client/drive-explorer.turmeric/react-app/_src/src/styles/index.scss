@@ -1,12 +1,12 @@
 @import "./mixins.scss";
 
-body.txqk {
+body.trmr {
   margin: 0;
   @include text-font();
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body.txqk code {
+body.trmr code {
   @include text-font-mono();
 }

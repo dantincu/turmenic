@@ -1,5 +1,5 @@
 {
-  "name": "turmenic-node-common-client-js-dist",
+  "name": "turmeric-node-common-client-js-dist",
   "version": "0.1.0",
   "description": "Folder contains the compiled js code from the src.common* ts folders",
   "main": "index.ts",

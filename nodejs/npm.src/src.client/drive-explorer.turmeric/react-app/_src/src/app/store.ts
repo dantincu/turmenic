@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import appThemeReducer from "./appTheme/appTheme";
-import { deviceAppDrivesReducer } from "./driveItems/driveItems";
+import { deviceAppDrivesReducer } from "./deviceAppDriveItems/deviceAppDriveItems";
 
 export const store = configureStore({
   reducer: {
