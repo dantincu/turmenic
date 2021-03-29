@@ -1,29 +1,61 @@
+import { Mutex } from "async-mutex";
 import slug from "slug";
 
+import { EnvConfig } from "../../../src.node.common/appSettings/envConfig.js";
 import {
-  EnvConfig,
-  envBaseDir,
-} from "../../../src.node.common/appSettings/envConfig.js";
-
-/*
-import {
-  executeLockingAsync,
-  getValueLockingAsync,
-  executeLocking,
-  getValueLocking,
-} from "../../async/redis-mutex.js"; */
+  cloneDeep,
+  cloneArrDeep,
+  getPropVal,
+  setPropVal,
+} from "../../../src.common/utils/types.js";
+import { compareVersions } from "../../../src.common/text/pckg.js";
 
 import { uStrId } from "../uStrId.js";
-import { clone, copyShallow } from "../../../src.common/utils/types.js";
-import { compareVersions } from "../../../src.common/text/pckg.js";
 
 export const BLANK_VERSION_VALUE = "0.0.0";
 
 export interface DataSaveOptions<TData, TJsonData> {
   uuidPropName?: string;
+  namePropName?: string;
   keyPropName?: string;
-  keyGenerator?: (dataItem: TData) => string;
+  keyGenerator?: ((dataItem: TData) => string | null) | null;
 }
+
+export const getDefaultSaveOptions = <TData, TJsonData>(): DataSaveOptions<
+  TData,
+  TJsonData
+> => {
+  const namePropName = "name";
+
+  const dataSaveOptions = <DataSaveOptions<TData, TJsonData>>{
+    uuidPropName: "uuid",
+    namePropName: "name",
+    keyPropName: "key",
+    keyGenerator: getDefaultKeyGenerator(namePropName),
+  };
+
+  dataSaveOptions.keyGenerator = getDefaultKeyGenerator(
+    dataSaveOptions.namePropName
+  );
+  return dataSaveOptions;
+};
+
+export const getDefaultKeyGenerator = <TData>(
+  namePropName?: string | null
+): ((dataItem: TData) => string | null) | null => {
+  let keyGenerator: ((dataItem: TData) => string | null) | null = null;
+
+  if (namePropName) {
+    keyGenerator = (item: TData): string | null => {
+      const itemName: string | null = getPropVal(item, namePropName);
+
+      const key = itemName ? slug(itemName) : null;
+      return key;
+    };
+  }
+
+  return keyGenerator;
+};
 
 export enum DataSaveErrorType {
   None = 0,
@@ -31,41 +63,23 @@ export enum DataSaveErrorType {
   Unknown = 2,
 }
 
-export interface DataSaveResultBase<TData, TJsonData> {
+export interface AbstractDataSaveResult {
   success: boolean;
   errorMessage?: string;
   errorType: DataSaveErrorType;
   newLastModifiedTime: Date;
 }
 
-export interface DataSaveResultRaw<TData, TJsonData>
-  extends DataSaveResultBase<TData, TJsonData> {
+export interface DataSaveResult<TData, TJsonData>
+  extends AbstractDataSaveResult {
+  inserted: TData[];
   jsonDataList: TJsonData[];
 }
 
-export interface DataSaveResult<TData, TJsonData>
-  extends DataSaveResultBase<TData, TJsonData> {
-  dataList: TData[];
-}
-
-export enum DataSourceUpdateErrorType {
-  None = 0,
-  CorruptedData = 1,
-  Unknown = 2,
-}
-
-export interface DataSourceUpdateResult {
-  success: boolean;
-  isUpToDate: boolean;
-  errorMessage?: string;
-  errorType: DataSourceUpdateErrorType;
-}
-
-export class DataCollectionOptions<TData, TJsonData> {
+export abstract class AbstractDataCollectionOptions {
   envConfig: EnvConfig;
   dataSourceName: string;
   collectionName: string;
-  dataSaveOptions?: DataSaveOptions<TData, TJsonData>;
 
   constructor(
     envConfig: EnvConfig,
@@ -78,23 +92,18 @@ export class DataCollectionOptions<TData, TJsonData> {
   }
 }
 
-export class DataSourceOptions {
-  envConfig: EnvConfig;
-  dataSourceName: string;
+export class DataCollectionOptions<
+  TData,
+  TJsonData
+> extends AbstractDataCollectionOptions {
+  dataSaveOptions?: DataSaveOptions<TData, TJsonData>;
 
-  constructor(envConfig: EnvConfig, dataSourceName: string) {
-    this.envConfig = envConfig;
-    this.dataSourceName = dataSourceName;
-  }
-}
-
-export abstract class DataSourceBase {
-  readonly envConfig: EnvConfig;
-  readonly dataSourceName: string;
-
-  constructor(opts: DataSourceOptions) {
-    this.envConfig = opts.envConfig;
-    this.dataSourceName = opts.dataSourceName;
+  constructor(
+    envConfig: EnvConfig,
+    dataSourceName: string,
+    collectionName: string
+  ) {
+    super(envConfig, dataSourceName, collectionName);
   }
 }
 
@@ -107,87 +116,246 @@ export interface JsonDataContainer<TJsonData> {
   lastModifiedTime: Date;
 }
 
-export abstract class DataCollectionBase<TData, TJsonData> {
+export abstract class AbstractDataCollection {
   readonly envConfig: EnvConfig;
   readonly dataSourceName: string;
   readonly collectionName: string;
-  readonly dataSaveOptions: DataSaveOptions<TData, TJsonData>;
-  readonly syncLockName: string;
+  readonly dataAccessMutex: Mutex;
+  data?: any[];
   lastModifiedTime?: Date;
 
-  constructor(opts: DataCollectionOptions<TData, TJsonData>) {
+  constructor(opts: AbstractDataCollectionOptions) {
     this.envConfig = opts.envConfig;
     this.dataSourceName = opts.dataSourceName;
     this.collectionName = opts.collectionName;
-    this.dataSaveOptions = opts.dataSaveOptions ?? this.getDefaultSaveOptions();
-    this.syncLockName = this.getSyncLockName();
+    this.dataAccessMutex = new Mutex();
   }
 
-  public abstract loadJsonData(): Promise<JsonDataContainer<TJsonData>>;
-  public abstract saveJsonData(
-    jsonData: JsonDataContainer<TJsonData>
-  ): Promise<DataSaveResultRaw<TData, TJsonData>>;
+  public abstract get(refresh: boolean): Promise<any[]>;
+  public abstract save(
+    data?: any[] | null,
+    safeMode?: boolean
+  ): Promise<AbstractDataSaveResult>;
 
-  public async fetch(): Promise<TData[]> {
-    /* const jsonData: JsonDataContainer<TJsonData> = await getValueLockingAsync(
-      this.syncLockName,
-      async () => {
-        await this.onDataAccess();
-        const jsonData = await this.loadJsonData();
-        this.lastModifiedTime = jsonData.lastModifiedTime;
-
-        return jsonData;
-      }
-    );*/
-
-    await this.onDataAccess();
-    const jsonData = await this.loadJsonData();
-    this.lastModifiedTime = jsonData.lastModifiedTime;
-
-    const dataItems = this.getDataForFetch(jsonData);
-    return dataItems;
+  async beforeSavePrep(safeMode?: boolean): Promise<boolean> {
+    return true;
+  }
+  async afterSaveCleanup(safeMode?: boolean): Promise<boolean> {
+    return true;
   }
 
-  public async save(
-    dataList: TData[]
-  ): Promise<DataSaveResult<TData, TJsonData>> {
-    const jsonData = this.getJsonDataForSave(dataList);
+  async onBeginDataAccess(): Promise<void> {}
+  async onEndDataAccess(): Promise<void> {}
+}
 
-    /* const dataSaveResultRaw = await getValueLockingAsync(
-      this.syncLockName,
-      async () => {
-        await this.onDataAccess();
-        const dataSaveResultRaw = await this.saveJsonData(jsonData);
-        return dataSaveResultRaw;
+export abstract class DataCollectionBase<
+  TData,
+  TJsonData
+> extends AbstractDataCollection {
+  dataSaveOptions: DataSaveOptions<TData, TJsonData>;
+  lastModifiedTime?: Date;
+  currentData?: TData[];
+  insertedUuids?: string[] | null;
+
+  constructor(opts: DataCollectionOptions<TData, TJsonData>) {
+    super(opts);
+    this.dataSaveOptions = opts.dataSaveOptions ?? getDefaultSaveOptions();
+  }
+
+  public async runOp(
+    op: () => Promise<boolean>,
+    safeMode?: boolean | null
+  ): Promise<DataSaveResult<TData, TJsonData> | null> {
+    let dataSaveResult: DataSaveResult<TData, TJsonData> | null = null;
+
+    await this.dataAccessMutex.runExclusive(async () => {
+      const saveData = await op();
+
+      if (saveData) {
+        dataSaveResult = await this.saveData(this.currentData, safeMode);
       }
-    ); */
+    });
 
-    await this.onDataAccess();
-    const dataSaveResultRaw = await this.saveJsonData(jsonData);
-
-    const dataSaveResult = <DataSaveResult<TData, TJsonData>>(
-      (<unknown>dataSaveResultRaw)
-    );
-
-    dataSaveResult.dataList = this.getDataForFetch(jsonData);
     return dataSaveResult;
   }
 
-  async onDataAccess(): Promise<void> {}
+  public async get(refresh: boolean): Promise<any[]> {
+    let data: any[] | null = null;
 
-  getDefaultSaveOptions(): DataSaveOptions<TData, TJsonData> {
-    const dataSaveOptions = <DataSaveOptions<TData, TJsonData>>{
-      uuidPropName: "uuid",
-      keyPropName: "key",
-      keyGenerator: this.generateKey.bind(this),
-    };
+    await this.dataAccessMutex.runExclusive(async () => {
+      if (!this.currentData || refresh) {
+        data = await this.loadDataOp();
+      } else {
+        data = this.currentData;
+      }
+    });
 
-    return dataSaveOptions;
+    return (data as unknown) as any[];
   }
 
-  getJsonDataForSave(dataList: TData[]): JsonDataContainer<TJsonData> {
+  public async getData(refresh: boolean): Promise<TData[]> {
+    let data: TData[] | null = null;
+
+    await this.dataAccessMutex.runExclusive(async () => {
+      if (!this.currentData || refresh) {
+        data = await this.loadDataOp();
+      } else {
+        data = this.currentData;
+      }
+    });
+
+    return (data as unknown) as TData[];
+  }
+
+  public async save(
+    data?: any[] | null,
+    safeMode?: boolean | null
+  ): Promise<AbstractDataSaveResult> {
+    let dataSaveResult: AbstractDataSaveResult | null = null;
+
+    await this.dataAccessMutex.runExclusive(async () => {
+      dataSaveResult = await this.saveDataOp(data as TData[] | null, safeMode);
+    });
+
+    if (!dataSaveResult) {
+      throw new Error("Something went wrong; no data returned");
+    }
+
+    return dataSaveResult;
+  }
+
+  public async saveData(
+    data?: any[] | null,
+    safeMode?: boolean | null
+  ): Promise<DataSaveResult<TData, TJsonData>> {
+    let dataSaveResult: DataSaveResult<TData, TJsonData> | null = null;
+
+    await this.dataAccessMutex.runExclusive(async () => {
+      dataSaveResult = await this.saveDataOp(data as TData[] | null, safeMode);
+    });
+
+    if (!dataSaveResult) {
+      throw new Error("Something went wrong; no data returned");
+    }
+
+    return dataSaveResult;
+  }
+
+  public async insert(
+    items: TData[],
+    safeMode?: boolean | null
+  ): Promise<DataSaveResult<TData, TJsonData> | null> {
+    let dataSaveResult: DataSaveResult<TData, TJsonData> | null = null;
+
+    await this.dataAccessMutex.runExclusive(async () => {
+      this.currentData = this.currentData ?? [];
+
+      for (let itm of items) {
+        this.currentData.push(itm);
+      }
+
+      this.insertUuids(items);
+      dataSaveResult = await this.saveDataOp(this.currentData, safeMode);
+    });
+
+    if (!dataSaveResult) {
+      throw new Error("Something went wrong; no data returned");
+    }
+
+    return dataSaveResult;
+  }
+
+  async loadDataOp() {
+    await this.onBeginDataAccess();
+
+    const jsonData = await this.loadJsonData();
+    this.lastModifiedTime = jsonData.lastModifiedTime;
+
+    let currentData = this.getDataForFetch(jsonData);
+    this.data = currentData;
+    this.currentData = currentData;
+
+    await this.onEndDataAccess();
+    return currentData;
+  }
+
+  async saveDataOp(
+    dataList?: TData[] | null,
+    safeMode?: boolean | null
+  ): Promise<DataSaveResult<TData, TJsonData>> {
+    if (!dataList && !this.currentData) {
+      throw new Error("Cannot save empty data to file!");
+    }
+
+    safeMode = safeMode ?? false;
+
+    await this.onBeginDataAccess();
+    this.insertedUuids = this.insertedUuids ?? [];
+
+    const jsonData = this.getJsonDataForSave(
+      dataList ?? this.currentData ?? [],
+      this.insertedUuids
+    );
+
+    const dataSaveResultRaw = await this.saveJsonData(jsonData, safeMode);
+    dataList = this.getDataForFetch(jsonData);
+
+    const dataSaveResult = dataSaveResultRaw as DataSaveResult<
+      TData,
+      TJsonData
+    >;
+
+    dataSaveResult.inserted = this.getInsertedItems(
+      dataList,
+      this.insertedUuids
+    );
+
+    this.currentData = dataList;
+    this.insertedUuids = null;
+
+    await this.onEndDataAccess();
+    return dataSaveResult;
+  }
+
+  getInsertedItems(dataList: TData[], insertedUuids: string[]): TData[] {
+    let inserted: TData[] | null = null;
+    let uuidPropName = this.dataSaveOptions.uuidPropName;
+
+    if (uuidPropName) {
+      inserted = dataList.filter(
+        (item) =>
+          insertedUuids.indexOf(getPropVal(item, uuidPropName) as string) >= 0
+      );
+    }
+
+    return inserted ?? [];
+  }
+
+  insertUuids(dataList: TData[]) {
+    let uuidPropName = this.dataSaveOptions.uuidPropName;
+
+    if (uuidPropName) {
+      for (let item of dataList) {
+        const uuid = getPropVal(item, uuidPropName) as string | null;
+        if (uuid) {
+          this.insertedUuids?.push(uuid);
+        }
+      }
+    }
+  }
+
+  abstract loadJsonData(): Promise<JsonDataContainer<TJsonData>>;
+  abstract saveJsonData(
+    jsonData: JsonDataContainer<TJsonData>,
+    safeMode?: boolean | null
+  ): Promise<DataSaveResult<TData, TJsonData>>;
+
+  getJsonDataForSave(
+    dataList: TData[],
+    insertedUuids: string[]
+  ): JsonDataContainer<TJsonData> {
     const jsonDataList = dataList.map((dataItem) =>
-      this.getDataItemForSave(dataItem, dataList)
+      this.getDataItemForSave(dataItem, dataList, insertedUuids)
     );
 
     const jsonData = <JsonDataCollection<TJsonData>>{
@@ -210,29 +378,38 @@ export abstract class DataCollectionBase<TData, TJsonData> {
     return dataList;
   }
 
-  getDataItemForSave(dataItem: TData, dataList: TData[]): TJsonData {
-    const clonedDataItem = clone(dataItem);
+  getDataItemForSave(
+    dataItem: TData,
+    dataList: TData[],
+    insertedUuids: string[]
+  ): TJsonData {
+    const clonedDataItem = cloneDeep(dataItem);
+    this.assureDataItemHasUuid(clonedDataItem, insertedUuids);
 
-    this.assureDataItemHasUuid(dataItem);
     this.assureDataItemHasUniqueKey(clonedDataItem, dataItem, dataList);
+    const jsonData = (clonedDataItem as unknown) as TJsonData;
 
-    const jsonData = copyShallow<TJsonData, TData>(<TJsonData>{}, dataItem);
     return jsonData;
   }
 
   getDataItemForFetch(jsonDataItem: TJsonData): TData {
-    const dataItem = copyShallow<TData, TJsonData>(<TData>{}, jsonDataItem);
+    const dataItem = (cloneDeep(jsonDataItem) as unknown) as TData;
     return dataItem;
   }
 
-  assureDataItemHasUuid(dataItem: TData) {
-    if (this.dataSaveOptions.uuidPropName) {
-      if (!dataItem[<keyof TData>this.dataSaveOptions.uuidPropName]) {
-        dataItem[<keyof TData>this.dataSaveOptions.uuidPropName] = <
-          TData[keyof TData]
-        >(<unknown>this.generateUuid());
+  assureDataItemHasUuid(dataItem: TData, insertedUuids: string[]) {
+    const uuidPropName = this.dataSaveOptions.uuidPropName;
+    let uuid: string | null = null;
+
+    if (uuidPropName) {
+      uuid = this.generateUuid();
+      if (getPropVal(dataItem, uuidPropName)) {
+        setPropVal(dataItem, uuidPropName, uuid);
+        insertedUuids.push(uuid);
       }
     }
+
+    return uuid;
   }
 
   assureDataItemHasUniqueKey(
@@ -240,13 +417,20 @@ export abstract class DataCollectionBase<TData, TJsonData> {
     dataItem: TData,
     dataList: TData[]
   ) {
-    if (this.dataSaveOptions.keyPropName) {
-      if (!clonedDataItem[<keyof TData>this.dataSaveOptions.keyPropName]) {
-        clonedDataItem[<keyof TData>this.dataSaveOptions.keyPropName] = <
-          TData[keyof TData]
-        >(<unknown>this.generateUniqueKey(clonedDataItem, dataList));
+    const keyPropName = this.dataSaveOptions.keyPropName;
+    const namePropName = this.dataSaveOptions.namePropName;
+
+    if (keyPropName) {
+      if (!getPropVal(clonedDataItem, keyPropName)) {
+        if (namePropName) {
+          setPropVal(
+            clonedDataItem,
+            keyPropName,
+            this.generateUniqueKey(clonedDataItem, dataList)
+          );
+        }
       } else {
-        this.assureKeyUnique(clonedDataItem, dataItem, dataList);
+        this.assertKeyUnique(clonedDataItem, dataItem, dataList);
       }
     }
   }
@@ -254,13 +438,6 @@ export abstract class DataCollectionBase<TData, TJsonData> {
   generateUuid(): string {
     const uuid = uStrId();
     return uuid;
-  }
-
-  generateKey(item: TData) {
-    const itemName: string | null = (<any>item).name;
-
-    const key = itemName ? slug(itemName) : null;
-    return key;
   }
 
   generateUniqueKey(dataItem: TData, dataList: TData[]) {
@@ -272,9 +449,7 @@ export abstract class DataCollectionBase<TData, TJsonData> {
       while (
         dataList.find(
           (item) =>
-            <string>(
-              (<unknown>item[<keyof TData>this.dataSaveOptions.uuidPropName])
-            ) === keySlug
+            getPropVal(item, this.dataSaveOptions.keyPropName) === keySlug
         )
       ) {
         key = `${keySlug}_${suffix}`;
@@ -284,33 +459,35 @@ export abstract class DataCollectionBase<TData, TJsonData> {
     return key;
   }
 
-  assureKeyUnique(clonedDataItem: TData, dataItem: TData, dataList: TData[]) {
-    if (this.isKeyUnique(clonedDataItem, dataItem, dataList) !== true) {
+  assertKeyUnique(clonedDataItem: TData, dataItem: TData, dataList: TData[]) {
+    if (this.isKeyUnique(clonedDataItem, dataItem, dataList) === false) {
+      const keyPropName = this.dataSaveOptions.keyPropName;
+
       throw new Error(
-        `Duplicate key found: key prop name: ${
-          this.dataSaveOptions.keyPropName
-        }; key prop value: ${
-          dataItem[<keyof TData>this.dataSaveOptions.keyPropName]
-        }`
+        `Duplicate key found: key prop name: ${keyPropName}; key prop value: ${getPropVal(
+          dataItem,
+          keyPropName
+        )}`
       );
     }
   }
 
   isKeyUnique(clonedDataItem: TData, dataItem: TData, dataList: TData[]) {
-    const collidingItem = dataList.find(
-      (item) =>
-        item !== dataItem &&
-        item[<keyof TData>this.dataSaveOptions.keyPropName] ===
-          clonedDataItem[<keyof TData>this.dataSaveOptions.keyPropName]
-    );
+    let isUnique: boolean | null = null;
+    const keyPropName = this.dataSaveOptions.keyPropName;
 
-    const isUnique = !collidingItem;
+    if (keyPropName) {
+      const collidingItem = dataList.find(
+        (item) =>
+          item !== dataItem &&
+          getPropVal(item, keyPropName) ===
+            getPropVal(clonedDataItem, keyPropName)
+      );
+
+      isUnique = !collidingItem;
+    }
+
     return isUnique;
-  }
-
-  getSyncLockName(): string {
-    const syncLockName = `${this.dataSourceName}::${this.collectionName}`;
-    return syncLockName;
   }
 }
 
@@ -328,65 +505,3 @@ export abstract class MetadataCollectionBase extends DataCollectionBase<
     super(opts);
   }
 }
-
-export const assureUpToDate = async (
-  metadataCollection: DataCollectionBase<
-    DataSourceMetadata,
-    DataSourceMetadata
-  >,
-  reqVersion: string,
-  err?: Error
-) => {
-  const updateResult = await IsUpToDate(metadataCollection, reqVersion);
-
-  if (!updateResult.success || updateResult.isUpToDate !== true) {
-    err = err ?? new Error(updateResult.errorMessage);
-    throw err;
-  }
-};
-
-export const IsUpToDate = async (
-  metadataCollection: DataCollectionBase<
-    DataSourceMetadata,
-    DataSourceMetadata
-  >,
-  reqVersion: string
-): Promise<DataSourceUpdateResult> => {
-  const metadataList = await metadataCollection.fetch();
-  let dataCorrupted = metadataList.length > 1;
-  let corruptedDataErrorMessage = "the loaded data is ambiguous";
-  let versionComparisonResult = 0;
-  let isUpToDate = false;
-  const metadata = metadataList.pop() ?? null;
-
-  if (!dataCorrupted) {
-    if (metadata) {
-      const currentVersion = metadata?.dataSourceVersion ?? BLANK_VERSION_VALUE;
-
-      versionComparisonResult = compareVersions(currentVersion, reqVersion);
-
-      if (versionComparisonResult > 0) {
-        dataCorrupted = true;
-        corruptedDataErrorMessage =
-          "the current version is more recent than the required version";
-      } else if (versionComparisonResult === 0) {
-        isUpToDate = true;
-      }
-    } else {
-      isUpToDate = false;
-    }
-  }
-
-  const result = <DataSourceUpdateResult>{
-    success: !dataCorrupted,
-    errorType: dataCorrupted
-      ? DataSourceUpdateErrorType.CorruptedData
-      : DataSourceUpdateErrorType.None,
-    errorMessage: dataCorrupted
-      ? `Data source metadata file contains corrupted data: ${corruptedDataErrorMessage}`
-      : null,
-    isUpToDate: isUpToDate,
-  };
-
-  return result;
-};

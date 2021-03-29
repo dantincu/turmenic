@@ -1,8 +1,6 @@
 import {
-  DriveItemProps,
   DriveFolderProps,
   DriveFileProps,
-  DriveItemIdentity,
   DriveItemEvts,
 } from "../driveItem/DriveItemProps";
 

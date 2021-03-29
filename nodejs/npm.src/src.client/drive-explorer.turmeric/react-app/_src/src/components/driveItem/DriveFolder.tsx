@@ -5,12 +5,11 @@ import "./DriveItem.scss";
 import {
   DriveFolder as DriveFolderVm,
   DriveItem as DriveItemVm,
-} from "../../app/deviceAppDriveItems/deviceAppDriveItems.types";
-import { useSelector, useDispatch } from "react-redux";
+} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
+import { useSelector } from "react-redux";
 
 import { DriveFolderProps, DriveFileProps, DriveItemIdentity } from "./DriveItemProps";
 import { cssClss } from "../const";
-import DriveFile from "./DriveFile";
 import DriveItemName from "./DriveItemName";
 
 const DriveFolder = (props: DriveFolderProps) => {

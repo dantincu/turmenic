@@ -1,9 +1,9 @@
-import { ServicePlatformUserAccount } from "./schema/service-providers.schema.js";
+import { ServicePlatformUserAccount } from "../../src.node.common/app-data/schema/service-providers.schema.js";
 
 import {
   DeviceRootDirLocation,
   CloudStorageDeviceDirLocation,
-} from "./schema/device-dir-locations.schema.js";
+} from "../../src.node.common/app-data/schema/device-dir-locations.schema.js";
 
 /*
   uuid: string;

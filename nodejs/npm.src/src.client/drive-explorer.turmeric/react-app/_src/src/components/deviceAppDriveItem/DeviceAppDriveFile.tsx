@@ -1,9 +1,9 @@
-import React, { MouseEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 import DriveFile from '../driveItem/DriveFile';
-import { DriveFileProps, DriveItemIdentity } from '../driveItem/DriveItemProps';
-import { DeviceAppDriveFileProps, DeviceAppDriveFolderProps } from './deviceAppDriveItemProps';
+import { DriveItemIdentity } from '../driveItem/DriveItemProps';
+import { DeviceAppDriveFileProps } from './deviceAppDriveItemProps';
 
 import {
     selectFile,

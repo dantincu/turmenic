@@ -1,10 +1,9 @@
-import React, { MouseEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 import DriveFolder from '../driveItem/DriveFolder';
-import DriveFile from '../driveItem/DriveFile';
 import { DriveFolderProps, DriveFileProps, DriveItemIdentity } from '../driveItem/DriveItemProps';
-import { DeviceAppDriveFileProps, DeviceAppDriveFolderProps } from './deviceAppDriveItemProps';
+import { DeviceAppDriveFolderProps } from './deviceAppDriveItemProps';
 
 import {
     selectFolder,
@@ -13,11 +12,6 @@ import {
     selectSubFolders,
     toggleFolder
   } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
-
-import {
-    DriveFolder as DriveFolderVm,
-    DriveItem as DriveItemVm,
-} from "../../app/deviceAppDriveItems/deviceAppDriveItems.types";
 
 import DeviceAppDriveFile from './DeviceAppDriveFile';
 

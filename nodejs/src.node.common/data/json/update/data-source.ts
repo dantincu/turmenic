@@ -1,60 +1,37 @@
-import { DataCollectionBase, DataSourceBase } from "../data-collection.js";
-import { compareVersions } from "../../../../src.common/text/pckg.js";
+import { DataCollectionBase } from "../data-collection.js";
+import { DataSourceBase } from "../data-source.js";
 import { UpdateEngineBase } from "./engine.js";
-import {
-  DataCollectionUpdateBase,
-  DataSourceUpdateOptions,
-  TypedDataCollectionUpdateBase,
-  DataSourceCollectionsUpdateBase,
-} from "./index.js";
+import { DataSourceUpdateOptions } from "./index.js";
 
-import {
-  DataSourceMetadata,
-  DataSourceUpdateResult,
-  DataSourceUpdateErrorType,
-  BLANK_VERSION_VALUE,
-  MetadataCollectionBase,
-  IsUpToDate,
-} from "../data-collection.js";
+import { DataSourceMetadata, BLANK_VERSION_VALUE } from "../data-collection.js";
+import { DataSourceUpdateResult, isUpToDate } from "../data-source.js";
 
 export abstract class DataSourceUpdateBase<
   TMetadataCollection extends DataCollectionBase<
     DataSourceMetadata,
     DataSourceMetadata
-  >
+  >,
+  TDataSource extends DataSourceBase<TMetadataCollection>
 > {
-  dataSource: DataSourceBase;
-  metadataCollection: TMetadataCollection;
+  dataSource: TDataSource;
   metadata: DataSourceMetadata | null;
   currentVersion: string;
   requiredVersion: string;
-  collectionsUpdate: DataSourceCollectionsUpdateBase | null;
 
-  constructor(opts: DataSourceUpdateOptions<TMetadataCollection>) {
+  constructor(opts: DataSourceUpdateOptions<TMetadataCollection, TDataSource>) {
     this.dataSource = opts.dataSource;
-    this.metadataCollection = opts.metadataCollection;
     this.metadata = null;
     this.currentVersion = BLANK_VERSION_VALUE;
     this.requiredVersion = opts.requiredVersion;
-    this.collectionsUpdate = null;
   }
 
-  abstract onBeforeLoadAllData(): Promise<void>;
-  abstract onAfterLoadAllData(): Promise<void>;
+  abstract getAllEngines(): UpdateEngineBase<
+    TMetadataCollection,
+    TDataSource
+  >[];
 
-  abstract onBeforeSaveAllData(): Promise<void>;
-  abstract onAfterSaveAllData(): Promise<void>;
-
-  abstract getCollectionsUpdate(): DataSourceCollectionsUpdateBase;
-
-  abstract getAllEngines<
-    TCollectionsUpdate extends DataSourceCollectionsUpdateBase
-  >(collectionsUpdate: TCollectionsUpdate): UpdateEngineBase[];
-
-  getEngine<TCollectionsUpdate extends DataSourceCollectionsUpdateBase>(
-    collectionsUpdate: TCollectionsUpdate
-  ): UpdateEngineBase {
-    const allEngines = this.getAllEngines(collectionsUpdate);
+  getEngine(): UpdateEngineBase<TMetadataCollection, TDataSource> {
+    const allEngines = this.getAllEngines();
     const filteredEngines = allEngines.filter(
       (eng) =>
         eng.fromVersion === this.currentVersion &&
@@ -68,35 +45,7 @@ export abstract class DataSourceUpdateBase<
     }
 
     const engine = filteredEngines.pop();
-    return <UpdateEngineBase>engine;
-  }
-
-  async loadAllData(): Promise<void> {
-    await this.onBeforeLoadAllData();
-
-    for (
-      let i = 0;
-      i < (this.collectionsUpdate?.collectionsList?.length ?? 0);
-      i++
-    ) {
-      await this.collectionsUpdate?.collectionsList[i].loadData();
-    }
-
-    await this.onAfterLoadAllData();
-  }
-
-  async saveAllData(): Promise<void> {
-    await this.onBeforeSaveAllData();
-
-    for (
-      let i = 0;
-      i < (this.collectionsUpdate?.collectionsList?.length ?? 0);
-      i++
-    ) {
-      await this.collectionsUpdate?.collectionsList[i].saveData();
-    }
-
-    await this.onAfterSaveAllData();
+    return engine as UpdateEngineBase<TMetadataCollection, TDataSource>;
   }
 
   public async Update(reqVersion: string): Promise<DataSourceUpdateResult> {
@@ -104,12 +53,13 @@ export abstract class DataSourceUpdateBase<
 
     if (isUpToDateResult.success) {
       if (isUpToDateResult.isUpToDate !== true) {
-        this.collectionsUpdate = this.getCollectionsUpdate();
-        const engine = this.getEngine(this.collectionsUpdate);
-        await this.loadAllData();
-        await engine.run();
-        await this.saveAllData();
-        isUpToDateResult.isUpToDate = true;
+        const engine = this.getEngine();
+        await this.dataSource.get(true);
+
+        let isUpToDate = await engine.run();
+        isUpToDate = isUpToDate && (await this.dataSource.save(true)).success;
+
+        isUpToDateResult.isUpToDate = isUpToDate;
       }
     }
 
@@ -122,7 +72,10 @@ export abstract class DataSourceUpdateBase<
   }
 
   async IsUpToDateCore(reqVersion: string): Promise<DataSourceUpdateResult> {
-    const result = await IsUpToDate(this.metadataCollection, reqVersion);
+    const result = await isUpToDate(
+      this.dataSource.metadataCollection,
+      reqVersion
+    );
     return result;
   }
 }

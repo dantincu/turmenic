@@ -1,11 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { DeviceAppDrives } from "./deviceAppDriveItems.types";
+import {
+  DeviceAppDrives,
+  AppDrive,
+  DriveNode,
+  DriveItem,
+  DriveFile,
+  AppSession,
+  DriveFolder,
+} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
 
 import { testData } from "./deviceAppDriveItems.test-data";
 import { DriveItemsService } from "./deviceAppDriveItems.service";
 
-import { contains } from "../../js.common/dist/src.common/utils/arrays";
+import {
+  contains,
+  updateMergeArr,
+} from "../../js.common/dist/src.common/utils/arrays";
+import { DeviceRootDirLocation } from "../../js.common/src.node.common/app-data/schema/device-dir-locations.schema";
 
 const initialState: DeviceAppDrives = testData;
 const driveItemsService = new DriveItemsService();
@@ -14,6 +26,16 @@ export const deviceAppDrivesSlice = createSlice({
   name: "deviceAppDrives",
   initialState,
   reducers: {
+    updateAppDrives: (
+      state,
+      action: PayloadAction<{ deviceAppDrives: AppDrive[] }>
+    ) => {
+      updateMergeArr(
+        state.allAppDrives,
+        action.payload.deviceAppDrives,
+        (srcVal: AppDrive, destVal: AppDrive) => srcVal.uuid === destVal.uuid
+      );
+    },
     toggleFolder: (state, action: PayloadAction<{ folderId: number }>) => {
       driveItemsService.toggleFolder(state, action.payload);
     },
@@ -90,7 +112,7 @@ export const deviceAppDrivesSlice = createSlice({
 });
 
 export const selectSessionAppDrives = (state: RootState) => {
-  const value = state.deviceAppDrives.appSessionDrives.appDrives;
+  const value = state.deviceAppDrives.appSession.appDrives;
   return value;
 };
 
@@ -100,7 +122,7 @@ export const selectAllAppDrives = (state: RootState) => {
 };
 
 export const selectFolder = (folderId: number) => (state: RootState) => {
-  const value = state.deviceAppDrives.appSessionDrives.allFolders.find(
+  const value = state.deviceAppDrives.appSession.allFolders.find(
     (fd) => fd.id === folderId
   );
 
@@ -111,15 +133,15 @@ export const selectSubFolders = (parentFolderId?: number | null) => (
   state: RootState
 ) => {
   const subFolderNodes = parentFolderId
-    ? state.deviceAppDrives.appSessionDrives.allFolderNodes.find(
+    ? state.deviceAppDrives.appSession.allFolderNodes.find(
         (node) => node.itemId === parentFolderId
-      )?.subFolderNodes ?? []
+      )?.childNodes ?? []
     : [];
 
   const subFolderIds = subFolderNodes.map((node) => node.itemId);
 
   const subFolders = parentFolderId
-    ? state.deviceAppDrives.appSessionDrives.allFolders.filter((folder) =>
+    ? state.deviceAppDrives.appSession.allFolders.filter((folder) =>
         contains(subFolderIds, folder.id)
       )
     : [];
@@ -130,7 +152,7 @@ export const selectSubFolders = (parentFolderId?: number | null) => (
 export const selectFile = (folderId: number, fileId: number) => (
   state: RootState
 ) => {
-  const value = state.deviceAppDrives.appSessionDrives.allFolders
+  const value = state.deviceAppDrives.appSession.allFolders
     .find((fd) => fd.id === folderId)
     ?.files?.find((fl) => fl.id === fileId);
 

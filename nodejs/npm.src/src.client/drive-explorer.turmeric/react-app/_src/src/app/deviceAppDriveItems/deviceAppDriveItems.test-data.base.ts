@@ -4,15 +4,13 @@ import { intIdGenerator } from "../../js.common/dist/src.common/utils/intIdGener
 import { uStrId } from "../../js.common/dist/src.node.common/data/uStrId";
 import {
   DriveFolder,
-  AppDrive,
-  DriveFolderNode,
   DriveFile,
-  DriveFileNode,
-  DriveItem,
-  DriveNode,
   DeviceAppDrives,
-  AppSessionDrives,
-} from "./deviceAppDriveItems.types";
+  AppSession,
+  DriveNode,
+  AppDrive,
+  DriveItem,
+} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
 
 import { strReplaceAll } from "../../js.common/dist/src.common/text/utils";
 
@@ -25,7 +23,7 @@ export const genRandName = () => {
 
 export const testData: DeviceAppDrives = {
   allAppDrives: [],
-  appSessionDrives: {
+  appSession: {
     appDrives: [],
     allFolders: [],
     allFolderIds: [],
@@ -34,10 +32,9 @@ export const testData: DeviceAppDrives = {
 };
 
 export const createFolder = (
-  appSessionDrives: AppSessionDrives,
-  subFolderNodes: DriveFolderNode[],
-  fileNodes: DriveFileNode[]
-): { node: DriveFolderNode; folder: DriveFolder } => {
+  appSessionDrives: AppSession,
+  subNodes: DriveNode[]
+): { node: DriveNode; folder: DriveFolder } => {
   const folder: DriveFolder = {
     id: genId(),
     name: genRandName(),
@@ -46,11 +43,9 @@ export const createFolder = (
   appSessionDrives.allFolderIds.push(folder.id);
   appSessionDrives.allFolders.push(folder);
 
-  const node: DriveFolderNode = {
+  const node: DriveNode = {
     itemId: folder.id,
-    itemIsFolder: true,
-    subFolderNodes: subFolderNodes,
-    fileNodes: fileNodes,
+    childNodes: subNodes,
   };
 
   appSessionDrives.allFolderNodes.push(node);
@@ -60,8 +55,8 @@ export const createFolder = (
 
 export const createFile = (
   parentFolder: DriveFolder,
-  parentFolderNode: DriveFolderNode
-): { node: DriveFileNode; file: DriveFile } => {
+  parentNode: DriveNode
+): DriveFile => {
   const fileNameWithoutExtension = genRandName();
 
   const file: DriveFile = {
@@ -74,13 +69,5 @@ export const createFile = (
   parentFolder.files = parentFolder.files ?? [];
   parentFolder.files.push(file);
 
-  const node: DriveFileNode = {
-    itemId: file.id,
-    itemIsFolder: false,
-  };
-
-  parentFolderNode.fileNodes = parentFolderNode.fileNodes ?? [];
-  parentFolderNode.fileNodes.push(node);
-
-  return { node, file };
+  return file;
 };

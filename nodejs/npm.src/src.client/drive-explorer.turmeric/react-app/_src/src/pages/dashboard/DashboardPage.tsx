@@ -1,33 +1,50 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Button } from 'reactstrap';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 import AppPage from '../AppPage';
 import { DashboardPageProps } from './DashboardPageProps';
 
 import {
-    selectFolder,
     selectAllAppDrives,
-    selectFile,
   } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
 
-import { driveApi } from '../../api/drives.api';
-import { FileSystemRootFolder } from "../../js.common/src.node.common/app-data/fileSystem.types";
-
 import AddAppDrive from '../../components/addAppDrive/AddAppDrive';
-import { AddAppDriveProps } from '../../components/addAppDrive/AddAppDriveProps';
-import { NewAppDrive } from '../../api/api.types';
+import { DeviceRootDirLocation } from '../../js.common/src.node.common/app-data/schema/device-dir-locations.schema';
+import { ApiResponse } from '../../api/api.types';
+import { driveApi } from '../../api/drives.api';
 
 const DashboardPage = (props: DashboardPageProps) => {
+    const [storeAppDrivesLoaded, setStoreAppDrivesLoaded] = useState(false);
+    const [storeAppDrivesLoading, setStoreAppDrivesLoading] = useState(false);
+
     const [addAppDriveModal, setAddAppDriveModal] = useState(false);
-    const appDrives = useSelector(selectAllAppDrives);
+    const storeAppDrives = useSelector(selectAllAppDrives);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const apiResponse = await driveApi.getDeviceAppDrives();
+            if ((apiResponse.response?.status ?? 400) < 300) {
+                const retAppDrives = apiResponse.result ?? [];
+            }
+            setStoreAppDrivesLoaded(true);
+        }
+
+        if (!storeAppDrivesLoaded) {
+            if (!storeAppDrivesLoading) {
+                fetchData();
+                setStoreAppDrivesLoading(true);
+            }
+        }
+    }, []);
 
     const getAppDrivesComponents = () => {
-        if (appDrives.length > 0) {
+        if (storeAppDrives.length > 0) {
             return (<div>
                 <p>Here is a complete list of all local app drives</p>
                 <ul> {
-                appDrives.map(ad => {
+                storeAppDrives.map(ad => {
                     <li><label title={ad.rootFolder.path}>{ad.label ?? ad.rootFolder.name}</label></li>
                 })
             } </ul>
@@ -38,7 +55,7 @@ const DashboardPage = (props: DashboardPageProps) => {
         }
     }
 
-    const onAddAppDriveSubmitted = (newAppDrive: NewAppDrive) => {
+    const onAddAppDriveSubmitted = async (newAppDrive: DeviceRootDirLocation): Promise<ApiResponse<DeviceRootDirLocation[], any>> => {
 
     }
 

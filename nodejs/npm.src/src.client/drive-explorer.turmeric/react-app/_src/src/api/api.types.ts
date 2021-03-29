@@ -12,8 +12,3 @@ export interface ApiResponse<TData, TError> {
   error?: Error;
   result?: TData;
 }
-
-export interface NewAppDrive {
-  displayName: string;
-  path: string;
-}

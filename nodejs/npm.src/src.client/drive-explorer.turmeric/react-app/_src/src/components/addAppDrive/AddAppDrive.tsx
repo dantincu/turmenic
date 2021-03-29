@@ -1,19 +1,32 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import Loader from "react-loader-spinner";
 
 import { AddAppDriveProps } from './AddAppDriveProps';
-import { NewAppDrive } from '../../api/api.types';
+import { DeviceRootDirLocation } from "../../js.common/src.node.common/app-data/schema/device-dir-locations.schema";
+import { ApiResponse } from '../../api/api.types';
 
 const AddAppDrive = (props: AddAppDriveProps) => {
+    const [formDisabled, setFormDisabled] = useState(false);
+    const [apiWaiter, setApiWaiter] = useState(false);
+
     const [displayName, setDisplayName] = useState("");
+    const [description, setDescription] = useState("");
     const [path, setPath] = useState("");
 
     const [displayNameErrMsg, setDisplayNameErrMsg] = useState<string | null>(null);
     const [pathErrMsg, setPathErrMsg] = useState<string | null>(null);
 
+    const [apiCallErrMsg, setApiCallErrMsg] = useState<string | null>(null);
+
     const getClassName = (errMsg: string | null) => {
         const cssClassName = errMsg === null ? "" : "error";
         return cssClassName;
+    }
+
+    const getErrMsgHtmlElement = (errMsg: string | null) => {
+        const htmlElement = errMsg === null ? null : (<label className="error">{errMsg}</label>)
+        return htmlElement;
     }
 
     const validateForm = (): boolean => {
@@ -29,15 +42,44 @@ const AddAppDrive = (props: AddAppDriveProps) => {
         return formValid;
     }
 
-    const submit = () => {
+    const getApiCallErrMsg = (apiResponse: ApiResponse<any, any>) => {
+        let errMsg = "An error ocurred";
+
+        if (apiResponse.response && (apiResponse.response.status || apiResponse.response.statusText)) {
+            errMsg = `${errMsg}: ${apiResponse.response.status} - ${apiResponse.response.statusText}`;
+        }
+
+        return errMsg;
+    }
+
+    const onApiCall = () => {
+        setFormDisabled(true);
+        setApiWaiter(true);
+    }
+
+    const onApiResponse = () => {
+        setFormDisabled(false);
+        setApiWaiter(false);
+    }
+
+    const submit = async () => {
+        onApiCall();
         if (validateForm() === true) {
-            props.onSubmit({
-                displayName: displayName,
-                path: path
-            });
-            props.toggle();
+            const apiResponse = await props.onSubmit({
+                name: displayName,
+                description: description,
+                absPath: path,
+            } as DeviceRootDirLocation);
+            if ((apiResponse.response?.status ?? 400) < 300) {
+                onApiResponse();
+                props.toggle();
+            } else {
+                const errMsg = getApiCallErrMsg(apiResponse);
+                setApiCallErrMsg(errMsg);
+                onApiResponse();
+            }
         } else {
-            console.log("form invalid")
+            onApiResponse();
         }
     }
 
@@ -70,6 +112,11 @@ const AddAppDrive = (props: AddAppDriveProps) => {
         return fieldValid;
     }
 
+    const descriptionChanged = (e: ChangeEvent) => {
+        const value = getChangeEventValue(e);
+        setDescription(value);
+    }
+
     const pathChanged = (e: ChangeEvent) => {
         const value = getChangeEventValue(e);
         setPath(value);
@@ -91,26 +138,36 @@ const AddAppDrive = (props: AddAppDriveProps) => {
 
         return fieldValid;
     }
+
+    const getWaiter = (apiWaiter: boolean) => {
+        const waiter = apiWaiter ? (<Loader type="Puff"></Loader>) : null;
+    }
   
     return (<Modal className="trmr-app-modal" isOpen={props.isOpen} toggle={props.toggle}>
         <ModalHeader toggle={props.toggle}>Add app drive</ModalHeader>
         <ModalBody>
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={onSubmit} disabled={formDisabled}>
                 <FormGroup>
-                    <Label title="This will be displayed in the app drives explorer page in front of this drive">Display name</Label>
+                    <Label title="Give your app drive a short title">Display name</Label>
                     <Input type="text" value={displayName} onChange={displayNameChanged} className={getClassName(displayNameErrMsg)}></Input>
-                    { (displayNameErrMsg?.length ?? 0) === 0 ? null : <label className="error">{displayNameErrMsg}</label> }
+                    { getErrMsgHtmlElement(displayNameErrMsg) }
+                </FormGroup>
+                <FormGroup>
+                    <Label title="Type something that will help you remember what this app drive contains and/or what you'll be using it for">Description</Label>
+                    <Input type="text" value={displayName} onChange={descriptionChanged} className={getClassName(displayNameErrMsg)}></Input>
                 </FormGroup>
                 <FormGroup>
                     <Label title="Click the browse button bellow or paste the file path this drive will be mapped to">Path</Label>
                     <Input type="text" value={path} onChange={pathChanged} className={getClassName(pathErrMsg)}></Input>
-                    { (pathErrMsg?.length ?? 0) === 0 ? null : <label className="error">{pathErrMsg}</label> }
+                    { getErrMsgHtmlElement(pathErrMsg) }
                 </FormGroup>
+                { getErrMsgHtmlElement(apiCallErrMsg) }
+                { getWaiter(apiWaiter) }
             </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={submit}>Save</Button>{' '}
-          <Button color="secondary" onClick={props.toggle}>Cancel</Button>
+          <Button color="primary" onClick={submit} disabled={formDisabled}>Save</Button>{' '}
+          <Button color="secondary" onClick={props.toggle} disabled={formDisabled}>Cancel</Button>
         </ModalFooter>
       </Modal>);
 }

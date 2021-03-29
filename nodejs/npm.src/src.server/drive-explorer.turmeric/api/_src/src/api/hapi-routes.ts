@@ -1,25 +1,12 @@
 import Hapi from "@hapi/hapi";
-import Cookie from "@hapi/cookie";
 
+import { HapiServerOptions } from "../../src.node.common.server/api/hapi/index.js";
 import {
-  startServer,
-  getServerWithCookieAuth,
   getDefaultAuthRoute,
   getDefaultHomeRoute,
-  getCorsConfig,
 } from "../../src.node.common.server/api/hapi/server.js";
 
-import {
-  DEFAULT_AUTH_COOKIE_TTL_MILLIS,
-  normializeOpts,
-  ServerAuthSession,
-  getServerOptions,
-  HapiServerOptions,
-  HapiServerTlsOptions,
-  HapiCookieAuthOptions,
-} from "../../src.node.common.server/api/hapi/index.js";
-
-import { getDeviceRootFolders } from "./api.js";
+import { addDeviceAppDrivesRoutes } from "./device-app-drives/routes.js";
 
 export const getRoutes = async (
   opts: HapiServerOptions
@@ -28,7 +15,7 @@ export const getRoutes = async (
 
   if (opts.addDefaultHomeRoute === true) {
     routes.push(
-      getDefaultHomeRoute(opts, "Welcome to the Turmenic Drive Explorer Api")
+      getDefaultHomeRoute(opts, "Welcome to the Turmerik Drive Explorer Api")
     );
   }
 
@@ -36,17 +23,7 @@ export const getRoutes = async (
     routes.push(getDefaultAuthRoute(opts));
   }
 
-  routes.push({
-    method: "GET",
-    path: "/device-root-folders",
-    options: {
-      cors: getCorsConfig(opts),
-    },
-    handler: async function (request, h) {
-      const result = await getDeviceRootFolders(request.query.refresh);
-      return result;
-    },
-  });
+  addDeviceAppDrivesRoutes(routes, opts);
 
   return routes;
 };

@@ -4,7 +4,7 @@ import { RootState } from "../../app/store";
 import {
   DriveFile,
   DriveFolder,
-} from "../../app/deviceAppDriveItems/deviceAppDriveItems.types";
+} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
 
 export interface DriveItemIdentity {
   itemId: number;

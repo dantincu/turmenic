@@ -1,3 +1,5 @@
+import path from "path";
+
 import {
   EnvConfig,
   envBaseDir,
@@ -8,16 +10,26 @@ import {
   DataCollectionOptions,
   JsonDataCollection,
   JsonDataContainer,
-  DataSaveResultRaw,
   DataSaveErrorType,
+  DataSourceMetadata,
+  DataSaveResult,
+} from "./data-collection.js";
+
+import {
   DataSourceOptions,
   DataSourceBase,
-  DataSourceMetadata,
-} from "./data-collection.js";
+  DataSourceSaveResult,
+} from "./data-source.js";
 
 import {
   getFileLastModifiedTime,
   createDirIfNotExisting,
+  mkdirAsync,
+  removeDirWithContentAsync,
+  copyAsync,
+  emptyDirAsync,
+  rmAsync,
+  renameAsync,
 } from "../../fileSystem/index.js";
 
 import {
@@ -26,26 +38,47 @@ import {
   loadJsonFromFileOrDefault,
 } from "../../fileSystem/json.js";
 
-export class LocalFileDataSourceOptions extends DataSourceOptions {
+import { DataSourceInfo, VersionedDataSourceInfo } from "./data-source.js";
+
+export const dataSourceDirNames = Object.freeze({
+  current: "current",
+  prev: "prev",
+  next: "next",
+});
+
+export const dataSourceFileNames = Object.freeze({
+  bckp: "bckp",
+});
+
+export class LocalFileDataSourceOptions<
+  TMetadataCollection extends DataCollectionBase<
+    DataSourceMetadata,
+    DataSourceMetadata
+  >
+> extends DataSourceOptions<TMetadataCollection> {
   dataSourceDirRelPath: string;
 
   constructor(
     envConfig: EnvConfig,
     dataSourceName: string,
+    metadataCollection: TMetadataCollection,
     dataSourceDirRelPath: string
   ) {
-    super(envConfig, dataSourceName);
-
+    super(envConfig, dataSourceName, metadataCollection);
     this.dataSourceDirRelPath = dataSourceDirRelPath;
   }
 }
 
-export abstract class LocalFileDataSourceBase extends DataSourceBase {
+export abstract class LocalFileDataSourceBase<
+  TMetadataCollection extends DataCollectionBase<
+    DataSourceMetadata,
+    DataSourceMetadata
+  >
+> extends DataSourceBase<TMetadataCollection> {
   dataSourceDirRelPath: string;
 
-  constructor(opts: LocalFileDataSourceOptions) {
+  constructor(opts: LocalFileDataSourceOptions<TMetadataCollection>) {
     super(opts);
-
     this.dataSourceDirRelPath = opts.dataSourceDirRelPath;
   }
 }
@@ -56,18 +89,19 @@ export abstract class LocalFileCollectionBase<
 > extends DataCollectionBase<TData, TJsonData> {
   readonly dataJsonFilePath: string;
   readonly dataDirRelPath: string;
-  readonly dataDirPath: string;
+  readonly dataDirBasePath: string;
 
   constructor(opts: DataCollectionOptions<TData, TJsonData>) {
     super(opts);
     this.dataDirRelPath = this.getDataDirRelPath();
-    this.dataDirPath = this.getDataDirPath();
+    this.dataDirBasePath = this.getDataDirBasePath();
+
     this.dataJsonFilePath = this.getDataJsonFilePath(opts.collectionName);
   }
 
   abstract getDataDirRelPath(): string;
 
-  public async loadJsonData(): Promise<JsonDataContainer<TJsonData>> {
+  async loadJsonData(): Promise<JsonDataContainer<TJsonData>> {
     const lastModifiedTime = await this.getCurrentLastModifiedTime();
 
     const jsonData: JsonDataContainer<TJsonData> = await loadJsonFromFileOrDefault(
@@ -76,27 +110,30 @@ export abstract class LocalFileCollectionBase<
         collection: <JsonDataCollection<TJsonData>>{
           dataItems: [],
         },
-        lastModifiedTime: lastModifiedTime,
+        lastModifiedTime: new Date(0),
       }
     );
 
+    jsonData.lastModifiedTime = lastModifiedTime;
     return jsonData;
   }
 
-  public async saveJsonData(
-    jsonData: JsonDataContainer<TJsonData>
-  ): Promise<DataSaveResultRaw<TData, TJsonData>> {
+  async saveJsonData(
+    jsonData: JsonDataContainer<TJsonData>,
+    safeMode?: boolean
+  ): Promise<DataSaveResult<TData, TJsonData>> {
     const currentLastModifiedTime = await this.getCurrentLastModifiedTime();
     let newLastModifiedTime = currentLastModifiedTime;
 
     if (currentLastModifiedTime.getTime() === 0) {
-      await saveJsonToFileAsync(jsonData, this.dataJsonFilePath);
+      await this.saveJsonDataToFile(jsonData, safeMode);
+
       newLastModifiedTime = await getFileLastModifiedTime(
         this.dataJsonFilePath
       );
     }
 
-    const dataSaveResultRaw = <DataSaveResultRaw<TData, TJsonData>>{
+    const dataSaveResultRaw = <DataSaveResult<TData, TJsonData>>{
       success: true,
       newLastModifiedTime: newLastModifiedTime,
       jsonDataList: jsonData.collection.dataItems,
@@ -114,23 +151,83 @@ export abstract class LocalFileCollectionBase<
     return dataSaveResultRaw;
   }
 
-  async onDataAccess(): Promise<void> {
-    await createDirIfNotExisting(this.dataDirPath);
+  async saveJsonDataToFile(
+    jsonData: JsonDataContainer<TJsonData>,
+    safeMode?: boolean
+  ) {
+    if (safeMode) {
+      const currentDataDirPath = this.getDataJsonDirPath(
+        dataSourceDirNames.current
+      );
+
+      const prevDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.prev);
+
+      await this.saveJsonToFile(jsonData, dataSourceDirNames.next);
+      await this.copyJsonDataFiles(currentDataDirPath, prevDataDirPath);
+    } else {
+      const fileName = this.getDataJsonFilePath(this.collectionName);
+
+      const backupFileName = this.getDataJsonFilePath(
+        this.collectionName,
+        dataSourceDirNames.current,
+        dataSourceFileNames.bckp
+      );
+
+      await this.saveJsonToFile(jsonData, dataSourceFileNames.bckp);
+
+      await rmAsync(fileName);
+      await renameAsync(backupFileName, fileName);
+    }
   }
 
-  getDataJsonFilePath(collectionName: string): string {
-    const fileName = this.getDataJsonFileName(collectionName);
+  async copyJsonDataFiles(srcDirPath: string, destDirPath: string) {
+    await copyAsync(srcDirPath, destDirPath, {
+      recursive: true,
+      preserveTimestamps: true,
+    });
+  }
 
-    const filePath = this.envConfig.getEnvRelPath(
-      envBaseDir.data,
-      this.dataDirRelPath,
-      fileName
+  async saveJsonToFile(
+    jsonData: JsonDataContainer<TJsonData>,
+    dataDirName?: string | null,
+    fileNameSuffix?: string | null
+  ): Promise<void> {
+    dataDirName = dataDirName ?? dataSourceDirNames.current;
+
+    const dataJsonFilePath = this.getDataJsonFilePath(
+      this.collectionName,
+      dataDirName,
+      fileNameSuffix
     );
+    saveJsonToFileAsync(jsonData, dataJsonFilePath);
+  }
 
+  async onBeginDataAccess(): Promise<void> {
+    await createDirIfNotExisting(this.dataDirBasePath);
+    const dirPath = this.getDataJsonDirPath();
+    await createDirIfNotExisting(dirPath);
+  }
+
+  getDataJsonFilePath(
+    collectionName: string,
+    dataDirName?: string | null,
+    fileNameSuffix?: string | null
+  ): string {
+    dataDirName = dataDirName ?? dataSourceDirNames.current;
+
+    const dirPath = this.getDataJsonDirPath(dataDirName);
+    const fileName = this.getDataJsonFileName(collectionName, fileNameSuffix);
+
+    const filePath = path.join(dirPath, fileName);
     return filePath;
   }
 
-  getDataDirPath() {
+  getDataJsonDirPath(dataDirName = dataSourceDirNames.current) {
+    const dirPath = path.join(this.dataDirBasePath, dataDirName);
+    return dirPath;
+  }
+
+  getDataDirBasePath() {
     const dirPath = this.envConfig.getEnvRelPath(
       envBaseDir.data,
       this.dataDirRelPath
@@ -139,8 +236,19 @@ export abstract class LocalFileCollectionBase<
     return dirPath;
   }
 
-  getDataJsonFileName(collectionName: string): string {
-    const dataFileName = `${collectionName}.json`;
+  getDataJsonFileName(
+    dataCollectionName: string,
+    fileNameSuffix?: string | null
+  ): string {
+    const dataFileNameParts = [dataCollectionName];
+
+    if (fileNameSuffix) {
+      dataFileNameParts.push(fileNameSuffix);
+    }
+
+    dataFileNameParts.push("json");
+    const dataFileName = dataFileNameParts.join(".");
+
     return dataFileName;
   }
 
@@ -158,4 +266,52 @@ export abstract class LocalFileCollectionBase<
 export abstract class MetadataLocalFileCollectionBase extends LocalFileCollectionBase<
   DataSourceMetadata,
   DataSourceMetadata
-> {}
+> {
+  constructor(
+    opts: DataCollectionOptions<DataSourceMetadata, DataSourceMetadata>
+  ) {
+    super(opts);
+    this.dataSaveOptions = {};
+  }
+
+  static readonly COLLECTION_NAME = "metadata";
+
+  public async beforeSavePrep(safeMode?: boolean): Promise<boolean> {
+    if (safeMode) {
+      const prevDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.prev);
+      const nextDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.next);
+
+      await mkdirAsync(nextDataDirPath);
+      await mkdirAsync(prevDataDirPath);
+    }
+
+    return true;
+  }
+
+  public async afterSaveCleanup(safeMode?: boolean): Promise<boolean> {
+    if (safeMode) {
+      const currentDataDirPath = this.getDataJsonDirPath(
+        dataSourceDirNames.current
+      );
+
+      const prevDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.prev);
+      const nextDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.next);
+
+      await emptyDirAsync(currentDataDirPath);
+      await this.copyJsonDataFiles(nextDataDirPath, currentDataDirPath);
+
+      await removeDirWithContentAsync(nextDataDirPath);
+      await removeDirWithContentAsync(prevDataDirPath);
+    }
+
+    return true;
+  }
+}
+
+export interface LocalFileDataSourceInfo extends DataSourceInfo {
+  dataSourceDirRelPath: string;
+}
+
+export interface VersionedLocalFileDataSourceInfo
+  extends LocalFileDataSourceInfo,
+    VersionedDataSourceInfo {}

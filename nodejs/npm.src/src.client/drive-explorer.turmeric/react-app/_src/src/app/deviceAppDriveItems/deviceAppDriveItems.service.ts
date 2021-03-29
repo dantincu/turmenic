@@ -1,20 +1,16 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { testData } from "./deviceAppDriveItems.test-data.base";
-
 import {
   DriveFolder,
-  DriveItem,
   DriveFile,
   DeviceAppDrives,
-  AppSessionDrives,
+  AppSession,
   AppDrive,
-} from "./deviceAppDriveItems.types";
+} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
 
 import { findIndex } from "../../js.common/dist/src.common/utils/arrays";
 
 export class DriveItemsService {
   public toggleFolder(state: DeviceAppDrives, payload: { folderId: number }) {
-    const asd = state.appSessionDrives;
+    const asd = state.appSession;
     const folder = this.getFolder(asd.allFolders, payload.folderId);
 
     folder.expanded = folder.expanded ?? false;
@@ -35,7 +31,7 @@ export class DriveItemsService {
     state: DeviceAppDrives,
     payload: { folderId: number }
   ) {
-    const asd = state.appSessionDrives;
+    const asd = state.appSession;
     const folder = this.getFolder(asd.allFolders, payload.folderId);
 
     this.clearPreviousSelectedFile(asd);
@@ -51,7 +47,7 @@ export class DriveItemsService {
     state: DeviceAppDrives,
     payload: { folderId: number }
   ) {
-    const asd = state.appSessionDrives;
+    const asd = state.appSession;
     const folder = this.getFolder(asd.allFolders, payload.folderId);
 
     this.clearPreviousCurrentFile(asd);
@@ -62,8 +58,8 @@ export class DriveItemsService {
     folder.expanded = true;
     folder.isCurrent = true;
     folder.isSelected = true;
-    state.appSessionDrives.currentFolder = folder;
-    state.appSessionDrives.selectedFolder = folder;
+    state.appSession.currentFolder = folder;
+    state.appSession.selectedFolder = folder;
   }
 
   public renameFile(
@@ -87,7 +83,7 @@ export class DriveItemsService {
       fileId: number;
     }
   ) {
-    const asd = state.appSessionDrives;
+    const asd = state.appSession;
     const file = this.getFile(asd.allFolders, payload.folderId, payload.fileId);
     const folder = this.getFolder(asd.allFolders, payload.folderId);
 
@@ -95,7 +91,7 @@ export class DriveItemsService {
     this.clearPreviousSelectedFile(asd, file);
 
     file.isSelected = true;
-    state.appSessionDrives.selectedFile = file;
+    state.appSession.selectedFile = file;
   }
 
   public setCurrentFile(
@@ -105,7 +101,7 @@ export class DriveItemsService {
       fileId: number;
     }
   ) {
-    const asd = state.appSessionDrives;
+    const asd = state.appSession;
     const file = this.getFile(asd.allFolders, payload.folderId, payload.fileId);
     const folder = this.getFolder(asd.allFolders, payload.folderId);
 
@@ -120,7 +116,7 @@ export class DriveItemsService {
     asd.currentFile = file;
   }
 
-  clearPreviousSelectedFolder(asd: AppSessionDrives, folder: DriveFolder) {
+  clearPreviousSelectedFolder(asd: AppSession, folder: DriveFolder) {
     if (asd.selectedFolder && asd.selectedFolder.id !== folder.id) {
       asd.selectedFolder.isSelected = false;
 
@@ -129,7 +125,7 @@ export class DriveItemsService {
     }
   }
 
-  clearPreviousCurrentFolder(asd: AppSessionDrives, folder: DriveFolder) {
+  clearPreviousCurrentFolder(asd: AppSession, folder: DriveFolder) {
     if (asd.currentFolder && asd.currentFolder.id !== folder.id) {
       asd.currentFolder.isCurrent = false;
       asd.currentFolder.isSelected = false;
@@ -139,7 +135,7 @@ export class DriveItemsService {
     }
   }
 
-  clearPreviousSelectedFile(asd: AppSessionDrives, file?: DriveFile) {
+  clearPreviousSelectedFile(asd: AppSession, file?: DriveFile) {
     if (asd.selectedFile && (!file || file.id !== asd.selectedFile.id)) {
       asd.selectedFile.isSelected = false;
 
@@ -153,7 +149,7 @@ export class DriveItemsService {
     }
   }
 
-  clearPreviousCurrentFile(asd: AppSessionDrives, file?: DriveFile) {
+  clearPreviousCurrentFile(asd: AppSession, file?: DriveFile) {
     if (asd.currentFile && (!file || file.id !== asd.currentFile.id)) {
       asd.currentFile.isCurrent = false;
       asd.currentFile.isSelected = false;
@@ -188,7 +184,7 @@ export class DriveItemsService {
     errMsg = `Folder with id ${folder.id} not found`
   ) {
     let idx = findIndex(allFolders, (fd: DriveFolder) => fd.id === folder.id)
-      .index;
+      .idx;
 
     if (idx < 0) {
       throw new Error(errMsg);
@@ -219,7 +215,7 @@ export class DriveItemsService {
     errMsg = `File with id ${file.id} not found`
   ) {
     const idx = findIndex(folder.files, (fl: DriveFile) => fl.id === file.id)
-      .index;
+      .idx;
 
     if (idx < 0) {
       throw new Error(errMsg);
@@ -229,7 +225,7 @@ export class DriveItemsService {
   }
 
   getAppDrive(
-    appSessionDrives: AppSessionDrives,
+    appSessionDrives: AppSession,
     rootFolderId: number,
     errMsg = `App drive with root folder id ${rootFolderId} not found`
   ) {

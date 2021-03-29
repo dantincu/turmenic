@@ -12,10 +12,12 @@ export const getEntryStatsAsync = util.promisify(fs.stat);
 export const mkdirAsync = util.promisify(fs.mkdir);
 export const rmdirAsync = util.promisify(fs.rmdir);
 export const readdirAsync = util.promisify(fs.readdir);
-export const copyAsync = util.promisify(fsExtra.copy);
+export const copyAsync = fsExtra.copy;
 export const removeDirAsync = util.promisify(fsExtra.remove);
 export const emptyDirAsync = util.promisify(fsExtra.emptyDir);
 export const removeFileAsync = util.promisify(fs.unlink);
+export const rmAsync = util.promisify(fs.rm);
+export const renameAsync = util.promisify(fs.rename);
 
 export const winattrGetAsync = util.promisify(winattr.get);
 
@@ -138,6 +140,7 @@ export const getFileLastModifiedTime = async (filePath: string) => {
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err;
+    } else {
     }
   }
 

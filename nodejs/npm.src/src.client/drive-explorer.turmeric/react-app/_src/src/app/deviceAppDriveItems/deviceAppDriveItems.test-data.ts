@@ -1,14 +1,12 @@
 import {
   DriveFolder,
+  DeviceAppDrives,
+  AppSession,
   AppDrive,
-  DriveFolderNode,
   DriveFile,
-  DriveFileNode,
   DriveItem,
   DriveNode,
-  DeviceAppDrives,
-  AppSessionDrives,
-} from "./deviceAppDriveItems.types";
+} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
 
 import {
   testData as baseTestData,
@@ -19,24 +17,18 @@ import {
 } from "./deviceAppDriveItems.test-data.base";
 
 const createSubFoldersArr = (
-  appSessionDrives: AppSessionDrives,
+  appSessionDrives: AppSession,
   depth: number,
   breadth: number
 ) => {
-  const arr: DriveFolderNode[] = [];
+  const arr: DriveNode[] = [];
 
   if (depth > 0) {
     for (let i = 0; i < breadth; i++) {
       const { node, folder } = createFolder(appSessionDrives, [], []);
       arr.push(node);
 
-      node.subFolderNodes = createSubFoldersArr(
-        appSessionDrives,
-        depth - 1,
-        breadth
-      );
-
-      node.fileNodes = createFilesArr(folder, node);
+      node.childNodes = createSubFoldersArr(appSessionDrives, depth - 1, breadth);
     }
   }
 
@@ -45,37 +37,29 @@ const createSubFoldersArr = (
 
 const createFilesArr = (
   parentFolder: DriveFolder,
-  parentFolderNode: DriveFolderNode
+  parentNode: DriveNode,
+  breadth: number
 ) => {
-  const arr: DriveFileNode[] = [];
-
-  for (let i = 0; i < 4; i++) {
-    arr.push(createFile(parentFolder, parentFolderNode).node);
+  for (let i = 0; i < breadth; i++) {
+    createFile(parentFolder, parentNode);
   }
-
-  return arr;
 };
 
 const createRootFolder = (
-  appSessionDrives: AppSessionDrives,
+  appSessionDrives: AppSession,
   depth: number,
   breadth: number
-): { folder: DriveFolder; node: DriveFolderNode } => {
-  const { folder, node } = createFolder(appSessionDrives, [], []);
+): { folder: DriveFolder; node: DriveNode } => {
+  const { folder, node } = createFolder(appSessionDrives, []);
 
-  node.subFolderNodes = createSubFoldersArr(
-    appSessionDrives,
-    depth - 1,
-    breadth
-  );
-
-  node.fileNodes = createFilesArr(folder, node);
+  node.childNodes = createSubFoldersArr(appSessionDrives, depth - 1, breadth);
+  createFilesArr(folder, node, breadth);
 
   return { folder, node };
 };
 
 const createAppDrive = (
-  appSessionDrives: AppSessionDrives,
+  appSessionDrives: AppSession,
   depth: number,
   breadth: number
 ) => {
@@ -84,7 +68,7 @@ const createAppDrive = (
   const uuidB64 = genUuid();
 
   appSessionDrives.appDrives.push({
-    uuidB64: uuidB64,
+    uuid: uuidB64,
     label: uuidB64,
     rootFolder: folder,
     rootFolderNode: node,
@@ -98,7 +82,7 @@ const generateData = (
   breadth: number
 ) => {
   for (let i = 0; i < drivesCount; i++) {
-    createAppDrive(testData.appSessionDrives, depth, breadth);
+    createAppDrive(testData.appSession, depth, breadth);
   }
 };
 

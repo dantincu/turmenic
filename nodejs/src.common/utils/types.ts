@@ -1,22 +1,56 @@
-export const clone = <TObj extends {}>(obj: TObj) => {
-  const clone = <TObj>{};
-
-  for (const [key, value] of Object.entries(obj)) {
-    clone[<keyof TObj>key] = <TObj[keyof TObj]>value;
-  }
-
-  return clone;
+export type Hash = {
+  [key: string]: any;
 };
 
-export const copyShallow = <TDest extends {}, TSrc extends {}>(
-  dest: TDest,
-  src: TSrc
-) => {
-  dest = dest ?? {};
+export type GenericHash<T> = {
+  [key: string]: T;
+};
 
-  for (const [key, value] of Object.entries(src)) {
-    dest[<keyof TDest>key] = <TDest[keyof TDest]>value;
+export const cloneHashDeep = (hash: Hash) => {
+  const cloneHash = { ...hash };
+
+  for (const [key, value] of Object.entries(hash)) {
+    if (typeof value === "object" && value !== null) {
+      cloneHash[key] = cloneDeep(value);
+    }
   }
 
-  return dest;
+  return cloneHash;
+};
+
+export const cloneDeep = <TObj extends Hash>(obj: TObj): TObj => {
+  const clone = cloneHashDeep(obj);
+  const retObj = clone as TObj;
+
+  return retObj;
+};
+
+export const cloneArrDeep = <TObj extends Hash>(arr: TObj[]): TObj[] => {
+  const cloneArr = arr.map((obj) => cloneDeep(obj));
+  return cloneArr;
+};
+
+export const getPropVal = <TObj, TVal>(
+  obj: TObj | null,
+  propName?: string | null
+) => {
+  let retVal: TVal | null = null;
+
+  if (obj && propName) {
+    retVal = (obj[propName as keyof TObj] as unknown) as TVal;
+  }
+
+  return retVal;
+};
+
+export const setPropVal = <TObj, TVal>(
+  obj: TObj,
+  propName: string,
+  propVal?: TVal | null | undefined
+) => {
+  const objAsAny = obj as any;
+  const prevVal = (objAsAny[propName] as unknown) as TVal;
+
+  objAsAny[propName] = propVal;
+  return prevVal;
 };

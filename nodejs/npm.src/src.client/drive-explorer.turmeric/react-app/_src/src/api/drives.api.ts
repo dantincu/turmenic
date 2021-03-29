@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 
 import { ApiResponse } from "./api.types";
 import { FileSystemRootFolder } from "../js.common/src.node.common/app-data/fileSystem.types";
+import { DeviceRootDirLocation } from "../js.common/src.node.common/app-data/schema/device-dir-locations.schema";
 
 export class DriveApi {
   baseUrl: string;
@@ -67,9 +68,12 @@ export class DriveApi {
     return response;
   }
 
-  public async getAllAppDrives() {
-    const response = await this.executeRequestAsync(async () => {
-      const url = this.getUrl("all-app-drives");
+  public async getDeviceAppDrives() {
+    const response = await this.executeRequestAsync<
+      DeviceRootDirLocation[],
+      any
+    >(async () => {
+      const url = this.getUrl("device-app-drives");
       const result = await axios(url);
 
       return result;

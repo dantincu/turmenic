@@ -20,7 +20,7 @@ import {
 import { getHapiServerOptions } from "./hapi-options.js";
 import { getRoutes } from "./hapi-routes.js";
 
-import { assureUpToDate } from "./app-data.js";
+import { assureUpToDate } from "./app-data.update.js";
 
 export const start = async () => {
   await assureUpToDate();

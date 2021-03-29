@@ -1,21 +1,15 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import AppPage from '../AppPage';
 import DriveRootFolder from '../../components/driveRootFolder/DriveRootFolder';
-import { DriveRootFolderProps } from '../../components/driveRootFolder/DriveRootFolderProps';
 import DeviceAppDriveFolder from '../../components/deviceAppDriveItem/DeviceAppDriveFolder';
 
-import {
-    selectFolder,
-    selectSessionAppDrives,
-    selectFile,
-    toggleFolder
-  } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
+import { selectSessionAppDrives } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
 
-import { DriveFolder, AppDrive } from '../../app/deviceAppDriveItems/deviceAppDriveItems.types';
+import { AppDrive } from '../../js.common/src.node.common/app-data/deviceAppDriveItems/types';
 import { AppDrivesExplorerPageProps } from './AppDrivesExplorerPageProps';
-import { DriveItemProps, DriveFolderProps } from '../../components/driveItem/DriveItemProps';
+import { DriveFolderProps } from '../../components/driveItem/DriveItemProps';
 
 const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
     const appDrives = useSelector(selectSessionAppDrives);
@@ -37,7 +31,7 @@ const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
         } as DriveFolderProps;
 
         const retComp = (<DriveRootFolder
-            uuidB64={appDrive.uuidB64}
+            uuidB64={appDrive.uuid}
             key={rootFolderProps.idntty.itemId}
             label={appDrive.label}
             rootFolder={rootFolderProps}
