@@ -14,7 +14,7 @@ export const findIndex = <T>(
 
   val =
     arr.find((val, index, arr) => {
-      const match = index > startIndex && selector(val, index, arr);
+      const match = index > (startIndex as number) && selector(val, index, arr);
       if (match) {
         idx = index;
       }
