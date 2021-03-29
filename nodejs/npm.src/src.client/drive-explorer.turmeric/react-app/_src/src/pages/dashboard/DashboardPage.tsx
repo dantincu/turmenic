@@ -45,7 +45,7 @@ const DashboardPage = (props: DashboardPageProps) => {
                 <p>Here is a complete list of all local app drives</p>
                 <ul> {
                 storeAppDrives.map(ad => {
-                    <li><label title={ad.rootFolder.path}>{ad.label ?? ad.rootFolder.name}</label></li>
+                    <li><label title={ad.rootFolder.path ?? ""}>{ad.label ?? ad.rootFolder.name}</label></li>
                 })
             } </ul>
             <p>Click the button bellow to add more drives to the app</p>
@@ -56,7 +56,9 @@ const DashboardPage = (props: DashboardPageProps) => {
     }
 
     const onAddAppDriveSubmitted = async (newAppDrive: DeviceRootDirLocation): Promise<ApiResponse<DeviceRootDirLocation[], any>> => {
+        return {
 
+        } as ApiResponse<DeviceRootDirLocation[], any>;
     }
 
     const addAppDriveModalToggle = () => {

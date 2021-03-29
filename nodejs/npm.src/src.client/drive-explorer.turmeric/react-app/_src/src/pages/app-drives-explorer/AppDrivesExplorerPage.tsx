@@ -7,7 +7,7 @@ import DeviceAppDriveFolder from '../../components/deviceAppDriveItem/DeviceAppD
 
 import { selectSessionAppDrives } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
 
-import { AppDrive } from '../../js.common/src.node.common/app-data/deviceAppDriveItems/types';
+import { AppDrive } from '../../js.common/src.node.common/app-data/device-app-drives/types';
 import { AppDrivesExplorerPageProps } from './AppDrivesExplorerPageProps';
 import { DriveFolderProps } from '../../components/driveItem/DriveItemProps';
 
@@ -21,9 +21,9 @@ const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
     const getRootFolderComponent = (appDrive: AppDrive) => {
         const rootFolderProps = {
             idntty: {
-                itemId: appDrive.rootFolder.id,
+                itemUuid: appDrive.rootFolder.uuid,
                 itemIsFile: false,
-                rootFolderId: appDrive.rootFolder.id,
+                rootFolderUuid: appDrive.rootFolder.uuid,
             },
             events: {
             },
@@ -31,8 +31,8 @@ const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
         } as DriveFolderProps;
 
         const retComp = (<DriveRootFolder
-            uuidB64={appDrive.uuid}
-            key={rootFolderProps.idntty.itemId}
+            uuid={appDrive.uuid}
+            key={rootFolderProps.idntty.itemUuid}
             label={appDrive.label}
             rootFolder={rootFolderProps}
             rootFolderCompCreator={rootFolderComponentCreator} />);

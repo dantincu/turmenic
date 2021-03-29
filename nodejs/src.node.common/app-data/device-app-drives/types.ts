@@ -5,7 +5,7 @@ export interface DriveNode {
   // idty: Idty;
   uuid: string;
   // parentFolderIdty?: Idty;
-  parentFolderUuid?: string;
+  parentFolderUuid?: string | null;
   name: string;
 }
 
@@ -16,24 +16,24 @@ export interface FolderNode extends DriveNode {
 export interface FileNode extends DriveNode {}
 
 export interface DriveItem extends DriveNode {
-  label?: string;
-  path?: string;
-  orderIdx?: number;
-  isSelected?: boolean;
-  isCurrent?: boolean;
-  itemIsFolder?: boolean;
+  label?: string | null;
+  path?: string | null;
+  orderIdx?: number | null;
+  isSelected?: boolean | null;
+  isCurrent?: boolean | null;
+  itemIsFolder?: boolean | null;
 }
 
 export interface DriveFile extends DriveItem {
   nameWithoutExtension: string;
-  extension?: string;
+  extension?: string | null;
 }
 
 export interface DriveFolder extends DriveItem {
   node: FolderNode;
-  files?: DriveFile[];
+  files?: DriveFile[] | null;
   expanded?: boolean;
-  isRoot?: boolean;
+  isRoot?: boolean | null;
 }
 
 export interface AppDrive {
@@ -53,15 +53,16 @@ export interface AppSession {
   allFolders: DriveFolder[];
 
   selectedFolderNode?: FolderNode | null;
-  selectedFileNode?: FolderNode | null;
+  selectedFileNode?: FileNode | null;
 
-  currentFolderNode?: FileNode | null;
+  currentFolderNode?: FolderNode | null;
   currentFileNode?: FileNode | null;
 }
 
 export interface DeviceAppDriveSessions {
   allAppDrives: AppDrive[];
   appSessions: AppSession[];
+  defaultAppSession?: AppSession | null;
 }
 
 export const assureDriveItemPath = (

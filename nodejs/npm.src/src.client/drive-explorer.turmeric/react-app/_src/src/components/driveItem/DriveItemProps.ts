@@ -4,13 +4,13 @@ import { RootState } from "../../app/store";
 import {
   DriveFile,
   DriveFolder,
-} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
+} from "../../js.common/src.node.common/app-data/device-app-drives/types";
 
 export interface DriveItemIdentity {
-  itemId: number;
+  itemUuid: string;
   itemIsFile: boolean;
-  parentFolderId?: number;
-  rootFolderId: number;
+  parentFolderUuid?: string;
+  rootFolderUuid: string;
 }
 
 export interface DriveItemEvts {
@@ -28,8 +28,8 @@ export interface DriveItemProps {
   events: DriveItemEvts;
   cssClass?: string;
   storeFileSelector: (
-    folderId: number,
-    fileId: number
+    folderUuid: string,
+    fileUuid: string
   ) => (state: RootState) => DriveFile | undefined;
 }
 
@@ -39,11 +39,11 @@ export interface DriveFolderProps extends DriveItemProps {
   onFolderToggled?: (idntty: DriveItemIdentity) => void;
   onSubFolderToggled?: (idntty: DriveItemIdentity) => void;
   storeFolderSelector: (
-    folderId: number
+    folderUuid: string
   ) => (state: RootState) => DriveFolder | undefined;
   storeSubFoldersSelector: (
-    parentFolderId?: number | null
-  ) => (state: RootState) => DriveFolder[];
+    parentFolderUuid?: string | null
+  ) => (state: RootState) => DriveFolder[] | undefined;
   filesEvents?: DriveItemEvts;
   subFoldersEvents?: DriveItemEvts;
   subFolderCompCreator?: (props: DriveFolderProps) => JSX.Element;

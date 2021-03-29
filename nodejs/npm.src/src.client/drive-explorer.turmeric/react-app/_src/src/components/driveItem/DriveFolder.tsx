@@ -5,7 +5,7 @@ import "./DriveItem.scss";
 import {
   DriveFolder as DriveFolderVm,
   DriveItem as DriveItemVm,
-} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
+} from "../../js.common/src.node.common/app-data/device-app-drives/types";
 import { useSelector } from "react-redux";
 
 import { DriveFolderProps, DriveFileProps, DriveItemIdentity } from "./DriveItemProps";
@@ -16,12 +16,12 @@ const DriveFolder = (props: DriveFolderProps) => {
   const selectFolder = props.storeFolderSelector;
 
   const folder = useSelector(
-    selectFolder(props.idntty.itemId)
+    selectFolder(props.idntty.itemUuid)
   ) as DriveFolderVm;
 
   const subFolders: DriveFolderVm[] = useSelector(
-    props.storeSubFoldersSelector(folder.expanded === true ? props.idntty.itemId : null)
-  );
+    props.storeSubFoldersSelector(folder.expanded === true ? props.idntty.itemUuid : null)
+  ) ?? [];
 
   const onItemSelected = (
     idntty: DriveItemIdentity,
@@ -90,10 +90,10 @@ const DriveFolder = (props: DriveFolderProps) => {
         onItemCtxMenu: props.filesEvents?.onItemCtxMenu
       },
       idntty: {
-        itemId: drItm.id,
+        itemUuid: drItm.uuid,
         itemIsFile: true,
-        parentFolderId: folder.id,
-        rootFolderId: props.idntty.rootFolderId
+        parentFolderUuid: folder.uuid,
+        rootFolderUuid: props.idntty.rootFolderUuid
       },
       storeFileSelector: props.storeFileSelector,
     }
@@ -110,10 +110,10 @@ const DriveFolder = (props: DriveFolderProps) => {
     folderProps.events.onItemSelected = props.subFoldersEvents?.onItemSelected;
 
     folderProps.idntty = {
-      itemId: drItm.id,
+      itemUuid: drItm.uuid,
       itemIsFile: false,
-      parentFolderId: folder.id,
-      rootFolderId: props.idntty.rootFolderId
+      parentFolderUuid: folder.uuid,
+      rootFolderUuid: props.idntty.rootFolderUuid
     }
 
     folderProps.onFolderToggled = props.onSubFolderToggled;
@@ -147,7 +147,7 @@ const DriveFolder = (props: DriveFolderProps) => {
         <Row className={`${cssClss.trmr.bootstrap.row} trmr-main-row`}>
           <DriveItemName
             itemName={props.label ?? folder.name}
-            itemTooltipText={folder.path}
+            itemTooltipText={folder.path ?? ""}
             onClick={onItemNameClick}
             onDoubleClick={onItemNameDblClick}
             onMiddleClick={onItemNameMiddleClick}

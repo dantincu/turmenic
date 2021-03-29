@@ -3,7 +3,7 @@ import { Row, Col } from "reactstrap";
 import "./DriveItem.scss";
 
 import { useSelector, useDispatch } from "react-redux";
-import { DriveFile as DriveFileVm } from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
+import { DriveFile as DriveFileVm } from "../../js.common/src.node.common/app-data/device-app-drives/types";
 import { DriveFileProps, DriveItemIdentity } from "./DriveItemProps";
 import { cssClss } from "../const";
 import DriveItemName from "./DriveItemName";
@@ -12,7 +12,7 @@ const DriveFile = (props: DriveFileProps) => {
   const dispatch = useDispatch();
   const selectFile = props.storeFileSelector;
   const file = useSelector(
-    selectFile(props.idntty.parentFolderId as number, props.idntty.itemId)
+    selectFile(props.idntty.parentFolderUuid as string, props.idntty.itemUuid)
   ) as DriveFileVm;
 
   const onItemSelected = (
@@ -52,7 +52,7 @@ const DriveFile = (props: DriveFileProps) => {
         <Row className={`${cssClss.trmr.bootstrap.row} trmr-main-row`}>
           <DriveItemName
             itemName={props.label ?? file.name}
-            itemTooltipText={file.path}
+            itemTooltipText={file.path ?? ""}
             onClick={onItemNameClick}
             onDoubleClick={onItemNameDblClick}
             onMiddleClick={onItemNameMiddleClick}

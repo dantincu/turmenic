@@ -22,11 +22,11 @@ const DeviceAppDriveFolder = (props: DeviceAppDriveFolderProps) => {
         idntty: DriveItemIdentity,
         previewSelection: boolean
       ) => {
-        if (idntty.itemId === props.idntty.itemId) {
+        if (idntty.itemUuid === props.idntty.itemUuid) {
           if (previewSelection) {
-            dispatch(setSelectedFolder({ folderId: idntty.itemId }));
+            dispatch(setSelectedFolder({ folderUuid: idntty.itemUuid }));
           } else {
-            dispatch(setCurrentFolder({ folderId: idntty.itemId }));
+            dispatch(setCurrentFolder({ folderUuid: idntty.itemUuid }));
           }  
         }
     
@@ -43,7 +43,7 @@ const DeviceAppDriveFolder = (props: DeviceAppDriveFolderProps) => {
       };
 
       const onFolderToggled = (idntty: DriveItemIdentity) => {
-        dispatch(toggleFolder({folderId: idntty.itemId}));
+        dispatch(toggleFolder({folderUuid: idntty.itemUuid}));
 
         if (props.onFolderToggled) {
           props.onFolderToggled(idntty);
@@ -59,11 +59,11 @@ const DeviceAppDriveFolder = (props: DeviceAppDriveFolderProps) => {
       folderProps.storeSubFoldersSelector = selectSubFolders;
 
       folderProps.fileCompCreator = (fileProps: DriveFileProps) => (
-        <DeviceAppDriveFile key={fileProps.idntty.itemId} {...fileProps}></DeviceAppDriveFile>
+        <DeviceAppDriveFile key={fileProps.idntty.itemUuid} {...fileProps}></DeviceAppDriveFile>
       );
 
       folderProps.subFolderCompCreator = (driveProps: DriveFolderProps) => (
-        <DeviceAppDriveFolder key={driveProps.idntty.itemId} {...driveProps}></DeviceAppDriveFolder>
+        <DeviceAppDriveFolder key={driveProps.idntty.itemUuid} {...driveProps}></DeviceAppDriveFolder>
       );
 
     return (<DriveFolder {...folderProps}></DriveFolder>);

@@ -18,19 +18,19 @@ const DeviceAppDriveFile = (props: DeviceAppDriveFileProps) => {
         idntty: DriveItemIdentity,
         previewSelection: boolean
       ) => {
-        if (idntty.itemId === props.idntty.itemId) {
+        if (idntty.itemUuid === props.idntty.itemUuid) {
           if (previewSelection) {
             dispatch(
               setSelectedFile({
-                folderId: idntty.parentFolderId as number,
-                fileId: idntty.itemId,
+                folderUuid: idntty.parentFolderUuid as string,
+                fileUuid: idntty.itemUuid,
               })
             );
           } else {
             dispatch(
               setCurrentFile({
-                folderId: idntty.parentFolderId as number,
-                fileId: idntty.itemId,
+                folderUuid: idntty.parentFolderUuid as string,
+                fileUuid: idntty.itemUuid,
               })
             );
           }

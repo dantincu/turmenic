@@ -1,55 +1,55 @@
 import { v4 as uuid } from "uuid";
 
-import { intIdGenerator } from "../../js.common/dist/src.common/utils/intIdGenerator";
 import { uStrId } from "../../js.common/dist/src.node.common/data/uStrId";
 import {
   DriveFolder,
   DriveFile,
-  DeviceAppDrives,
+  DeviceAppDriveSessions,
   AppSession,
   DriveNode,
   AppDrive,
   DriveItem,
-} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
+  FileNode,
+  FolderNode,
+} from "../../js.common/src.node.common/app-data/device-app-drives/types";
 
 import { strReplaceAll } from "../../js.common/dist/src.common/text/utils";
 
-export const genId = intIdGenerator.getNextId;
-export const genUuid = uStrId;
 export const genRandName = () => {
   const randName = strReplaceAll(uuid(), "-", "");
-  return randName;
+  return randName as string;
 };
 
-export const testData: DeviceAppDrives = {
+export const testData: DeviceAppDriveSessions = {
   allAppDrives: [],
-  appSession: {
+  defaultAppSession: {
+    uuid: uStrId(),
     appDrives: [],
     allFolders: [],
-    allFolderIds: [],
-    allFolderNodes: [],
   },
+  appSessions: [],
 };
 
 export const createFolder = (
-  appSessionDrives: AppSession,
-  subNodes: DriveNode[]
-): { node: DriveNode; folder: DriveFolder } => {
-  const folder: DriveFolder = {
-    id: genId(),
+  appSession: AppSession,
+  subFolderNodes: DriveNode[],
+  parentFolderUuid?: string | null
+): { node: FolderNode; folder: DriveFolder } => {
+  const node: FolderNode = {
+    uuid: uStrId(),
     name: genRandName(),
+    parentFolderUuid: parentFolderUuid,
+    subFolderNodes: subFolderNodes,
   };
 
-  appSessionDrives.allFolderIds.push(folder.id);
-  appSessionDrives.allFolders.push(folder);
-
-  const node: DriveNode = {
-    itemId: folder.id,
-    childNodes: subNodes,
+  const folder: DriveFolder = {
+    uuid: node.uuid,
+    name: node.name,
+    node: node,
+    parentFolderUuid: parentFolderUuid,
   };
 
-  appSessionDrives.allFolderNodes.push(node);
-
+  appSession.allFolders.push(folder);
   return { node, folder };
 };
 
@@ -60,10 +60,10 @@ export const createFile = (
   const fileNameWithoutExtension = genRandName();
 
   const file: DriveFile = {
-    id: genId(),
+    uuid: uStrId(),
     name: `${fileNameWithoutExtension}.txt`,
     nameWithoutExtension: fileNameWithoutExtension,
-    parentFolderId: parentFolder.id,
+    parentFolderUuid: parentNode.uuid,
   };
 
   parentFolder.files = parentFolder.files ?? [];

@@ -1,175 +1,243 @@
 import {
   DriveFolder,
   DriveFile,
-  DeviceAppDrives,
+  DeviceAppDriveSessions,
   AppSession,
   AppDrive,
-} from "../../js.common/src.node.common/app-data/deviceAppDriveItems/types";
+  DriveItem,
+  DriveNode,
+  FileNode,
+  FolderNode,
+} from "../../js.common/src.node.common/app-data/device-app-drives/types";
 
 import { findIndex } from "../../js.common/dist/src.common/utils/arrays";
 
 export class DriveItemsService {
-  public toggleFolder(state: DeviceAppDrives, payload: { folderId: number }) {
-    const asd = state.appSession;
-    const folder = this.getFolder(asd.allFolders, payload.folderId);
+  public toggleFolder(
+    state: DeviceAppDriveSessions,
+    payload: { folderUuid: string }
+  ) {
+    const appSession = state.defaultAppSession as AppSession;
+    const folder = this.getFolder(appSession.allFolders, payload.folderUuid);
+    const appDrive = appSession.appDrives.find(
+      (ad) => ad.rootFolder.uuid === folder.uuid
+    );
 
     folder.expanded = folder.expanded ?? false;
     folder.expanded = !folder.expanded;
   }
 
   public renameFolder(
-    state: DeviceAppDrives,
-    payload: { folderId: number; newName: string }
+    state: DeviceAppDriveSessions,
+    payload: { folderUuid: string; newName: string }
   ) {}
 
   public moveFolder(
-    state: DeviceAppDrives,
-    payload: { folderId: number; destParentfolderId: number }
+    state: DeviceAppDriveSessions,
+    payload: { folderUuid: string; destParentfolderUuid: string }
   ) {}
 
   public setSelectedFolder(
-    state: DeviceAppDrives,
-    payload: { folderId: number }
+    state: DeviceAppDriveSessions,
+    payload: { folderUuid: string }
   ) {
-    const asd = state.appSession;
-    const folder = this.getFolder(asd.allFolders, payload.folderId);
+    const appSession = state.defaultAppSession as AppSession;
+    const folder = this.getFolder(appSession.allFolders, payload.folderUuid);
 
-    this.clearPreviousSelectedFile(asd);
-    this.clearPreviousSelectedFolder(asd, folder);
+    this.clearPreviousSelectedFile(appSession);
+    this.clearPreviousSelectedFolder(appSession, folder);
 
     folder.expanded = folder.expanded ?? false;
     folder.expanded = !folder.expanded;
     folder.isSelected = true;
-    asd.selectedFolder = folder;
+
+    appSession.selectedFolderNode = folder.node;
   }
 
   public setCurrentFolder(
-    state: DeviceAppDrives,
-    payload: { folderId: number }
+    state: DeviceAppDriveSessions,
+    payload: { folderUuid: string }
   ) {
-    const asd = state.appSession;
-    const folder = this.getFolder(asd.allFolders, payload.folderId);
+    const appSession = state.defaultAppSession as AppSession;
+    const folder = this.getFolder(appSession.allFolders, payload.folderUuid);
 
-    this.clearPreviousCurrentFile(asd);
-    this.clearPreviousSelectedFile(asd);
-    this.clearPreviousCurrentFolder(asd, folder);
-    this.clearPreviousSelectedFolder(asd, folder);
+    this.clearPreviousCurrentFile(appSession);
+    this.clearPreviousSelectedFile(appSession);
+    this.clearPreviousCurrentFolder(appSession, folder);
+    this.clearPreviousSelectedFolder(appSession, folder);
 
     folder.expanded = true;
     folder.isCurrent = true;
     folder.isSelected = true;
-    state.appSession.currentFolder = folder;
-    state.appSession.selectedFolder = folder;
+
+    appSession.currentFolderNode = folder.node;
+    appSession.selectedFolderNode = folder.node;
   }
 
   public renameFile(
-    state: DeviceAppDrives,
-    payload: { fileId: number; folderId: number; newName: string }
+    state: DeviceAppDriveSessions,
+    payload: { fileUuid: string; folderUuid: string; newName: string }
   ) {}
 
   public moveFile(
-    state: DeviceAppDrives,
+    state: DeviceAppDriveSessions,
     payload: {
-      fileId: number;
-      folderId: number;
-      destParentfolderId: number;
+      fileUuid: string;
+      folderUuid: string;
+      destParentfolderUuid: string;
     }
   ) {}
 
   public setSelectedFile(
-    state: DeviceAppDrives,
+    state: DeviceAppDriveSessions,
     payload: {
-      folderId: number;
-      fileId: number;
+      folderUuid: string;
+      fileUuid: string;
     }
   ) {
-    const asd = state.appSession;
-    const file = this.getFile(asd.allFolders, payload.folderId, payload.fileId);
-    const folder = this.getFolder(asd.allFolders, payload.folderId);
+    const appSession = state.defaultAppSession as AppSession;
+    const file = this.getFile(
+      appSession.allFolders,
+      payload.folderUuid,
+      payload.fileUuid
+    );
+    const folder = this.getFolder(appSession.allFolders, payload.folderUuid);
 
-    this.clearPreviousSelectedFolder(asd, folder);
-    this.clearPreviousSelectedFile(asd, file);
+    this.clearPreviousSelectedFolder(appSession, folder);
+    this.clearPreviousSelectedFile(appSession, file);
 
     file.isSelected = true;
-    state.appSession.selectedFile = file;
+
+    const fileNode = {
+      uuid: file.uuid,
+      name: file.name,
+      parentFolderUuid: file.parentFolderUuid,
+    } as FileNode;
+
+    appSession.selectedFileNode = fileNode;
   }
 
   public setCurrentFile(
-    state: DeviceAppDrives,
+    state: DeviceAppDriveSessions,
     payload: {
-      folderId: number;
-      fileId: number;
+      folderUuid: string;
+      fileUuid: string;
     }
   ) {
-    const asd = state.appSession;
-    const file = this.getFile(asd.allFolders, payload.folderId, payload.fileId);
-    const folder = this.getFolder(asd.allFolders, payload.folderId);
+    const appSession = state.defaultAppSession as AppSession;
+    const file = this.getFile(
+      appSession.allFolders,
+      payload.folderUuid,
+      payload.fileUuid
+    );
+    const folder = this.getFolder(appSession.allFolders, payload.folderUuid);
 
-    this.clearPreviousCurrentFolder(asd, folder);
-    this.clearPreviousSelectedFolder(asd, folder);
-    this.clearPreviousCurrentFile(asd, file);
-    this.clearPreviousSelectedFile(asd, file);
+    this.clearPreviousCurrentFolder(appSession, folder);
+    this.clearPreviousSelectedFolder(appSession, folder);
+    this.clearPreviousCurrentFile(appSession, file);
+    this.clearPreviousSelectedFile(appSession, file);
 
     file.isSelected = true;
     file.isCurrent = true;
-    asd.selectedFile = file;
-    asd.currentFile = file;
+
+    const fileNode = {
+      uuid: file.uuid,
+      name: file.name,
+      parentFolderUuid: file.parentFolderUuid,
+    } as FileNode;
+
+    appSession.selectedFileNode = fileNode;
+    appSession.currentFileNode = fileNode;
   }
 
-  clearPreviousSelectedFolder(asd: AppSession, folder: DriveFolder) {
-    if (asd.selectedFolder && asd.selectedFolder.id !== folder.id) {
-      asd.selectedFolder.isSelected = false;
+  clearPreviousSelectedFolder(appSession: AppSession, folder: DriveFolder) {
+    if (
+      appSession.selectedFolderNode &&
+      appSession.selectedFolderNode.uuid !== folder.uuid
+    ) {
+      const selectedFolder = this.getFolder(
+        appSession.allFolders,
+        appSession.selectedFolderNode.uuid
+      );
 
-      this.updateFolder(asd.allFolders, asd.selectedFolder);
-      asd.selectedFolder = null;
+      selectedFolder.isSelected = false;
+
+      // this.updateFolder(appSession.allFolders, appSession.selectedFolder);
+      appSession.selectedFolderNode = null;
     }
   }
 
-  clearPreviousCurrentFolder(asd: AppSession, folder: DriveFolder) {
-    if (asd.currentFolder && asd.currentFolder.id !== folder.id) {
-      asd.currentFolder.isCurrent = false;
-      asd.currentFolder.isSelected = false;
+  clearPreviousCurrentFolder(appSession: AppSession, folder: DriveFolder) {
+    if (
+      appSession.currentFolderNode &&
+      appSession.currentFolderNode.uuid !== folder.uuid
+    ) {
+      const selectedFolder = this.getFolder(
+        appSession.allFolders,
+        appSession.currentFolderNode.uuid
+      );
 
-      this.updateFolder(asd.allFolders, asd.currentFolder);
-      asd.currentFolder = null;
+      selectedFolder.isCurrent = false;
+      selectedFolder.isSelected = false;
+
+      // this.updateFolder(appSession.allFolders, appSession.currentFolder);
+      appSession.currentFolderNode = null;
     }
   }
 
-  clearPreviousSelectedFile(asd: AppSession, file?: DriveFile) {
-    if (asd.selectedFile && (!file || file.id !== asd.selectedFile.id)) {
-      asd.selectedFile.isSelected = false;
+  clearPreviousSelectedFile(appSession: AppSession, file?: DriveFile) {
+    if (
+      appSession.selectedFileNode &&
+      (!file || file.uuid !== appSession.selectedFileNode.uuid)
+    ) {
+      const selectedFile = this.getFile(
+        appSession.allFolders,
+        appSession.selectedFileNode.parentFolderUuid as string,
+        appSession.selectedFileNode.uuid
+      );
+
+      selectedFile.isSelected = false;
 
       const folderOfSelectedFile = this.getFolder(
-        asd.allFolders,
-        asd.selectedFile.parentFolderId as number
+        appSession.allFolders,
+        appSession.selectedFileNode.parentFolderUuid as string
       );
 
-      this.updateFile(folderOfSelectedFile, asd.selectedFile);
-      asd.selectedFile = null;
+      // this.updateFile(folderOfSelectedFile, appSession.selectedFile);
+      appSession.selectedFileNode = null;
     }
   }
 
-  clearPreviousCurrentFile(asd: AppSession, file?: DriveFile) {
-    if (asd.currentFile && (!file || file.id !== asd.currentFile.id)) {
-      asd.currentFile.isCurrent = false;
-      asd.currentFile.isSelected = false;
-
-      const folderOfCurrentFile = this.getFolder(
-        asd.allFolders,
-        asd.currentFile.parentFolderId as number
+  clearPreviousCurrentFile(appSession: AppSession, file?: DriveFile) {
+    if (
+      appSession.currentFileNode &&
+      (!file || file.uuid !== appSession.currentFileNode.uuid)
+    ) {
+      const currentFile = this.getFile(
+        appSession.allFolders,
+        appSession.currentFileNode.parentFolderUuid as string,
+        appSession.currentFileNode.uuid
       );
 
-      this.updateFile(folderOfCurrentFile, asd.currentFile);
-      asd.currentFile = null;
+      currentFile.isCurrent = false;
+      currentFile.isSelected = false;
+
+      const folderOfCurrentFile = this.getFolder(
+        appSession.allFolders,
+        appSession.currentFileNode.parentFolderUuid as string
+      );
+
+      // this.updateFile(folderOfCurrentFile, appSession.currentFile);
+      appSession.currentFileNode = null;
     }
   }
 
   getFolder(
     allFolders: DriveFolder[],
-    folderId: number,
-    errMsg = `Folder with id ${folderId} not found`
+    folderUuid: string,
+    errMsg = `Folder with id ${folderUuid} not found`
   ) {
-    const folder = allFolders.find((fd) => fd.id === folderId);
+    const folder = allFolders.find((fd) => fd.uuid === folderUuid);
 
     if (!folder) {
       throw new Error(errMsg);
@@ -181,10 +249,12 @@ export class DriveItemsService {
   updateFolder(
     allFolders: DriveFolder[],
     folder: DriveFolder,
-    errMsg = `Folder with id ${folder.id} not found`
+    errMsg = `Folder with id ${folder.uuid} not found`
   ) {
-    let idx = findIndex(allFolders, (fd: DriveFolder) => fd.id === folder.id)
-      .idx;
+    let idx = findIndex(
+      allFolders,
+      (fd: DriveFolder) => fd.uuid === folder.uuid
+    ).idx;
 
     if (idx < 0) {
       throw new Error(errMsg);
@@ -195,12 +265,12 @@ export class DriveItemsService {
 
   getFile(
     allFolders: DriveFolder[],
-    folderId: number,
-    fileId: number,
-    errMsg = `File with id ${fileId} not found`
+    folderUuid: string,
+    fileUuid: string,
+    errMsg = `File with id ${fileUuid} not found`
   ) {
-    const folder = this.getFolder(allFolders, folderId);
-    const file = folder.files?.find((fl) => fl.id === fileId);
+    const folder = this.getFolder(allFolders, folderUuid);
+    const file = folder.files?.find((fl) => fl.uuid === fileUuid);
 
     if (!file) {
       throw new Error(errMsg);
@@ -212,10 +282,12 @@ export class DriveItemsService {
   updateFile(
     folder: DriveFolder,
     file: DriveFile,
-    errMsg = `File with id ${file.id} not found`
+    errMsg = `File with id ${file.uuid} not found`
   ) {
-    const idx = findIndex(folder.files, (fl: DriveFile) => fl.id === file.id)
-      .idx;
+    const idx = findIndex(
+      folder.files,
+      (fl: DriveFile) => fl.uuid === file.uuid
+    ).idx;
 
     if (idx < 0) {
       throw new Error(errMsg);
@@ -225,13 +297,13 @@ export class DriveItemsService {
   }
 
   getAppDrive(
-    appSessionDrives: AppSession,
-    rootFolderId: number,
-    errMsg = `App drive with root folder id ${rootFolderId} not found`
+    appSession: AppSession,
+    rootFolderUuid: string,
+    errMsg = `App drive with root folder id ${rootFolderUuid} not found`
   ) {
     const appDrive: AppDrive | null =
-      appSessionDrives.appDrives.find(
-        (drive) => drive.rootFolder.id === rootFolderId
+      appSession.appDrives.find(
+        (drive) => drive.rootFolder.uuid === rootFolderUuid
       ) ?? null;
 
     if (!appDrive) {
