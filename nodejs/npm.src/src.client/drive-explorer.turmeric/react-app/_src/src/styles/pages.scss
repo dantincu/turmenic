@@ -1,11 +1,29 @@
 @import "../styles/variables.scss";
 
-.txqk-app-main {
+.trmr-app-main {
   padding-top: 0px;
   margin-top: 0px;
-  
-  .txqk-app-cntr {
+
+  .trmr-app-cntr {
     padding: 10px 10px 1px 10px;
     min-height: 88vh;
+  }
+
+  label.error {
+    color: red;
+  }
+
+  input.error {
+    border-color: red;
+  }
+}
+
+.trmr-app-modal {
+  label.error {
+    color: red;
+  }
+
+  input.error {
+    border-color: red;
   }
 }

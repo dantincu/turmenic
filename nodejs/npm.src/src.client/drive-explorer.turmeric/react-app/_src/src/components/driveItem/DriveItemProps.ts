@@ -1,10 +1,16 @@
 import { MouseEvent } from "react";
 
+import { RootState } from "../../app/store";
+import {
+  DriveFile,
+  DriveFolder,
+} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+
 export interface DriveItemIdentity {
-  itemId: number;
+  itemUuid: string;
   itemIsFile: boolean;
-  parentFolderId?: number;
-  rootFolderId: number;
+  parentFolderUuid?: string;
+  rootFolderUuid: string;
 }
 
 export interface DriveItemEvts {
@@ -17,13 +23,36 @@ export interface DriveItemEvts {
 
 export interface DriveItemProps {
   idntty: DriveItemIdentity;
+  label?: string;
+  tooltipText?: string;
   events: DriveItemEvts;
-  onFolderToggled?: (idntty: DriveItemIdentity) => void;
   cssClass?: string;
+  storeFileSelector: (
+    folderUuid: string,
+    fileUuid: string
+  ) => (state: RootState) => DriveFile | undefined;
+}
+
+export interface DriveFileProps extends DriveItemProps {}
+
+export interface DriveFolderProps extends DriveItemProps {
+  onFolderToggled?: (idntty: DriveItemIdentity) => void;
+  onSubFolderToggled?: (idntty: DriveItemIdentity) => void;
+  storeFolderSelector: (
+    folderUuid: string
+  ) => (state: RootState) => DriveFolder | undefined;
+  storeSubFoldersSelector: (
+    parentFolderUuid?: string | null
+  ) => (state: RootState) => DriveFolder[] | undefined;
+  filesEvents?: DriveItemEvts;
+  subFoldersEvents?: DriveItemEvts;
+  subFolderCompCreator?: (props: DriveFolderProps) => JSX.Element;
+  fileCompCreator?: (props: DriveFileProps) => JSX.Element;
 }
 
 export interface DriveItemNameProps {
   itemName: string;
+  itemTooltipText?: string;
   selected?: boolean;
   current?: boolean;
   onClick?: (e: MouseEvent) => void;

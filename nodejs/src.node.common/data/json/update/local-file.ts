@@ -1,5 +1,5 @@
 import path from "path";
-
+/*
 import {
   EnvConfig,
   envBaseDir,
@@ -12,9 +12,9 @@ import {
   removeEntryAsync,
 } from "../../../../src.node.common/fileSystem/index.js";
 
-import { DataCollectionBase, DataSourceBase } from "../data-collection.js";
+import { DataCollectionBase, AbstractDataSource } from "../data-collection.js";
 import { compareVersions } from "../../../../src.common/text/pckg.js";
-import { UpdateEngineBase } from "./engine.js";
+import { AbstractUpdateEngine } from "./engine.js";
 
 import { DataSourceUpdateOptions } from "./index.js";
 
@@ -123,3 +123,4 @@ export abstract class LocalFileDataSourceUpdateBase<
     return backupDirName;
   }
 }
+*/

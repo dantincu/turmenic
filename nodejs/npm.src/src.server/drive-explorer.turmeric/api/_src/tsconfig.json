@@ -71,7 +71,7 @@
     "src/**/*",
     "index.ts",
     "tests/*",
-    "tests/FileSystem/*",
+    "tests/FileSystem/*", "src.node.common/app-data/schema",
   ],
   "exclude":[
       "node_modules",

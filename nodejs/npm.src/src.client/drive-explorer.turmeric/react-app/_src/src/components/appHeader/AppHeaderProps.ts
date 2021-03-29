@@ -1,1 +1,3 @@
-export interface AppHeaderProps {}
+export interface AppHeaderProps {
+  devMode: boolean;
+}

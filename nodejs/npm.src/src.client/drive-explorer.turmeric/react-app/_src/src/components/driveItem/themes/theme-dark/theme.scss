@@ -1,6 +1,6 @@
-.txqk.txqk-theme-dark {
-  .txqk-drive-item {
-    .txqk-item-name {
+.trmr.trmr-theme-dark {
+  .trmr-drive-item {
+    .trmr-item-name {
       &.mouseBtn0Pressed {
         background-color: black;
       }
@@ -14,22 +14,22 @@
       }
     }
 
-    &.txqk-selected {
+    &.trmr-selected {
       background-color: #111f;
-      > .txqk-btstrp-col {
-        > .txqk-btstrp-row {
-          > .txqk-btstrp-col.txqk-item-name {
+      > .trmr-btstrp-col {
+        > .trmr-btstrp-row {
+          > .trmr-btstrp-col.trmr-item-name {
             font-style: italic;
           }
         }
       }
     }
 
-    &.txqk-current {
+    &.trmr-current {
       background-color: black;
-      > .txqk-btstrp-col {
-        > .txqk-btstrp-row {
-          > .txqk-btstrp-col.txqk-item-name {
+      > .trmr-btstrp-col {
+        > .trmr-btstrp-row {
+          > .trmr-btstrp-col.trmr-item-name {
             text-decoration: underline;
           }
         }
@@ -37,10 +37,10 @@
     }
   }
 
-  .txqk-drive-item:hover {
-    > .txqk-btstrp-col {
-      > .txqk-btstrp-row {
-        > .txqk-btstrp-col.txqk-item-name {
+  .trmr-drive-item:hover {
+    > .trmr-btstrp-col {
+      > .trmr-btstrp-row {
+        > .trmr-btstrp-col.trmr-item-name {
           font-weight: bold;
           color: #b0b080ff;
         }
@@ -48,29 +48,29 @@
     }
   }
 
-  .txqk-drive-item {
-    > .txqk-btstrp-col:hover {
-      > .txqk-btstrp-row.txqk-main-row {
-        > .txqk-btstrp-col.txqk-item-name {
+  .trmr-drive-item {
+    > .trmr-btstrp-col:hover {
+      > .trmr-btstrp-row.trmr-main-row {
+        > .trmr-btstrp-col.trmr-item-name {
           color: #b0b000ff;
         }
       }
     }
   }
 
-  .txqk-drive-item {
+  .trmr-drive-item {
     color: rgb(192, 128, 0);
 
-    > .txqk-btstrp-col {
-      > .txqk-btstrp-row.txqk-main-row {
-        > .txqk-btstrp-col.txqk-item-name:hover {
+    > .trmr-btstrp-col {
+      > .trmr-btstrp-row.trmr-main-row {
+        > .trmr-btstrp-col.trmr-item-name:hover {
           color: #ffff00ff;
         }
       }
     }
   }
 
-  .txqk-toggle {
+  .trmr-toggle {
     color: rgba(0, 128, 0, 255);
 
     > label:hover {

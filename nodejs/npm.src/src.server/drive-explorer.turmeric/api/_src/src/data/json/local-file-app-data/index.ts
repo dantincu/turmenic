@@ -13,23 +13,26 @@ import {
   LocalFileDataSourceBase,
   LocalFileDataSourceOptions,
   MetadataLocalFileCollectionBase,
+  VersionedLocalFileDataSourceInfo,
 } from "../../../../src.node.common/data/json/local-file.js";
 
 import {
   CloudStorageDeviceDirLocation,
   DeviceDirLocationType,
   DeviceRootDirLocation,
-} from "../../schema/device-dir-locations.schema.js";
+} from "../../../../src.node.common/app-data/schema/device-dir-locations.schema.js";
 
 import {
   CloudStoragePlatform,
   ServicePlatform,
   ServicePlatformUserAccount,
-} from "../../schema/service-providers.schema.js";
+} from "../../../../src.node.common/app-data/schema/service-providers.schema.js";
 
-export const DATA_SOURCE_DIR_REL_PATH = "./app-data";
-export const DATA_SOURCE_NAME = "localFileAppData";
-export const REQUIRED_VERSION_VALUE = "0.1.0";
+export const appLocalFileDataSourceInfo = Object.freeze({
+  dataSourceName: "localFileAppData",
+  requiredVersion: "0.1.0",
+  dataSourceDirRelPath: "./app-data",
+} as VersionedLocalFileDataSourceInfo);
 
 export class AppLocalFileCollection<
   TData,
@@ -40,7 +43,7 @@ export class AppLocalFileCollection<
   }
 
   getDataDirRelPath(): string {
-    const dataDirRelPath = DATA_SOURCE_DIR_REL_PATH;
+    const dataDirRelPath = appLocalFileDataSourceInfo.dataSourceDirRelPath;
     return dataDirRelPath;
   }
 }
@@ -54,9 +57,15 @@ export class CloudStorageDeviceDirLocationCollection extends AppLocalFileCollect
       new DataCollectionOptions<
         CloudStorageDeviceDirLocation,
         CloudStorageDeviceDirLocation
-      >(envConfig, DATA_SOURCE_NAME, "cloudStorageDeviceDirLocations")
+      >(
+        envConfig,
+        appLocalFileDataSourceInfo.dataSourceName,
+        CloudStorageDeviceDirLocationCollection.COLLECTION_NAME
+      )
     );
   }
+
+  static readonly COLLECTION_NAME = "cloudStorageDeviceDirLocations";
 }
 
 export class DeviceDirLocationTypeCollection extends AppLocalFileCollection<
@@ -67,11 +76,13 @@ export class DeviceDirLocationTypeCollection extends AppLocalFileCollection<
     super(
       new DataCollectionOptions<DeviceDirLocationType, DeviceDirLocationType>(
         envConfig,
-        DATA_SOURCE_NAME,
-        "deviceDirLocationTypes"
+        appLocalFileDataSourceInfo.dataSourceName,
+        DeviceDirLocationTypeCollection.COLLECTION_NAME
       )
     );
   }
+
+  static readonly COLLECTION_NAME = "deviceDirLocationTypes";
 }
 
 export class DeviceRootDirLocationCollection extends AppLocalFileCollection<
@@ -82,11 +93,13 @@ export class DeviceRootDirLocationCollection extends AppLocalFileCollection<
     super(
       new DataCollectionOptions<DeviceRootDirLocation, DeviceRootDirLocation>(
         envConfig,
-        DATA_SOURCE_NAME,
-        "deviceRootDirLocations"
+        appLocalFileDataSourceInfo.dataSourceName,
+        DeviceRootDirLocationCollection.COLLECTION_NAME
       )
     );
   }
+
+  static readonly COLLECTION_NAME = "deviceRootDirLocations";
 }
 
 export class CloudStoragePlatformCollection extends AppLocalFileCollection<
@@ -97,11 +110,13 @@ export class CloudStoragePlatformCollection extends AppLocalFileCollection<
     super(
       new DataCollectionOptions<CloudStoragePlatform, CloudStoragePlatform>(
         envConfig,
-        DATA_SOURCE_NAME,
-        "cloudStoragePlatforms"
+        appLocalFileDataSourceInfo.dataSourceName,
+        CloudStoragePlatformCollection.COLLECTION_NAME
       )
     );
   }
+
+  static readonly COLLECTION_NAME = "cloudStoragePlatforms";
 }
 
 export class ServicePlatformCollection extends AppLocalFileCollection<
@@ -112,11 +127,13 @@ export class ServicePlatformCollection extends AppLocalFileCollection<
     super(
       new DataCollectionOptions<ServicePlatform, ServicePlatform>(
         envConfig,
-        DATA_SOURCE_NAME,
-        "servicePlatforms"
+        appLocalFileDataSourceInfo.dataSourceName,
+        ServicePlatformCollection.COLLECTION_NAME
       )
     );
   }
+
+  static readonly COLLECTION_NAME = "servicePlatforms";
 }
 
 export class ServicePlatformUserAccountCollection extends AppLocalFileCollection<
@@ -128,9 +145,15 @@ export class ServicePlatformUserAccountCollection extends AppLocalFileCollection
       new DataCollectionOptions<
         ServicePlatformUserAccount,
         ServicePlatformUserAccount
-      >(envConfig, DATA_SOURCE_NAME, "servicePlatformUserAccounts")
+      >(
+        envConfig,
+        appLocalFileDataSourceInfo.dataSourceName,
+        ServicePlatformUserAccountCollection.COLLECTION_NAME
+      )
     );
   }
+
+  static readonly COLLECTION_NAME = "servicePlatformUserAccounts";
 }
 
 export class AppMetadataLocalFileCollection extends MetadataLocalFileCollectionBase {
@@ -138,14 +161,14 @@ export class AppMetadataLocalFileCollection extends MetadataLocalFileCollectionB
     super(
       new DataCollectionOptions<DataSourceMetadata, DataSourceMetadata>(
         envConfig,
-        DATA_SOURCE_NAME,
-        "metadata"
+        appLocalFileDataSourceInfo.dataSourceName,
+        MetadataLocalFileCollectionBase.COLLECTION_NAME
       )
     );
   }
 
   getDataDirRelPath(): string {
-    const dataDirRelPath = DATA_SOURCE_DIR_REL_PATH;
+    const dataDirRelPath = appLocalFileDataSourceInfo.dataSourceDirRelPath;
     return dataDirRelPath;
   }
 }

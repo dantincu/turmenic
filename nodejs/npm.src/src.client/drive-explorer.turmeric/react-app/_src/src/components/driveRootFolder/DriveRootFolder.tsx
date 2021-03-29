@@ -1,15 +1,14 @@
-import React from 'react';
-import './DriveRootFolder.scss';
-import DriveFolder from '../driveItem/DriveFolder';
+import React from "react";
+import "./DriveRootFolder.scss";
 
-import { DriveRootFolderProps } from './DriveRootFolderProps';
+import { DriveRootFolderProps } from "./DriveRootFolderProps";
 
 const DriveRootFolder = (props: DriveRootFolderProps) => {
-    return (
-        <div className="txqk-drive-root-folder">
-            <DriveFolder {...props.rootFolder}></DriveFolder>
-        </div>
-    );
+  return (
+    <div className="trmr-drive-root-folder">
+      {props.rootFolderCompCreator(props.rootFolder)}
+    </div>
+  );
 };
 
 export default DriveRootFolder;

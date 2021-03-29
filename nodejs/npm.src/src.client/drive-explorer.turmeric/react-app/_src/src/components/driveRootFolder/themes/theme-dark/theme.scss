@@ -1,23 +1,25 @@
-.txqk.txqk-theme-dark {
-  .txqk-drive-root-folder {
+.trmr.trmr-theme-dark {
+  .trmr-drive-root-folder {
     border: 2px solid black;
   }
 
-  .txqk-drive-root-folder::-webkit-scrollbar {
+  .trmr-drive-root-folder::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */
   }
 
-  .txqk-drive-root-folder::-webkit-scrollbar-track {
-    background: #161616ff; /* color of the tracking area */
+  .trmr-drive-root-folder::-webkit-scrollbar-track {
+    background: $theme-dark-back-color; /* color of the tracking area */
   }
 
-  .txqk-drive-root-folder::-webkit-scrollbar-thumb {
+  .trmr-drive-root-folder::-webkit-scrollbar-thumb {
     background-color: black; /* color of the scroll thumb */
     border-radius: 20px; /* roundness of the scroll thumb */
-    border: 3px solid #161616ff; /* creates padding around scroll thumb */
+    border: 3px solid $theme-dark-back-color; /* creates padding around scroll thumb */
   }
 
-  .txqk-drive-root-folder::-webkit-scrollbar-corner {
+  .trmr-drive-root-folder::-webkit-scrollbar-corner {
     background-color: black;
+    border: 2px solid $theme-dark-back-color;
+    border-radius: 5px;
   }
 }

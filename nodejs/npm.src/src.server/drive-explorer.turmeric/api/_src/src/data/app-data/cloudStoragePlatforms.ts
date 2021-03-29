@@ -1,4 +1,12 @@
-import { CloudStoragePlatform } from "../schema/service-providers.schema.js";
+import { CloudStoragePlatform } from "../../../src.node.common/app-data/schema/service-providers.schema.js";
+import { servicePlatformKeys } from "./servicePlatforms.js";
+
+export const cloudStoragePlatformKeys = {
+  googleDrive: "google-drive",
+  oneDrive: "one-drive",
+  dropbox: "dropbox",
+  icloud: "icloud",
+};
 
 /*
   uuid: string;
@@ -9,27 +17,27 @@ import { CloudStoragePlatform } from "../schema/service-providers.schema.js";
 */
 export const cloudStoragePlatforms: CloudStoragePlatform[] = [
   {
-    key: "google-drive",
+    key: cloudStoragePlatformKeys.googleDrive,
     name: "Google Drive",
     description: "Google Drive cloud storage",
-    servicePlatformKey: "google",
+    servicePlatformKey: servicePlatformKeys.google,
   },
   {
-    key: "one-drive",
+    key: cloudStoragePlatformKeys.oneDrive,
     name: "One Drive",
     description: "Microsoft's One Drive cloud storage",
-    servicePlatformKey: "microsoft",
+    servicePlatformKey: servicePlatformKeys.microsoft,
   },
   {
-    key: "dropbox",
+    key: cloudStoragePlatformKeys.dropbox,
     name: "Dropbox",
     description: "Dropbox cloud storage",
-    servicePlatformKey: "dropbox",
+    servicePlatformKey: servicePlatformKeys.dropbox,
   },
   {
-    key: "icloud",
+    key: cloudStoragePlatformKeys.icloud,
     name: "iCloud",
     description: "Apple's iCloud storage service",
-    servicePlatformKey: "icloud",
+    servicePlatformKey: servicePlatformKeys.icloud,
   },
 ];

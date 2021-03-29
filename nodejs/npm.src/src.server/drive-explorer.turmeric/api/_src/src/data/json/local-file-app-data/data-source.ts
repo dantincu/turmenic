@@ -1,11 +1,14 @@
+import { GenericHash } from "../../../../src.common/utils/types";
 import { EnvConfig } from "../../../../src.node.common/appSettings/envConfig";
 
 import {
   DataCollectionOptions,
   DataSourceMetadata,
-  assureUpToDate,
-  IsUpToDate,
+  DataCollectionBase,
+  AbstractDataCollection,
 } from "../../../../src.node.common/data/json/data-collection.js";
+
+import { assureUpToDate } from "../../../../src.node.common/data/json/data-source.js";
 
 import {
   LocalFileCollectionBase,
@@ -16,25 +19,42 @@ import {
 import {
   AppLocalFileCollection,
   DeviceDirLocationTypeCollection,
-  DATA_SOURCE_NAME,
-  DATA_SOURCE_DIR_REL_PATH,
-  REQUIRED_VERSION_VALUE,
   CloudStoragePlatformCollection,
   CloudStorageDeviceDirLocationCollection,
   DeviceRootDirLocationCollection,
   ServicePlatformCollection,
   ServicePlatformUserAccountCollection,
   AppMetadataLocalFileCollection,
+  appLocalFileDataSourceInfo,
 } from "./index.js";
 
-export class AppLocalFileDataSourceOptions extends LocalFileDataSourceOptions {
-  constructor(envConfig: EnvConfig) {
-    super(envConfig, DATA_SOURCE_NAME, DATA_SOURCE_DIR_REL_PATH);
+import {
+  CloudStoragePlatform,
+  ServicePlatform,
+  ServicePlatformUserAccount,
+} from "../../../../src.node.common/app-data/schema/service-providers.schema.js";
+
+import {
+  CloudStorageDeviceDirLocation,
+  DeviceDirLocationType,
+  DeviceRootDirLocation,
+} from "../../../../src.node.common/app-data/schema/device-dir-locations.schema";
+
+export class AppLocalFileDataSourceOptions extends LocalFileDataSourceOptions<AppMetadataLocalFileCollection> {
+  constructor(
+    envConfig: EnvConfig,
+    metadataCollection: AppMetadataLocalFileCollection
+  ) {
+    super(
+      envConfig,
+      appLocalFileDataSourceInfo.dataSourceName,
+      metadataCollection,
+      appLocalFileDataSourceInfo.dataSourceDirRelPath
+    );
   }
 }
 
-export class AppLocalFileDataSource extends LocalFileDataSourceBase {
-  public readonly metadataCollection: AppMetadataLocalFileCollection;
+export class AppLocalFileDataSource extends LocalFileDataSourceBase<AppMetadataLocalFileCollection> {
   public readonly deviceDirLocationTypeCollection: DeviceDirLocationTypeCollection;
   public readonly cloudStoragePlatformCollection: CloudStoragePlatformCollection;
   public readonly cloudStorageDeviceDirLocationCollection: CloudStorageDeviceDirLocationCollection;
@@ -43,47 +63,66 @@ export class AppLocalFileDataSource extends LocalFileDataSourceBase {
   public readonly servicePlatformUserAccountCollection: ServicePlatformUserAccountCollection;
 
   constructor(envConfig: EnvConfig) {
-    super(new AppLocalFileDataSourceOptions(envConfig));
-
-    this.metadataCollection = new AppMetadataLocalFileCollection(
-      this.envConfig
+    super(
+      new AppLocalFileDataSourceOptions(
+        envConfig,
+        new AppMetadataLocalFileCollection(envConfig)
+      )
     );
 
     this.deviceDirLocationTypeCollection = new DeviceDirLocationTypeCollection(
-      this.envConfig
+      envConfig
     );
 
     this.cloudStoragePlatformCollection = new CloudStoragePlatformCollection(
-      this.envConfig
+      envConfig
     );
 
     this.cloudStorageDeviceDirLocationCollection = new CloudStorageDeviceDirLocationCollection(
-      this.envConfig
+      envConfig
     );
 
     this.deviceRootDirLocationCollection = new DeviceRootDirLocationCollection(
-      this.envConfig
+      envConfig
     );
 
-    this.servicePlatformCollection = new ServicePlatformCollection(
-      this.envConfig
-    );
+    this.servicePlatformCollection = new ServicePlatformCollection(envConfig);
 
     this.servicePlatformUserAccountCollection = new ServicePlatformUserAccountCollection(
-      this.envConfig
+      envConfig
     );
+
+    this.deviceDirLocationTypeCollection = new DeviceDirLocationTypeCollection(
+      envConfig
+    );
+
+    this.addDataCollections();
   }
 
   public async assureUpToDate(): Promise<void> {
-    await assureUpToDate(this.metadataCollection, REQUIRED_VERSION_VALUE);
+    await assureUpToDate(
+      this.metadataCollection,
+      appLocalFileDataSourceInfo.requiredVersion
+    );
   }
 
-  public async IsUpToDate(): Promise<boolean> {
-    const result = await IsUpToDate(
-      this.metadataCollection,
-      REQUIRED_VERSION_VALUE
-    );
+  addDataCollection<TData, TJsonData>(
+    collection: AppLocalFileCollection<TData, TJsonData>
+  ) {
+    this.addCollection<
+      TData,
+      TJsonData,
+      AppLocalFileCollection<TData, TJsonData>
+    >(collection);
+  }
 
-    return result.isUpToDate;
+  addDataCollections() {
+    this.addDataCollection(this.metadataCollection);
+    this.addDataCollection(this.deviceDirLocationTypeCollection);
+    this.addDataCollection(this.cloudStoragePlatformCollection);
+    this.addDataCollection(this.cloudStorageDeviceDirLocationCollection);
+    this.addDataCollection(this.deviceRootDirLocationCollection);
+    this.addDataCollection(this.servicePlatformCollection);
+    this.addDataCollection(this.servicePlatformUserAccountCollection);
   }
 }

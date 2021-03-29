@@ -1,22 +1,12 @@
 import Hapi from "@hapi/hapi";
-import Cookie from "@hapi/cookie";
 
+import { HapiServerOptions } from "../../src.node.common.server/api/hapi/index.js";
 import {
-  startServer,
-  getServerWithCookieAuth,
   getDefaultAuthRoute,
   getDefaultHomeRoute,
 } from "../../src.node.common.server/api/hapi/server.js";
 
-import {
-  DEFAULT_AUTH_COOKIE_TTL_MILLIS,
-  normializeOpts,
-  ServerAuthSession,
-  getServerOptions,
-  HapiServerOptions,
-  HapiServerTlsOptions,
-  HapiCookieAuthOptions,
-} from "../../src.node.common.server/api/hapi/index.js";
+import { addDeviceAppDrivesRoutes } from "./device-app-drives/routes.js";
 
 export const getRoutes = async (
   opts: HapiServerOptions
@@ -25,13 +15,15 @@ export const getRoutes = async (
 
   if (opts.addDefaultHomeRoute === true) {
     routes.push(
-      getDefaultHomeRoute(opts, "Welcome to the Turmenic Drive Explorer Api")
+      getDefaultHomeRoute(opts, "Welcome to the Turmerik Drive Explorer Api")
     );
   }
 
   if (opts.addDefaultAuthRoute === true) {
     routes.push(getDefaultAuthRoute(opts));
   }
+
+  addDeviceAppDrivesRoutes(routes, opts);
 
   return routes;
 };

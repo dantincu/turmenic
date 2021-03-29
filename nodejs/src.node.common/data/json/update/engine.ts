@@ -1,14 +1,14 @@
-import { DataSourceBase } from "../data-collection.js";
+import { DataCollectionBase, DataSourceMetadata } from "../data-collection.js";
+import { DataSourceBase } from "../data-source.js";
+import { DataSourceUpdateOptions } from "./index.js";
 
-import { DataSourceCollectionsUpdateBase } from "./index.js";
-
-export abstract class UpdateEngineBase {
+export abstract class AbstractUpdateEngine {
   readonly fromVersion: string;
   readonly toVersion: string;
 
   abstract getFromVersion(): string;
   abstract getToVersion(): string;
-  abstract run(): Promise<void>;
+  abstract run(): Promise<boolean>;
 
   constructor() {
     this.fromVersion = this.getFromVersion();
@@ -16,13 +16,18 @@ export abstract class UpdateEngineBase {
   }
 }
 
-export abstract class TypedUpdateEngineBase<
-  TDataSourceCollectionsUpdateBase extends DataSourceCollectionsUpdateBase
-> extends UpdateEngineBase {
-  readonly dataSourceCollectionsUpdate: TDataSourceCollectionsUpdateBase;
+export abstract class UpdateEngineBase<
+  TMetadataCollection extends DataCollectionBase<
+    DataSourceMetadata,
+    DataSourceMetadata
+  >,
+  TDataSource extends DataSourceBase<TMetadataCollection>
+> extends AbstractUpdateEngine {
+  dataSource: TDataSource;
 
-  constructor(dataSourceCollectionsUpdate: TDataSourceCollectionsUpdateBase) {
+  constructor(dataSource: TDataSource) {
     super();
-    this.dataSourceCollectionsUpdate = dataSourceCollectionsUpdate;
+
+    this.dataSource = dataSource;
   }
 }
