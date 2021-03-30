@@ -1,6 +1,6 @@
-.trmr.trmr-theme-dark {
-  .trmr-drive-item {
-    .trmr-item-name {
+.trmrk.trmrk-theme-dark {
+  .trmrk-drive-item {
+    .trmrk-item-name {
       &.mouseBtn0Pressed {
         background-color: black;
       }
@@ -14,22 +14,22 @@
       }
     }
 
-    &.trmr-selected {
+    &.trmrk-selected {
       background-color: #111f;
-      > .trmr-btstrp-col {
-        > .trmr-btstrp-row {
-          > .trmr-btstrp-col.trmr-item-name {
+      > .trmrk-btstrp-col {
+        > .trmrk-btstrp-row {
+          > .trmrk-btstrp-col.trmrk-item-name {
             font-style: italic;
           }
         }
       }
     }
 
-    &.trmr-current {
+    &.trmrk-current {
       background-color: black;
-      > .trmr-btstrp-col {
-        > .trmr-btstrp-row {
-          > .trmr-btstrp-col.trmr-item-name {
+      > .trmrk-btstrp-col {
+        > .trmrk-btstrp-row {
+          > .trmrk-btstrp-col.trmrk-item-name {
             text-decoration: underline;
           }
         }
@@ -37,10 +37,10 @@
     }
   }
 
-  .trmr-drive-item:hover {
-    > .trmr-btstrp-col {
-      > .trmr-btstrp-row {
-        > .trmr-btstrp-col.trmr-item-name {
+  .trmrk-drive-item:hover {
+    > .trmrk-btstrp-col {
+      > .trmrk-btstrp-row {
+        > .trmrk-btstrp-col.trmrk-item-name {
           font-weight: bold;
           color: #b0b080ff;
         }
@@ -48,29 +48,29 @@
     }
   }
 
-  .trmr-drive-item {
-    > .trmr-btstrp-col:hover {
-      > .trmr-btstrp-row.trmr-main-row {
-        > .trmr-btstrp-col.trmr-item-name {
+  .trmrk-drive-item {
+    > .trmrk-btstrp-col:hover {
+      > .trmrk-btstrp-row.trmrk-main-row {
+        > .trmrk-btstrp-col.trmrk-item-name {
           color: #b0b000ff;
         }
       }
     }
   }
 
-  .trmr-drive-item {
+  .trmrk-drive-item {
     color: rgb(192, 128, 0);
 
-    > .trmr-btstrp-col {
-      > .trmr-btstrp-row.trmr-main-row {
-        > .trmr-btstrp-col.trmr-item-name:hover {
+    > .trmrk-btstrp-col {
+      > .trmrk-btstrp-row.trmrk-main-row {
+        > .trmrk-btstrp-col.trmrk-item-name:hover {
           color: #ffff00ff;
         }
       }
     }
   }
 
-  .trmr-toggle {
+  .trmrk-toggle {
     color: rgba(0, 128, 0, 255);
 
     > label:hover {

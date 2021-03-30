@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import DriveFolder from '../driveItem/DriveFolder';
@@ -37,6 +37,10 @@ const DeviceAppDriveFolder = (props: DeviceAppDriveFolderProps) => {
         idntty: DriveItemIdentity,
         previewSelection: boolean
       ) => {
+        if (props.events.onItemSelected) {
+          props.events.onItemSelected(idntty, previewSelection);
+        }
+
         if (props.deviceAppDriveFolderEvents?.onItemSelected) {
           props.deviceAppDriveFolderEvents.onItemSelected(idntty, previewSelection);
         }
@@ -51,8 +55,9 @@ const DeviceAppDriveFolder = (props: DeviceAppDriveFolderProps) => {
       }
 
       const folderProps = {...props} as DriveFolderProps;
-      folderProps.events.onItemSelected = onDeviceAppDriveFolderSelected;
+      folderProps.events = {...folderProps.events};
 
+      folderProps.events.onItemSelected = onDeviceAppDriveFolderSelected;
       folderProps.onFolderToggled = onFolderToggled;
 
       folderProps.storeFolderSelector = selectFolder;

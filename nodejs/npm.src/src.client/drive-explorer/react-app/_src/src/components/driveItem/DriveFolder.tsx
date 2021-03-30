@@ -47,7 +47,7 @@ const DriveFolder = (props: DriveFolderProps) => {
   };
 
   const onItemNameMiddleClick = (e: MouseEvent) => {
-    onItemSelected(props.idntty, true);
+    onItemSelected(props.idntty, !e.ctrlKey);
   };
 
   const onItemNameRightClick = (e: MouseEvent) => {
@@ -66,18 +66,18 @@ const DriveFolder = (props: DriveFolderProps) => {
 
   const getToggleCol = (expanded?: boolean) => {
     const togglCssClassArr = [
-      cssClss.trmr.bootstrap.col,
-      cssClss.trmr.toggle.base,
+      cssClss.trmrk.bootstrap.col,
+      cssClss.trmrk.toggle.base,
       expanded ?? false
-        ? cssClss.trmr.toggle.expanded
-        : cssClss.trmr.toggle.collapsed,
+        ? cssClss.trmrk.toggle.expanded
+        : cssClss.trmrk.toggle.collapsed,
     ];
 
     const togglCssClass = togglCssClassArr.join(" ");
     const toggleChar = expanded ?? false ? "\u2014" : "+";
 
     return (
-      <Col className={togglCssClass}>
+      <Col xs="xs-1" className={togglCssClass}>
         <Label onClick={onToggleClick}>{toggleChar}</Label>
       </Col>
     );
@@ -85,6 +85,7 @@ const DriveFolder = (props: DriveFolderProps) => {
 
   const fileToComp = (drItm: DriveItemVm) => {
     const fileProps: DriveFileProps = {
+      label: drItm.label,
       events: {
         onItemSelected: props.filesEvents?.onItemSelected,
         onItemCtxMenu: props.filesEvents?.onItemCtxMenu
@@ -104,6 +105,7 @@ const DriveFolder = (props: DriveFolderProps) => {
 
   const folderToComp = (drItm: DriveItemVm) => {
     const folderProps = { ...props };
+    folderProps.label = drItm.label;
     
     folderProps.events = props.subFoldersEvents ?? {};
     folderProps.events.onItemCtxMenu = props.subFoldersEvents?.onItemCtxMenu;
@@ -126,7 +128,7 @@ const DriveFolder = (props: DriveFolderProps) => {
     let arr = subFolders.map(folderToComp);
     arr = arr.concat(folder.files?.map(fileToComp) ?? []);
 
-    return <Col className={`${cssClss.trmr.bootstrap.col}`}>{arr}</Col>;
+    return <Col className={`${cssClss.trmrk.bootstrap.col}`}>{arr}</Col>;
   };
 
   const getChildrenRow = () => {
@@ -134,7 +136,7 @@ const DriveFolder = (props: DriveFolderProps) => {
 
     if (folder.expanded === true) {
       childrenRow = (
-        <Row className={cssClss.trmr.bootstrap.row}>{getChildrenCol()}</Row>
+        <Row className={cssClss.trmrk.bootstrap.row}>{getChildrenCol()}</Row>
       );
     }
 
@@ -143,8 +145,8 @@ const DriveFolder = (props: DriveFolderProps) => {
 
   const getMainCol = () => {
     return (
-      <Col className={cssClss.trmr.bootstrap.col}>
-        <Row className={`${cssClss.trmr.bootstrap.row} trmr-main-row`}>
+      <Col xs="xs-1" className={cssClss.trmrk.bootstrap.col}>
+        <Row className={`${cssClss.trmrk.bootstrap.row} trmrk-main-row`}>
           <DriveItemName
             itemName={props.label ?? folder.name}
             itemTooltipText={folder.path ?? ""}
@@ -161,17 +163,18 @@ const DriveFolder = (props: DriveFolderProps) => {
 
   const getCssClassName = () => {
     const cssClassArr = [
-      "trmr-drive-item",
-      cssClss.trmr.bootstrap.row,
-      "trmr-drive-folder",
+      "trmrk-drive-item",
+      cssClss.trmrk.bootstrap.row,
+      "trmrk-drive-folder",
+      "flex-nowrap"
     ];
 
     if (folder.isSelected === true) {
-      cssClassArr.push(cssClss.trmr.item.selected);
+      cssClassArr.push(cssClss.trmrk.item.selected);
     }
 
     if (folder.isCurrent === true) {
-      cssClassArr.push(cssClss.trmr.item.current);
+      cssClassArr.push(cssClss.trmrk.item.current);
     }
 
     if (props.cssClass) {
@@ -183,7 +186,7 @@ const DriveFolder = (props: DriveFolderProps) => {
   };
 
   return (
-    <Row className={getCssClassName()}>
+    <Row trmrk-uuid={folder.uuid} className={getCssClassName()}>
       {[getToggleCol(folder.expanded), getMainCol()]}
     </Row>
   );

@@ -23,7 +23,7 @@ export interface DriveItemEvts {
 
 export interface DriveItemProps {
   idntty: DriveItemIdentity;
-  label?: string;
+  label?: string | null;
   tooltipText?: string;
   events: DriveItemEvts;
   cssClass?: string;

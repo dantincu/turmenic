@@ -143,7 +143,7 @@ const AddAppDrive = (props: AddAppDriveProps) => {
         const waiter = apiWaiter ? (<Loader type="Puff"></Loader>) : null;
     }
   
-    return (<Modal className="trmr-app-modal" isOpen={props.isOpen} toggle={props.toggle}>
+    return (<Modal className="trmrk-app-modal" isOpen={props.isOpen} toggle={props.toggle}>
         <ModalHeader toggle={props.toggle}>Add app drive</ModalHeader>
         <ModalBody>
             <Form onSubmit={onSubmit} disabled={formDisabled}>

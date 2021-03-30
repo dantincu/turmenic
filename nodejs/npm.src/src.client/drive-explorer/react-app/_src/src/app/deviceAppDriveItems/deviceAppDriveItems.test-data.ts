@@ -43,6 +43,8 @@ const createSubFoldersArr = (
         depth - 1,
         breadth
       );
+
+      createFilesArr(folder, node, breadth);
     }
   }
 
@@ -66,6 +68,8 @@ const createRootFolder = (
 ): { folder: DriveFolder; node: DriveNode } => {
   const { folder, node } = createFolder(appSession, []);
   folder.isRoot = true;
+  folder.label = "root folder";
+  folder.path = "/X/";
 
   node.subFolderNodes = createSubFoldersArr(
     appSession,
@@ -88,7 +92,7 @@ const createAppDrive = (
 
   appSession.appDrives.push({
     uuid: uuid,
-    label: uuid,
+    label: "root drive",
     rootFolder: folder,
     rootFolderNode: node,
   });

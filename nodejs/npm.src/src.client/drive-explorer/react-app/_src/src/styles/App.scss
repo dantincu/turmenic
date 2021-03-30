@@ -2,30 +2,30 @@
 @import "./themes/themes.scss";
 @import "./pages.scss";
 
-.trmr-app {
+.trmrk-app {
   text-align: center;
   position: relative;
   min-height: 100vh;
 }
 
-.trmr-app-error {
+.trmrk-app-error {
   padding-top: 100px;
   text-align: center;
   background-color: white;
 
-  .trmr-error-msg {
+  .trmrk-error-msg {
     color: red;
     font-weight: bold;
     font-size: 20px;
   }
 }
 
-.trmr-app-loading {
+.trmrk-app-loading {
   padding-top: 100px;
   text-align: center;
   background-color: white;
 
-  .trmr-info-title {
+  .trmrk-info-title {
     color: #333f;
     font-weight: bold;
     font-size: 30px;

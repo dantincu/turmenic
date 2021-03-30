@@ -39,7 +39,7 @@ const DriveFile = (props: DriveFileProps) => {
   };
 
   const onItemNameMiddleClick = (e: MouseEvent) => {
-    onItemSelected(props.idntty, true);
+    onItemSelected(props.idntty, !e.ctrlKey);
   };
 
   const onItemNameRightClick = (e: MouseEvent) => {
@@ -48,8 +48,8 @@ const DriveFile = (props: DriveFileProps) => {
 
   const getNameCol = () => {
     return (
-      <Col className={cssClss.trmr.bootstrap.col}>
-        <Row className={`${cssClss.trmr.bootstrap.row} trmr-main-row`}>
+      <Col className={cssClss.trmrk.bootstrap.col}>
+        <Row className={`${cssClss.trmrk.bootstrap.row} trmrk-main-row`}>
           <DriveItemName
             itemName={props.label ?? file.name}
             itemTooltipText={file.path ?? ""}
@@ -72,17 +72,17 @@ const DriveFile = (props: DriveFileProps) => {
 
   const getCssClassName = () => {
     const cssClassArr = [
-      "trmr-drive-item",
-      cssClss.trmr.bootstrap.row,
-      "trmr-drive-file",
+      "trmrk-drive-item",
+      cssClss.trmrk.bootstrap.row,
+      "trmrk-drive-file",
     ];
 
     if (file.isSelected === true) {
-      cssClassArr.push(cssClss.trmr.item.selected);
+      cssClassArr.push(cssClss.trmrk.item.selected);
     }
 
     if (file.isCurrent === true) {
-      cssClassArr.push(cssClss.trmr.item.current);
+      cssClassArr.push(cssClss.trmrk.item.current);
     }
 
     if (props.cssClass) {
@@ -93,7 +93,7 @@ const DriveFile = (props: DriveFileProps) => {
     return cssClassName;
   };
 
-  return <Row className={getCssClassName()}>{getCols()}</Row>;
+  return <Row trmrk-uuid={file.uuid} className={getCssClassName()}>{getCols()}</Row>;
 };
 
 export default DriveFile;

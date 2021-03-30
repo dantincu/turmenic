@@ -5,8 +5,8 @@ import { PageProps } from "./AppPageProps";
 
 const AppPage = (props: PageProps) => {
   return (
-    <main className="trmr-app-main">
-      <Container className="trmr-app-cntr">{(props as any).children}</Container>
+    <main className="trmrk-app-main">
+      <Container className="trmrk-app-cntr">{(props as any).children}</Container>
     </main>
   );
 };

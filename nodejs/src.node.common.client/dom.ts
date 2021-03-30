@@ -37,3 +37,27 @@ export const replaceClassList = (
     classList.add(val);
   });
 };
+
+export const updateParentWidth = (opts: {
+  uuid: string;
+  parentUuid: string;
+}) => {
+  const domEl = document.querySelectorAll(`[trmrk-uuid="${opts.uuid}"]`)[0];
+  const domElWidth = domEl.clientWidth + domEl.clientLeft;
+
+  const parentDomEl = document.querySelectorAll(
+    `[trmrk-uuid="${opts.parentUuid}"]`
+  )[0] as HTMLElement;
+
+  const parentDomElClientLeft = parentDomEl.clientLeft;
+
+  const domElSubNodesMaxWidth = [...domEl.querySelectorAll("[trmrk-uuid]")]
+    .map((el) => el.clientLeft + el.clientWidth)
+    .reduce((prev, crnt) => Math.max(prev, crnt), 0);
+
+  const domElAllNodesMaxWidth = Math.max(domElSubNodesMaxWidth, domElWidth);
+
+  parentDomEl.style.width = `${
+    domElAllNodesMaxWidth - parentDomElClientLeft
+  }px`;
+};

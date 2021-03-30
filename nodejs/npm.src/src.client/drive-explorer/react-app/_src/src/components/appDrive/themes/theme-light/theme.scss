@@ -1,23 +1,23 @@
-.trmr.trmr-theme-light {
-  .trmr-drive-root-folder {
+.trmrk.trmrk-theme-light {
+  .trmrk-app-drive {
     border: 2px solid white;
   }
 
-  .trmr-drive-root-folder::-webkit-scrollbar {
+  .trmrk-app-drive::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */
   }
 
-  .trmr-drive-root-folder::-webkit-scrollbar-track {
+  .trmrk-app-drive::-webkit-scrollbar-track {
     background: $theme-light-back-color; /* color of the tracking area */
   }
 
-  .trmr-drive-root-folder::-webkit-scrollbar-thumb {
+  .trmrk-app-drive::-webkit-scrollbar-thumb {
     background-color: white; /* color of the scroll thumb */
     border-radius: 20px; /* roundness of the scroll thumb */
     border: 3px solid $theme-light-back-color; /* creates padding around scroll thumb */
   }
 
-  .trmr-drive-root-folder::-webkit-scrollbar-corner {
+  .trmrk-app-drive::-webkit-scrollbar-corner {
     background-color: white;
     border: 2px solid $theme-light-back-color;
     border-radius: 5px;

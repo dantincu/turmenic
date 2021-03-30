@@ -37,7 +37,7 @@ const AppThemePicker = (props: AppThemePickerProps) => {
   };
 
   const applyThemeCssClass = (appTheme: AppTheme) => {
-    const themeCssClass = `trmr-theme-${appTheme.id}`;
+    const themeCssClass = `trmrk-theme-${appTheme.id}`;
 
     if (document.body.classList.contains(themeCssClass) !== true) {
       replaceClassList(document.body.classList, ["trmr"], themeCssClass);

@@ -37,7 +37,7 @@ const App = () => {
 
   if (authenticated === true) {
     appElement = (
-      <div className="trmr-app">
+      <div className="trmrk-app">
         <ErrorBoundary showDetails={devMode}>
           <AppHeader devMode={devMode}></AppHeader>
           <Switch>
@@ -54,16 +54,16 @@ const App = () => {
     );
   } else if (error) {
     appElement = (
-      <div className="trmr-app-error">
-        <p className="trmr-error-msg">
+      <div className="trmrk-app-error">
+        <p className="trmrk-error-msg">
           Something went wrong and the app could not start...
         </p>
       </div>
     );
   } else {
     appElement = (
-      <div className="trmr-app-loading">
-        <h3 className="trmr-info-title">Starting the app...</h3>
+      <div className="trmrk-app-loading">
+        <h3 className="trmrk-info-title">Starting the app...</h3>
       </div>
     );
   }
