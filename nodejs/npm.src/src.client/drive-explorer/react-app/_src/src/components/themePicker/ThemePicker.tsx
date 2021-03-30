@@ -12,10 +12,10 @@ import { ThemePickerProps } from "./ThemePickerProps";
 
 const ThemePicker = (props: ThemePickerProps) => {
   const getDropDownItemClassName = (appTheme: AppTheme) => {
-    let className = "trmr-dropdown-item";
+    let className = "trmrk-dropdown-item";
 
     if (props.currentThemeId === appTheme.id) {
-      className += " trmr-current-item";
+      className += " trmrk-current-item";
     }
 
     return className;
@@ -38,7 +38,7 @@ const ThemePicker = (props: ThemePickerProps) => {
 
   return (
     <ButtonDropdown
-      className="trmr-theme-picker"
+      className="trmrk-theme-picker"
       isOpen={dropdownOpen}
       toggle={toggle}
     >

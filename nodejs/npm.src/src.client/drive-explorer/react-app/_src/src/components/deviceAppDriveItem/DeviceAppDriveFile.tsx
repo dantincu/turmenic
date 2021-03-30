@@ -43,12 +43,18 @@ const DeviceAppDriveFile = (props: DeviceAppDriveFileProps) => {
         idntty: DriveItemIdentity,
         previewSelection: boolean
       ) => {
+        if (props.events.onItemSelected) {
+          props.events.onItemSelected(idntty, previewSelection);
+        }
+
         if (props.deviceAppDriveFileEvents?.onItemSelected) {
           props.deviceAppDriveFileEvents.onItemSelected(idntty, previewSelection);
         }
       };
 
     const fileProps = {...props};
+    fileProps.events = {...props.events};
+    
     fileProps.events.onItemSelected = onDeviceAppDriveFileSelected;
     fileProps.storeFileSelector = selectFile;
 

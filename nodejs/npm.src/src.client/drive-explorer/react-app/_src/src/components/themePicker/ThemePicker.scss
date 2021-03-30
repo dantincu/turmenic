@@ -1,11 +1,11 @@
 @import "../../styles/mixins.scss";
 @import "./themes/themes.scss";
 
-.trmr-theme-picker {
-  .trmr-dropdown-item {
+.trmrk-theme-picker {
+  .trmrk-dropdown-item {
     font-weight: bold;
 
-    &.trmr-current-item {
+    &.trmrk-current-item {
       background-color: rgb(255, 202, 164);
 
       &:hover {

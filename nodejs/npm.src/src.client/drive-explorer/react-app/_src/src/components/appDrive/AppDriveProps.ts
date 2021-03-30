@@ -1,6 +1,6 @@
 import { DriveFolderProps } from "../driveItem/DriveItemProps";
 
-export interface DriveRootFolderProps {
+export interface AppDriveProps {
   uuid: string;
   label: string;
   rootFolder: DriveFolderProps;

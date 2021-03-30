@@ -1,4 +1,6 @@
 import React from "react";
+import { ColProps } from 'reactstrap';
+
 import "./DriveItem.scss";
 
 import { DriveItemNameProps } from "./DriveItemProps";
@@ -9,15 +11,15 @@ import { cssClss } from "../const";
 
 const DriveItemName = (props: DriveItemNameProps) => {
   const getItemNameCssClasses = () => {
-    const cssClassesArr = [cssClss.trmr.bootstrap.col, "trmr-item-name"];
+    const cssClassesArr = [cssClss.trmrk.bootstrap.col, "trmrk-item-name"];
 
     const cssClasses = cssClassesArr.join(" ");
     return cssClasses;
   };
 
-  const domElAttrs: DomElAttrs = {
+  const domElAttrs = {
     className: getItemNameCssClasses(),
-    title: props.itemTooltipText
+    title: props.itemTooltipText,
   };
 
   const elProps = {

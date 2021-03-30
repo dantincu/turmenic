@@ -16,7 +16,8 @@ import {
 import { strReplaceAll } from "../../js.common/dist/src.common/text/utils";
 
 export const genRandName = () => {
-  const randName = strReplaceAll(uuid(), "-", "");
+  let randName = strReplaceAll(uuid(), "-", "");
+  randName = [randName, randName, randName, randName, randName].join(".");
   return randName as string;
 };
 
@@ -47,6 +48,7 @@ export const createFolder = (
     name: node.name,
     node: node,
     parentFolderUuid: parentFolderUuid,
+    path: `/A/${genRandName()}`,
   };
 
   appSession.allFolders.push(folder);
@@ -64,6 +66,7 @@ export const createFile = (
     name: `${fileNameWithoutExtension}.txt`,
     nameWithoutExtension: fileNameWithoutExtension,
     parentFolderUuid: parentNode.uuid,
+    path: `/A/${genRandName()}`,
   };
 
   parentFolder.files = parentFolder.files ?? [];

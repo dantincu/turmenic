@@ -1,10 +1,10 @@
 @import "../styles/variables.scss";
 
-.trmr-app-main {
+.trmrk-app-main {
   padding-top: 0px;
   margin-top: 0px;
 
-  .trmr-app-cntr {
+  .trmrk-app-cntr {
     padding: 10px 10px 1px 10px;
     min-height: 88vh;
   }
@@ -18,7 +18,7 @@
   }
 }
 
-.trmr-app-modal {
+.trmrk-app-modal {
   label.error {
     color: red;
   }
