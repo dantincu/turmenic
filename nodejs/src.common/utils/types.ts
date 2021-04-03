@@ -54,3 +54,12 @@ export const setPropVal = <TObj, TVal>(
   objAsAny[propName] = propVal;
   return prevVal;
 };
+
+export const hasValue = (val: unknown) => {
+  const retVal =
+    typeof val !== "undefined" &&
+    val !== null &&
+    (typeof val !== "number" || isNaN(val) === false);
+
+  return retVal;
+};

@@ -93,7 +93,7 @@ const DriveFile = (props: DriveFileProps) => {
     return cssClassName;
   };
 
-  return <Row trmrk-uuid={file.uuid} className={getCssClassName()}>{getCols()}</Row>;
+  return <Row trmrk-drive-item-uuid={file.uuid} className={getCssClassName()}>{getCols()}</Row>;
 };
 
 export default DriveFile;

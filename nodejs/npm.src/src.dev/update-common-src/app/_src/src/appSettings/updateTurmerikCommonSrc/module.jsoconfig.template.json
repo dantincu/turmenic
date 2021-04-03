@@ -1,0 +1,83 @@
+{
+  "turmerikRepoDirPath": ".\\",
+  "nodejsAppsRelDirPath": ".\\nodejs",
+  "npmSrcRelDirPath": "npm.src",
+  "defaultAppSrcDirName": "_src",
+  "mainSrcFolders": [
+    {
+      "isServer": false,
+      "isClient": true,
+      "appsSrcMainFolderName": "src.client",
+      "appFolders": [
+        {
+          "appsSrcFolderName": "drive-explorer",
+          "apps": [
+            {
+              "appSrcDirName": "react-app"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isServer": false,
+      "isClient": false,
+      "appsSrcMainFolderName": "src.dev",
+      "appFolders": [
+        {
+          "appsSrcFolderName": "drive-explorer",
+          "apps": [
+            {
+              "appSrcDirName": "react-app"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isServer": true,
+      "isClient": false,
+      "appsSrcMainFolderName": "src.server",
+      "appFolders": [
+        {
+          "appsSrcFolderName": "drive-explorer",
+          "apps": [
+            {
+              "appSrcDirName": "api"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isServer": false,
+      "isClient": true,
+      "appsSrcMainFolderName": "test.node.common.client",
+      "appFolders": [
+        {
+          "appsSrcFolderName": "test",
+          "apps": [
+            {
+              "appSrcDirName": "react-app"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isServer": true,
+      "isClient": false,
+      "appsSrcMainFolderName": "test.node.common.server",
+      "appFolders": [
+        {
+          "appsSrcFolderName": "test",
+          "apps": [
+            {
+              "appSrcDirName": "app"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

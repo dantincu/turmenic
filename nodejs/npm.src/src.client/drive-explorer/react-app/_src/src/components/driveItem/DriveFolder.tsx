@@ -186,7 +186,7 @@ const DriveFolder = (props: DriveFolderProps) => {
   };
 
   return (
-    <Row trmrk-uuid={folder.uuid} className={getCssClassName()}>
+    <Row trmrk-drive-item-uuid={folder.uuid} className={getCssClassName()}>
       {[getToggleCol(folder.expanded), getMainCol()]}
     </Row>
   );
