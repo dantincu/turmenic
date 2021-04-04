@@ -314,7 +314,7 @@ export const getPageCss = () => {
     `
 text-align: left;
 padding: 20px 20px;
-background-color: #202020ff;
+background-color: #161616ff;
 color: #e0e0e0ff;
 font-style: italic;
 font-size: 17px;
@@ -335,7 +335,7 @@ padding: 20px 20px;
     [pageCssClasses.tsCode],
     `
 font-family: "Courier New", Courier, monospace;
-font-size: 13px;
+font-size: 14px;
 font-weight: bold;
 width: 90%;
 `
@@ -346,7 +346,7 @@ width: 90%;
     `
 width: 90%;
 overflow-x: scroll;
-background-color: #202020ff;
+background-color: #161616ff;
 color: #e0e0e0ff;
 `
   );
@@ -359,7 +359,7 @@ color: #e0e0e0ff;
 
   addPropsForTsCode(
     pageCssClasses.tsCodeRoot,
-    "background: #202020ff; /* color of the tracking area */",
+    "background: #161616ff; /* color of the tracking area */",
     "-webkit-scrollbar-track"
   );
 
@@ -368,7 +368,7 @@ color: #e0e0e0ff;
     `
 background-color: black; /* color of the scroll thumb */
 border-radius: 20px; /* roundness of the scroll thumb */
-border: 3px solid #202020ff; /* creates padding around scroll thumb */
+border: 3px solid #161616ff; /* creates padding around scroll thumb */
 `,
     "-webkit-scrollbar-thumb"
   );
@@ -377,7 +377,7 @@ border: 3px solid #202020ff; /* creates padding around scroll thumb */
     pageCssClasses.tsCodeRoot,
     `
     background-color: black;
-    border: 2px solid #202020ff;
+    border: 2px solid #161616ff;
     border-radius: 5px;
 `,
     "-webkit-scrollbar-corner"
@@ -388,8 +388,8 @@ border: 3px solid #202020ff; /* creates padding around scroll thumb */
   addPropsForTsCode(pageCssClasses.tsComment, "color: #080;");
   addPropsForTsCode(pageCssClasses.tsStrLit, "color: #a00;");
   addPropsForTsCode(pageCssClasses.tsRegexLit, "color: #a0a;");
-  addPropsForTsCode(pageCssClasses.tsNumLit, "color: #9898ff;");
-  addPropsForTsCode(pageCssClasses.tsWord, "color: #66f;");
+  addPropsForTsCode(pageCssClasses.tsNumLit, "color: #9a9aff;");
+  addPropsForTsCode(pageCssClasses.tsWord, "color: #6060ff;");
   addPropsForTsCode(pageCssClasses.tsRoundBracket, "color: #a52;");
   addPropsForTsCode(pageCssClasses.tsSquareBracket, "color: #c82;");
   addPropsForTsCode(pageCssClasses.tsCurlyBracket, "color: #fd2;");
