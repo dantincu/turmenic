@@ -17,6 +17,8 @@ export enum CodeCharType {
   roundBracket = "()", // 2 chars, doesn't start with \\
 }
 
+export const DEFAULT_OP_SYMBOLS = CodeCharType.operatorSymbol.toString();
+
 export interface CodeSyntaxError {
   errMsg?: string | null | undefined;
   errCodeStr?: string | null | undefined;
@@ -76,7 +78,7 @@ export const assureInputCharIsValid = (char: string) => {
     throw new Error(`Invalid input type "${type}"; expected "string".`);
   }
 
-  if (type.length !== 1) {
+  if (length !== 1) {
     throw new Error(
       `Invalid input length: ${length}; expected 1 (one character).`
     );

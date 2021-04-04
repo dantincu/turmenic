@@ -90,7 +90,7 @@ export interface TsRightHandOpExpr extends TsCodeFrag {
 export interface TsCompositeRightHandOpExpr extends TsCodeFrag {
   prcOpSymbols?: string | null | undefined;
   roundBrackets?: boolean | null | undefined;
-  oppArr: (string | TsRightHandOpExpr | TsCompositeRightHandOpExpr)[];
+  valOppArr: (string | TsRightHandOpExpr | TsCompositeRightHandOpExpr)[];
 }
 
 export type TsRightHandValueType =
@@ -118,13 +118,13 @@ export interface TsVarDefExpr extends TsCodeFrag {
 
 export interface TsTypeDefExpr extends TsCodeFrag {
   index?: TsIndexTypeDefExpr | null | undefined;
-  propsHash?: GenericHash<TsRightHandValueType>;
+  propDefsHash?: GenericHash<TsRightHandValueType>;
   isArrayType?: boolean | null | undefined;
 }
 
 export interface TsCompositeTypeDefExpr extends TsCodeFrag {
   roundBrackets?: boolean | null | undefined;
-  oppArr: (string | TsTypeDefExpr | TsCompositeTypeDefExpr)[];
+  typeOppArr: (string | TsTypeDefExpr | TsCompositeTypeDefExpr)[];
 }
 
 export interface TsIndexTypeDefExpr extends TsCodeFrag {
@@ -182,22 +182,3 @@ export interface TsExportStatement extends TsCodeFrag {
   name?: string | null | undefined;
   value: TsRightHandOpExpr | TsCompositeRightHandOpExpr;
 }
-
-/*
-export type A = TsNamespaceDefStatement | TsTypeDefStatement;
-export namespace B {}
-*/
-/*
-export interface TypescriptNameImports {
-  namedImports: (string | { name: string; alias: string })[];
-}
-
-export interface TypescriptImportStatement extends TypescriptCodeFragment {
-  defaultImport?: string | null | undefined;
-  namedImports?: TypescriptNameImports | null | undefined;
-  allAsAlias?: string | null | undefined;
-}
-export interface TypescriptNestedFragment extends TypescriptCodeFragment {
-  openingBracket: string; // {or[or( without<
-}
-*/

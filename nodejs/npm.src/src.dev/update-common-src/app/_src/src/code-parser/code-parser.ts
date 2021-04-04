@@ -67,7 +67,7 @@ export class CodeParser {
 
   getNextCodeFragment(char: string, codeCharType: CodeCharType) {
     const codeFragment = {
-      code: this.currentCodeCharArr.join(),
+      code: this.currentCodeCharArr.join(""),
       charsType: this.currentCodeCharType,
       succededByWhiteSpace: codeCharType === CodeCharType.whiteSpace,
     } as CodeFragment;
