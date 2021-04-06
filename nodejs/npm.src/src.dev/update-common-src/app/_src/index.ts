@@ -14,7 +14,7 @@ const y = "asdfasdfasdf";
 asdfasdfasdf
 asdf */
 
-const asdfasdfasdfasdfasdfasdf = 1;
+const asdfasdfasdfasdfasdfasdf = 9 / 1;
 
 const ret = "asdfasdf".match(/\s\s\s\s\s/g);
 const arr = [
@@ -23,3 +23,5 @@ const arr = [
   ret,
   /asdfasdf\s\s\s\s/g,
 ];
+
+const z = 2 / 1;

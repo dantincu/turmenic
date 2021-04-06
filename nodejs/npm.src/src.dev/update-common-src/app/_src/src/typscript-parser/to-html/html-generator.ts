@@ -42,6 +42,8 @@ export class CodeHtmlGenerator {
 
   isLitOrCom: boolean;
   prevChar: string | null;
+  charAdded: boolean;
+  prevCharAdded: boolean;
 
   readonly parserStateConditions: ParserStateCondition[];
   readonly specialCharConditions: SpecialCharCondition[];
@@ -55,6 +57,8 @@ export class CodeHtmlGenerator {
 
     this.isLitOrCom = false;
     this.prevChar = null;
+    this.charAdded = false;
+    this.prevCharAdded = false;
 
     this.parserStateConditions = this.getParserStateConditions();
     this.specialCharConditions = this.getSpecialCharConditions();
@@ -71,26 +75,38 @@ export class CodeHtmlGenerator {
     data: CharReceivedData,
     parserState: TypescriptCodeParserState
   ) {
+    this.prevCharAdded = this.charAdded;
+    this.charAdded = false;
+
     if (this.isLitOrCom === false) {
-      if (this.handleNormalParserStateConditionsArr(parserState) === false) {
-        this.handleSpecialCharConditionsArr(data);
+      if (
+        this.handleNormalParserStateConditionsArr(data, parserState) === false
+      ) {
+        this.handleSpecialCharConditionsArr(data, parserState);
       }
     } else {
-      this.handleLitOrComParserStateConditionsArr(parserState);
+      this.handleLitOrComParserStateConditionsArr(data, parserState);
+    }
+
+    if (data.char !== "/") {
+      this.addCurrentChar(data, parserState);
     }
 
     this.prevChar = data.char;
-    this.currentTextNodeProps.text += data.char;
   }
 
-  handleNormalParserStateConditionsArr(parserState: TypescriptCodeParserState) {
+  handleNormalParserStateConditionsArr(
+    data: CharReceivedData,
+    parserState: TypescriptCodeParserState
+  ) {
     let matched = false;
 
     this.parserStateConditions.forEach((cond) => {
       if (matched === false && cond.condition(parserState)) {
         this.flushCurrentEl();
-        this.currentElProps.className = cond.className;
+        this.addCurrentChar(data, parserState);
 
+        this.currentElProps.className = cond.className;
         this.isLitOrCom = true;
         matched = true;
       }
@@ -100,22 +116,30 @@ export class CodeHtmlGenerator {
   }
 
   handleLitOrComParserStateConditionsArr(
+    data: CharReceivedData,
     parserState: TypescriptCodeParserState
   ) {
     let matched = false;
 
     this.parserStateConditions.forEach((cond) => {
-      if (matched === false && cond.condition(parserState) === false) {
-        this.flushCurrentEl();
-        this.currentElProps.className = pageCssClasses.tsWord;
-
-        this.isLitOrCom = false;
+      if (matched === false && cond.condition(parserState)) {
         matched = true;
       }
     });
+
+    if (matched === false) {
+      this.addCurrentChar(data, parserState);
+      this.flushCurrentEl();
+
+      this.currentElProps.className = pageCssClasses.tsWord;
+      this.isLitOrCom = false;
+    }
   }
 
-  handleSpecialCharConditionsArr(data: CharReceivedData) {
+  handleSpecialCharConditionsArr(
+    data: CharReceivedData,
+    parserState: TypescriptCodeParserState
+  ) {
     let matched = false;
     let prevChar = this.prevChar ?? "";
 
@@ -123,10 +147,11 @@ export class CodeHtmlGenerator {
       if (matched === false && cond.condition(data.char)) {
         if (cond.condition(prevChar) === false) {
           this.flushCurrentEl();
-
           this.currentElProps.className = cond.className;
-          matched = true;
         }
+
+        matched = true;
+        this.addCurrentChar(data, parserState);
       }
     });
 
@@ -135,27 +160,25 @@ export class CodeHtmlGenerator {
       this.specialCharConditions.find((cond) => cond.condition(prevChar))
     ) {
       this.flushCurrentEl();
+      this.addCurrentChar(data, parserState);
+
       this.currentElProps.className = pageCssClasses.tsWord;
     }
   }
 
-  handleSpecialChar(
+  addCurrentChar(
     data: CharReceivedData,
-    prevChar: string,
-    condition: (char: string) => boolean,
-    className: string
+    parserState: TypescriptCodeParserState
   ) {
-    let retVal = condition(data.char);
-
-    if (retVal) {
-      if (condition(prevChar) === false) {
-        this.flushCurrentEl();
-      }
-
-      this.currentElProps.className = className;
+    if (this.prevCharAdded === false && !!this.prevChar) {
+      this.currentTextNodeProps.text += this.prevChar;
+      this.prevCharAdded = true;
     }
 
-    return retVal;
+    if (this.charAdded === false) {
+      this.currentTextNodeProps.text += data.char;
+      this.charAdded = true;
+    }
   }
 
   flushCurrentEl() {
@@ -243,15 +266,15 @@ export class CodeHtmlGenerator {
         className: pageCssClasses.tsNumLit,
       },
       {
-        condition: (char) => ["()"].indexOf(char) >= 0,
+        condition: (char) => "()".indexOf(char) >= 0,
         className: pageCssClasses.tsRoundBracket,
       },
       {
-        condition: (char) => ["[]"].indexOf(char) >= 0,
+        condition: (char) => "[]".indexOf(char) >= 0,
         className: pageCssClasses.tsSquareBracket,
       },
       {
-        condition: (char) => ["{}"].indexOf(char) >= 0,
+        condition: (char) => "{}".indexOf(char) >= 0,
         className: pageCssClasses.tsCurlyBracket,
       },
     ];

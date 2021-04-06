@@ -197,7 +197,7 @@ export abstract class TypescriptCodeStreamParserBase {
   }
 
   testChars(data: TestCharsData): boolean {
-    let testResult = true;
+    let changedState = false;
     let char = data.crntcharData.char;
 
     if (char === data.crntCharIs) {
@@ -207,13 +207,14 @@ export abstract class TypescriptCodeStreamParserBase {
         }) ?? "";
 
       if (typeof data.prevCharIs === "string") {
-        testResult = data.prevCharIs.indexOf(prevChar) >= 0;
+        changedState = data.prevCharIs.indexOf(prevChar) >= 0;
       } else if (typeof data.prevCharIsNot === "string") {
-        testResult = data.prevCharIsNot.indexOf(prevChar) >= 0;
+        changedState = data.prevCharIsNot.indexOf(prevChar) < 0;
       }
     }
 
-    return testResult;
+    const sameState = !changedState;
+    return sameState;
   }
 
   getPrevChar(data: PrevCharData) {
