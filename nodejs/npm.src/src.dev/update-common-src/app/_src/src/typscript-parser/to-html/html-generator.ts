@@ -128,6 +128,9 @@ export class CodeHtmlGenerator {
     });
 
     if (matched === false) {
+      if (data.char === "/") {
+        console.log("parserState", parserState);
+      }
       this.addCurrentChar(data, parserState);
       this.flushCurrentEl();
 
@@ -170,7 +173,7 @@ export class CodeHtmlGenerator {
     data: CharReceivedData,
     parserState: TypescriptCodeParserState
   ) {
-    if (this.prevCharAdded === false && !!this.prevChar) {
+    if (this.prevCharAdded === false && typeof this.prevChar === "string") {
       this.currentTextNodeProps.text += this.prevChar;
       this.prevCharAdded = true;
     }

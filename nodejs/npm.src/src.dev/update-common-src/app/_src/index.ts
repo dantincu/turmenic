@@ -6,13 +6,19 @@ await converter.generate(process.argv[2], "./dist/output.html");
 const reg = /\sasdfasdfasdfasdfasdf9as7df87a9sd8f7as9d8f79a8sd7f98as7df/g;
 
 //asdfasdfasdf
-
+const f = `
+asdf
+`;
 const x = 123n;
 const y = "asdfasdfasdf";
 
 /* asdf
 asdfasdfasdf
-asdf */
+asdf */ 5;
+5;
+const d = `
+asdf
+`;
 
 const asdfasdfasdfasdfasdfasdf = 9 / 1;
 
