@@ -63,3 +63,16 @@ export const hasValue = (val: unknown) => {
 
   return retVal;
 };
+
+export const strArrToHash = <T>(
+  strArr: string[],
+  generator: (str: string) => T
+): GenericHash<T> => {
+  const hash: GenericHash<T> = {};
+
+  strArr.forEach((str) => {
+    hash[str] = generator(str);
+  });
+
+  return hash;
+};

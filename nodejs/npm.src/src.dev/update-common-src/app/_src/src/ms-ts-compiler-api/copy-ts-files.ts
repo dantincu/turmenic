@@ -33,17 +33,13 @@ export class CopyTsFiles extends CopySourceFilesBase<CopyTsFilesOpts> {
     this.program = null;
   }
 
-  async getOutputText(srcFilePath: string) {
-    const sourceFile = this.program?.getSourceFile(
-      srcFilePath
-    ) as ts.SourceFile;
-    const textNodes: string[] = [];
+  public async getOutputText(srcFilePath: string) {
+    const outputText = getSourceFileText(
+      this.program as ts.Program,
+      srcFilePath,
+      this.opts.stripTsImportsOfJsExt
+    );
 
-    ts.forEachChild(sourceFile, (node) => {
-      textNodes.push(this.getDestNodeText(node, sourceFile));
-    });
-
-    const outputText = textNodes.join("\n");
     return outputText;
   }
 
@@ -66,16 +62,36 @@ export class CopyTsFiles extends CopySourceFilesBase<CopyTsFilesOpts> {
 
     return allSrcFiles;
   }
-
-  getDestNodeText(node: ts.Node, sourceFile: ts.SourceFile) {
-    let text = node.getText(sourceFile);
-    const replStr = '.js";';
-    const replWith = '";';
-
-    if (this.opts.stripTsImportsOfJsExt && ts.isImportDeclaration(node)) {
-      text = strReplaceEndsWith(text, replStr, replWith);
-    }
-
-    return text;
-  }
 }
+
+export const getSourceFileText = (
+  program: ts.Program,
+  srcFilePath: string,
+  stripTsImportsOfJsExt: boolean
+) => {
+  const sourceFile = program.getSourceFile(srcFilePath) as ts.SourceFile;
+  const textNodes: string[] = [];
+
+  ts.forEachChild(sourceFile, (node) => {
+    textNodes.push(getDestNodeText(node, sourceFile, stripTsImportsOfJsExt));
+  });
+
+  const outputText = textNodes.join("\n");
+  return outputText;
+};
+
+export const getDestNodeText = (
+  node: ts.Node,
+  sourceFile: ts.SourceFile,
+  stripTsImportsOfJsExt: boolean
+) => {
+  let text = node.getText(sourceFile);
+  const replStr = '.js";';
+  const replWith = '";';
+
+  if (stripTsImportsOfJsExt && ts.isImportDeclaration(node)) {
+    text = strReplaceEndsWith(text, replStr, replWith);
+  }
+
+  return text;
+};

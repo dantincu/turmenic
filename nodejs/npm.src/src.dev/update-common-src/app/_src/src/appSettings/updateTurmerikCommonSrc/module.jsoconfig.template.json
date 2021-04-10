@@ -25,10 +25,10 @@
       "appsSrcMainFolderName": "src.dev",
       "appFolders": [
         {
-          "appsSrcFolderName": "drive-explorer",
+          "appsSrcFolderName": "update-common-src",
           "apps": [
             {
-              "appSrcDirName": "react-app"
+              "appSrcDirName": "app"
             }
           ]
         }

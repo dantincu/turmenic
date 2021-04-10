@@ -8,7 +8,9 @@ import {
   setWithKey,
 } from "../../src.common/stronglyTyped/keyIndexing.js";
 
-console.log("importing env config module");
+import { appConsole } from "../../src.common/logging/appConsole.js";
+
+appConsole.log("importing env config module");
 
 export const envBaseDir = {
   config: "config",

@@ -73,6 +73,7 @@
     "src.common/**/*",
     "src.node.common/**/*",
     "tests/**/*",
+    "commands/**/*",
     "src/**/*",
     "index.ts"
   ],

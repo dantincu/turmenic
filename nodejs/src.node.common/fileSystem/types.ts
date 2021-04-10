@@ -6,6 +6,8 @@ import fsExtra from "fs-extra";
 import winattr from "winattr";
 import path from "path";
 
+import { appConsole } from "../../src.common/logging/appConsole.js";
+
 export const readFileAsync = util.promisify(fs.readFile);
 export const writeFileAsync = util.promisify(fs.writeFile);
 export const getEntryStatsAsync = util.promisify(fs.stat);
@@ -79,7 +81,7 @@ export const getTryGetDirEntryOptsNorm = (
             throw err;
           }
         } else {
-          console.log(
+          appConsole.log(
             `While trying to read attrs for entry path ${entryPath} caught an error`,
             err
           );

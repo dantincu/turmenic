@@ -1,50 +1,42 @@
 import path from "path";
+import ts from "typescript";
 
-import { getStrMd5Hash } from "../../src.node.common/crypto/crypto.js";
+import { appConsole } from "../../src.common/logging/appConsole.js";
 
 import {
   GetDirEntryOpts,
-  mkdirAsync,
   writeFileAsync,
-  rmdirAsync,
   renameAsync,
-  readdirAsync,
 } from "../../src.node.common/fileSystem/types.js";
 
 import {
-  readFileIfExists,
-  getFileLastModifiedTime,
   tryCreateNewDir,
   removeDirIfExists,
 } from "../../src.node.common/fileSystem/fileSystem.js";
 
 import { cloneDirHierarchy } from "../../src.node.common/fileSystem/cloneHierarchy.js";
 
-import { loadJsonFromFileOrDefault } from "../../src.node.common/fileSystem/json.js";
-import {
-  getDirEntries,
-  tryGetDirEntries,
-} from "../../src.node.common/fileSystem/getDirEntries.js";
+import { getDirEntries } from "../../src.node.common/fileSystem/getDirEntries.js";
 
+import { GenericHash, strArrToHash } from "../../src.common/utils/types.js";
 import { forEachAsync } from "../../src.common/arrays/arrays-async.js";
 
 import {
   DEV_DIR_NAME,
-  CONFLICTS_FILE_NAME,
   METADATA_FILE_NAME,
   TEMP_DIR_NAME_SUFFIX,
   CopySourceFilesOpts,
   CopySourceFilesBase,
   CopySourceFoldersOpts,
-  CopySourceFilesOptsBase,
-  CopySourceOptsBase,
   CopyTsFilesOpts,
   DirMetadata,
-  SourceFileMetadata,
-  SourceFileConflict,
-  DirConflicts,
 } from "./source-code.js";
-import { CopyTsFiles } from "../ms-ts-compiler-api/copy-ts-files.js";
+import {
+  CopyTsFiles,
+  getSourceFileText,
+} from "../ms-ts-compiler-api/copy-ts-files.js";
+
+import { CheckSourceFolderForConflicts } from "./conflicts.js";
 
 export class CopySourceFiles extends CopySourceFilesBase<CopySourceFilesOpts> {
   constructor(opts: CopySourceFilesOpts) {
@@ -59,113 +51,40 @@ export class CopySourceFiles extends CopySourceFilesBase<CopySourceFilesOpts> {
   }
 }
 
-export class CheckSourceFolderForConflicts {
-  conflicts: SourceFileConflict[];
+export interface CopySourceFoldersCmdLineArgs {
+  ignoreConflicts: boolean;
+}
 
-  destDirPath: string;
-  devDirPath: string;
+export const getCmdLineArgs = () => {
+  const rawArgs = process.argv.slice(2);
 
-  metadataFilePath: string;
-  conflictsFilePath: string;
+  const args = {
+    ignoreConflicts: rawArgs.indexOf("--igCf") >= 0,
+  } as CopySourceFoldersCmdLineArgs;
 
-  constructor(destDirPath: string) {
-    this.conflicts = [];
+  return args;
+};
 
-    this.destDirPath = destDirPath;
-    this.devDirPath = path.join(this.destDirPath, DEV_DIR_NAME);
+export const applyCmdLineArgsToOpts = (opts: CopySourceFoldersOpts) => {
+  const args = getCmdLineArgs();
 
-    this.metadataFilePath = path.join(this.devDirPath, METADATA_FILE_NAME);
-    this.conflictsFilePath = path.join(this.devDirPath, CONFLICTS_FILE_NAME);
-  }
+  opts.ignoreConflicts = args.ignoreConflicts;
+  return opts;
+};
 
-  public async checkForConflicts(): Promise<SourceFileConflict[]> {
-    this.assureDevFolder();
-    const previousMetadataArr = await this.getPreviousMetadata();
-
-    await forEachAsync(previousMetadataArr, async (val) => {
-      await this.checkFileForConflicts(val);
-    });
-
-    await this.writeConflictsToJsonFile();
-    return this.conflicts;
-  }
-
-  async writeConflictsToJsonFile() {
-    if (this.conflicts.length > 0) {
-      const jsonData: DirConflicts = {
-        conflicts: this.conflicts,
-        timeStamp: new Date(),
-      };
-
-      const json = JSON.stringify(jsonData);
-      await writeFileAsync(this.conflictsFilePath, json);
-    }
-  }
-
-  async checkFileForConflicts(
-    prevMetadata: SourceFileMetadata
-  ): Promise<SourceFileConflict | null> {
-    let conflict: SourceFileConflict | null = null;
-
-    const filePath = path.join(this.devDirPath, prevMetadata.relPath);
-    const text = await readFileIfExists(filePath);
-
-    if (text) {
-      const hash = getStrMd5Hash(text);
-
-      if (hash !== prevMetadata.hash) {
-        conflict = {
-          currentHash: hash,
-          previousHash: prevMetadata.hash,
-          relPath: prevMetadata.relPath,
-          lastModifiedDate: await getFileLastModifiedTime(filePath),
-        };
-
-        this.conflicts.push(conflict);
-      }
-    }
-
-    return conflict;
-  }
-
-  async getPreviousMetadata() {
-    const previousMetadata: SourceFileMetadata[] = await loadJsonFromFileOrDefault(
-      this.metadataFilePath,
-      []
-    );
-
-    return previousMetadata;
-  }
-
-  async assureDevFolder() {
-    let destFolderExists = true;
-
-    const entries = await tryGetDirEntries(this.destDirPath, {
-      opts: {
-        onlyDirs: true,
-      },
-      enoentErrorCallback: async (err, entryPath) => {
-        destFolderExists = false;
-      },
-    });
-
-    if (destFolderExists) {
-      const entryNames = entries.map((val) => val.name);
-
-      if (entryNames.indexOf(DEV_DIR_NAME) < 0) {
-        await mkdirAsync(this.devDirPath);
-      }
-    }
-
-    return destFolderExists;
-  }
+export interface SourceFolderData {
+  destTempDirName: string;
+  cpFsEngine: CopySourceFiles;
+  cpTsFsEngine: CopyTsFiles;
 }
 
 export class CopySourceFolders {
   opts: CopySourceFoldersOpts;
+  srcFoldersData: GenericHash<SourceFolderData>;
 
   constructor(opts: CopySourceFoldersOpts) {
     this.opts = opts;
+    this.srcFoldersData = this.getSourceFoldersData(opts);
   }
 
   public async copyFolders(): Promise<boolean> {
@@ -194,12 +113,12 @@ export class CopySourceFolders {
   }
 
   async copyFolder(srcDirName: string): Promise<boolean> {
-    const destTempDirName = `${srcDirName}.${TEMP_DIR_NAME_SUFFIX}`;
+    const srcFolderItem = this.srcFoldersData[srcDirName];
     await this.cloneSrcFolderHierarchy(srcDirName);
 
     const dirMetadata: DirMetadata = {
-      tsFilesMetadata: await this.copyTsFiles(srcDirName, destTempDirName),
-      filesMetadata: await this.copyNonTsFiles(srcDirName, destTempDirName),
+      tsFilesMetadata: await srcFolderItem.cpTsFsEngine.copyFiles(),
+      filesMetadata: await srcFolderItem.cpFsEngine.copyFiles(),
       timeStamp: new Date(),
     };
 
@@ -207,7 +126,7 @@ export class CopySourceFolders {
 
     const filePath = path.join(
       this.opts.destDirBasePath,
-      destTempDirName,
+      srcFolderItem.destTempDirName,
       DEV_DIR_NAME,
       METADATA_FILE_NAME
     );
@@ -221,28 +140,6 @@ export class CopySourceFolders {
     const destTempDirPath = this.getDestDirPath(srcDirName, true);
 
     await cloneDirHierarchy(srcDirPath, destTempDirPath);
-  }
-
-  async copyTsFiles(
-    srcDirName: string,
-    destTempDirName: string
-  ): Promise<SourceFileMetadata[]> {
-    const opts = this.getCopyTsFilesOpts(srcDirName, destTempDirName);
-    const engine = new CopyTsFiles(opts);
-
-    const metadataArr = await engine.copyFiles();
-    return metadataArr;
-  }
-
-  async copyNonTsFiles(
-    srcDirName: string,
-    destTempDirName: string
-  ): Promise<SourceFileMetadata[]> {
-    const opts = this.getCopyFilesOpts(srcDirName, destTempDirName);
-    const engine = new CopySourceFiles(opts);
-
-    const metadataArr = await engine.copyFiles();
-    return metadataArr;
   }
 
   getCopyFilesOpts(
@@ -272,25 +169,27 @@ export class CopySourceFolders {
   async checkForConflicts(): Promise<boolean> {
     let noConflicts = true;
 
-    await forEachAsync(this.opts.srcDirNames, async (srcDirName) => {
-      if (noConflicts) {
-        const conflictsCheckup = new CheckSourceFolderForConflicts(
-          this.getDestDirPath(srcDirName, false)
-        );
+    if (this.opts.ignoreConflicts !== true) {
+      await forEachAsync(this.opts.srcDirNames, async (srcDirName) => {
+        if (noConflicts) {
+          const conflictsCheckup = new CheckSourceFolderForConflicts({
+            destDirPath: this.getDestDirPath(srcDirName, false),
+            srcDirPath: path.join(this.opts.srcDirBasePath, srcDirName),
+          });
 
-        const conflicts = await conflictsCheckup.checkForConflicts();
+          const conflicts = await conflictsCheckup.checkForConflicts();
 
-        if (conflicts.length > 0) {
-          noConflicts = false;
+          if (conflicts.length > 0) {
+            noConflicts = false;
 
-          console.log(
-            "Could not copy source folders because there are file conflicts",
-            conflicts
-          );
+            appConsole.log(
+              "Could not copy source folders because there are file conflicts",
+              conflicts
+            );
+          }
         }
-      }
-    });
-
+      });
+    }
     return noConflicts;
   }
 
@@ -301,7 +200,7 @@ export class CopySourceFolders {
       const destTempDirPath = this.getDestDirPath(srcDirName, true);
 
       if (await tryCreateNewDir(destTempDirPath)) {
-        console.log(
+        appConsole.log(
           `Destination temp folder ${destTempDirPath} already exists`
         );
         noConflicts = false;
@@ -309,7 +208,7 @@ export class CopySourceFolders {
         const destTempDevDirPath = path.join(destTempDirPath, DEV_DIR_NAME);
 
         if (await tryCreateNewDir(destTempDevDirPath)) {
-          console.log(
+          appConsole.log(
             `Destination temp dev folder ${destTempDevDirPath} already exists`
           );
           noConflicts = false;
@@ -327,5 +226,54 @@ export class CopySourceFolders {
 
     const destDirPath = path.join(this.opts.destDirBasePath, destDirName);
     return destDirPath;
+  }
+
+  getCpFsEngines(opts: CopySourceFoldersOpts): GenericHash<CopySourceFiles> {
+    const cpFsEngines = strArrToHash(opts.srcDirNames, (srcDirName) => {
+      const destTempDirName = `${srcDirName}.${TEMP_DIR_NAME_SUFFIX}`;
+      const opts = this.getCopyFilesOpts(srcDirName, destTempDirName);
+
+      const engine = new CopySourceFiles(opts);
+      return engine;
+    });
+
+    return cpFsEngines;
+  }
+
+  getCpTsFsEngines(opts: CopySourceFoldersOpts): GenericHash<CopyTsFiles> {
+    const cpTsFsEngines = strArrToHash(opts.srcDirNames, (srcDirName) => {
+      const destTempDirName = `${srcDirName}.${TEMP_DIR_NAME_SUFFIX}`;
+      const opts = this.getCopyTsFilesOpts(srcDirName, destTempDirName);
+
+      const engine = new CopyTsFiles(opts);
+      return engine;
+    });
+
+    return cpTsFsEngines;
+  }
+
+  getSourceFoldersData(
+    opts: CopySourceFoldersOpts
+  ): GenericHash<SourceFolderData> {
+    const dataArr: GenericHash<SourceFolderData> = strArrToHash(
+      opts.srcDirNames,
+      (srcDirName) => {
+        const destTempDirName = `${srcDirName}.${TEMP_DIR_NAME_SUFFIX}`;
+
+        const data = {
+          destTempDirName: destTempDirName,
+          cpFsEngine: new CopySourceFiles(
+            this.getCopyFilesOpts(srcDirName, destTempDirName)
+          ),
+          cpTsFsEngine: new CopyTsFiles(
+            this.getCopyTsFilesOpts(srcDirName, destTempDirName)
+          ),
+        } as SourceFolderData;
+
+        return data;
+      }
+    );
+
+    return dataArr;
   }
 }

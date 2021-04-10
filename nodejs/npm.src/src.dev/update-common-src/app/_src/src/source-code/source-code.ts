@@ -30,6 +30,7 @@ export interface CopySourceOptsBase {
 
 export interface CopySourceFoldersOpts extends CopySourceOptsBase {
   srcDirNames: string[];
+  ignoreConflicts: boolean;
 }
 
 export interface CopySourceFilesOptsBase extends CopySourceOptsBase {
@@ -97,7 +98,7 @@ export class CopySourceFilesBase<TOptions extends CopySourceFilesOptsBase> {
   }
 
   public async copyFiles() {
-    this.allSrcFiles = await this.getAllSourceFiles();
+    await this.assureAllSrcFilesLoaded();
 
     await forEachAsync(this.allSrcFiles, async (val) => {
       const metadata = await this.copyFile(val);
@@ -105,6 +106,17 @@ export class CopySourceFilesBase<TOptions extends CopySourceFilesOptsBase> {
     });
 
     return this.filesMetadata;
+  }
+
+  public async assureAllSrcFilesLoaded() {
+    if (this.allSrcFiles.length === 0) {
+      this.allSrcFiles = await this.getAllSourceFiles();
+    }
+  }
+
+  public async getOutputText(srcFilePath: string) {
+    const outputText = (await readFileAsync(srcFilePath)).toString("utf-8");
+    return outputText;
   }
 
   async copyFile(srcFilePath: string) {
@@ -119,11 +131,6 @@ export class CopySourceFilesBase<TOptions extends CopySourceFilesOptsBase> {
     await writeFileAsync(filePath, outputText);
 
     return retVal;
-  }
-
-  async getOutputText(srcFilePath: string) {
-    const outputText = (await readFileAsync(srcFilePath)).toString("utf-8");
-    return outputText;
   }
 
   async getAllSourceFiles() {
