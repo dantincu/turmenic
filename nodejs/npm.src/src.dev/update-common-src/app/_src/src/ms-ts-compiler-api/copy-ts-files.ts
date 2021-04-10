@@ -43,7 +43,7 @@ export class CopyTsFiles extends CopySourceFilesBase<CopyTsFilesOpts> {
       textNodes.push(this.getDestNodeText(node, sourceFile));
     });
 
-    const outputText = textNodes.join("");
+    const outputText = textNodes.join("\n");
     return outputText;
   }
 
