@@ -1,6 +1,6 @@
-import { writeFileAsync } from "../../../src.node.common/fileSystem/index.js";
+import { writeFileAsync } from "../../../src.node.common/fileSystem/types.js";
 import { encodeHtml } from "../../../src.node.common/text/html-pre.js";
-import { generateConstantStr } from "../../../src.common/utils/arrays.js";
+import { generateConstantStr } from "../../../src.common/arrays/arr-const.js";
 
 export interface HtmlPageData {
   filePath: string;

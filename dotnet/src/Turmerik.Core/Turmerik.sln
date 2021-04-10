@@ -35,6 +35,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmerik.Config.WebApi.App"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmerik.WinForms.Test.App", "..\Turmerik.WinForms.Test.App\Turmerik.WinForms.Test.App.csproj", "{59B62776-9E1F-4D11-9256-8504879C4B16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trmrk.SwDev.Parsec", "..\Trmrk.SwDev.Parsec\Trmrk.SwDev.Parsec.csproj", "{641BF6D3-D1C2-4375-AB09-1CEEB6B03ACC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ext", "ext", "{3220B2C1-243A-408F-B6BC-48AA4B8110FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ParsecSharp", "ParsecSharp", "{28EE8C62-F647-41D0-B9CF-62EF27347DC2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParsecSharp", "..\..\src-ext\_src\ParsecSharp.NetStd\ParsecSharp.csproj", "{6BE07E87-FAA8-4A2E-B1D4-1F496BEA0B67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trmrk.SwDev.Parsec.Test.Console.App", "..\Trmrk.SwDev.Parsec.Test.Console.App\Trmrk.SwDev.Parsec.Test.Console.App.csproj", "{2CC33901-9BCC-48CE-A572-7F1AB08614C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,9 +115,25 @@ Global
 		{59B62776-9E1F-4D11-9256-8504879C4B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59B62776-9E1F-4D11-9256-8504879C4B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59B62776-9E1F-4D11-9256-8504879C4B16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{641BF6D3-D1C2-4375-AB09-1CEEB6B03ACC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{641BF6D3-D1C2-4375-AB09-1CEEB6B03ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{641BF6D3-D1C2-4375-AB09-1CEEB6B03ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{641BF6D3-D1C2-4375-AB09-1CEEB6B03ACC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE07E87-FAA8-4A2E-B1D4-1F496BEA0B67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE07E87-FAA8-4A2E-B1D4-1F496BEA0B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE07E87-FAA8-4A2E-B1D4-1F496BEA0B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE07E87-FAA8-4A2E-B1D4-1F496BEA0B67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CC33901-9BCC-48CE-A572-7F1AB08614C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CC33901-9BCC-48CE-A572-7F1AB08614C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CC33901-9BCC-48CE-A572-7F1AB08614C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CC33901-9BCC-48CE-A572-7F1AB08614C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{28EE8C62-F647-41D0-B9CF-62EF27347DC2} = {3220B2C1-243A-408F-B6BC-48AA4B8110FE}
+		{6BE07E87-FAA8-4A2E-B1D4-1F496BEA0B67} = {28EE8C62-F647-41D0-B9CF-62EF27347DC2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8769611B-A0DE-44E3-BADC-424521481B89}

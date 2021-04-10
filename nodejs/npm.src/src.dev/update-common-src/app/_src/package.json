@@ -5,7 +5,8 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js"
   },
   "keywords": [
     "update",
@@ -30,6 +31,7 @@
   "dependencies": {
     "async-mutex": "^0.3.1",
     "axios": "^0.21.1",
+    "crypto": "^1.0.1",
     "drivelist": "^9.2.4",
     "fs-extra": "^9.1.0",
     "googleapis": "^67.1.1",

@@ -2,11 +2,12 @@ import path from "path";
 import fs from "fs";
 import getPath, * as pf from "platform-folders";
 
+import { getDirEntries } from "../../src.node.common/fileSystem/getDirEntries.js";
+
 import {
-  getDirEntries,
   DirEntry,
   DirEntryWrapper,
-} from "../../src.node.common/fileSystem/index.js";
+} from "../../src.node.common/fileSystem/types.js";
 import { DeviceRootFolders } from "../../src.node.common.server/fileSystem/deviceRootFolders.js";
 
 const runTest = async () => {
@@ -22,9 +23,7 @@ const runTest = async () => {
 
   deviceDriveMountPoints.forEach(async (m) => {
     // const dirEntries = await tryGetDirEntries(m.path);
-    const dirEntries = await getDirEntries(m.drivePath, {
-      rethrowError: false,
-    });
+    const dirEntries = await getDirEntries(m.drivePath);
     console.log(`FOR ${m.drivePath} >>>> \n`);
 
     printEntries(dirEntries);
@@ -46,7 +45,7 @@ const runTest = async () => {
   console.log("getVideosFolder", pf.getVideosFolder());
 };
 
-const printEntries = (entries: DirEntryWrapper[] | DirEntry[]) => {
+const printEntries = (entries: string[]) => {
   for (let i = 0; i < entries.length; i++) {
     const str = JSON.stringify(entries[i]);
     console.log(str);

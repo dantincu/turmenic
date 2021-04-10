@@ -1,45 +1,4 @@
-export const contains = <T>(arr: T[], val: T) => {
-  const found = arr.indexOf(val) >= 0;
-  return found;
-};
-
-export const findIndex = <T>(
-  arr: T[],
-  selector: (val: T, idx: number, arr: T[]) => boolean,
-  startIndex?: number
-): { val: T | null; idx: number } => {
-  let val: T | null = null;
-  let idx = -1;
-  startIndex = startIndex ?? 0;
-
-  val =
-    arr.find((val, index, arr) => {
-      const match = index > (startIndex as number) && selector(val, index, arr);
-      if (match) {
-        idx = index;
-      }
-
-      return match;
-    }) ?? null;
-
-  return { val, idx };
-};
-
-export const filterIndex = <T>(
-  arr: T[],
-  selector: (val: T, idx: number, arr: T[]) => boolean
-): { val: T | null; idx: number }[] => {
-  let retArr: { val: T | null; idx: number }[] = [];
-
-  arr.forEach((val, idx, arr) => {
-    const match = selector(val, idx, arr);
-    if (match) {
-      retArr.push({ val, idx });
-    }
-  });
-
-  return retArr;
-};
+import { contains, filterIndex, findIndex } from "./arrays.js";
 
 export interface ArrayDiff<T> {
   leftOnly: { val: T; idx: number }[];
@@ -117,26 +76,4 @@ export const removeDuplicates = <T>(
   }
 
   return arr;
-};
-
-export const generateRange = (length: number) => {
-  const range = [...Array(length).keys()];
-  return range;
-};
-
-export const generateConstantArr = <T>(length: number, val: T) => {
-  const arr = [...Array(length).keys()].map((v) => val);
-  return arr;
-};
-
-export const generateConstantStr = (
-  length: number,
-  char?: string | null | undefined,
-  joinChar?: string | null | undefined
-) => {
-  char = char ?? "";
-  joinChar = joinChar ?? "";
-
-  const retStr = [...Array(length).keys()].map((v) => char).join(joinChar);
-  return retStr;
 };

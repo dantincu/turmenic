@@ -25,6 +25,7 @@ export enum BtstrpElType {
 export interface DomElAttrs {
   id?: string;
   className?: string;
+  title?: string | undefined;
   onClick?: (e: MouseEvent) => void;
   onMouseDown?: (e: MouseEvent) => void;
   onMouseUp?: (e: MouseEvent) => void;
@@ -43,7 +44,7 @@ export interface InputDomElAttrs extends DomElAttrs {
 export interface TrmrCompProps {
   domElTagName?: DomElTag;
   btstrpElType?: BtstrpElType;
-  domElAttrs?: DomElAttrs;
+  domElAttrs?: DomElAttrs | any;
   children?: JSX.Element[] | any;
 }
 

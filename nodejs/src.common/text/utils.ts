@@ -28,6 +28,20 @@ export const strReplaceAll = (
   return replVal;
 };
 
+export const strReplaceEndsWith = (
+  val: string,
+  str: string,
+  replExpr: string
+) => {
+  let replVal = val;
+
+  if (typeof val == "string" && val.endsWith(str)) {
+    replVal = [val.substring(0, val.length - str.length), replExpr].join("");
+  }
+
+  return replVal;
+};
+
 export const strCount = (val: string, str: string): number => {
   let replVal = 0;
 

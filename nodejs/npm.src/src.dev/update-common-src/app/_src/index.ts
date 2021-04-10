@@ -1,33 +1,9 @@
-import { TypescriptFileToHtml } from "./src/typscript-parser/to-html/typescript-to-html.js";
+import { CopySourceFolders } from "./src/source-code/copy-source-code.js";
 
-const converter = new TypescriptFileToHtml();
-await converter.generate(process.argv[2], "./dist/output.html");
+/* const copySourceFolders = new CopySourceFolders({
+  srcDirBasePath: "../../../../../@@__TEMP_SRC__@@",
+  destDirBasePath: "../../../../../@@__TEMP_DEST__@@",
+  srcDirNames: ["src.common", "src.node.common", "src.node.common.client"],
+}); */
 
-const reg = /\sasdfasdfasdfasdfasdf9as7df87a9sd8f7as9d8f79a8sd7f98as7df/g;
-
-//asdfasdfasdf
-const f = `
-asdf
-`;
-const x = 123n;
-const y = "asdfasdfasdf";
-
-/* asdf
-asdfasdfasdf
-asdf */ 5;
-5;
-const d = `
-asdf
-`;
-
-const asdfasdfasdfasdfasdfasdf = 9 / 1;
-
-const ret = "asdfasdf".match(/\s\s\s\s\s/g);
-const arr = [
-  1234123412341234123,
-  asdfasdfasdfasdfasdfasdf,
-  ret,
-  /asdfasdf\s\s\s\s/g,
-];
-
-const z = 2 / 1;
+// await copySourceFolders.copyFolders();

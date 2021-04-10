@@ -24,13 +24,16 @@ import {
 import {
   getFileLastModifiedTime,
   createDirIfNotExisting,
-  mkdirAsync,
   removeDirWithContentAsync,
+} from "../../fileSystem/fileSystem.js";
+
+import {
+  mkdirAsync,
   copyAsync,
   emptyDirAsync,
   rmAsync,
   renameAsync,
-} from "../../fileSystem/index.js";
+} from "../../fileSystem/types.js";
 
 import {
   loadJsonFromFileAsync,
@@ -298,7 +301,8 @@ export abstract class MetadataLocalFileCollectionBase extends LocalFileCollectio
       const nextDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.next);
 
       await emptyDirAsync(currentDataDirPath);
-      await this.copyJsonDataFiles(nextDataDirPath, currentDataDirPath);
+      // await this.copyJsonDataFiles(nextDataDirPath, currentDataDirPath);
+      await renameAsync(nextDataDirPath, currentDataDirPath);
 
       await removeDirWithContentAsync(nextDataDirPath);
       await removeDirWithContentAsync(prevDataDirPath);

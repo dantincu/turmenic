@@ -1,4 +1,4 @@
-import { readFileAsync } from "../../../src.node.common/fileSystem/index.js";
+import { readFileAsync } from "../../../src.node.common/fileSystem/types.js";
 
 import {
   CharReceivedData,

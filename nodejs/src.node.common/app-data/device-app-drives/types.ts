@@ -1,6 +1,3 @@
-import path from "path";
-// import { Idty, idtyEquals } from "../../../src.common/data/idty.js";
-
 export interface DriveNode {
   // idty: Idty;
   uuid: string;
@@ -64,24 +61,3 @@ export interface DeviceAppDriveSessions {
   appSessions: AppSession[];
   defaultAppSession?: AppSession | null;
 }
-
-export const assureDriveItemPath = (
-  appSession: AppSession,
-  driveItem: DriveItem
-) => {
-  if (!driveItem.path) {
-    const parentFolder = appSession.allFolders.find(
-      (folder) => folder.uuid === driveItem.uuid
-    );
-
-    if (parentFolder) {
-      const parentFolderPath =
-        parentFolder.path ?? assureDriveItemPath(appSession, parentFolder);
-      if (parentFolderPath) {
-        driveItem.path = path.join(parentFolderPath, driveItem.name);
-      }
-    }
-  }
-
-  return driveItem.path;
-};

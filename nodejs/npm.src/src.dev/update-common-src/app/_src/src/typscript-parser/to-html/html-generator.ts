@@ -128,9 +128,6 @@ export class CodeHtmlGenerator {
     });
 
     if (matched === false) {
-      if (data.char === "/") {
-        console.log("parserState", parserState);
-      }
       this.addCurrentChar(data, parserState);
       this.flushCurrentEl();
 

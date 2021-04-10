@@ -5,7 +5,7 @@ import {
   envBaseDir,
 } from "../../../src.node.common/appSettings/envConfig.js";
 import { appConsole } from "../../../src.common/logging/appConsole.js";
-import { readFileAsync } from "../../../src.node.common/fileSystem/index.js";
+import { readFileAsync } from "../../../src.node.common/fileSystem/types.js";
 
 export const DEFAULT_AUTH_COOKIE_TTL_MILLIS = 1000 * 3600 * 24 * 365;
 
