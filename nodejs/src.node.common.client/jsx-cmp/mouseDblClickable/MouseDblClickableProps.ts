@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 
-import { TrmrCompProps } from "../trmrComp/TrmrCompProps";
+import { TrmrkCompProps } from "../trmrkComp/TrmrkCompProps";
 
 export interface MouseBtnPressedCssClasses {
   btn0?: string;
@@ -8,7 +8,7 @@ export interface MouseBtnPressedCssClasses {
   btn2?: string;
 }
 
-export interface MouseDblClickableProps extends TrmrCompProps {
+export interface MouseDblClickableProps extends TrmrkCompProps {
   onClick?: (e: MouseEvent) => void;
   onMouseDown?: (e: MouseEvent) => void;
   onMouseUp?: (e: MouseEvent) => void;

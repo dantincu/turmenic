@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { uStrId } from "../../js.common/dist/src.node.common/data/uStrId";
+import { uStrId } from "../../src.node.common/data/uStrId";
 import {
   DriveFolder,
   DriveFile,
@@ -11,9 +11,9 @@ import {
   DriveItem,
   FileNode,
   FolderNode,
-} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+} from "../../src.node.common/app-data/device-app-drives/types";
 
-import { strReplaceAll } from "../../js.common/dist/src.common/text/utils";
+import { strReplaceAll } from "../../src.common/text/utils";
 
 export const genRandName = () => {
   let randName = strReplaceAll(uuid(), "-", "");

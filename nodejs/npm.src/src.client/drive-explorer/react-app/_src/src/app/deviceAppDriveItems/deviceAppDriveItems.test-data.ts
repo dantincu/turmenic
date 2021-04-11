@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { uStrId } from "../../js.common/dist/src.node.common/data/uStrId";
+import { uStrId } from "../../src.node.common/data/uStrId";
 
 import {
   DriveFolder,
@@ -12,7 +12,7 @@ import {
   DriveNode,
   FileNode,
   FolderNode,
-} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+} from "../../src.node.common/app-data/device-app-drives/types";
 
 import {
   testData as baseTestData,

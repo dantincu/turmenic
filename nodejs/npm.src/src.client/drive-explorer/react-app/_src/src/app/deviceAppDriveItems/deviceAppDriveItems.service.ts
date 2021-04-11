@@ -8,9 +8,9 @@ import {
   DriveNode,
   FileNode,
   FolderNode,
-} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+} from "../../src.node.common/app-data/device-app-drives/types";
 
-import { findIndex } from "../../js.common/dist/src.common/utils/arrays";
+import { findIndex } from "../../src.common/arrays/arrays";
 
 export class DriveItemsService {
   public toggleFolder(
@@ -285,7 +285,7 @@ export class DriveItemsService {
     errMsg = `File with id ${file.uuid} not found`
   ) {
     const idx = findIndex(
-      folder.files,
+      folder.files ?? [],
       (fl: DriveFile) => fl.uuid === file.uuid
     ).idx;
 

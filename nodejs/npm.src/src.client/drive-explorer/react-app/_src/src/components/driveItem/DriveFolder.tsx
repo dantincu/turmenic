@@ -5,7 +5,7 @@ import "./DriveItem.scss";
 import {
   DriveFolder as DriveFolderVm,
   DriveItem as DriveItemVm,
-} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+} from "../../src.node.common/app-data/device-app-drives/types";
 import { useSelector } from "react-redux";
 
 import { DriveFolderProps, DriveFileProps, DriveItemIdentity } from "./DriveItemProps";
@@ -186,7 +186,7 @@ const DriveFolder = (props: DriveFolderProps) => {
   };
 
   return (
-    <Row trmrk-uuid={folder.uuid} className={getCssClassName()}>
+    <Row trmrk-drive-item-uuid={folder.uuid} className={getCssClassName()}>
       {[getToggleCol(folder.expanded), getMainCol()]}
     </Row>
   );

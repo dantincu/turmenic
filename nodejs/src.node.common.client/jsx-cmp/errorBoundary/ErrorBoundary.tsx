@@ -1,9 +1,9 @@
 import React from 'react';
 
-export class ErrorBoundary extends React.Component {
+export class ErrorBoundary extends React.Component<{ showDetails: boolean }> {
     state: { error: Error | null, errorInfo: { componentStack: any } | null };
 
-    constructor(props: any) {
+    constructor(props: { showDetails: boolean }) {
       super(props);
       this.state = { error: null, errorInfo: null };
     }
@@ -19,17 +19,25 @@ export class ErrorBoundary extends React.Component {
     
     render() {
       if (this.state.errorInfo) {
-        // Error path
-        return (
-          <div>
-            <h2>Something went wrong.</h2>
-            <details style={{ whiteSpace: 'pre-wrap' }}>
-              {this.state.error && this.state.error.toString()}
-              <br />
-              {this.state.errorInfo.componentStack}
-            </details>
-          </div>
-        );
+        if (this.props.showDetails) {
+          return (
+            <div>
+              <h2>Something went wrong.</h2>
+              <details style={{ whiteSpace: 'pre-wrap' }}>
+                {this.state.error && this.state.error.toString()}
+                <br />
+                {this.state.errorInfo.componentStack}
+              </details>
+              <a href="./">Please refresh the page</a>
+            </div>
+          );
+        }
+        else {
+          return (<div>
+              <h2>Something went wrong.</h2>
+              <a href="./">Please refresh the page</a>
+            </div>);
+        }
       }
       // Normally, just render children
       return this.props.children;

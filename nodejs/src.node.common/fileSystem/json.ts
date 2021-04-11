@@ -1,4 +1,5 @@
-import { readFileAsync, writeFileAsync, readFileIfExists } from "./index.js";
+import { readFileAsync, writeFileAsync } from "./types.js";
+import { readFileIfExists } from "./fileSystem.js";
 
 export const loadJsonFromFileAsync = async (
   filePath: string,

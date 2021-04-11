@@ -11,7 +11,7 @@ import {
   } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
 
 import AddAppDrive from '../../components/addAppDrive/AddAppDrive';
-import { DeviceRootDirLocation } from '../../js.common/src.node.common/app-data/schema/device-dir-locations.schema';
+import { DeviceRootDirLocation } from "../../src.node.common/app-data/schema/device-dir-locations.schema";
 import { ApiResponse } from '../../api/api.types';
 import { driveApi } from '../../api/drives.api';
 

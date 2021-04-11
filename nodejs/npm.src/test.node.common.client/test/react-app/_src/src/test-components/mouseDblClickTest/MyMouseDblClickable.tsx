@@ -1,10 +1,10 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
 
-import MouseDblClickable from '../../jsx-cmp/mouseDblClickable/MouseDblClickable';
-import { MouseDblClickableProps } from '../../jsx-cmp/mouseDblClickable/MouseDblClickableProps';
+import MouseDblClickable from '../../src.node.common.client/jsx-cmp/mouseDblClickable/MouseDblClickable';
+import { MouseDblClickableProps } from '../../src.node.common.client/jsx-cmp/mouseDblClickable/MouseDblClickableProps';
 import { MyMouseDblClickableProps } from './MyMouseDblClickableProps';
-import TrmrComp from '../../jsx-cmp/trmrComp/TrmrComp';
-import { TrmrCompProps, DomElAttrs, DBL_CLICK_DEFAULT_MILLIS } from '../../jsx-cmp/trmrComp/TrmrCompProps';
+import TrmrkComp from '../../src.node.common.client/jsx-cmp/trmrkComp/TrmrkComp';
+import { TrmrkCompProps, DomElAttrs, DBL_CLICK_DEFAULT_MILLIS } from '../../src.node.common.client/jsx-cmp/trmrkComp/TrmrkCompProps';
 
 const MyMouseDblClickable = (props: MyMouseDblClickableProps) => {
     const dblClickMillis = props.dblClickMillis ?? DBL_CLICK_DEFAULT_MILLIS;
@@ -47,15 +47,14 @@ const MyMouseDblClickable = (props: MyMouseDblClickableProps) => {
         }
     }, [launchMouseUpTimeout, lastMouseUpTimeout, dblClickMillis, props, sendDelayedClick]);
 
-    const domElAttrs = ({ ...props.domElAttrs } ?? {
+    /* const domElAttrs = ({ ...props.domElAttrs } ?? {
     }) as DomElAttrs;
 
     domElAttrs.className = "tttt-cmpnt";
-    domElAttrs.onMouseUp = onMouseUp;
+    domElAttrs.onMouseUp = onMouseUp; */
 
     const mouseDblClickableProps: MouseDblClickableProps = {
-        domElTagName: props.domElTagName,
-        domElAttrs: domElAttrs,
+        dblClickMillis: dblClickMillis,
         onClick: props.onClick,
         onMouseDown: props.onMouseDown,
         onMouseUp: onMouseUp,
@@ -69,7 +68,7 @@ const MyMouseDblClickable = (props: MyMouseDblClickableProps) => {
         }
     };
 
-    return (<MouseDblClickable {...mouseDblClickableProps}>{ props.children }</MouseDblClickable>);
+    return (<MouseDblClickable {...mouseDblClickableProps}></MouseDblClickable>);
 };
 
 export default MyMouseDblClickable;

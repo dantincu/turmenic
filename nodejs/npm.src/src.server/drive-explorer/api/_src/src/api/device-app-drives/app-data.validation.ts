@@ -33,7 +33,7 @@ import {
   reqStrValIsValid,
 } from "../../../src.common/validation/text.js";
 
-import { isDirEntry } from "../../../src.node.common/fileSystem/index.js";
+import { isDirEntry } from "../../../src.node.common/fileSystem/fileSystem.js";
 
 import { AddAppDrive } from "./request.types.js";
 

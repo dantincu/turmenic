@@ -54,3 +54,25 @@ export const setPropVal = <TObj, TVal>(
   objAsAny[propName] = propVal;
   return prevVal;
 };
+
+export const hasValue = (val: unknown) => {
+  const retVal =
+    typeof val !== "undefined" &&
+    val !== null &&
+    (typeof val !== "number" || isNaN(val) === false);
+
+  return retVal;
+};
+
+export const strArrToHash = <T>(
+  strArr: string[],
+  generator: (str: string) => T
+): GenericHash<T> => {
+  const hash: GenericHash<T> = {};
+
+  strArr.forEach((str) => {
+    hash[str] = generator(str);
+  });
+
+  return hash;
+};

@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
 import { ApiResponse } from "./api.types";
-import { FileSystemRootFolder } from "../js.common/src.node.common/app-data/fileSystem.types";
-import { DeviceRootDirLocation } from "../js.common/src.node.common/app-data/schema/device-dir-locations.schema";
+import { FileSystemRootFolder } from "../src.node.common/app-data/fileSystem.types";
+import { DeviceRootDirLocation } from "../src.node.common/app-data/schema/device-dir-locations.schema";
 
 export class DriveApi {
   baseUrl: string;

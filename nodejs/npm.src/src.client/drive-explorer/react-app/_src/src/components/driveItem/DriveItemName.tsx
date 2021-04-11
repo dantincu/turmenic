@@ -4,9 +4,9 @@ import { ColProps } from 'reactstrap';
 import "./DriveItem.scss";
 
 import { DriveItemNameProps } from "./DriveItemProps";
-import { MouseDblClickableProps } from "../../jsx-cmp/mouseDblClickable/MouseDblClickableProps";
-import { BtstrpElType, DomElAttrs } from "../../jsx-cmp/trmrComp/TrmrCompProps";
-import MouseDblClickable from "../../jsx-cmp/mouseDblClickable/MouseDblClickable";
+import { MouseDblClickableProps } from "../../src.node.common.client/jsx-cmp/mouseDblClickable/MouseDblClickableProps";
+import { BtstrpElType, DomElAttrs } from "../../src.node.common.client/jsx-cmp/trmrComp/TrmrCompProps";
+import MouseDblClickable from "../../src.node.common.client/jsx-cmp/mouseDblClickable/MouseDblClickable";
 import { cssClss } from "../const";
 
 const DriveItemName = (props: DriveItemNameProps) => {

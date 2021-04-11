@@ -42,16 +42,20 @@ export const updateParentWidth = (opts: {
   uuid: string;
   parentUuid: string;
 }) => {
-  const domEl = document.querySelectorAll(`[trmrk-uuid="${opts.uuid}"]`)[0];
+  const domEl = document.querySelectorAll(
+    `[trmrk-drive-item-uuid="${opts.uuid}"]`
+  )[0];
   const domElWidth = domEl.clientWidth + domEl.clientLeft;
 
   const parentDomEl = document.querySelectorAll(
-    `[trmrk-uuid="${opts.parentUuid}"]`
+    `[trmrk-drive-item-uuid="${opts.parentUuid}"]`
   )[0] as HTMLElement;
 
   const parentDomElClientLeft = parentDomEl.clientLeft;
 
-  const domElSubNodesMaxWidth = [...domEl.querySelectorAll("[trmrk-uuid]")]
+  const domElSubNodesMaxWidth = [
+    ...domEl.querySelectorAll("[trmrk-drive-item-uuid]"),
+  ]
     .map((el) => el.clientLeft + el.clientWidth)
     .reduce((prev, crnt) => Math.max(prev, crnt), 0);
 

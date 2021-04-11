@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmerik.DriveExplorer.Core", "Turmerik.DriveExplorer.Core.csproj", "{3B760C81-8173-4EF4-8D6A-3918E8C71FC9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmerik.Core", "..\Turmerik.Core\Turmerik.Core.csproj", "{E9155E4B-ABD9-4CF2-BFF2-1F21651EB18D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmerik.DriveExplorer.DataAccess.Sqlite", "..\Turmerik.DriveExplorer.DataAccess.Sqlite\Turmerik.DriveExplorer.DataAccess.Sqlite.csproj", "{6A31525F-C8E3-4BDD-8F3C-C0AAC2B1D08D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmerik.DataAccess.Sqlite", "..\Turmerik.DataAccess.Sqlite\Turmerik.DataAccess.Sqlite.csproj", "{7D6E78EB-1051-4C48-B73E-9D1457AC9750}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B760C81-8173-4EF4-8D6A-3918E8C71FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B760C81-8173-4EF4-8D6A-3918E8C71FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B760C81-8173-4EF4-8D6A-3918E8C71FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B760C81-8173-4EF4-8D6A-3918E8C71FC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9155E4B-ABD9-4CF2-BFF2-1F21651EB18D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9155E4B-ABD9-4CF2-BFF2-1F21651EB18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9155E4B-ABD9-4CF2-BFF2-1F21651EB18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9155E4B-ABD9-4CF2-BFF2-1F21651EB18D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A31525F-C8E3-4BDD-8F3C-C0AAC2B1D08D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A31525F-C8E3-4BDD-8F3C-C0AAC2B1D08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A31525F-C8E3-4BDD-8F3C-C0AAC2B1D08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A31525F-C8E3-4BDD-8F3C-C0AAC2B1D08D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D6E78EB-1051-4C48-B73E-9D1457AC9750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D6E78EB-1051-4C48-B73E-9D1457AC9750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D6E78EB-1051-4C48-B73E-9D1457AC9750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D6E78EB-1051-4C48-B73E-9D1457AC9750}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CDE1145E-308E-449C-9134-13D40B45C23E}
+	EndGlobalSection
+EndGlobal

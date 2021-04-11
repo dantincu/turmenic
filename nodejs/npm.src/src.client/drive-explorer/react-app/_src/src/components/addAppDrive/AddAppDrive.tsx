@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, La
 import Loader from "react-loader-spinner";
 
 import { AddAppDriveProps } from './AddAppDriveProps';
-import { DeviceRootDirLocation } from "../../js.common/src.node.common/app-data/schema/device-dir-locations.schema";
+import { DeviceRootDirLocation } from "../../src.node.common/app-data/schema/device-dir-locations.schema";
 import { ApiResponse } from '../../api/api.types';
 
 const AddAppDrive = (props: AddAppDriveProps) => {

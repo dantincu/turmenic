@@ -1,8 +1,8 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
 
 import { MouseDblClickableProps } from './MouseDblClickableProps';
-import TrmrComp from '../trmrComp/TrmrComp';
-import { TrmrCompProps, DomElAttrs, DBL_CLICK_DEFAULT_MILLIS } from '../trmrComp/TrmrCompProps';
+import TrmrComp from '../trmrkComp/TrmrkComp';
+import { TrmrkCompProps, DomElAttrs, DBL_CLICK_DEFAULT_MILLIS } from '../trmrkComp/TrmrkCompProps';
 
 const MouseDblClickable = (props: MouseDblClickableProps) => {
     const dblClickMillis = props.dblClickMillis ?? DBL_CLICK_DEFAULT_MILLIS;
@@ -77,7 +77,7 @@ const MouseDblClickable = (props: MouseDblClickableProps) => {
     domElAttrs.onMouseDown = onMouseDown;
     domElAttrs.className = `${domElAttrs.className ?? ""} ${mouseBtnPressedExtraCssClass ?? ""}`;
 
-    const abstrCmpProps: TrmrCompProps = {
+    const abstrCmpProps: TrmrkCompProps = {
         domElTagName: props.domElTagName,
         btstrpElType: props.btstrpElType,
         domElAttrs: domElAttrs,

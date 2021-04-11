@@ -3,10 +3,9 @@ import driveList from "drivelist";
 import * as pf from "platform-folders";
 
 import { strReplaceAll } from "../../src.common/text/utils.js";
-import {
-  getDirEntries,
-  DirEntry,
-} from "../../src.node.common/fileSystem/index.js";
+import { getDirEntries } from "../../src.node.common/fileSystem/getDirEntries.js";
+
+import { DirEntry } from "../../src.node.common/fileSystem/types.js";
 
 import {
   DeviceDrive,

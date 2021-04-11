@@ -1,0 +1,93 @@
+body {
+  background-color: #000000ff;
+}
+
+header p {
+  text-align: left;
+  padding: 20px 20px;
+  background-color: #202020ff;
+  color: #e0e0e0ff;
+  font-style: italic;
+  font-size: 17px;
+}
+
+.ts-code,
+.ts-code-root {
+  text-align: left;
+  padding: 20px 20px;
+}
+
+.ts-code {
+  font-family: Consolas, "Courier New", Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+
+  width: 90%;
+}
+
+.ts-code .ts-code-root {
+  width: 90%;
+  overflow-x: scroll;
+
+  background-color: #202020ff;
+  color: #e0e0e0ff;
+}
+
+.ts-code .ts-code-root::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+.ts-code .ts-code-root::-webkit-scrollbar-track {
+  background: #202020ff; /* color of the tracking area */
+}
+
+.ts-code .ts-code-root::-webkit-scrollbar-thumb {
+  background-color: black; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid #202020ff; /* creates padding around scroll thumb */
+}
+
+.ts-code .ts-code-root::-webkit-scrollbar-corner {
+  background-color: black;
+  border: 2px solid #202020ff;
+  border-radius: 5px;
+}
+
+.ts-code .ts-space {
+}
+
+.ts-code .ts-op {
+  color: #c0c0c0ff;
+}
+
+.ts-code .ts-comment {
+  color: green;
+}
+
+.ts-code .ts-str-lit {
+  color: #800000ff;
+}
+
+.ts-code .ts-regex-lit {
+  color: #800080ff;
+}
+
+.ts-code .ts-num-lit {
+  color: #6080e0ff;
+}
+
+.ts-code .ts-word {
+  color: #4060c0ff;
+}
+
+.ts-code .ts-round-bracket {
+  color: #a05020ff;
+}
+
+.ts-code .ts-square-bracket {
+  color: #c08020ff;
+}
+
+.ts-code .ts-curly-bracket {
+  color: #ffd020ff;
+}

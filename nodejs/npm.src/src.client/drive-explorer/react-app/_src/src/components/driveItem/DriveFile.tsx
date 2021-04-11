@@ -3,7 +3,7 @@ import { Row, Col } from "reactstrap";
 import "./DriveItem.scss";
 
 import { useSelector, useDispatch } from "react-redux";
-import { DriveFile as DriveFileVm } from "../../js.common/src.node.common/app-data/device-app-drives/types";
+import { DriveFile as DriveFileVm } from "../../src.node.common/app-data/device-app-drives/types";
 import { DriveFileProps, DriveItemIdentity } from "./DriveItemProps";
 import { cssClss } from "../const";
 import DriveItemName from "./DriveItemName";
@@ -93,7 +93,7 @@ const DriveFile = (props: DriveFileProps) => {
     return cssClassName;
   };
 
-  return <Row trmrk-uuid={file.uuid} className={getCssClassName()}>{getCols()}</Row>;
+  return <Row trmrk-drive-item-uuid={file.uuid} className={getCssClassName()}>{getCols()}</Row>;
 };
 
 export default DriveFile;
