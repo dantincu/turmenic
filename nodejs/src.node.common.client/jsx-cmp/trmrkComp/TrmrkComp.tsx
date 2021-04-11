@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { TrmrCompProps, DomElTag, BtstrpElType, ButtonDomElAttrs, InputDomElAttrs } from './TrmrCompProps';
+import { TrmrkCompProps, DomElTag, BtstrpElType, ButtonDomElAttrs, InputDomElAttrs } from './TrmrkCompProps';
 import { Container, Row, Col } from 'reactstrap';
 
-const TrmrComp = (props: TrmrCompProps) => {
+const TrmrkComp = (props: TrmrkCompProps) => {
     switch (props.domElTagName) {
         case DomElTag.div:
             return (<div {...props.domElAttrs}>
@@ -77,4 +77,4 @@ const TrmrComp = (props: TrmrCompProps) => {
     return null
 }
 
-export default TrmrComp;
+export default TrmrkComp;

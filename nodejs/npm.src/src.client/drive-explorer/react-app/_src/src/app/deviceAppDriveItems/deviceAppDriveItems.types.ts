@@ -8,12 +8,10 @@ import {
   DriveFile,
   AppSession,
   DriveFolder,
-} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+} from "../../src.node.common/app-data/device-app-drives/types";
 
 export interface DriveNodeUx {
-  // idty: Idty;
   uuid: string;
-  // parentFolderIdty?: Idty;
   parentFolderUuid?: string | null;
   name: string;
 }

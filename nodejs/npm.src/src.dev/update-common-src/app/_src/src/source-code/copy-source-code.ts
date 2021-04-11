@@ -1,5 +1,4 @@
 import path from "path";
-import ts from "typescript";
 
 import { appConsole } from "../../src.common/logging/appConsole.js";
 
@@ -37,6 +36,12 @@ import {
 } from "../ms-ts-compiler-api/copy-ts-files.js";
 
 import { CheckSourceFolderForConflicts } from "./conflicts.js";
+import {
+  FolderTsPrograms,
+  TsProgram,
+  TsProgramOpts,
+  normalizeOpts,
+} from "../ms-ts-compiler-api/tsProgram.js";
 
 export class CopySourceFiles extends CopySourceFilesBase<CopySourceFilesOpts> {
   constructor(opts: CopySourceFilesOpts) {
@@ -51,27 +56,6 @@ export class CopySourceFiles extends CopySourceFilesBase<CopySourceFilesOpts> {
   }
 }
 
-export interface CopySourceFoldersCmdLineArgs {
-  ignoreConflicts: boolean;
-}
-
-export const getCmdLineArgs = () => {
-  const rawArgs = process.argv.slice(2);
-
-  const args = {
-    ignoreConflicts: rawArgs.indexOf("--igCf") >= 0,
-  } as CopySourceFoldersCmdLineArgs;
-
-  return args;
-};
-
-export const applyCmdLineArgsToOpts = (opts: CopySourceFoldersOpts) => {
-  const args = getCmdLineArgs();
-
-  opts.ignoreConflicts = args.ignoreConflicts;
-  return opts;
-};
-
 export interface SourceFolderData {
   destTempDirName: string;
   cpFsEngine: CopySourceFiles;
@@ -80,10 +64,13 @@ export interface SourceFolderData {
 
 export class CopySourceFolders {
   opts: CopySourceFoldersOpts;
+
+  tsPrograms: FolderTsPrograms;
   srcFoldersData: GenericHash<SourceFolderData>;
 
   constructor(opts: CopySourceFoldersOpts) {
     this.opts = opts;
+    this.tsPrograms = new FolderTsPrograms();
     this.srcFoldersData = this.getSourceFoldersData(opts);
   }
 
@@ -147,10 +134,12 @@ export class CopySourceFolders {
     destTempDirName: string
   ): CopySourceFilesOpts {
     const opts: CopySourceFilesOpts = {
+      tsPrograms: this.tsPrograms,
       destDirBasePath: this.opts.destDirBasePath,
       srcDirBasePath: this.opts.srcDirBasePath,
       srcDirName: srcDirName,
       destDirName: destTempDirName,
+      newLineStr: this.opts.newLineStr,
     };
 
     return opts;
@@ -173,6 +162,7 @@ export class CopySourceFolders {
       await forEachAsync(this.opts.srcDirNames, async (srcDirName) => {
         if (noConflicts) {
           const conflictsCheckup = new CheckSourceFolderForConflicts({
+            tsPrograms: this.tsPrograms,
             destDirPath: this.getDestDirPath(srcDirName, false),
             srcDirPath: path.join(this.opts.srcDirBasePath, srcDirName),
           });

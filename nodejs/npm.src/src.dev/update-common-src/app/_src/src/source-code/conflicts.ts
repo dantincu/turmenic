@@ -51,15 +51,17 @@ import {
   getSourceFileText,
 } from "../ms-ts-compiler-api/copy-ts-files.js";
 
+import {
+  FolderTsPrograms,
+  normalizeOpts,
+  TsProgramOpts,
+  TsProgram,
+} from "../ms-ts-compiler-api/tsProgram.js";
+
 export interface ConflictsCheckupOpts {
+  tsPrograms: FolderTsPrograms;
   destDirPath: string;
   srcDirPath: string;
-}
-
-export interface TsFilesData {
-  tsDirPath: string;
-  tsProgram: ts.Program;
-  tsFiles: string[];
 }
 
 export class CheckSourceFolderForConflicts {
@@ -72,9 +74,6 @@ export class CheckSourceFolderForConflicts {
   metadataFilePath: string;
   conflictsFilePath: string;
 
-  destTsFilesData: TsFilesData | null;
-  srcTsFilesData: TsFilesData | null;
-
   constructor(opts: ConflictsCheckupOpts) {
     this.opts = opts;
     this.conflicts = [];
@@ -84,9 +83,6 @@ export class CheckSourceFolderForConflicts {
 
     this.metadataFilePath = path.join(this.devDirPath, METADATA_FILE_NAME);
     this.conflictsFilePath = path.join(this.devDirPath, CONFLICTS_FILE_NAME);
-
-    this.destTsFilesData = null;
-    this.srcTsFilesData = null;
   }
 
   public async checkForConflicts(): Promise<SourceFileConflict[]> {
@@ -129,16 +125,14 @@ export class CheckSourceFolderForConflicts {
   ): Promise<SourceFileConflict | null> {
     let conflict = await this.checkFileForConflictsCore(
       prevMetadata,
-      async (relFilePath: string, fileContent: string): Promise<boolean> => {
-        await this.assureTsFilesData();
-
+      async (relFilePath: string): Promise<boolean> => {
         const srcFileContent = this.getTsFileContent(
-          this.srcTsFilesData as TsFilesData,
+          this.opts.srcDirPath,
           relFilePath
         );
 
         const distFileContent = this.getTsFileContent(
-          this.destTsFilesData as TsFilesData,
+          this.opts.destDirPath,
           relFilePath
         );
 
@@ -150,24 +144,20 @@ export class CheckSourceFolderForConflicts {
     return conflict;
   }
 
-  getTsFileContent(tsFilesData: TsFilesData, relFilePath: string) {
-    const filePath = path.join(tsFilesData.tsDirPath, relFilePath);
-
-    const fileContent = getSourceFileText(
-      tsFilesData.tsProgram,
-      filePath,
-      true
-    );
+  async getTsFileContent(dirPath: string, relFilePath: string) {
+    const fileContent = getSourceFileText({
+      program: (await this.opts.tsPrograms.getOrCreate(dirPath))
+        .tsProgram as ts.Program,
+      srcFilePath: path.join(dirPath, relFilePath),
+      stripTsImportsOfJsExt: true,
+    });
 
     return fileContent;
   }
 
   async checkFileForConflictsCore(
     prevMetadata: SourceFileMetadata,
-    extraCondition?: (
-      relFilePath: string,
-      fileContent: string
-    ) => Promise<boolean>
+    extraCondition?: (relFilePath: string) => Promise<boolean>
   ): Promise<SourceFileConflict | null> {
     let conflict: SourceFileConflict | null = null;
 
@@ -178,10 +168,7 @@ export class CheckSourceFolderForConflicts {
       const hash = getStrMd5Hash(text);
 
       if (hash !== prevMetadata.hash) {
-        if (
-          !extraCondition ||
-          (await extraCondition(prevMetadata.relPath, text))
-        ) {
+        if (!extraCondition || (await extraCondition(prevMetadata.relPath))) {
           conflict = {
             currentHash: hash,
             previousHash: prevMetadata.hash,
@@ -234,7 +221,7 @@ export class CheckSourceFolderForConflicts {
     return destFolderExists;
   }
 
-  async assureTsFilesData() {
+  /* async assureTsFilesData() {
     if (this.srcTsFilesData === null) {
       this.srcTsFilesData = await this.getTsFilesData(this.opts.srcDirPath);
     }
@@ -263,5 +250,5 @@ export class CheckSourceFolderForConflicts {
     };
 
     return tsFilesData;
-  }
+  } */
 }

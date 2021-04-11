@@ -7,11 +7,11 @@ import DeviceAppDriveFolder from '../../components/deviceAppDriveItem/DeviceAppD
 
 import { selectSessionAppDrives } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
 
-import { AppDrive } from '../../js.common/src.node.common/app-data/device-app-drives/types';
+import { AppDrive } from '../../src.node.common/app-data/device-app-drives/types';
 import { AppDrivesExplorerPageProps } from './AppDrivesExplorerPageProps';
 import { DriveFolderProps, DriveItemIdentity } from '../../components/driveItem/DriveItemProps';
 
-import { updateParentWidth } from '../../js.common/dist/src.node.common.client/dom';
+import { updateParentWidth } from '../../src.node.common.client/dom';
 
 const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
     const appDrives = useSelector(selectSessionAppDrives);
@@ -20,8 +20,8 @@ const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
     useEffect(() => {
         if (updateDom) {
             updateParentWidth({
-                uuid: updateDom.itemUuid,
-                parentUuid: updateDom.rootFolderUuid
+                itemUuid: updateDom.itemUuid,
+                rootFolderUuid: updateDom.rootFolderUuid
             })
             setUpdateDom(null);    
         }

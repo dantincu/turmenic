@@ -41,7 +41,7 @@ export interface InputDomElAttrs extends DomElAttrs {
   value?: string;
 }
 
-export interface TrmrCompProps {
+export interface TrmrkCompProps {
   domElTagName?: DomElTag;
   btstrpElType?: BtstrpElType;
   domElAttrs?: DomElAttrs | any;

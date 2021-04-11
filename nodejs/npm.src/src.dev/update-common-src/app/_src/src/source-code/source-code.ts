@@ -18,12 +18,21 @@ import {
 import { strReplaceEndsWith } from "../../src.common/text/utils.js";
 import { getRelPath } from "../../src.node.common/fileSystem/path.js";
 
+import {
+  FolderTsPrograms,
+  normalizeOpts,
+  TsProgramOpts,
+  TsProgram,
+} from "../ms-ts-compiler-api/tsProgram.js";
+
 export const TEMP_DIR_NAME_SUFFIX = "__TEMP__";
 export const DEV_DIR_NAME = "__DEV__";
 export const METADATA_FILE_NAME = "metadata.json";
 export const CONFLICTS_FILE_NAME = "conflicts.json";
 
 export interface CopySourceOptsBase {
+  tsPrograms: FolderTsPrograms;
+  newLineStr: string;
   srcDirBasePath: string;
   destDirBasePath: string;
 }

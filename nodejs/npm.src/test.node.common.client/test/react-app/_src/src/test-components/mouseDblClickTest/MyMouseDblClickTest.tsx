@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectMsgArr, pushMsg, AppTestMsg } from '../../app/appMessagesSlice';
 import { AppTestComponentProps } from '../../components/appTest/AppTestData';
 import MyMouseDblClickable from './MyMouseDblClickable';
-import { DomElTag } from "../../jsx-cmp/trmrComp/TrmrCompProps";
+import { DomElTag } from "../../src.node.common.client/jsx-cmp/trmrkComp/TrmrkCompProps";
 import './MyMouseDblClickTest.scss';
 
 const MyMouseDblClickTest = (props: AppTestComponentProps) => {
@@ -53,10 +53,7 @@ const MyMouseDblClickTest = (props: AppTestComponentProps) => {
         onDoubleClick={onDoubleClick}
         onMiddleClick={onMiddleClick}
         onRightClick={onRightClick}
-        onDelayedClick={onDelayedClick}
-        domElTagName={DomElTag.button}>
-            Press
-    </MyMouseDblClickable>);
+        onDelayedClick={onDelayedClick}></MyMouseDblClickable>);
 }
 
 export default MyMouseDblClickTest;

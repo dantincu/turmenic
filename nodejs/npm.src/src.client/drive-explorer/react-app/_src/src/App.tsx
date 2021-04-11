@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import "./styles/App.scss";
 
-import { ErrorBoundary } from "./jsx-cmp/errorBoundary/ErrorBoundary";
+import { ErrorBoundary } from "./src.node.common.client/jsx-cmp/errorBoundary/ErrorBoundary";
 
 import AppHeader from "./components/appHeader/AppHeader";
 import AppFooter from "./components/appFooter/AppFooter";

@@ -11,7 +11,7 @@ import {
 } from "../../app/appTheme/appTheme";
 
 import { urlQueryParams } from "../const";
-import { replaceClassList } from "../../js.common/dist/src.node.common.client/dom";
+import { replaceClassList } from "../../src.node.common.client/dom";
 
 import { AppThemePickerProps } from "./appThemePickerProps";
 

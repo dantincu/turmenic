@@ -1,5 +1,5 @@
-import ts from "typescript";
 import path from "path";
+import ts from "typescript";
 
 import {
   writeFileAsync,
@@ -25,20 +25,25 @@ import {
   TEMP_DIR_NAME_SUFFIX,
 } from "../source-code/source-code.js";
 
-export class CopyTsFiles extends CopySourceFilesBase<CopyTsFilesOpts> {
-  program: ts.Program | null;
+import {
+  FolderTsPrograms,
+  TsProgram,
+  TsProgramOpts,
+  normalizeOpts,
+} from "../ms-ts-compiler-api/tsProgram.js";
 
+export class CopyTsFiles extends CopySourceFilesBase<CopyTsFilesOpts> {
   constructor(opts: CopyTsFilesOpts) {
     super(opts);
-    this.program = null;
   }
 
   public async getOutputText(srcFilePath: string) {
-    const outputText = getSourceFileText(
-      this.program as ts.Program,
-      srcFilePath,
-      this.opts.stripTsImportsOfJsExt
-    );
+    const outputText = getSourceFileText({
+      program: (await this.opts.tsPrograms.getOrCreate(this.srcDirBasePath))
+        .tsProgram as ts.Program,
+      srcFilePath: srcFilePath,
+      stripTsImportsOfJsExt: this.opts.stripTsImportsOfJsExt,
+    });
 
     return outputText;
   }
@@ -49,34 +54,27 @@ export class CopyTsFiles extends CopySourceFilesBase<CopyTsFilesOpts> {
 
     return opts;
   }
-
-  async getAllSourceFiles() {
-    const allSrcFiles = await super.getAllSourceFiles();
-
-    this.program = ts.createProgram({
-      rootNames: allSrcFiles,
-      options: {
-        allowJs: true,
-      },
-    });
-
-    return allSrcFiles;
-  }
 }
 
-export const getSourceFileText = (
-  program: ts.Program,
-  srcFilePath: string,
-  stripTsImportsOfJsExt: boolean
-) => {
-  const sourceFile = program.getSourceFile(srcFilePath) as ts.SourceFile;
+export interface GetSourceFileTextOpts {
+  program: ts.Program;
+  srcFilePath: string;
+  stripTsImportsOfJsExt: boolean;
+}
+
+export const getSourceFileText = (opts: GetSourceFileTextOpts) => {
+  const sourceFile = opts.program.getSourceFile(
+    opts.srcFilePath
+  ) as ts.SourceFile;
   const textNodes: string[] = [];
 
   ts.forEachChild(sourceFile, (node) => {
-    textNodes.push(getDestNodeText(node, sourceFile, stripTsImportsOfJsExt));
+    textNodes.push(
+      getDestNodeText(node, sourceFile, opts.stripTsImportsOfJsExt)
+    );
   });
 
-  const outputText = textNodes.join("\n");
+  const outputText = textNodes.join("");
   return outputText;
 };
 
@@ -85,7 +83,7 @@ export const getDestNodeText = (
   sourceFile: ts.SourceFile,
   stripTsImportsOfJsExt: boolean
 ) => {
-  let text = node.getText(sourceFile);
+  let text = node.getFullText(sourceFile);
   const replStr = '.js";';
   const replWith = '";';
 

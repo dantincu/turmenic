@@ -5,7 +5,7 @@ import "./DriveItem.scss";
 import {
   DriveFolder as DriveFolderVm,
   DriveItem as DriveItemVm,
-} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+} from "../../src.node.common/app-data/device-app-drives/types";
 import { useSelector } from "react-redux";
 
 import { DriveFolderProps, DriveFileProps, DriveItemIdentity } from "./DriveItemProps";

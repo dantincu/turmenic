@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "./store";
 
-import { getEnumStrKeys } from "../js.common/dist/src.common/utils/enums.js";
-import { intIdGenerator } from "../js.common/dist/src.common/utils/intIdGenerator";
+import { getEnumStrKeys } from "../../src.common/utils/enums";
+import { intIdGenerator } from "../../src.common/data/intIdGenerator";
 
 export enum AppTestMsgTypes {
   t1 = 1,

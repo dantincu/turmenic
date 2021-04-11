@@ -1,4 +1,4 @@
-import { MouseDblClickableProps } from "../../jsx-cmp/mouseDblClickable/MouseDblClickableProps";
+import { MouseDblClickableProps } from "../../src.node.common.client/jsx-cmp/mouseDblClickable/MouseDblClickableProps";
 
 export interface MyMouseDblClickableProps extends MouseDblClickableProps {
   onDelayedClick?: () => void;

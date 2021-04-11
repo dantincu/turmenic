@@ -10,16 +10,14 @@ import {
   DriveFile,
   AppSession,
   DriveFolder,
-} from "../../js.common/src.node.common/app-data/device-app-drives/types";
+} from "../../src.node.common/app-data/device-app-drives/types";
 
 import { testData } from "./deviceAppDriveItems.test-data";
 import { DriveItemsService } from "./deviceAppDriveItems.service";
 
-import {
-  contains,
-  updateMergeArr,
-} from "../../js.common/dist/src.common/utils/arrays";
-import { DeviceRootDirLocation } from "../../js.common/src.node.common/app-data/schema/device-dir-locations.schema";
+import { updateMergeArr } from "../../src.common/arrays/arr-diff";
+import { contains } from "../../src.common/arrays/arrays";
+import { DeviceRootDirLocation } from "../../src.node.common/app-data/schema/device-dir-locations.schema";
 
 const initialState: DeviceAppDriveSessions = testData;
 const driveItemsService = new DriveItemsService();
