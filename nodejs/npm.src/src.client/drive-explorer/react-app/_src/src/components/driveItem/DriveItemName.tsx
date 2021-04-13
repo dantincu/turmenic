@@ -5,13 +5,13 @@ import "./DriveItem.scss";
 
 import { DriveItemNameProps } from "./DriveItemProps";
 import { MouseDblClickableProps } from "../../src.node.common.client/jsx-cmp/mouseDblClickable/MouseDblClickableProps";
-import { BtstrpElType, DomElAttrs } from "../../src.node.common.client/jsx-cmp/trmrComp/TrmrCompProps";
+import { BtstrpElType, DomElAttrs } from "../../src.node.common.client/jsx-cmp/trmrkComp/TrmrkCompProps";
 import MouseDblClickable from "../../src.node.common.client/jsx-cmp/mouseDblClickable/MouseDblClickable";
-import { cssClss } from "../const";
+import { trmrkCssClasses } from "../../src.node.common.client/dom.css-classes";
 
 const DriveItemName = (props: DriveItemNameProps) => {
   const getItemNameCssClasses = () => {
-    const cssClassesArr = [cssClss.trmrk.bootstrap.col, "trmrk-item-name"];
+    const cssClassesArr = [trmrkCssClasses.bootstrap.col, "trmrk-item-name"];
 
     const cssClasses = cssClassesArr.join(" ");
     return cssClasses;

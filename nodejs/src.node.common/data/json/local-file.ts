@@ -300,11 +300,8 @@ export abstract class MetadataLocalFileCollectionBase extends LocalFileCollectio
       const prevDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.prev);
       const nextDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.next);
 
-      await emptyDirAsync(currentDataDirPath);
-      // await this.copyJsonDataFiles(nextDataDirPath, currentDataDirPath);
+      await removeDirWithContentAsync(currentDataDirPath);
       await renameAsync(nextDataDirPath, currentDataDirPath);
-
-      await removeDirWithContentAsync(nextDataDirPath);
       await removeDirWithContentAsync(prevDataDirPath);
     }
 

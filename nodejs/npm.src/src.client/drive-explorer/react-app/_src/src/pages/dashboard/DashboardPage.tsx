@@ -10,7 +10,7 @@ import {
     selectAllAppDrives,
   } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
 
-import AddAppDrive from '../../components/addAppDrive/AddAppDrive';
+import AddAppDriveModal from '../../components/addAppDrive/AddAppDriveModal';
 import { DeviceRootDirLocation } from "../../src.node.common/app-data/schema/device-dir-locations.schema";
 import { ApiResponse } from '../../api/api.types';
 import { driveApi } from '../../api/drives.api';
@@ -69,7 +69,7 @@ const DashboardPage = (props: DashboardPageProps) => {
         <h5>Local app drives</h5>
         {getAppDrivesComponents()}
         <Button color="primary" onClick={addAppDriveModalToggle}>Add</Button>
-        <AddAppDrive isOpen={addAppDriveModal} toggle={addAppDriveModalToggle} onSubmit={onAddAppDriveSubmitted}></AddAppDrive>
+        <AddAppDriveModal isOpen={addAppDriveModal} toggle={addAppDriveModalToggle} onSubmit={onAddAppDriveSubmitted}></AddAppDriveModal>
     </AppPage>);
 };
 

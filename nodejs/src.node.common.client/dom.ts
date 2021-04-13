@@ -39,19 +39,19 @@ export const replaceClassList = (
 };
 
 export const updateParentWidth = (opts: {
-  uuid: string;
-  parentUuid: string;
+  itemUuid: string;
+  rootFolderUuid: string;
 }) => {
   const domEl = document.querySelectorAll(
-    `[trmrk-drive-item-uuid="${opts.uuid}"]`
+    `[trmrk-drive-item-uuid="${opts.itemUuid}"]`
   )[0];
   const domElWidth = domEl.clientWidth + domEl.clientLeft;
 
-  const parentDomEl = document.querySelectorAll(
-    `[trmrk-drive-item-uuid="${opts.parentUuid}"]`
+  const rootDomEl = document.querySelectorAll(
+    `[trmrk-drive-item-uuid="${opts.rootFolderUuid}"]`
   )[0] as HTMLElement;
 
-  const parentDomElClientLeft = parentDomEl.clientLeft;
+  const rootDomElClientLeft = rootDomEl.clientLeft;
 
   const domElSubNodesMaxWidth = [
     ...domEl.querySelectorAll("[trmrk-drive-item-uuid]"),
@@ -61,7 +61,5 @@ export const updateParentWidth = (opts: {
 
   const domElAllNodesMaxWidth = Math.max(domElSubNodesMaxWidth, domElWidth);
 
-  parentDomEl.style.width = `${
-    domElAllNodesMaxWidth - parentDomElClientLeft
-  }px`;
+  rootDomEl.style.width = `${domElAllNodesMaxWidth - rootDomElClientLeft}px`;
 };

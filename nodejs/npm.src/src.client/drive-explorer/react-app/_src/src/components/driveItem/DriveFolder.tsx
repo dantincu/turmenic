@@ -9,7 +9,7 @@ import {
 import { useSelector } from "react-redux";
 
 import { DriveFolderProps, DriveFileProps, DriveItemIdentity } from "./DriveItemProps";
-import { cssClss } from "../const";
+import { trmrkCssClasses } from "../../src.node.common.client/dom.css-classes";
 import DriveItemName from "./DriveItemName";
 
 const DriveFolder = (props: DriveFolderProps) => {
@@ -66,11 +66,11 @@ const DriveFolder = (props: DriveFolderProps) => {
 
   const getToggleCol = (expanded?: boolean) => {
     const togglCssClassArr = [
-      cssClss.trmrk.bootstrap.col,
-      cssClss.trmrk.toggle.base,
+      trmrkCssClasses.bootstrap.col,
+      trmrkCssClasses.toggle.base,
       expanded ?? false
-        ? cssClss.trmrk.toggle.expanded
-        : cssClss.trmrk.toggle.collapsed,
+        ? trmrkCssClasses.toggle.expanded
+        : trmrkCssClasses.toggle.collapsed,
     ];
 
     const togglCssClass = togglCssClassArr.join(" ");
@@ -128,7 +128,7 @@ const DriveFolder = (props: DriveFolderProps) => {
     let arr = subFolders.map(folderToComp);
     arr = arr.concat(folder.files?.map(fileToComp) ?? []);
 
-    return <Col className={`${cssClss.trmrk.bootstrap.col}`}>{arr}</Col>;
+    return <Col className={`${trmrkCssClasses.bootstrap.col}`}>{arr}</Col>;
   };
 
   const getChildrenRow = () => {
@@ -136,7 +136,7 @@ const DriveFolder = (props: DriveFolderProps) => {
 
     if (folder.expanded === true) {
       childrenRow = (
-        <Row className={cssClss.trmrk.bootstrap.row}>{getChildrenCol()}</Row>
+        <Row className={trmrkCssClasses.bootstrap.row}>{getChildrenCol()}</Row>
       );
     }
 
@@ -145,8 +145,8 @@ const DriveFolder = (props: DriveFolderProps) => {
 
   const getMainCol = () => {
     return (
-      <Col xs="xs-1" className={cssClss.trmrk.bootstrap.col}>
-        <Row className={`${cssClss.trmrk.bootstrap.row} trmrk-main-row`}>
+      <Col xs="xs-1" className={trmrkCssClasses.bootstrap.col}>
+        <Row className={`${trmrkCssClasses.bootstrap.row} trmrk-main-row`}>
           <DriveItemName
             itemName={props.label ?? folder.name}
             itemTooltipText={folder.path ?? ""}
@@ -164,17 +164,17 @@ const DriveFolder = (props: DriveFolderProps) => {
   const getCssClassName = () => {
     const cssClassArr = [
       "trmrk-drive-item",
-      cssClss.trmrk.bootstrap.row,
+      trmrkCssClasses.bootstrap.row,
       "trmrk-drive-folder",
       "flex-nowrap"
     ];
 
     if (folder.isSelected === true) {
-      cssClassArr.push(cssClss.trmrk.item.selected);
+      cssClassArr.push(trmrkCssClasses.item.selected);
     }
 
     if (folder.isCurrent === true) {
-      cssClassArr.push(cssClss.trmrk.item.current);
+      cssClassArr.push(trmrkCssClasses.item.current);
     }
 
     if (props.cssClass) {

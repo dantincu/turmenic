@@ -15,6 +15,7 @@ const AddAppDrive = (props: AddAppDriveProps) => {
     const [path, setPath] = useState("");
 
     const [displayNameErrMsg, setDisplayNameErrMsg] = useState<string | null>(null);
+    const [descriptionErrMsg, setDescriptionErrMsg] = useState<string | null>(null);
     const [pathErrMsg, setPathErrMsg] = useState<string | null>(null);
 
     const [apiCallErrMsg, setApiCallErrMsg] = useState<string | null>(null);
@@ -154,7 +155,7 @@ const AddAppDrive = (props: AddAppDriveProps) => {
                 </FormGroup>
                 <FormGroup>
                     <Label title="Type something that will help you remember what this app drive contains and/or what you'll be using it for">Description</Label>
-                    <Input type="text" value={displayName} onChange={descriptionChanged} className={getClassName(displayNameErrMsg)}></Input>
+                    <Input type="text" value={description} onChange={descriptionChanged}></Input>
                 </FormGroup>
                 <FormGroup>
                     <Label title="Click the browse button bellow or paste the file path this drive will be mapped to">Path</Label>

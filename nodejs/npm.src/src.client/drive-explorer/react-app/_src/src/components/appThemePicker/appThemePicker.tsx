@@ -10,7 +10,7 @@ import {
   defaultAppTheme,
 } from "../../app/appTheme/appTheme";
 
-import { urlQueryParams } from "../const";
+import { urlQueryParams } from "../../src.node.common.client/url";
 import { replaceClassList } from "../../src.node.common.client/dom";
 
 import { AppThemePickerProps } from "./appThemePickerProps";
