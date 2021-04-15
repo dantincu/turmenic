@@ -160,6 +160,7 @@ export const selectFile = (folderUuid: string, fileUuid: string) => (
 };
 
 export const {
+  updateAppDrives,
   toggleFolder,
   renameFolder,
   renameFile,

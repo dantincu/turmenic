@@ -1,6 +1,6 @@
 import Hapi from "@hapi/hapi";
 
-import { HapiServerOptions } from "../../src.node.common.server/api/hapi/index.js";
+import { HapiServerOptions } from "../../src.node.common.server/api/hapi/hapi.js";
 import {
   getDefaultAuthRoute,
   getDefaultHomeRoute,

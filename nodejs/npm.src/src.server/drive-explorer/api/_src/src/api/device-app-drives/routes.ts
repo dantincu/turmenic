@@ -1,7 +1,8 @@
 import Hapi from "@hapi/hapi";
 
 import { getCorsConfig } from "../../../src.node.common.server/api/hapi/server.js";
-import { HapiServerOptions } from "../../../src.node.common.server/api/hapi/index.js";
+import { HapiServerOptions } from "../../../src.node.common.server/api/hapi/hapi.js";
+import { handleResponse } from "../../../src.node.common.server/api/hapi/routes.js";
 
 import {
   getDeviceRootFolders,
@@ -21,7 +22,9 @@ export const addDeviceAppDrivesRoutes = (
     },
     handler: async function (request, h) {
       const result = await getDeviceRootFolders(request.query.refresh);
-      return result;
+      const response = handleResponse(result, request, h);
+
+      return response;
     },
   });
 
@@ -33,7 +36,9 @@ export const addDeviceAppDrivesRoutes = (
     },
     handler: async function (request, h) {
       const result = await getDeviceAppDrives();
-      return result;
+      const response = handleResponse(result, request, h);
+
+      return response;
     },
   });
 
@@ -44,7 +49,10 @@ export const addDeviceAppDrivesRoutes = (
       cors: getCorsConfig(opts),
     },
     handler: async function (request, h) {
-      await addDeviceAppDrive(request.payload.toString());
+      const result = await addDeviceAppDrive(request.payload);
+      const response = handleResponse(result, request, h);
+
+      return response;
     },
   });
 };

@@ -33,33 +33,32 @@ import {
   reqStrValIsValid,
 } from "../../../src.common/validation/text.js";
 
-import { isDirEntry } from "../../../src.node.common/fileSystem/fileSystem.js";
+import { readDirIfExists } from "../../../src.node.common/fileSystem/types.async.js";
 
-import { AddAppDrive } from "./request.types.js";
+import { AddAppDrive } from "../../../src.node.common/app-data/device-app-drives/request.types.js";
 
 export const deviceAppDrive = {
   validateAndNormalize: async (newAppDrive: AddAppDrive) => {
-    if (reqStrValIsValid(newAppDrive.label)) {
-      throw Boom.badRequest("App Drive name required");
+    let result: AddAppDrive | Boom.Boom | null = null;
+
+    if (reqStrValIsValid(newAppDrive.label) !== true) {
+      result = Boom.badRequest("App Drive label required");
+    } else if (reqStrValIsValid(newAppDrive.path) !== true) {
+      result = Boom.badRequest("App Drive path required");
+    } else if (isValidPath(newAppDrive.path) !== true) {
+      result = Boom.badRequest("App Drive path is invalid");
+    } else if ((await readDirIfExists(newAppDrive.path)) === null) {
+      result = Boom.badRequest("App Drive path does not point to a directory");
+    } else {
+      newAppDrive.name = newAppDrive.path
+        .split(/[\/\\]+/g) // gets path segments
+        .filter((s) => !!s) // excludes empty segments (like the trailing one if the provided path ends with path separator)
+        .pop() as string; // returns the dir name as the last non empty path segment
+
+      newAppDrive.path = path.normalize(newAppDrive.path);
+      result = newAppDrive;
     }
 
-    if (reqStrValIsValid(newAppDrive.path)) {
-      throw Boom.badRequest("App Drive path required");
-    }
-
-    if (isValidPath(newAppDrive.path) !== true) {
-      throw Boom.badRequest("App Drive path is invalid");
-    }
-
-    if ((await isDirEntry(newAppDrive.path)) !== true) {
-      throw Boom.badRequest("App Drive path does not point to a directory");
-    }
-
-    newAppDrive.name = newAppDrive.name
-      .split(/[\/\\]+/g) // gets path segments
-      .filter((s) => !!s) // excludes empty segments (like the trailing one if the provided path ends with path separator)
-      .pop() as string; // returns the dir name as the last non empty path segment
-
-    return newAppDrive;
+    return result;
   },
 };

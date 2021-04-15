@@ -111,6 +111,8 @@ export const readDirIfExists = async (dirPath: string) => {
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err;
+    } else {
+      console.log("readDirIfExists ENOENT", dirPath);
     }
   }
 

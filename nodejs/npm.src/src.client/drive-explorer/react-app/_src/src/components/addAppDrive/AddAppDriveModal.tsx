@@ -3,14 +3,15 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, La
 import Loader from "react-loader-spinner";
 
 import { AddAppDriveModalProps, AppDriveFields } from './AddAppDriveModalProps';
-import { DeviceRootDirLocation } from "../../src.node.common/app-data/schema/device-dir-locations.schema";
-import { ApiResponse } from '../../api/api.types';
+import { ApiResponse, ApiError } from '../../api/api.types';
 
 import FormField from '../../src.node.common.client/jsx-cmp/formField/FormField';
 import { FormFieldProps, FieldValidationRules } from '../../src.node.common.client/jsx-cmp/formField/FormFieldProps';
 
 import { FormFieldData, getStrVal, reqValIsValid } from '../../src.node.common.client/jsx-cmp/formField/FormFieldData';
 import { trmrkCssClasses } from '../../src.node.common.client/dom.css-classes';
+
+import { AddAppDrive } from '../../src.node.common/app-data/device-app-drives/request.types';
 
 const AddAppDriveModal = (props: AddAppDriveModalProps) => {
     const [formDisabled, setFormDisabled] = useState(false);
@@ -79,8 +80,11 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
     const getApiCallErrMsg = (apiResponse: ApiResponse<any, any>) => {
         let errMsg = "An error ocurred";
 
-        if (apiResponse.response && (apiResponse.response.status || apiResponse.response.statusText)) {
-            errMsg = `${errMsg}: ${apiResponse.response.status} - ${apiResponse.response.statusText}`;
+        console.log("apiResponse", apiResponse);
+
+        if (apiResponse.apiError) {
+            const errData = apiResponse.apiError as ApiError;
+            errMsg = `${errData.error}: ${errData.statusCode} - ${errData.message}`;
         }
 
         return errMsg;
@@ -100,10 +104,10 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
         onFormSubmitted();
         if (validateForm() === true) {
             const apiResponse = await props.onSubmit({
-                name: formFields.displayName,
+                label: formFields.displayName,
                 description: formFields.description,
-                absPath: formFields.path,
-            } as DeviceRootDirLocation);
+                path: formFields.path,
+            } as AddAppDrive);
             if ((apiResponse.response?.status ?? 400) < 300) {
                 onFormResumed();
                 props.toggle();

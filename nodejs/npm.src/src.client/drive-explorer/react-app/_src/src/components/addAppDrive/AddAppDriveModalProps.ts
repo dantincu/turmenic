@@ -1,5 +1,6 @@
-import { DeviceRootDirLocation } from "../../src.node.common/app-data/schema/device-dir-locations.schema";
 import { ApiResponse } from "../../api/api.types";
+import { AddAppDrive } from "../../src.node.common/app-data/device-app-drives/request.types";
+import { AppDrive } from "../../src.node.common/app-data/device-app-drives/types";
 
 export interface AppDriveFields {
   displayName: string;
@@ -11,7 +12,5 @@ export interface AddAppDriveModalProps {
   initialData?: AppDriveFields | null | undefined;
   isOpen: boolean;
   toggle: () => void;
-  onSubmit: (
-    newAppDrive: DeviceRootDirLocation
-  ) => Promise<ApiResponse<DeviceRootDirLocation[], any>>;
+  onSubmit: (newAppDrive: AddAppDrive) => Promise<ApiResponse<AppDrive, any>>;
 }

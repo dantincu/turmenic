@@ -1,3 +1,5 @@
+import { Boom } from "@hapi/boom";
+
 import {
   AppDrive,
   DriveFile,
@@ -9,7 +11,7 @@ import {
   DeviceAppDriveSessions,
 } from "../../../src.node.common/app-data/device-app-drives/types.js";
 
-import { handleRoute } from "../api.base.js";
+import { handleRoute } from "../../../src.node.common.server/api/hapi/routes.js";
 import { DeviceAppRootFolders } from "../../fileSystem/deviceRootFolders.js";
 import { FileSystem } from "../../fileSystem/fileSystem.js";
 
@@ -21,7 +23,7 @@ import {
   reqStrValIsValid,
 } from "../../../src.common/validation/text.js";
 
-import { AddAppDrive } from "./request.types.js";
+import { AddAppDrive } from "../../../src.node.common/app-data/device-app-drives/request.types.js";
 
 const deviceAppRootFolders = new DeviceAppRootFolders();
 const fileSystem = new FileSystem(deviceAppRootFolders);
@@ -48,17 +50,24 @@ export const getDeviceAppDrives = async () => {
   return result;
 };
 
-export const addDeviceAppDrive = async (payload: string) => {
+export const addDeviceAppDrive = async (payload: any) => {
   const result = await handleRoute(async () => {
-    const newAppDrive: AddAppDrive = JSON.parse(payload);
-    deviceAppDrive.validateAndNormalize(newAppDrive);
+    let newAppDrive: AddAppDrive | Boom = payload as AddAppDrive;
+    newAppDrive = await deviceAppDrive.validateAndNormalize(newAppDrive);
 
-    const addedAppDrive = await deviceAppDrivesData.addDeviceAppDrive(
-      newAppDrive
-    );
+    let addedAppDrive: AppDrive | Boom | null = null;
+
+    if ((newAppDrive as Boom).isBoom === true) {
+      addedAppDrive = newAppDrive as Boom;
+    } else {
+      addedAppDrive = await deviceAppDrivesData.addDeviceAppDrive(
+        newAppDrive as AddAppDrive
+      );
+    }
 
     return addedAppDrive;
   });
 
+  console.log("addDeviceAppDrive result", result);
   return result;
 };
