@@ -283,19 +283,16 @@ export abstract class DataCollectionBase<
     dataList?: TData[] | null,
     safeMode?: boolean | null
   ): Promise<DataSaveResult<TData, TJsonData>> {
-    if (!dataList && !this.currentData) {
+    dataList = dataList ?? this.currentData ?? [];
+    if (!dataList || dataList.length === 0) {
       throw new Error("Cannot save empty data to file!");
     }
 
     safeMode = safeMode ?? false;
-
     await this.onBeginDataAccess();
-    this.insertedUuids = this.insertedUuids ?? [];
 
-    const jsonData = this.getJsonDataForSave(
-      dataList ?? this.currentData ?? [],
-      this.insertedUuids
-    );
+    this.insertedUuids = this.insertedUuids ?? [];
+    const jsonData = this.getJsonDataForSave(dataList, this.insertedUuids);
 
     const dataSaveResultRaw = await this.saveJsonData(jsonData, safeMode);
     dataList = this.getDataForFetch(jsonData);

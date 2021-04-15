@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
-import { ApiBase } from "./api.base";
-import { ApiResponse } from "./api.types";
+import { ApiBase } from "../src.node.common.client/axios/api.base";
+import { ApiResponse } from "../src.node.common.client/axios/api.types";
 
 export class AuthApi extends ApiBase {
   constructor(baseUrl?: string) {

@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, La
 import Loader from "react-loader-spinner";
 
 import { AddAppDriveModalProps, AppDriveFields } from './AddAppDriveModalProps';
-import { ApiResponse, ApiError } from '../../api/api.types';
+import { ApiResponse, ApiError } from '../../src.node.common.client/axios/api.types';
 
 import FormField from '../../src.node.common.client/jsx-cmp/formField/FormField';
 import { FormFieldProps, FieldValidationRules } from '../../src.node.common.client/jsx-cmp/formField/FormFieldProps';

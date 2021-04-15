@@ -68,6 +68,5 @@ export const addDeviceAppDrive = async (payload: any) => {
     return addedAppDrive;
   });
 
-  console.log("addDeviceAppDrive result", result);
   return result;
 };

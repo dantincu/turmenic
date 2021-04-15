@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-import { ApiResponse, ApiError } from "./api.types";
+import { ApiResponse, ApiError } from "./api.types.js";
 
 export abstract class ApiBase {
   baseUrl: string;
@@ -59,7 +59,11 @@ export abstract class ApiBase {
     if (this.isResponseSuccessfull(response.response)) {
       response.result = response.response?.data;
     } else {
-      response.apiError = response.reqError?.response?.data;
+      response.apiError = response.reqError?.response?.data ?? {
+        statusCode: null,
+        error: response.reqError?.code,
+        message: response.reqError?.message,
+      };
     }
   }
 }

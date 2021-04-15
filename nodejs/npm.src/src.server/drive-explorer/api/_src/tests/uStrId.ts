@@ -1,3 +1,4 @@
+import { appConsole } from "../src.common/logging/appConsole.js";
 import { uStrId } from "../src.node.common/data/uStrId.js";
 
 export const genBase64Charset = () => {
@@ -33,22 +34,22 @@ const runTest = (count: number) => {
 
   const endTime = new Date();
 
-  // console.log("RESULT DATA", arr);
+  // appConsole.log("RESULT DATA", arr);
 
-  console.log(
+  appConsole.log(
     `MILLIS ELAPSED FOR ${count}: ${endTime.getTime() - startTime.getTime()}`
   );
 
-  /* console.log();
-  console.log(" >>>> ");
-  console.log();
-  console.log(`STARTING TEST FOR ${count} IDS`);
-  console.log("START TIME", startTime);
-  console.log("END TIME", endTime);
-  console.log("MILLIS ELAPSED", endTime.getTime() - startTime.getTime());
-  console.log();
-  console.log(" >>>> ");
-  console.log(); */
+  /* appConsole.log();
+  appConsole.log(" >>>> ");
+  appConsole.log();
+  appConsole.log(`STARTING TEST FOR ${count} IDS`);
+  appConsole.log("START TIME", startTime);
+  appConsole.log("END TIME", endTime);
+  appConsole.log("MILLIS ELAPSED", endTime.getTime() - startTime.getTime());
+  appConsole.log();
+  appConsole.log(" >>>> ");
+  appConsole.log(); */
 };
 
 runTest(250);

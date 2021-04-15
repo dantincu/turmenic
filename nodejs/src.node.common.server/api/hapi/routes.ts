@@ -42,15 +42,11 @@ export const handleResponse = <TResult>(
   h: Hapi.ResponseToolkit
 ) => {
   let response: Hapi.ResponseObject | null = null;
-  console.log("handleResponse", result);
 
   if ((result as any).isBoom === true) {
-    console.log("isBoom");
     response = boomToResponse(result as Boom.Boom, h);
-    console.log("isBoom response", response);
   } else {
     response = h.response(result as Hapi.ResponseValue);
-    console.log("response", response);
   }
 
   return response;

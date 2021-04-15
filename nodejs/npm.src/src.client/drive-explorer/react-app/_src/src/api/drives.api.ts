@@ -1,7 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 
-import { ApiBase } from "./api.base";
-import { ApiResponse, ApiError } from "./api.types";
+import { ApiBase } from "../src.node.common.client/axios/api.base";
+import {
+  ApiResponse,
+  ApiError,
+} from "../src.node.common.client/axios/api.types";
 import { FileSystemRootFolder } from "../src.node.common/app-data/fileSystem.types";
 import { DeviceRootDirLocation } from "../src.node.common/app-data/schema/device-dir-locations.schema";
 import { AppDrive } from "../src.node.common/app-data/device-app-drives/types";
@@ -20,6 +23,7 @@ export class DriveApi extends ApiBase {
       const url = this.getUrl("device-root-folders");
       const result: AxiosResponse<FileSystemRootFolder[]> = await axios(url);
 
+      console.log("result", result);
       return result;
     });
 

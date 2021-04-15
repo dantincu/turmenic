@@ -127,6 +127,6 @@ export const getDefaultAuthRoute = (opts: HapiServerOptions) => {
 export const startServer = async (server: Hapi.Server) => {
   await server.start();
 
-  console.log("server running at: " + server.info.uri);
+  appConsole.log("server running at: " + server.info.uri);
   return server;
 };

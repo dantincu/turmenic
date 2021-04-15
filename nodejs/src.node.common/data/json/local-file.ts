@@ -176,10 +176,17 @@ export abstract class LocalFileCollectionBase<
         dataSourceFileNames.bckp
       );
 
-      await this.saveJsonToFile(jsonData, dataSourceFileNames.bckp);
+      await this.saveJsonToFile(
+        jsonData,
+        dataSourceDirNames.current,
+        dataSourceFileNames.bckp
+      );
 
       await rmAsync(fileName);
-      await renameAsync(backupFileName, fileName);
+
+      try {
+        await renameAsync(backupFileName, fileName);
+      } catch (err) {}
     }
   }
 

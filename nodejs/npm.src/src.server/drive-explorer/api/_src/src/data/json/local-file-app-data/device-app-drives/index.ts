@@ -46,7 +46,9 @@ const getDataCollectionOptions = <TData, TJsonData>(
     dataCollectionName
   );
 
-  opts.dataSaveOptions = {};
+  opts.dataSaveOptions = {
+    uuidPropName: "uuid",
+  };
 
   return opts;
 };

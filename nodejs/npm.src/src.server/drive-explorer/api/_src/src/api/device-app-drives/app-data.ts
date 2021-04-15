@@ -17,6 +17,8 @@ import {
 } from "../../../src.node.common/app-data/schema/device-dir-locations.schema.js";
 import { deviceDirLocationTypeKeys } from "../../data/app-data/deviceDirLocationTypes.js";
 
+import { appConsole } from "../../../src.common/logging/appConsole.js";
+
 const appEnv = await envConfig.appEnv.instance();
 export const appLocalFileDataSource = new AppLocalFileDataSource(appEnv);
 export const deviceAppDrivesDataSource = new DeviceAppDrivesDataSource(appEnv);

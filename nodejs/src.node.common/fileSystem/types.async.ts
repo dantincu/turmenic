@@ -28,7 +28,6 @@ export const readdirAsync = async (
           }
         );
       } catch (err) {
-        console.log("readdirAsync catch error", err);
         reject(err);
       }
     }
@@ -46,7 +45,6 @@ export const readDirIfExists = async (dirPath: string) => {
     if (err.code !== "ENOENT") {
       throw err;
     } else {
-      console.log("readDirIfExists ENOENT", dirPath);
     }
   }
 

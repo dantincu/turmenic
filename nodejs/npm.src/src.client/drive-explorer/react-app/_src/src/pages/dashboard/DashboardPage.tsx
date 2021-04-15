@@ -14,7 +14,7 @@ import {
 import AddAppDriveModal from '../../components/addAppDrive/AddAppDriveModal';
 import { AppDrive } from '../../src.node.common/app-data/device-app-drives/types';
 import { AddAppDrive } from '../../src.node.common/app-data/device-app-drives/request.types';
-import { ApiResponse } from '../../api/api.types';
+import { ApiResponse } from '../../src.node.common.client/axios/api.types';
 import { driveApi } from '../../api/drives.api';
 
 const DashboardPage = (props: DashboardPageProps) => {
