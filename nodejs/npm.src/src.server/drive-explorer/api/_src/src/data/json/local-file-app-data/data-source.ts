@@ -26,7 +26,7 @@ import {
   ServicePlatformUserAccountCollection,
   AppMetadataLocalFileCollection,
   appLocalFileDataSourceInfo,
-} from "./index.js";
+} from "./local-file-app-data.js";
 
 import {
   CloudStoragePlatform,

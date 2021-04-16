@@ -9,21 +9,21 @@
     min-height: 88vh;
   }
 
-  label.error {
+  .trmrk-validation-error {
     color: red;
   }
 
-  input.error {
+  .trmrk-input-error {
     border-color: red;
   }
 }
 
 .trmrk-app-modal {
-  label.error {
+  .trmrk-validation-error {
     color: red;
   }
 
-  input.error {
+  .trmrk-input-error {
     border-color: red;
   }
 }

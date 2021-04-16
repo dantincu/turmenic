@@ -10,45 +10,47 @@ import {
 } from "../../src.node.common/fileSystem/types.js";
 import { DeviceRootFolders } from "../../src.node.common.server/fileSystem/deviceRootFolders.js";
 
+import { appConsole } from "../../src.common/logging/appConsole.js";
+
 const runTest = async () => {
   const deviceRootFolders = new DeviceRootFolders();
 
-  console.log("Running testFs");
+  appConsole.log("Running testFs");
 
   const homeDirPath = deviceRootFolders.getUserHomeDirPath();
-  console.log("homeDirPath", homeDirPath);
+  appConsole.log("homeDirPath", homeDirPath);
 
   const deviceDriveMountPoints = await deviceRootFolders.getDeviceDriveMountPoints();
-  console.log("deviceDriveMountPoints", deviceDriveMountPoints);
+  appConsole.log("deviceDriveMountPoints", deviceDriveMountPoints);
 
   deviceDriveMountPoints.forEach(async (m) => {
     // const dirEntries = await tryGetDirEntries(m.path);
     const dirEntries = await getDirEntries(m.drivePath);
-    console.log(`FOR ${m.drivePath} >>>> \n`);
+    appConsole.log(`FOR ${m.drivePath} >>>> \n`);
 
     printEntries(dirEntries);
-    console.log("\n\n");
+    appConsole.log("\n\n");
   });
 
-  console.log("getCacheFolder", pf.getCacheFolder());
-  console.log("getConfigFolders", pf.getConfigFolders());
-  console.log("getConfigHome", pf.getConfigHome());
-  console.log("getDataFolders", pf.getDataFolders());
-  console.log("getDataHome", pf.getDataHome());
-  console.log("getDesktopFolder", pf.getDesktopFolder());
-  console.log("getDocumentsFolder", pf.getDocumentsFolder());
-  console.log("getDownloadsFolder", pf.getDownloadsFolder());
-  console.log("getHomeFolder", pf.getHomeFolder());
-  console.log("getMusicFolder", pf.getMusicFolder());
-  console.log("getPicturesFolder", pf.getPicturesFolder());
-  console.log("getSaveGamesFolder", pf.getSaveGamesFolder());
-  console.log("getVideosFolder", pf.getVideosFolder());
+  appConsole.log("getCacheFolder", pf.getCacheFolder());
+  appConsole.log("getConfigFolders", pf.getConfigFolders());
+  appConsole.log("getConfigHome", pf.getConfigHome());
+  appConsole.log("getDataFolders", pf.getDataFolders());
+  appConsole.log("getDataHome", pf.getDataHome());
+  appConsole.log("getDesktopFolder", pf.getDesktopFolder());
+  appConsole.log("getDocumentsFolder", pf.getDocumentsFolder());
+  appConsole.log("getDownloadsFolder", pf.getDownloadsFolder());
+  appConsole.log("getHomeFolder", pf.getHomeFolder());
+  appConsole.log("getMusicFolder", pf.getMusicFolder());
+  appConsole.log("getPicturesFolder", pf.getPicturesFolder());
+  appConsole.log("getSaveGamesFolder", pf.getSaveGamesFolder());
+  appConsole.log("getVideosFolder", pf.getVideosFolder());
 };
 
 const printEntries = (entries: string[]) => {
   for (let i = 0; i < entries.length; i++) {
     const str = JSON.stringify(entries[i]);
-    console.log(str);
+    appConsole.log(str);
   }
 };
 

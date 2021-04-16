@@ -5,8 +5,8 @@ import {
 } from "../../../../../../src.node.common/data/json/update/manager.js";
 import { DataSourceUpdateBase } from "../../../../../../src.node.common/data/json/update/data-source.js";
 
-import { AppMetadataLocalFileCollection } from "../../index.js";
-import { appLocalFileDataSourceInfo } from "../../index.js";
+import { AppMetadataLocalFileCollection } from "../../local-file-app-data.js";
+import { appLocalFileDataSourceInfo } from "../../local-file-app-data.js";
 import { DeviceAppDrivesDataSource } from "../data-source.js";
 import { DeviceAppDrives_Init_To_V_0_1_0_Update } from "./init-to-v0_1_0.js";
 

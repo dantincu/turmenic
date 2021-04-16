@@ -71,7 +71,7 @@
     "src/**/*",
     "index.ts",
     "tests/*",
-    "tests/FileSystem/*", "src.node.common/app-data/schema",
+    "tests/FileSystem/*", "src.node.common/app-data/schema", "src.node.common/app-data/device-app-drives/request.types.ts", "src.node.common.server/api/hapi/api.base.ts",
   ],
   "exclude":[
       "node_modules",

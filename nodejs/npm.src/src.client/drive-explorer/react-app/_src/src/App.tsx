@@ -11,7 +11,7 @@ import AppFooter from "./components/appFooter/AppFooter";
 import AppDrivesExplorerPage from "./pages/app-drives-explorer/AppDrivesExplorerPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 
-import { driveApi } from "./api/drives.api";
+import { authApi } from "./api/auth.api";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(true);
@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     if (authenticated !== true && error === false) {
-      driveApi.assureAuth().then(
+      authApi.assureAuth().then(
         (auth) => {
           setAuthenticated(auth);
           setError(!auth);

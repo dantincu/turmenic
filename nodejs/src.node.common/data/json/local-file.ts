@@ -176,10 +176,17 @@ export abstract class LocalFileCollectionBase<
         dataSourceFileNames.bckp
       );
 
-      await this.saveJsonToFile(jsonData, dataSourceFileNames.bckp);
+      await this.saveJsonToFile(
+        jsonData,
+        dataSourceDirNames.current,
+        dataSourceFileNames.bckp
+      );
 
       await rmAsync(fileName);
-      await renameAsync(backupFileName, fileName);
+
+      try {
+        await renameAsync(backupFileName, fileName);
+      } catch (err) {}
     }
   }
 
@@ -202,10 +209,16 @@ export abstract class LocalFileCollectionBase<
       dataDirName,
       fileNameSuffix
     );
+
     saveJsonToFileAsync(jsonData, dataJsonFilePath);
   }
 
-  async onBeginDataAccess(): Promise<void> {
+  async onBeginDataAccess(
+    write: boolean,
+    safeMode?: boolean | null | undefined
+  ): Promise<void> {
+    await super.onBeginDataAccess(write, safeMode);
+
     await createDirIfNotExisting(this.dataDirBasePath);
     const dirPath = this.getDataJsonDirPath();
     await createDirIfNotExisting(dirPath);
@@ -300,11 +313,8 @@ export abstract class MetadataLocalFileCollectionBase extends LocalFileCollectio
       const prevDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.prev);
       const nextDataDirPath = this.getDataJsonDirPath(dataSourceDirNames.next);
 
-      await emptyDirAsync(currentDataDirPath);
-      // await this.copyJsonDataFiles(nextDataDirPath, currentDataDirPath);
+      await removeDirWithContentAsync(currentDataDirPath);
       await renameAsync(nextDataDirPath, currentDataDirPath);
-
-      await removeDirWithContentAsync(nextDataDirPath);
       await removeDirWithContentAsync(prevDataDirPath);
     }
 

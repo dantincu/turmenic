@@ -95,6 +95,8 @@ const createAppDrive = (
     label: "root drive",
     rootFolder: folder,
     rootFolderNode: node,
+    deviceRootDirLocationUuid: "",
+    sortIdx: 0,
   });
 };
 

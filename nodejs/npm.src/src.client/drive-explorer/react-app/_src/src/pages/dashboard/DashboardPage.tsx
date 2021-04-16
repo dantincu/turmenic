@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'reactstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import AppPage from '../AppPage';
@@ -8,36 +8,20 @@ import { DashboardPageProps } from './DashboardPageProps';
 
 import {
     selectAllAppDrives,
+    updateAppDrives
   } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
 
-import AddAppDrive from '../../components/addAppDrive/AddAppDrive';
-import { DeviceRootDirLocation } from "../../src.node.common/app-data/schema/device-dir-locations.schema";
-import { ApiResponse } from '../../api/api.types';
+import AddAppDriveModal from '../../components/addAppDrive/AddAppDriveModal';
+import { AppDrive } from '../../src.node.common/app-data/device-app-drives/types';
+import { AddAppDrive } from '../../src.node.common/app-data/device-app-drives/request.types';
+import { ApiResponse } from '../../src.node.common.client/axios/api.types';
 import { driveApi } from '../../api/drives.api';
 
 const DashboardPage = (props: DashboardPageProps) => {
-    const [storeAppDrivesLoaded, setStoreAppDrivesLoaded] = useState(false);
-    const [storeAppDrivesLoading, setStoreAppDrivesLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const [addAppDriveModal, setAddAppDriveModal] = useState(false);
     const storeAppDrives = useSelector(selectAllAppDrives);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const apiResponse = await driveApi.getDeviceAppDrives();
-            if ((apiResponse.response?.status ?? 400) < 300) {
-                const retAppDrives = apiResponse.result ?? [];
-            }
-            setStoreAppDrivesLoaded(true);
-        }
-
-        if (!storeAppDrivesLoaded) {
-            if (!storeAppDrivesLoading) {
-                fetchData();
-                setStoreAppDrivesLoading(true);
-            }
-        }
-    }, []);
 
     const getAppDrivesComponents = () => {
         if (storeAppDrives.length > 0) {
@@ -45,7 +29,8 @@ const DashboardPage = (props: DashboardPageProps) => {
                 <p>Here is a complete list of all local app drives</p>
                 <ul> {
                 storeAppDrives.map(ad => {
-                    <li><label title={ad.rootFolder.path ?? ""}>{ad.label ?? ad.rootFolder.name}</label></li>
+                    const domEl = (<li><label title={ad.rootFolder.path ?? ""}>{ad.label ?? ad.rootFolder.name}</label></li>);
+                    return domEl;
                 })
             } </ul>
             <p>Click the button bellow to add more drives to the app</p>
@@ -55,10 +40,14 @@ const DashboardPage = (props: DashboardPageProps) => {
         }
     }
 
-    const onAddAppDriveSubmitted = async (newAppDrive: DeviceRootDirLocation): Promise<ApiResponse<DeviceRootDirLocation[], any>> => {
-        return {
+    const onAddAppDriveSubmitted = async (newAppDrive: AddAppDrive): Promise<ApiResponse<AppDrive, any>> => {
+        const apiResponse = await driveApi.addAppDrive(newAppDrive);
 
-        } as ApiResponse<DeviceRootDirLocation[], any>;
+        if (!apiResponse.error && apiResponse.result) {
+            dispatch(updateAppDrives({ deviceAppDrives: [...storeAppDrives, apiResponse.result]}));
+        }
+
+        return apiResponse;
     }
 
     const addAppDriveModalToggle = () => {
@@ -69,7 +58,7 @@ const DashboardPage = (props: DashboardPageProps) => {
         <h5>Local app drives</h5>
         {getAppDrivesComponents()}
         <Button color="primary" onClick={addAppDriveModalToggle}>Add</Button>
-        <AddAppDrive isOpen={addAppDriveModal} toggle={addAppDriveModalToggle} onSubmit={onAddAppDriveSubmitted}></AddAppDrive>
+        <AddAppDriveModal isOpen={addAppDriveModal} toggle={addAppDriveModalToggle} onSubmit={onAddAppDriveSubmitted}></AddAppDriveModal>
     </AppPage>);
 };
 

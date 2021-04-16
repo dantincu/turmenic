@@ -11,7 +11,8 @@
 .trmrk-app-error {
   padding-top: 100px;
   text-align: center;
-  background-color: white;
+  /* background-color: white; */
+  padding-bottom: 10px;
 
   .trmrk-error-msg {
     color: red;
@@ -23,10 +24,11 @@
 .trmrk-app-loading {
   padding-top: 100px;
   text-align: center;
-  background-color: white;
+  /* background-color: white; */
+  padding-bottom: 10px;
 
   .trmrk-info-title {
-    color: #333f;
+    /* color: #333f; */
     font-weight: bold;
     font-size: 30px;
   }

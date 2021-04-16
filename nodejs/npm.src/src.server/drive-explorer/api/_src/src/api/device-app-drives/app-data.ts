@@ -9,7 +9,15 @@ import {
 } from "../../../src.node.common/app-data/device-app-drives/types.js";
 
 import { uStrId } from "../../../src.node.common/data/uStrId.js";
-import { AddAppDrive } from "./request.types.js";
+import { AddAppDrive } from "../../../src.node.common/app-data/device-app-drives/request.types.js";
+
+import {
+  DeviceRootDirLocation,
+  DeviceDirLocationType,
+} from "../../../src.node.common/app-data/schema/device-dir-locations.schema.js";
+import { deviceDirLocationTypeKeys } from "../../data/app-data/deviceDirLocationTypes.js";
+
+import { appConsole } from "../../../src.common/logging/appConsole.js";
 
 const appEnv = await envConfig.appEnv.instance();
 export const appLocalFileDataSource = new AppLocalFileDataSource(appEnv);
@@ -25,8 +33,8 @@ export class DeviceAppDrivesData {
     };
   }
 
-  public async loadData(refresh: boolean) {
-    await deviceAppDrivesDataSource.get(refresh);
+  public async loadData() {
+    await deviceAppDrivesDataSource.load();
 
     this.deviceAppDriveSessions.allAppDrives =
       deviceAppDrivesDataSource.allAppDrivesCollection.currentData ?? [];
@@ -41,32 +49,60 @@ export class DeviceAppDrivesData {
   }
 
   public async addDeviceAppDrive(addAppDrive: AddAppDrive) {
+    const deviceRootDirLocationUuid = uStrId();
+    const appDriveUuid = uStrId();
     const folderUuid = uStrId();
 
+    let deviceRootDirLocation = {
+      uuid: deviceRootDirLocationUuid,
+      name: addAppDrive.label,
+      absPath: addAppDrive.path,
+      description: addAppDrive.description,
+      isDefault:
+        (
+          appLocalFileDataSource.deviceRootDirLocationCollection.currentData ??
+          []
+        ).length === 0,
+      locationTypeKey: deviceDirLocationTypeKeys.osFsDir,
+    } as DeviceRootDirLocation;
+
     const folderNode: FolderNode = {
-      uuid: uStrId(),
+      uuid: folderUuid,
       name: addAppDrive.name,
     };
 
     let appDrive: AppDrive = {
-      uuid: uStrId(),
+      uuid: appDriveUuid,
+      deviceRootDirLocationUuid: deviceRootDirLocationUuid,
       label: addAppDrive.label,
+      description: addAppDrive.description,
       rootFolder: {
         uuid: folderUuid,
         name: addAppDrive.name,
         isRoot: true,
         node: folderNode,
+        path: addAppDrive.path,
       },
       rootFolderNode: folderNode,
+      sortIdx:
+        deviceAppDrivesData.deviceAppDriveSessions.allAppDrives
+          .map((d) => d.sortIdx)
+          .reduce((prev, crnt) => Math.max(prev, crnt), 0) + 1,
     };
 
     const dataSaveResult = await deviceAppDrivesDataSource.allAppDrivesCollection.insert(
       [appDrive]
     );
 
+    await appLocalFileDataSource.deviceRootDirLocationCollection.insert([
+      deviceRootDirLocation,
+    ]);
+
     return dataSaveResult?.inserted.pop() as AppDrive;
   }
 }
 
+await appLocalFileDataSource.deviceRootDirLocationCollection.load();
+
 export const deviceAppDrivesData = new DeviceAppDrivesData();
-await deviceAppDrivesData.loadData(true);
+await deviceAppDrivesData.loadData();

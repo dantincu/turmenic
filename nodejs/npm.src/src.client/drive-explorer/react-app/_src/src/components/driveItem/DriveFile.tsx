@@ -5,7 +5,7 @@ import "./DriveItem.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { DriveFile as DriveFileVm } from "../../src.node.common/app-data/device-app-drives/types";
 import { DriveFileProps, DriveItemIdentity } from "./DriveItemProps";
-import { cssClss } from "../const";
+import { trmrkCssClasses } from "../../src.node.common.client/dom.css-classes";
 import DriveItemName from "./DriveItemName";
 
 const DriveFile = (props: DriveFileProps) => {
@@ -48,8 +48,8 @@ const DriveFile = (props: DriveFileProps) => {
 
   const getNameCol = () => {
     return (
-      <Col className={cssClss.trmrk.bootstrap.col}>
-        <Row className={`${cssClss.trmrk.bootstrap.row} trmrk-main-row`}>
+      <Col className={trmrkCssClasses.bootstrap.col}>
+        <Row className={`${trmrkCssClasses.bootstrap.row} trmrk-main-row`}>
           <DriveItemName
             itemName={props.label ?? file.name}
             itemTooltipText={file.path ?? ""}
@@ -73,16 +73,16 @@ const DriveFile = (props: DriveFileProps) => {
   const getCssClassName = () => {
     const cssClassArr = [
       "trmrk-drive-item",
-      cssClss.trmrk.bootstrap.row,
+      trmrkCssClasses.bootstrap.row,
       "trmrk-drive-file",
     ];
 
     if (file.isSelected === true) {
-      cssClassArr.push(cssClss.trmrk.item.selected);
+      cssClassArr.push(trmrkCssClasses.item.selected);
     }
 
     if (file.isCurrent === true) {
-      cssClassArr.push(cssClss.trmrk.item.current);
+      cssClassArr.push(trmrkCssClasses.item.current);
     }
 
     if (props.cssClass) {

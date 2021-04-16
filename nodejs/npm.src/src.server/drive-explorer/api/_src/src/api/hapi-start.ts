@@ -15,7 +15,7 @@ import {
   HapiServerOptions,
   HapiServerTlsOptions,
   HapiCookieAuthOptions,
-} from "../../src.node.common.server/api/hapi/index.js";
+} from "../../src.node.common.server/api/hapi/hapi.js";
 
 import { getHapiServerOptions } from "./hapi-options.js";
 import { getRoutes } from "./hapi-routes.js";

@@ -131,7 +131,7 @@ export abstract class AbstractDataCollection {
     this.dataAccessMutex = new Mutex();
   }
 
-  public abstract get(refresh: boolean): Promise<any[]>;
+  public abstract load(): Promise<any[]>;
   public abstract save(
     data?: any[] | null,
     safeMode?: boolean
@@ -144,8 +144,14 @@ export abstract class AbstractDataCollection {
     return true;
   }
 
-  async onBeginDataAccess(): Promise<void> {}
-  async onEndDataAccess(): Promise<void> {}
+  async onBeginDataAccess(
+    write: boolean,
+    safeMode?: boolean | null | undefined
+  ): Promise<void> {}
+  async onEndDataAccess(
+    write: boolean,
+    safeMode?: boolean | null | undefined
+  ): Promise<void> {}
 }
 
 export abstract class DataCollectionBase<
@@ -179,29 +185,21 @@ export abstract class DataCollectionBase<
     return dataSaveResult;
   }
 
-  public async get(refresh: boolean): Promise<any[]> {
+  public async load(): Promise<any[]> {
     let data: any[] | null = null;
 
     await this.dataAccessMutex.runExclusive(async () => {
-      if (!this.currentData || refresh) {
-        data = await this.loadDataOp();
-      } else {
-        data = this.currentData;
-      }
+      data = await this.loadDataOp();
     });
 
     return (data as unknown) as any[];
   }
 
-  public async getData(refresh: boolean): Promise<TData[]> {
+  public async loadData(): Promise<TData[]> {
     let data: TData[] | null = null;
 
     await this.dataAccessMutex.runExclusive(async () => {
-      if (!this.currentData || refresh) {
-        data = await this.loadDataOp();
-      } else {
-        data = this.currentData;
-      }
+      data = await this.loadDataOp();
     });
 
     return (data as unknown) as TData[];
@@ -266,7 +264,7 @@ export abstract class DataCollectionBase<
   }
 
   async loadDataOp() {
-    await this.onBeginDataAccess();
+    await this.onBeginDataAccess(false);
 
     const jsonData = await this.loadJsonData();
     this.lastModifiedTime = jsonData.lastModifiedTime;
@@ -275,7 +273,7 @@ export abstract class DataCollectionBase<
     this.data = currentData;
     this.currentData = currentData;
 
-    await this.onEndDataAccess();
+    await this.onEndDataAccess(false);
     return currentData;
   }
 
@@ -283,21 +281,15 @@ export abstract class DataCollectionBase<
     dataList?: TData[] | null,
     safeMode?: boolean | null
   ): Promise<DataSaveResult<TData, TJsonData>> {
-    if (!dataList && !this.currentData) {
-      throw new Error("Cannot save empty data to file!");
-    }
-
+    dataList = dataList ?? this.currentData ?? [];
     safeMode = safeMode ?? false;
 
-    await this.onBeginDataAccess();
+    await this.onBeginDataAccess(true, safeMode);
     this.insertedUuids = this.insertedUuids ?? [];
 
-    const jsonData = this.getJsonDataForSave(
-      dataList ?? this.currentData ?? [],
-      this.insertedUuids
-    );
-
+    const jsonData = this.getJsonDataForSave(dataList, this.insertedUuids);
     const dataSaveResultRaw = await this.saveJsonData(jsonData, safeMode);
+
     dataList = this.getDataForFetch(jsonData);
 
     const dataSaveResult = dataSaveResultRaw as DataSaveResult<
@@ -313,7 +305,7 @@ export abstract class DataCollectionBase<
     this.currentData = dataList;
     this.insertedUuids = null;
 
-    await this.onEndDataAccess();
+    await this.onEndDataAccess(true, safeMode);
     return dataSaveResult;
   }
 

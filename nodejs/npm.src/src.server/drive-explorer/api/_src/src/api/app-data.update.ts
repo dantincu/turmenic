@@ -11,7 +11,7 @@ import {
   deviceAppDrivesDataSource,
 } from "./device-app-drives/app-data.js";
 
-import { appLocalFileDataSourceInfo } from "../data/json/local-file-app-data/index.js";
+import { appLocalFileDataSourceInfo } from "../data/json/local-file-app-data/local-file-app-data.js";
 
 export const assureUpToDate = async () => {
   for (let i = 0; i < updateManagers.length; i++) {

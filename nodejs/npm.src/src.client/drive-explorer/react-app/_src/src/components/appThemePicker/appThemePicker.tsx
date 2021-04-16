@@ -10,7 +10,7 @@ import {
   defaultAppTheme,
 } from "../../app/appTheme/appTheme";
 
-import { urlQueryParams } from "../const";
+import { urlQueryParams } from "../../src.node.common.client/url";
 import { replaceClassList } from "../../src.node.common.client/dom";
 
 import { AppThemePickerProps } from "./appThemePickerProps";
@@ -40,7 +40,7 @@ const AppThemePicker = (props: AppThemePickerProps) => {
     const themeCssClass = `trmrk-theme-${appTheme.id}`;
 
     if (document.body.classList.contains(themeCssClass) !== true) {
-      replaceClassList(document.body.classList, ["trmr"], themeCssClass);
+      replaceClassList(document.body.classList, ["trmrk"], themeCssClass);
     }
   };
 

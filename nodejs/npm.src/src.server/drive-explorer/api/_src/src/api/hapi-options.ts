@@ -7,7 +7,7 @@ import {
   ServerAuthSession,
   normializeOpts,
   HapiServerCorsOptions,
-} from "../../src.node.common.server/api/hapi/index.js";
+} from "../../src.node.common.server/api/hapi/hapi.js";
 
 import {
   hapiServerOptionsCfg,

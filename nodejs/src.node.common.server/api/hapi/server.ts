@@ -2,6 +2,7 @@ import Hapi from "@hapi/hapi";
 import Cookie from "@hapi/cookie";
 // @ts-ignore
 import HapiCors from "hapi-cors";
+import Boom from "@hapi/boom";
 
 import {
   envConfig,
@@ -16,7 +17,7 @@ import {
   ServerAuthSession,
   getServerOptions,
   normializeOpts,
-} from "./index.js";
+} from "./hapi.js";
 import { appConsole } from "../../../src.common/logging/appConsole.js";
 
 export const getServer = async (
@@ -105,13 +106,6 @@ export const getDefaultAuthRoute = (opts: HapiServerOptions) => {
       const cookieAuthOpts: HapiCookieAuthOptions = <HapiCookieAuthOptions>(
         opts.cookieAuthOptions
       );
-
-      /* h.state(opts.appName, cookieAuthOpts.appSessionData, {
-        password: cookieAuthOpts.authCookiePassword,
-        isSecure: cookieAuthOpts.isAuthCookieSecure,
-        ttl: cookieAuthOpts.authCookieTtlMillis,
-      });*/
-
       request.cookieAuth.set(cookieAuthOpts.appSessionData);
       request.cookieAuth.ttl(cookieAuthOpts.authCookieTtlMillis);
 
@@ -133,6 +127,6 @@ export const getDefaultAuthRoute = (opts: HapiServerOptions) => {
 export const startServer = async (server: Hapi.Server) => {
   await server.start();
 
-  console.log("server running at: " + server.info.uri);
+  appConsole.log("server running at: " + server.info.uri);
   return server;
 };

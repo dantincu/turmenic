@@ -28,14 +28,14 @@ import {
   DeviceAppDriveSessions,
 } from "../../../../../src.node.common/app-data/device-app-drives/types";
 
-import { appLocalFileDataSourceInfo } from "../index.js";
+import { appLocalFileDataSourceInfo } from "../local-file-app-data.js";
 import {
   deviceAppDrivesDataSourceInfo,
   AppDriveCollection,
   AppSessionCollection,
   DeviceAppDrivesCollection,
   DeviceAppDrivesMetadataCollection,
-} from "./index.js";
+} from "./device-app-drives.js";
 import { GenericHash } from "../../../../../src.common/utils/types.js";
 
 export class DeviceAppDrivesDataSourceOptions extends LocalFileDataSourceOptions<DeviceAppDrivesMetadataCollection> {
