@@ -81,14 +81,14 @@ export abstract class AbstractDataSource {
   abstract beforeSavePrep(safeMode?: boolean): Promise<boolean>;
   abstract afterSaveCleanup(safeMode?: boolean): Promise<boolean>;
 
-  public async get(refresh: boolean): Promise<GenericHash<any[]>> {
+  public async load(): Promise<GenericHash<any[]>> {
     const retHash: GenericHash<any[]> = {};
 
     await this.dataAccessMutex.runExclusive(async () => {
       for (const [dataCollName, dataColl] of Object.entries(
         this.dataCollections
       )) {
-        retHash[dataCollName] = await dataColl.get(refresh);
+        retHash[dataCollName] = await dataColl.load();
       }
     });
 
@@ -186,7 +186,7 @@ export const isUpToDate = async (
   >,
   reqVersion: string
 ): Promise<DataSourceUpdateResult> => {
-  const metadataList = await metadataCollection.get(true);
+  const metadataList = await metadataCollection.load();
   let dataCorrupted = metadataList.length > 1;
   let corruptedDataErrorMessage = "the loaded data is ambiguous";
   let versionComparisonResult = 0;

@@ -1,6 +1,6 @@
 import { EnvConfig } from "../../../../../src.node.common/appSettings/envConfig.js";
 
-import { DataSourceUpdateOptions } from "../../../../../src.node.common/data/json/update/index.js";
+import { DataSourceUpdateOptions } from "../../../../../src.node.common/data/json/update/update.js";
 import { DataSourceUpdateBase } from "../../../../../src.node.common/data/json/update/data-source.js";
 
 import {
@@ -19,7 +19,7 @@ import {
   DeviceRootDirLocationCollection,
   ServicePlatformCollection,
   ServicePlatformUserAccountCollection,
-} from "../index.js";
+} from "../local-file-app-data.js";
 
 import {
   CloudStorageDeviceDirLocation,

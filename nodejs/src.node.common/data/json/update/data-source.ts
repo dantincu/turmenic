@@ -1,7 +1,7 @@
 import { DataCollectionBase } from "../data-collection.js";
 import { DataSourceBase } from "../data-source.js";
 import { UpdateEngineBase } from "./engine.js";
-import { DataSourceUpdateOptions } from "./index.js";
+import { DataSourceUpdateOptions } from "./update.js";
 
 import { DataSourceMetadata, BLANK_VERSION_VALUE } from "../data-collection.js";
 import { DataSourceUpdateResult, isUpToDate } from "../data-source.js";
@@ -54,7 +54,7 @@ export abstract class DataSourceUpdateBase<
     if (isUpToDateResult.success) {
       if (isUpToDateResult.isUpToDate !== true) {
         const engine = this.getEngine();
-        await this.dataSource.get(true);
+        await this.dataSource.load();
 
         let isUpToDate = await engine.run();
         isUpToDate = isUpToDate && (await this.dataSource.save(true)).success;

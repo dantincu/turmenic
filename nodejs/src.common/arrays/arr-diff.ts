@@ -1,4 +1,4 @@
-import { contains, filterIndex, findIndex } from "./arrays.js";
+import { contains, filterIndex, findIndex } from "./arrays";
 
 export interface ArrayDiff<T> {
   leftOnly: { val: T; idx: number }[];
@@ -40,7 +40,10 @@ export const updateMergeArr = <T>(
   match: (leftItm: T, rightItm: T) => boolean
 ) => {
   srcArr.forEach((val) => {
-    const fndIdx = findIndex(destArr, (destVal) => match(val, destVal)).idx;
+    const fndIdx = findIndex(destArr, (destVal) => {
+      const result = match(val, destVal);
+      return result;
+    }).idx;
 
     if (fndIdx < 0) {
       destArr.push(val);
@@ -53,7 +56,12 @@ export const updateMergeArr = <T>(
 
   while (crntIdx < destArr.length) {
     const crntVal = destArr[crntIdx];
-    if (findIndex(srcArr, (srcVal) => match(crntVal, srcVal)).idx < 0) {
+    if (
+      findIndex(srcArr, (srcVal) => {
+        const result = match(crntVal, srcVal);
+        return result;
+      }).idx < 0
+    ) {
       destArr.splice(crntIdx, 1);
     } else {
       crntIdx++;

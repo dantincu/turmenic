@@ -33,8 +33,8 @@ export class DeviceAppDrivesData {
     };
   }
 
-  public async loadData(refresh: boolean) {
-    await deviceAppDrivesDataSource.get(refresh);
+  public async loadData() {
+    await deviceAppDrivesDataSource.load();
 
     this.deviceAppDriveSessions.allAppDrives =
       deviceAppDrivesDataSource.allAppDrivesCollection.currentData ?? [];
@@ -84,6 +84,10 @@ export class DeviceAppDrivesData {
         path: addAppDrive.path,
       },
       rootFolderNode: folderNode,
+      sortIdx:
+        deviceAppDrivesData.deviceAppDriveSessions.allAppDrives
+          .map((d) => d.sortIdx)
+          .reduce((prev, crnt) => Math.max(prev, crnt), 0) + 1,
     };
 
     const dataSaveResult = await deviceAppDrivesDataSource.allAppDrivesCollection.insert(
@@ -98,7 +102,7 @@ export class DeviceAppDrivesData {
   }
 }
 
-await appLocalFileDataSource.deviceRootDirLocationCollection.get(true);
+await appLocalFileDataSource.deviceRootDirLocationCollection.load();
 
 export const deviceAppDrivesData = new DeviceAppDrivesData();
-await deviceAppDrivesData.loadData(true);
+await deviceAppDrivesData.loadData();

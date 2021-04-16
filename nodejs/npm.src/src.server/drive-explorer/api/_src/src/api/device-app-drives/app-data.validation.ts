@@ -1,4 +1,5 @@
 import Boom from "@hapi/boom";
+import { RequestQuery } from "@hapi/hapi";
 
 import path from "path";
 import isValidPath from "is-valid-path";
@@ -35,9 +36,12 @@ import {
 
 import { readDirIfExists } from "../../../src.node.common/fileSystem/types.async.js";
 
-import { AddAppDrive } from "../../../src.node.common/app-data/device-app-drives/request.types.js";
+import {
+  AddAppDrive,
+  LoadData,
+} from "../../../src.node.common/app-data/device-app-drives/request.types.js";
 
-export const deviceAppDrive = {
+export const addDeviceAppDriveValidation = {
   validateAndNormalize: async (newAppDrive: AddAppDrive) => {
     let result: AddAppDrive | Boom.Boom | null = null;
 
@@ -60,5 +64,17 @@ export const deviceAppDrive = {
     }
 
     return result;
+  },
+};
+
+export const loadDataValidation = {
+  getData: (query: RequestQuery) => {
+    const data: LoadData = {
+      refresh:
+        !!query["refresh"] &&
+        query["refresh"].toString().toLocaleLowerCase() === "true",
+    };
+
+    return data;
   },
 };

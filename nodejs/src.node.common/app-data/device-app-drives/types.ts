@@ -39,6 +39,7 @@ export interface AppDrive {
   label: string;
   description?: string | null | undefined;
   deviceRootDirLocationUuid: string;
+  sortIdx: number;
 
   rootFolder: DriveFolder;
   rootFolderNode: FolderNode;

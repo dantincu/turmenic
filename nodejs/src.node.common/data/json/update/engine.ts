@@ -1,6 +1,6 @@
 import { DataCollectionBase, DataSourceMetadata } from "../data-collection.js";
 import { DataSourceBase } from "../data-source.js";
-import { DataSourceUpdateOptions } from "./index.js";
+import { DataSourceUpdateOptions } from "./update.js";
 
 export abstract class AbstractUpdateEngine {
   readonly fromVersion: string;

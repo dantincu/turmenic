@@ -35,7 +35,7 @@ export const addDeviceAppDrivesRoutes = (
       cors: getCorsConfig(opts),
     },
     handler: async function (request, h) {
-      const result = await getDeviceAppDrives();
+      const result = await getDeviceAppDrives(request.query);
       const response = handleResponse(result, request, h);
 
       return response;

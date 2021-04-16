@@ -19,8 +19,8 @@ const AppPage = (props: PageProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-        const apiResponse = await driveApi.getDeviceAppDrives();
-        console.log("apiResponse", apiResponse);
+        const apiResponse = await driveApi.getDeviceAppDrives(true);
+
         if ((apiResponse.response?.status ?? 400) < 300) {
             dispatch(updateAppDrives({ deviceAppDrives: apiResponse.result ?? [] }));
             setStoreAppDrivesLoaded(true);

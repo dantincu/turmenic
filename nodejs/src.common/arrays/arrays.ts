@@ -14,7 +14,7 @@ export const findIndex = <T>(
 
   value =
     arr.find((val, idx, arr) => {
-      const match = idx > (startIndex as number) && selector(val, idx, arr);
+      const match = idx >= (startIndex as number) && selector(val, idx, arr);
       if (match) {
         index = idx;
       }
@@ -40,4 +40,3 @@ export const filterIndex = <T>(
 
   return retArr;
 };
-

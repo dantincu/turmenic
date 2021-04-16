@@ -80,8 +80,6 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
     const getApiCallErrMsg = (apiResponse: ApiResponse<any, any>) => {
         let errMsg = "An error ocurred";
 
-        console.log("apiResponse", apiResponse);
-
         if (apiResponse.apiError) {
             const errData = apiResponse.apiError as ApiError;
             errMsg = `${errData.error}: ${errData.statusCode} - ${errData.message}`;

@@ -29,7 +29,8 @@ const DashboardPage = (props: DashboardPageProps) => {
                 <p>Here is a complete list of all local app drives</p>
                 <ul> {
                 storeAppDrives.map(ad => {
-                    <li><label title={ad.rootFolder.path ?? ""}>{ad.label ?? ad.rootFolder.name}</label></li>
+                    const domEl = (<li><label title={ad.rootFolder.path ?? ""}>{ad.label ?? ad.rootFolder.name}</label></li>);
+                    return domEl;
                 })
             } </ul>
             <p>Click the button bellow to add more drives to the app</p>
@@ -40,7 +41,6 @@ const DashboardPage = (props: DashboardPageProps) => {
     }
 
     const onAddAppDriveSubmitted = async (newAppDrive: AddAppDrive): Promise<ApiResponse<AppDrive, any>> => {
-        console.log("onAddAppDriveSubmitted");
         const apiResponse = await driveApi.addAppDrive(newAppDrive);
 
         if (!apiResponse.error && apiResponse.result) {

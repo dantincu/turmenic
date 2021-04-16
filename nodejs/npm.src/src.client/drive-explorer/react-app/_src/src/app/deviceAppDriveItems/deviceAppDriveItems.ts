@@ -30,11 +30,18 @@ export const deviceAppDriveSessionsSlice = createSlice({
       state,
       action: PayloadAction<{ deviceAppDrives: AppDrive[] }>
     ) => {
+      const allAppDrives = [...state.allAppDrives];
+
       updateMergeArr(
-        state.allAppDrives,
+        allAppDrives,
         action.payload.deviceAppDrives,
-        (srcVal: AppDrive, destVal: AppDrive) => srcVal.uuid === destVal.uuid
+        (srcVal: AppDrive, destVal: AppDrive) => {
+          const retVal = srcVal.uuid === destVal.uuid;
+          return retVal;
+        }
       );
+
+      state.allAppDrives = allAppDrives;
     },
     toggleFolder: (state, action: PayloadAction<{ folderUuid: string }>) => {
       driveItemsService.toggleFolder(state, action.payload);
@@ -118,6 +125,7 @@ export const selectSessionAppDrives = (state: RootState) => {
 
 export const selectAllAppDrives = (state: RootState) => {
   const value = state.deviceAppDriveSessions.allAppDrives;
+  console.log("allAppDrives", value);
   return value;
 };
 

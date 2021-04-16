@@ -6,7 +6,7 @@ import {
 import {
   AppMetadataLocalFileCollection,
   appLocalFileDataSourceInfo,
-} from "../index.js";
+} from "../local-file-app-data.js";
 
 import { DataSourceUpdateBase } from "../../../../../src.node.common/data/json/update/data-source.js";
 import { AppLocalFileDataSource } from "../data-source.js";

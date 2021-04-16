@@ -4,3 +4,7 @@ export interface AddAppDrive {
   path: string;
   description: string;
 }
+
+export interface LoadData {
+  refresh: boolean;
+}

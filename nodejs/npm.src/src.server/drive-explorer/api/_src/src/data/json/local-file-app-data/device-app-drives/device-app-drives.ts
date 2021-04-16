@@ -68,6 +68,14 @@ export class AppDriveCollection extends DeviceAppDrivesCollection<
   }
 
   static readonly COLLECTION_NAME = "allAppDrives";
+
+  async onEndDataAccess(
+    write: boolean,
+    safeMode?: boolean | null | undefined
+  ): Promise<void> {
+    await super.onEndDataAccess(write, safeMode);
+    this.currentData?.sort((a, b) => a.sortIdx - b.sortIdx);
+  }
 }
 
 export class AppSessionCollection extends DeviceAppDrivesCollection<
@@ -85,6 +93,16 @@ export class AppSessionCollection extends DeviceAppDrivesCollection<
   }
 
   static readonly COLLECTION_NAME = "appSessions";
+
+  async onEndDataAccess(
+    write: boolean,
+    safeMode?: boolean | null | undefined
+  ): Promise<void> {
+    await super.onEndDataAccess(write, safeMode);
+    this.currentData?.forEach((data) => {
+      data.appDrives.sort((a, b) => a.sortIdx - b.sortIdx);
+    });
+  }
 }
 
 export class DeviceAppDrivesMetadataCollection extends MetadataLocalFileCollectionBase {

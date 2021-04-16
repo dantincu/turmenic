@@ -209,10 +209,16 @@ export abstract class LocalFileCollectionBase<
       dataDirName,
       fileNameSuffix
     );
+
     saveJsonToFileAsync(jsonData, dataJsonFilePath);
   }
 
-  async onBeginDataAccess(): Promise<void> {
+  async onBeginDataAccess(
+    write: boolean,
+    safeMode?: boolean | null | undefined
+  ): Promise<void> {
+    await super.onBeginDataAccess(write, safeMode);
+
     await createDirIfNotExisting(this.dataDirBasePath);
     const dirPath = this.getDataJsonDirPath();
     await createDirIfNotExisting(dirPath);

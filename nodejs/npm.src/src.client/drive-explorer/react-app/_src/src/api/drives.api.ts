@@ -23,18 +23,21 @@ export class DriveApi extends ApiBase {
       const url = this.getUrl("device-root-folders");
       const result: AxiosResponse<FileSystemRootFolder[]> = await axios(url);
 
-      console.log("result", result);
       return result;
     });
 
     return response;
   }
 
-  public async getDeviceAppDrives() {
+  public async getDeviceAppDrives(refresh: boolean) {
     const response = await this.executeRequestAsync<AppDrive[], any>(
       async () => {
         const url = this.getUrl("device-app-drives");
-        const result = await axios(url);
+        const result = await axios(url, {
+          params: {
+            refresh: refresh,
+          },
+        });
 
         return result;
       }
