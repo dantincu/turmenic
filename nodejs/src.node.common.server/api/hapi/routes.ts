@@ -1,5 +1,6 @@
 import Hapi from "@Hapi/Hapi";
 import Boom from "@hapi/boom";
+import { hasValue } from "../../../src.common/utils/types.js";
 
 export const handleRoute = async <TResult>(
   handler: () => Promise<TResult | Boom.Boom>
@@ -43,10 +44,17 @@ export const handleResponse = <TResult>(
 ) => {
   let response: Hapi.ResponseObject | null = null;
 
-  if ((result as any).isBoom === true) {
-    response = boomToResponse(result as Boom.Boom, h);
+  if (hasValue(result) === false || (result as any).isBoom === true) {
+    response = boomToResponse((result || Boom.internal()) as Boom.Boom, h);
+  } else if (typeof result === "object") {
+    response = h.response(result as object);
   } else {
-    response = h.response(result as Hapi.ResponseValue);
+    const resultAsAny = result as any;
+    if (typeof resultAsAny.toString === "function") {
+      response = h.response(resultAsAny.toString());
+    } else {
+      response = h.response(`${resultAsAny}`);
+    }
   }
 
   return response;

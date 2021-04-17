@@ -125,7 +125,6 @@ export const selectSessionAppDrives = (state: RootState) => {
 
 export const selectAllAppDrives = (state: RootState) => {
   const value = state.deviceAppDriveSessions.allAppDrives;
-  console.log("allAppDrives", value);
   return value;
 };
 

@@ -1,6 +1,7 @@
 import { Boom } from "@hapi/boom";
 import { RequestQuery } from "@hapi/hapi";
 
+import { appConsole } from "../../../src.common/logging/appConsole.js";
 import {
   AppDrive,
   DriveFile,
@@ -66,7 +67,8 @@ export const getDeviceAppDrives = async (query: RequestQuery) => {
 export const addDeviceAppDrive = async (payload: any) => {
   const result = await handleRoute(async () => {
     const newAppDrive = await addDeviceAppDriveValidation.validateAndNormalize(
-      payload as AddAppDrive
+      payload as AddAppDrive,
+      deviceAppDrivesData.deviceAppDriveSessions.allAppDrives
     );
 
     let addedAppDrive: AppDrive | Boom | null = null;

@@ -42,7 +42,10 @@ import {
 } from "../../../src.node.common/app-data/device-app-drives/request.types.js";
 
 export const addDeviceAppDriveValidation = {
-  validateAndNormalize: async (newAppDrive: AddAppDrive) => {
+  validateAndNormalize: async (
+    newAppDrive: AddAppDrive,
+    allAppDrives: AppDrive[]
+  ) => {
     let result: AddAppDrive | Boom.Boom | null = null;
 
     if (reqStrValIsValid(newAppDrive.label) !== true) {
@@ -60,7 +63,18 @@ export const addDeviceAppDriveValidation = {
         .pop() as string; // returns the dir name as the last non empty path segment
 
       newAppDrive.path = path.normalize(newAppDrive.path);
-      result = newAppDrive;
+
+      if (
+        !!allAppDrives.find(
+          (drive) => drive.rootFolder.path === newAppDrive.path
+        ) === true
+      ) {
+        result = Boom.badRequest(
+          "You have already added an app drive with this path"
+        );
+      } else {
+        result = newAppDrive;
+      }
     }
 
     return result;

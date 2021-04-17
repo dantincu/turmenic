@@ -17,11 +17,13 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
     const [formDisabled, setFormDisabled] = useState(false);
     const [apiWaiter, setApiWaiter] = useState(false);
 
-    const [formFields, setFormFields] = useState<AppDriveFields>(props.initialData ?? {
+    const initialData = props.initialData ?? {
         displayName: "",
         description: "",
         path: ""
-    });
+    };
+
+    const [formFields, setFormFields] = useState<AppDriveFields>(initialData);
 
     const formFieldsData = {
         displayName: {
@@ -70,7 +72,9 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
     const validateForm = (): boolean => {
         let formValid = reqValIsValid(formFields.displayName) && reqValIsValid(formFields.path);
 
-        if (formValid !== true) {
+        if (formValid === true) {
+            setFormErrMsg(null);
+        } else {
             setFormErrMsg("The form contains invalid data. Please review the data you provided and try again.");
         }
 
@@ -107,6 +111,7 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
                 path: formFields.path,
             } as AddAppDrive);
             if ((apiResponse.response?.status ?? 400) < 300) {
+                setFormFields(initialData);
                 onFormResumed();
                 props.toggle();
             } else {
@@ -129,6 +134,7 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
 
     const getWaiter = (apiWaiter: boolean) => {
         const waiter = apiWaiter ? (<Loader type="Puff"></Loader>) : null;
+        return waiter;
     }
 
     return (<Modal className={trmrkCssClasses.bootstrap.modal} isOpen={props.isOpen} toggle={props.toggle}>

@@ -38,7 +38,6 @@ export const loadJsonAsyncInto = async (
 };
 
 export const saveJsonToFileAsync = async (obj: any, filePath: string) => {
-  const json = JSON.stringify(obj);
-
+  const json = JSON.stringify(obj, null, "  ");
   await writeFileAsync(filePath, json);
 };

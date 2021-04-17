@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import AppPage from '../AppPage';
 import { DashboardPageProps } from './DashboardPageProps';
+import './DasboardPage.scss';
 
 import {
     selectAllAppDrives,
@@ -55,7 +56,7 @@ const DashboardPage = (props: DashboardPageProps) => {
     }
 
     return (<AppPage>
-        <h5>Local app drives</h5>
+        <h5 className="trmrk-page-title">Local app drives</h5>
         {getAppDrivesComponents()}
         <Button color="primary" onClick={addAppDriveModalToggle}>Add</Button>
         <AddAppDriveModal isOpen={addAppDriveModal} toggle={addAppDriveModalToggle} onSubmit={onAddAppDriveSubmitted}></AddAppDriveModal>
