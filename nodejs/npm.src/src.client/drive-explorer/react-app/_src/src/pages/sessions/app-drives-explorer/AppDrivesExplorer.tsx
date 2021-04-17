@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
 
-import AppPage from '../AppPage';
-import AppDriveComp from '../../components/appDrive/AppDrive';
-import DeviceAppDriveFolder from '../../components/deviceAppDriveItem/DeviceAppDriveFolder';
+import AppPage from '../../AppPage';
+import AppDriveComp from '../../../components/appDrive/AppDrive';
+import DeviceAppDriveFolder from '../../../components/deviceAppDriveItem/DeviceAppDriveFolder';
 
-import { selectSessionAppDrives } from "../../app/deviceAppDriveItems/deviceAppDriveItems";
+import { selectAppSession } from "../../../app/deviceAppDriveItems/deviceAppDriveItems";
 
-import { AppDrive } from '../../src.node.common/app-data/device-app-drives/types';
-import { AppDrivesExplorerPageProps } from './AppDrivesExplorerPageProps';
-import { DriveFolderProps, DriveItemIdentity } from '../../components/driveItem/DriveItemProps';
+import { AppDrive } from '../../../src.node.common/app-data/device-app-drives/types';
+import { AppDrivesExplorerProps } from './AppDrivesExplorerProps';
+import { DriveFolderProps, DriveItemIdentity } from '../../../components/driveItem/DriveItemProps';
 
-import { updateParentWidth } from '../../src.node.common.client/dom';
+import { updateParentWidth } from '../../../src.node.common.client/dom';
 
-const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
-    const appDrives = useSelector(selectSessionAppDrives);
+const AppDrivesExplorer = (props: AppDrivesExplorerProps) => {
+    const appSession = useSelector(selectAppSession(props.sessionUuid));
     const [updateDom, setUpdateDom] = useState<DriveItemIdentity | null>(null);
 
     useEffect(() => {
@@ -76,7 +77,7 @@ const AppDrivesExplorerPage = (props: AppDrivesExplorerPageProps) => {
         return retComp;
     }
 
-    return (<AppPage>{ appDrives.map(fd => getRootFolderComponent(fd)) }</AppPage>);
+    return (<div className="trmrk-app-session-drives">{ appSession?.appDrives.map(fd => getRootFolderComponent(fd)) }</div>);
 };
 
-export default AppDrivesExplorerPage;
+export default AppDrivesExplorer;

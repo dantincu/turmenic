@@ -63,9 +63,7 @@ export const addDeviceAppDriveValidation = {
         .filter((s) => !!s) // excludes empty segments (like the trailing one if the provided path ends with path separator)
         .pop() as string; // returns the dir name as the last non empty path segment
 
-      console.log("newAppDrive.path", newAppDrive.path);
       newAppDrive.path = normalizePath(newAppDrive.path);
-      console.log("normalized", newAppDrive.path);
 
       if (
         !!allAppDrives.find(

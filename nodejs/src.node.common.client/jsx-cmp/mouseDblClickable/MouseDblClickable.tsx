@@ -70,11 +70,23 @@ const MouseDblClickable = (props: MouseDblClickableProps) => {
         setMouseBtnPressedExtraCssClass(null);
     }
 
+    const onContextMenu = (e: MouseEvent) => {
+        if (props.domElAttrs && (props.domElAttrs as DomElAttrs).onContextMenu) {
+            const onElContextMenu = (props.domElAttrs as DomElAttrs).onContextMenu as (e: MouseEvent) => void;
+            onElContextMenu(e);
+        }
+
+        if (props.onContextMenu) {
+            props.onContextMenu(e);
+        }
+    }
+
     const domElAttrs = ({ ...props.domElAttrs } ?? {
     }) as DomElAttrs;
 
     domElAttrs.onMouseUp = onMouseUp;
     domElAttrs.onMouseDown = onMouseDown;
+    domElAttrs.onContextMenu = onContextMenu
     domElAttrs.className = `${domElAttrs.className ?? ""} ${mouseBtnPressedExtraCssClass ?? ""}`;
 
     const abstrCmpProps: TrmrkCompProps = {

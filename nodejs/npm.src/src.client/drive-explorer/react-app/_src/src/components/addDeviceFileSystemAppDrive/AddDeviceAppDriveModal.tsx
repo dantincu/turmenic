@@ -2,7 +2,7 @@ import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import Loader from "react-loader-spinner";
 
-import { AddAppDriveModalProps, AppDriveFields } from './AddAppDriveModalProps';
+import { AddDeviceAppDriveModalProps, DeviceAppDriveFields } from './AddDeviceAppDriveModalProps';
 import { ApiResponse, ApiError } from '../../src.node.common.client/axios/api.types';
 
 import FormField from '../../src.node.common.client/jsx-cmp/formField/FormField';
@@ -13,17 +13,17 @@ import { trmrkCssClasses } from '../../src.node.common.client/dom.css-classes';
 
 import { AddAppDrive } from '../../src.node.common/app-data/device-app-drives/request.types';
 
-const AddAppDriveModal = (props: AddAppDriveModalProps) => {
+const AddDeviceAppDriveModal = (props: AddDeviceAppDriveModalProps) => {
     const [formDisabled, setFormDisabled] = useState(false);
     const [apiWaiter, setApiWaiter] = useState(false);
 
     const initialData = props.initialData ?? {
         displayName: "",
-        description: "",
+        description: "Device file system folder",
         path: ""
     };
 
-    const [formFields, setFormFields] = useState<AppDriveFields>(initialData);
+    const [formFields, setFormFields] = useState<DeviceAppDriveFields>(initialData);
 
     const formFieldsData = {
         displayName: {
@@ -157,4 +157,4 @@ const AddAppDriveModal = (props: AddAppDriveModalProps) => {
     </Modal>);
 }
 
-export default AddAppDriveModal;
+export default AddDeviceAppDriveModal;

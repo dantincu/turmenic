@@ -25,6 +25,9 @@ export const testData: DeviceAppDriveSessions = {
   allAppDrives: [],
   defaultAppSession: {
     uuid: uStrId(),
+    name: "asdf asdf",
+    description:
+      "asdf asdfa sldkjf ha skjd kahsdkj  sadf as df as df as df as df asdf asdf asdfa sldkjf ha skjd kahsdkj  sadf as df as df as df as df asdf asdf asdfa sldkjf ha skjd kahsdkj  sadf as df as df as df as df asdf ",
     appDrives: [],
     allFolders: [],
   },
