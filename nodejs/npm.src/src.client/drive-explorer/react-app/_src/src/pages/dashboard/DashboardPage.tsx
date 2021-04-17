@@ -26,11 +26,11 @@ const DashboardPage = (props: DashboardPageProps) => {
 
     const getAppDrivesComponents = () => {
         if (storeAppDrives.length > 0) {
-            return (<div>
+            return (<div className="trmrk-app-drives">
                 <p>Here is a complete list of all local app drives</p>
-                <ul> {
+                <ul className="trmrk-drives-list"> {
                 storeAppDrives.map(ad => {
-                    const domEl = (<li><label title={ad.rootFolder.path ?? ""}>{ad.label ?? ad.rootFolder.name}</label></li>);
+                    const domEl = (<li className="trmrk-app-drive-item"><label className="trmrk-drive-label" title={ad.rootFolder.path ?? ""}>{ad.label ?? ad.rootFolder.name}</label></li>);
                     return domEl;
                 })
             } </ul>

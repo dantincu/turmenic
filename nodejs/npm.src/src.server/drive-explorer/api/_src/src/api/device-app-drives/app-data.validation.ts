@@ -4,6 +4,7 @@ import { RequestQuery } from "@hapi/hapi";
 import path from "path";
 import isValidPath from "is-valid-path";
 
+import { normalizePath } from "../../../src.node.common/fileSystem/path.js";
 import { envConfig } from "../../../src.node.common/appSettings/envConfig.js";
 import { intIdGenerator } from "../../../src.common/data/intIdGenerator.js";
 import { AppLocalFileDataSource } from "../../data/json/local-file-app-data/data-source.js";
@@ -62,7 +63,9 @@ export const addDeviceAppDriveValidation = {
         .filter((s) => !!s) // excludes empty segments (like the trailing one if the provided path ends with path separator)
         .pop() as string; // returns the dir name as the last non empty path segment
 
-      newAppDrive.path = path.normalize(newAppDrive.path);
+      console.log("newAppDrive.path", newAppDrive.path);
+      newAppDrive.path = normalizePath(newAppDrive.path);
+      console.log("normalized", newAppDrive.path);
 
       if (
         !!allAppDrives.find(

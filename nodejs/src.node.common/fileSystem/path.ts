@@ -1,5 +1,7 @@
 import path from "path";
 
+import { trimEndReplaceOnce } from "../../src.common/text/str-replace.js";
+
 export const rebasePath = (
   srcPath: string,
   srcBasePath: string,
@@ -34,4 +36,18 @@ export const getRelPath = (fsPath: string, basePath: string) => {
   }
 
   return retPath;
+};
+
+export const normalizePath = (p: string) => {
+  p = path.normalize(p);
+  p = trimEndReplaceOnce(p, {
+    trimWhiteSpace: true,
+    replExpr: {
+      ".": "",
+      "/": "",
+      "\\": "",
+    },
+  });
+
+  return p;
 };
