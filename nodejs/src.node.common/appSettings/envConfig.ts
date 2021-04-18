@@ -40,12 +40,10 @@ export class EnvConfig {
   }
 
   getEnvDirPath(envBaseDirName: string): string {
-    getWithKey(this, envBaseDirName + "RelDirPath");
-
     let envBaseRelDirPath: string =
       getWithKey(this, envBaseDirName + "RelDirPath") || envBaseDirName || "";
-    let envDirPath = path.join(this.envBasePath ?? "", envBaseRelDirPath);
 
+    let envDirPath = path.join(this.envBasePath ?? "", envBaseRelDirPath);
     return envDirPath;
   }
 
