@@ -50,7 +50,16 @@ const test1 = async () => {
             }
           );
         });
+
+        throw new Error("asdfasdfasdf");
       });
+
+      promise.then(
+        () => {},
+        (err) => {
+          console.log("eeeeeerrooooooor", err);
+        }
+      );
 
       return promise;
     }
@@ -73,6 +82,8 @@ const test2 = async () => {
                 for (var i = 0; i < 10; i++) {
                   stmt.run("Ipsum " + i);
                 }
+
+                throw new Error("asdfasdfasdf");
               }
             )
             .then(
@@ -98,6 +109,13 @@ const test2 = async () => {
             );
         });
       });
+
+      promise.then(
+        () => {},
+        (err) => {
+          console.log("eeeeeerrooooooor2", err);
+        }
+      );
 
       return promise;
     }
