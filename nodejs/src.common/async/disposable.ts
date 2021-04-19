@@ -1,86 +1,58 @@
-export interface DisposableError<TOpenErr, TExecErr, TCloseErr> {
-  openErr?: TOpenErr | undefined;
-  execErr?: TExecErr | undefined;
-  closeErr?: TCloseErr | undefined;
+import { SafePromise, SafePromiseError } from "./safe-promise.js";
+
+export interface DisposableSafePromiseError {
+  openErr?: SafePromiseError | undefined;
+  execErr?: SafePromiseError | undefined;
+  closeErr?: SafePromiseError | undefined;
 }
 
-export interface SafeDisposableError<TOpenErr, TExecErr, TCloseErr>
-  extends DisposableError<TOpenErr, TExecErr, TCloseErr> {
-  unhandledOpenErr?: any | undefined;
-  unhandledExecErr?: any | undefined;
-  unhandledCloseErr?: any | undefined;
-}
-
-export interface ExecWithPromArgsOpts<
-  TDisposable,
-  TOpenErr,
-  TExecErr,
-  TCloseErr
-> {
-  resolve: (value: void | PromiseLike<void>) => void;
-  reject: (reason?: any) => void;
-  openFunc: (
-    reject: (reason?: any) => void,
-    openCallback: (reject: (reason?: any) => void, openErr?: TOpenErr) => void
-  ) => TDisposable;
-  execFunc: (
-    reject: (reason?: any) => void,
-    disposable: TDisposable
-  ) => Promise<void>;
-  closeFunc: (
-    resolve: (value: void | PromiseLike<void>) => void,
-    reject: (reason?: any) => void,
-    disposable: TDisposable,
-    closeCallback: (
-      resolve: (value: void | PromiseLike<void>) => void,
-      reject: (reason?: any) => void,
-      closeErr?: TCloseErr
-    ) => void
-  ) => void;
-}
-
-const execWithPromArgs = <TDisposable, TOpenErr, TExecErr, TCloseErr>(
-  opts: ExecWithPromArgsOpts<TDisposable, TOpenErr, TExecErr, TCloseErr>
-): void => {
-  const disposable = opts.openFunc(opts.reject, (reject, openErr) => {
-    if (openErr) {
-      reject({
-        openErr: openErr,
-      } as DisposableError<TOpenErr, TExecErr, TCloseErr>);
-    } else {
-      let executionError: TExecErr | undefined = undefined;
-
-      opts
-        .execFunc(opts.reject, disposable)
-        .then(
-          () => {},
-          (execErr) => {
-            executionError = execErr;
-          }
-        )
-        .finally(() => {
-          opts.closeFunc(
-            opts.resolve,
-            opts.reject,
-            disposable,
-            (resolve, reject, closeErr) => {
-              if (closeErr) {
-                reject({
-                  execErr: executionError,
-                  closeErr: closeErr,
-                } as DisposableError<TOpenErr, TExecErr, TCloseErr>);
-              } else if (typeof executionError !== "undefined") {
-                reject({
-                  execErr: executionError,
-                } as DisposableError<TOpenErr, TExecErr, TCloseErr>);
-              } else {
-                resolve();
-              }
-            }
-          );
-        });
-    }
+export const execSafeCallback = (
+  func: (callback: (err?: any) => void) => void
+): SafePromise<void> => {
+  const retPromise = new SafePromise<void>(null, (resolve, reject) => {
+    func((err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
   });
+
+  return retPromise;
+};
+
+export const execSafeCallbackWithRetVal = <TRetVal>(
+  func: (callback: (err?: any) => void) => TRetVal
+): SafePromise<TRetVal> => {
+  const retPromise = new SafePromise<TRetVal>(null, (resolve, reject) => {
+    const retVal = func((err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(retVal);
+      }
+    });
+  });
+
+  return retPromise;
+};
+
+export const execSafeCallbackWithVal = <TVal>(
+  val: TVal,
+  func: (val: TVal, callback: (err?: any) => void) => void
+) => {
+  const retPromise = new SafePromise<void>(null, (resolve, reject) => {
+    func(val, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+
+  return retPromise;
 };
 
 export const execWithDisp = <TDisposable, TOpenErr, TExecErr, TCloseErr>(
@@ -90,73 +62,79 @@ export const execWithDisp = <TDisposable, TOpenErr, TExecErr, TCloseErr>(
     disposable: TDisposable,
     closeCallback: (closeErr?: TCloseErr) => void
   ) => void
-): Promise<void> => {
-  const promise = new Promise<void>((resolve, reject) => {
-    execWithPromArgs<TDisposable, TOpenErr, TExecErr, TCloseErr>({
-      resolve: resolve,
-      reject: reject,
-      openFunc: (rj, openCallback) =>
-        openFunc((openErr) => openCallback(rj, openErr)),
-      execFunc: (rj, disposable) => execFunc(disposable),
-      closeFunc: (rs, rj, disposable, closeCallback) =>
-        closeFunc(disposable, (closeErr) => closeCallback(rs, rj, closeErr)),
-    });
-  });
+): SafePromise<void> => {
+  const getCloseDispProm = (disposable: TDisposable) => {
+    const retProm = execSafeCallbackWithVal<TDisposable>(
+      disposable,
+      (disposable, callback) => closeFunc(disposable, callback)
+    );
 
-  return promise;
-};
+    return retProm;
+  };
 
-export const execWithDispSafe = <TDisposable, TOpenErr, TExecErr, TCloseErr>(
-  openFunc: (openCallback: (openErr?: TOpenErr) => void) => TDisposable,
-  execFunc: (disposable: TDisposable) => Promise<void>,
-  closeFunc: (
+  const getCloseDispResponse = (
     disposable: TDisposable,
-    closeCallback: (closeErr?: TCloseErr) => void
-  ) => void
-): Promise<void> => {
-  const promise = new Promise<void>((resolve, reject) => {
-    execWithPromArgs<TDisposable, TOpenErr, TExecErr, TCloseErr>({
-      resolve: resolve,
-      reject: reject,
-      openFunc: (rejectProm, openCallback) => {
-        let disposable: TDisposable | undefined = undefined;
+    dispErr: DisposableSafePromiseError,
+    reject: (reason?: any) => void,
+    response?: () => void
+  ) => {
+    const retProm = getCloseDispProm(disposable).safeThen(
+      response ?? (() => reject(dispErr)),
+      (reason) => {
+        dispErr.closeErr = reason;
+        reject(dispErr);
+      }
+    );
 
-        try {
-          disposable = openFunc((openErr) => openCallback(rejectProm, openErr));
-        } catch (unhandledOpenErr) {
-          rejectProm({
-            unhandledOpenErr: unhandledOpenErr,
-          } as SafeDisposableError<TOpenErr, TExecErr, TCloseErr>);
-        }
+    return retProm;
+  };
 
-        return disposable as TDisposable;
+  const promise = new SafePromise<void>(null, (resolve, reject) => {
+    let disposable: TDisposable;
+    const dispErr = {} as DisposableSafePromiseError;
+
+    const disposableProm = execSafeCallbackWithRetVal<TDisposable>(
+      (callback) => {
+        disposable = openFunc(callback);
+        return disposable;
+      }
+    ).safeThen(
+      (disposable) => {
+        execSafeCallbackWithVal<TDisposable>(
+          disposable,
+          (disposable, callback) => {
+            const execSafeProm = new SafePromise<void>(execFunc(disposable));
+
+            execSafeProm.safeThen(
+              () => {
+                callback();
+                resolve();
+              },
+              (reason) => {
+                dispErr.execErr = reason;
+
+                const retProm = getCloseDispResponse(
+                  disposable,
+                  dispErr,
+                  (reason?: any) => {
+                    callback(reason);
+                    reject(dispErr);
+                  }
+                );
+
+                return retProm;
+              }
+            );
+          }
+        );
       },
-      execFunc: (rejectProm, disposable) => {
-        let execProm: Promise<void> | undefined = undefined;
+      (reason) => {
+        dispErr.openErr = reason;
 
-        try {
-          execProm = execFunc(disposable);
-        } catch (unhandledExecErr) {
-          rejectProm({
-            unhandledExecErr: unhandledExecErr,
-          } as SafeDisposableError<TOpenErr, TExecErr, TCloseErr>);
-        }
-
-        execProm = execProm ?? new Promise<void>((rs, rj) => rs());
-        return execProm;
-      },
-      closeFunc: (resolveProm, rejectProm, disposable, closeCallback) => {
-        try {
-          closeFunc(disposable, (closeErr) =>
-            closeCallback(resolveProm, rejectProm, closeErr)
-          );
-        } catch (unhandledCloseErr) {
-          rejectProm({
-            unhandledCloseErr: unhandledCloseErr,
-          } as SafeDisposableError<TOpenErr, TExecErr, TCloseErr>);
-        }
-      },
-    });
+        const retProm = getCloseDispResponse(disposable, dispErr, reject);
+        return retProm;
+      }
+    );
   });
 
   return promise;

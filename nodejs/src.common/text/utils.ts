@@ -1,3 +1,13 @@
+export interface StrReplaceOpts {
+  searchValue: {
+    [Symbol.replace](
+      string: string,
+      replacer: (substring: string, ...args: any[]) => string
+    ): string;
+  };
+  replacer: (substring: string, ...args: any[]) => string;
+}
+
 export const compareStringsAsInts = (
   leftVal: string,
   rightVal: string
@@ -12,20 +22,39 @@ export const compareStringsAsInts = (
 export const strReplaceAll = (
   val: string,
   str: string | RegExp,
-  replExpr: string
+  replacer: string
 ) => {
-  let replVal = null;
+  let retVal = "";
 
   if (typeof val == "string") {
-    replVal = val.replace(str, replExpr);
+    retVal = val.replace(str, replacer);
 
-    while (replVal !== val) {
-      val = replVal;
-      replVal = val.replace(str, replExpr);
+    while (retVal !== val) {
+      val = retVal;
+      retVal = val.replace(str, replacer);
     }
   }
 
-  return replVal;
+  return retVal;
+};
+
+export const strReplaceAllWith = (
+  val: string,
+  searchValue: string | RegExp,
+  replacer: (substring: string, ...args: any[]) => string
+) => {
+  let retVal = "";
+
+  if (typeof val == "string") {
+    retVal = val.replace(searchValue, replacer);
+
+    while (retVal !== val) {
+      val = retVal;
+      retVal = val.replace(searchValue, replacer);
+    }
+  }
+
+  return retVal;
 };
 
 export const strCount = (val: string, str: string): number => {

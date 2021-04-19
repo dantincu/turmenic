@@ -70,7 +70,7 @@
   "include":[
     "src/**/*",
     "index.ts",
-    "tests/**/*", "tests",
+    "tests/**/*",
   ],
   "exclude":[
       "node_modules",

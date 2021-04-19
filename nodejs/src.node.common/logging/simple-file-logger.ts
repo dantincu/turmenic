@@ -18,34 +18,34 @@ export class Logger {
     this.log = this.getLogger();
   }
 
-  public trace(...data: any[]) {
-    appConsole.log(...data);
-    this.log.trace(...data);
+  public trace(message?: any, ...optionalParams: any[]) {
+    appConsole.trace(message, ...optionalParams);
+    this.log.trace([message, ...optionalParams]);
   }
 
-  public debug(...data: any[]) {
-    appConsole.log(...data);
-    this.log.debug(...data);
+  public debug(message?: any, ...optionalParams: any[]) {
+    appConsole.debug(message, ...optionalParams);
+    this.log.debug([message, ...optionalParams]);
   }
 
-  public info(...data: any[]) {
-    appConsole.log(...data);
-    this.log.info(...data);
+  public info(message?: any, ...optionalParams: any[]) {
+    appConsole.info(message, ...optionalParams);
+    this.log.info([message, ...optionalParams]);
   }
 
-  public warn(...data: any[]) {
-    appConsole.log(...data);
-    this.log.warn(...data);
+  public warn(message?: any, ...optionalParams: any[]) {
+    appConsole.warn(message, ...optionalParams);
+    this.log.warn([message, ...optionalParams]);
   }
 
-  public error(...data: any[]) {
-    appConsole.log(...data);
-    this.log.error(...data);
+  public error(message?: any, ...optionalParams: any[]) {
+    appConsole.error(message, ...optionalParams);
+    this.log.error([message, ...optionalParams]);
   }
 
-  public fatal(...data: any[]) {
-    appConsole.log(...data);
-    this.log.fatal(...data);
+  public fatal(message?: any, ...optionalParams: any[]) {
+    appConsole.error(message, ...optionalParams);
+    this.log.fatal([message, ...optionalParams]);
   }
 
   private getLoggerOptions() {

@@ -1,12 +1,16 @@
 import sqlite3 from "sqlite3";
 
-import { execWithDispSafe } from "../../src.common/async/disposable.js";
+import {
+  SafePromise,
+  SafePromiseError,
+} from "../../src.common/async/safe-promise";
+import { execWithDisp } from "../../src.common/async/disposable.js";
 
 export const executeWithDb = <TExecErr>(
   dbFileName: string,
   callback: (db: sqlite3.Database) => Promise<void>
-): Promise<void> => {
-  const promise = execWithDispSafe<
+): SafePromise<void> => {
+  const promise = execWithDisp<
     sqlite3.Database,
     Error | null,
     TExecErr,
@@ -24,8 +28,8 @@ export const executeWithStmt = <TExecErr>(
   db: sqlite3.Database,
   stmtSql: string,
   callback: (db: sqlite3.Database, stmt: sqlite3.Statement) => Promise<void>
-): Promise<void> => {
-  const promise = execWithDispSafe<
+): SafePromise<void> => {
+  const promise = execWithDisp<
     sqlite3.Statement,
     Error | null,
     TExecErr,

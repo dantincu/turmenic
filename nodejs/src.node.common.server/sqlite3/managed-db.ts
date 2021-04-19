@@ -24,7 +24,7 @@ export class ManagedDb {
   public async executeWithDb<TExecErr>(
     callback: (db: sqlite3.Database) => Promise<void>
   ) {
-    await executeWithDb<TExecErr>(this.opts.dbFilePath, callback);
+    await executeWithDb<TExecErr>(this.opts.dbFilePath, callback).promise;
   }
 
   public async executeWithStmt<TExecErr>(
@@ -32,7 +32,7 @@ export class ManagedDb {
     stmtSql: string,
     callback: (db: sqlite3.Database, stmt: sqlite3.Statement) => Promise<void>
   ) {
-    await executeWithStmt<TExecErr>(db, stmtSql, callback);
+    await executeWithStmt<TExecErr>(db, stmtSql, callback).promise;
   }
 
   logInit() {
