@@ -85,6 +85,7 @@ const runTest = async () => {
         msg.message
       );
     },
+    onUnhandledError: (err, msg) => {},
   });
 };
 

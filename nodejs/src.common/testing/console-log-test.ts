@@ -32,12 +32,14 @@ export interface UnitTestMessage extends UnitTestComposite {
   message: TestMessage;
 }
 
-interface MessageReceivedComposite {
+interface TestFuncBase {
   onMessageReceived: (msg: UnitTestMessage) => void;
+  onUnhandledError: (err: any, msg: UnitTestMessage) => void;
 }
 
 export interface TestFuncOpts {
   onMessageReceived: (msg: TestMessage) => void;
+  onUnhandledError: (err: any, msg: TestMessage) => void;
 }
 
 export interface TestGroup {
@@ -49,9 +51,9 @@ export interface TestGroup {
       The second digit specified inside the curly braces will result in as many leading zeros as padding. The curly braces should only appear once. */;
 }
 
-export interface UnitTestGroup extends MessageReceivedComposite, TestGroup {}
+export interface UnitTestGroup extends TestFuncBase, TestGroup {}
 
-export interface TestOpts extends UnitTestComposite, MessageReceivedComposite {}
+export interface TestOpts extends UnitTestComposite, TestFuncBase {}
 
 export interface PrintMainMsgOpts {
   msgParts: string[];
@@ -133,6 +135,12 @@ export const runTestAsync = async (opts: TestOpts): Promise<TestResult> => {
           test: opts.test,
         });
       },
+      onUnhandledError: (err, msg) => {
+        opts.onUnhandledError(err, {
+          message: msg,
+          test: opts.test,
+        });
+      },
     });
 
     printTestResult(testResult);
@@ -189,6 +197,7 @@ export const runAllTestsInOrderAsync = async (testGroup: UnitTestGroup) => {
     const testResult = await runTestAsync({
       test: test,
       onMessageReceived: testGroup.onMessageReceived,
+      onUnhandledError: testGroup.onUnhandledError
     });
 
     testResultArr.push(testResult);
