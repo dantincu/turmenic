@@ -14,19 +14,13 @@ import {
   runAllTestsInOrderAsync,
   UnitTest,
   TestGroup,
+  UnitTestGroup,
   UnitTestMessage,
-  defaultConstValues,
-  runTestAsync,
 } from "../../src.common/testing/console-log-test.js";
 import { appConsole } from "../../src.common/logging/appConsole.js";
 
 interface UnitTestsGroupExecOptsBase {
-  testGroup: TestGroup;
-  onMessageReceived?: ((msg: UnitTestMessage) => void) | null | undefined;
-  onUnhandledError?:
-    | ((err: any, msg: UnitTestMessage) => void)
-    | null
-    | undefined;
+  testGroup: UnitTestGroup;
 }
 
 export interface UnitTestsGroupExecOpts extends UnitTestsGroupExecOptsBase {
@@ -66,8 +60,6 @@ export const runUnitTestsInOrderAsync = async (
 
   const testResultArr = await runAllTestsInOrderAsync({
     ...normOpts.testGroup,
-    onMessageReceived: normOpts.onMessageReceived ?? (() => {}),
-    onUnhandledError: normOpts.onUnhandledError ?? (() => {}),
   });
 
   const errToStr = (error: any): string => {

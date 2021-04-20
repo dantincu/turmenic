@@ -1,5 +1,8 @@
 import { appConsole } from "../../../src.common/logging/appConsole.js";
-import { UnitTest } from "../../../src.common/testing/console-log-test.js";
+import {
+  UnitTest,
+  UnitTestGroup,
+} from "../../../src.common/testing/console-log-test.js";
 
 export interface TestData {
   intVal: number;
@@ -74,7 +77,7 @@ export const getUnitTestGroup = () => {
       );
     },
     onUnhandledError: (err, msg) => {},
-  };
+  } as UnitTestGroup;
 
   return unitTestGroup;
 };

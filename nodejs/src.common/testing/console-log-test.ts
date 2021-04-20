@@ -4,7 +4,7 @@ import { strReplaceAllWith } from "../text/utils.js";
 import { generateConstantStr } from "../arrays/arr-const.js";
 import { forEachAsync } from "../arrays/arrays-async.js";
 
-export const defaultConstValues = Object.freeze({
+const defaultConstValues = Object.freeze({
   msgPartsDelimiter: " >>>> ",
 });
 
@@ -55,7 +55,7 @@ export interface UnitTestGroup extends TestFuncBase, TestGroup {}
 
 export interface TestOpts extends UnitTestComposite, TestFuncBase {}
 
-export interface PrintMainMsgOpts {
+interface PrintMainMsgOpts {
   msgParts: string[];
   msgArgs?: any[] | null | undefined;
   msgPartsDelimiter?: string | null | undefined;
@@ -82,7 +82,7 @@ const normalizeOpts = (opts: string[] | PrintMainMsgOpts) => {
   return retOpts;
 };
 
-export const printMainMsg = (opts: string[] | PrintMainMsgOpts) => {
+const printMainMsg = (opts: string[] | PrintMainMsgOpts) => {
   opts = normalizeOpts(opts);
 
   const mainMsg = opts.msgParts.join(opts.msgPartsDelimiter as string);
@@ -101,7 +101,7 @@ export const printMainMsg = (opts: string[] | PrintMainMsgOpts) => {
   }
 };
 
-export const printTestResult = (testResult: TestResult) => {
+const printTestResult = (testResult: TestResult) => {
   printMainMsg([
     `TEST ${testResult.test.testName} ${
       testResult.success ? "SUCCEEDED" : "FAILED"
@@ -109,7 +109,7 @@ export const printTestResult = (testResult: TestResult) => {
   ]);
 };
 
-export const printTestError = (testResult: TestResult) => {
+const printTestError = (testResult: TestResult) => {
   printMainMsg({
     msgParts: [`TEST ${testResult.test.testName} CRASHED`],
     msgArgs: [testResult.error],
@@ -180,7 +180,7 @@ const getTestNameNormalizer = (testGroup: UnitTestGroup) => {
   return normalizer;
 };
 
-export const prepTestGroup = (testGroup: UnitTestGroup) => {
+const prepTestGroup = (testGroup: UnitTestGroup) => {
   const testNameNormalizer = getTestNameNormalizer(testGroup);
 
   testGroup.allTests.forEach((test, idx) => {
@@ -197,7 +197,7 @@ export const runAllTestsInOrderAsync = async (testGroup: UnitTestGroup) => {
     const testResult = await runTestAsync({
       test: test,
       onMessageReceived: testGroup.onMessageReceived,
-      onUnhandledError: testGroup.onUnhandledError
+      onUnhandledError: testGroup.onUnhandledError,
     });
 
     testResultArr.push(testResult);
