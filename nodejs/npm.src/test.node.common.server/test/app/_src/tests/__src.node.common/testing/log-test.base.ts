@@ -1,29 +1,17 @@
 import { appConsole } from "../../../src.common/logging/appConsole.js";
+import { UnitTest } from "../../../src.common/testing/console-log-test.js";
 
-import {
-  TestFuncOpts,
-  TestMessage,
-  TestOpts,
-  TestResult,
-  runAllTestsInOrderAsync,
-  UnitTest,
-  TestGroup,
-  UnitTestMessage,
-  defaultConstValues,
-  runTestAsync,
-} from "../../../src.common/testing/console-log-test.js";
-
-interface TestData {
+export interface TestData {
   intVal: number;
 }
 
-interface BasicTestOpts {
+export interface BasicTestOpts {
   testName: string;
   success?: boolean;
   error?: any | null;
 }
 
-const getStartTestData = () => {
+export const getStartTestData = () => {
   const data: TestData = {
     intVal: 0,
   };
@@ -31,7 +19,7 @@ const getStartTestData = () => {
   return data;
 };
 
-const getBasicTest = (data: TestData, testOpts: BasicTestOpts) => {
+export const getBasicTest = (data: TestData, testOpts: BasicTestOpts) => {
   const unitTest: UnitTest = {
     testName: "basic increment",
     testFunc: async (funcOpts) => {
@@ -51,10 +39,10 @@ const getBasicTest = (data: TestData, testOpts: BasicTestOpts) => {
   return unitTest;
 };
 
-const runTest = async () => {
+export const getUnitTestGroup = () => {
   const data = getStartTestData();
 
-  await runAllTestsInOrderAsync({
+  const unitTestGroup = {
     allTests: [
       getBasicTest(data, {
         testName: "Sample test that succeeds",
@@ -86,7 +74,7 @@ const runTest = async () => {
       );
     },
     onUnhandledError: (err, msg) => {},
-  });
-};
+  };
 
-await runTest();
+  return unitTestGroup;
+};

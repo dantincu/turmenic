@@ -1,4 +1,10 @@
-import { PathLike, readdir } from "fs";
+import {
+  PathLike,
+  readdir,
+  WriteFileOptions,
+  writeFile,
+  NoParamCallback,
+} from "fs";
 
 export const readdirAsync = async (
   path: PathLike,
@@ -49,4 +55,27 @@ export const readDirIfExists = async (dirPath: string) => {
   }
 
   return dirEntries;
+};
+
+export const writeFileAsynk = (
+  path: PathLike | number,
+  data: string | NodeJS.ArrayBufferView,
+  options?: WriteFileOptions | undefined | null,
+  callback?: NoParamCallback | undefined | null
+): Promise<void> => {
+  const promise = new Promise<void>((resolve, reject) => {
+    writeFile(path, data, options ?? null, (err) => {
+      if (callback) {
+        callback(err);
+      }
+
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+
+  return promise;
 };

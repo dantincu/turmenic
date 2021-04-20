@@ -1,6 +1,8 @@
 import path from "path";
+import fs from "fs";
 
-import { writeFileAsync } from "../fileSystem/types.js";
+import { writeFileAsync, emptyDirAsync } from "../fileSystem/types.js";
+import { createDirPathRec } from "../fileSystem/dir-hierarchy.js";
 import { envConfig, envBaseDir } from "../appSettings/envConfig.js";
 import { forEachAsync } from "../../src.common/arrays/arrays-async.js";
 
@@ -16,6 +18,7 @@ import {
   defaultConstValues,
   runTestAsync,
 } from "../../src.common/testing/console-log-test.js";
+import { appConsole } from "../../src.common/logging/appConsole.js";
 
 interface UnitTestsGroupExecOptsBase {
   testGroup: TestGroup;
@@ -67,11 +70,7 @@ export const runUnitTestsInOrderAsync = async (
     onUnhandledError: normOpts.onUnhandledError ?? (() => {}),
   });
 
-  const getMessageOutput = (msg: TestMessage) => {
-    return msg.text;
-  };
-
-  const errToStrArr = (error: any): string[] => {
+  const errToStr = (error: any): string => {
     let err = error as Error;
 
     const retArr: string[] = [
@@ -81,48 +80,46 @@ export const runUnitTestsInOrderAsync = async (
       `ERR STACK: ${err.stack}\n`,
     ];
 
-    return retArr;
+    const retStr = retArr.join(normOpts.outputMsgJoinChar);
+    return retStr;
+  };
+
+  const msgArrToStr = (msgArr: TestMessage[]) => {
+    const retArr = msgArr.map((msg) => msg.text);
+
+    const retStr = retArr.join(normOpts.outputMsgJoinChar);
+    return retStr;
   };
 
   const writeTextToFile = async (
     testName: string,
     outputFileExt: string,
-    messageArr: string[]
+    message: string
   ) => {
     const outputFilePath = path.join(
       normOpts.outputDirPath,
       [testName, outputFileExt].join(".")
     );
 
-    await writeFileAsync(
-      outputFilePath,
-      messageArr.join(normOpts.outputMsgJoinChar)
-    );
+    await writeFileAsync(outputFilePath, message);
   };
+
+  await createDirPathRec(normOpts.outputDirPath);
+  await emptyDirAsync(normOpts.outputDirPath);
 
   await forEachAsync(testResultArr, async (testResult) => {
     await writeTextToFile(
       testResult.test.testName,
       normOpts.outputFileExt,
-      testResult.messageArr.map((msg) => getMessageOutput(msg))
+      msgArrToStr(testResult.messageArr)
     );
 
     if (testResult.error) {
       await writeTextToFile(
         testResult.test.testName,
         normOpts.errorFileExt,
-        errToStrArr(testResult.error)
+        errToStr(testResult.error)
       );
     }
-
-    const outputFilePath = path.join(
-      normOpts.outputDirPath,
-      [testResult.test.testName, normOpts.outputFileExt].join(".")
-    );
-
-    await writeFileAsync(
-      outputFilePath,
-      testResult.messageArr.join(normOpts.outputMsgJoinChar)
-    );
   });
 };

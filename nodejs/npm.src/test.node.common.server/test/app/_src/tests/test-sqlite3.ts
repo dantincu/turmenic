@@ -1,3 +1,7 @@
+import sqlite3 from "sqlite3";
+
+import { appConsole } from "../src.common/logging/appConsole.js";
+
 import {
   envConfig,
   envBaseDir,
@@ -7,7 +11,6 @@ import {
   ManagedDb,
   ManagedDbOpts,
 } from "../src.node.common.server/sqlite3/managed-db.js";
-import sqlite3 from "sqlite3";
 
 const appEnv = await envConfig.appEnv.instance();
 const dbFilePath = appEnv.getEnvRelPath(
@@ -16,7 +19,7 @@ const dbFilePath = appEnv.getEnvRelPath(
   "sqlite3.db"
 );
 
-console.log("dbFilePath", dbFilePath);
+appConsole.log("dbFilePath", dbFilePath);
 
 const managedDb = new ManagedDb({
   dbFilePath: dbFilePath,
@@ -39,7 +42,7 @@ const test1 = async () => {
           db.each(
             "SELECT rowid AS id, info FROM lorem",
             function (err, row) {
-              console.log(row.id + ": " + row.info);
+              appConsole.log(row.id + ": " + row.info);
             },
             (err, count) => {
               if (err) {
@@ -57,7 +60,7 @@ const test1 = async () => {
       promise.then(
         () => {},
         (err) => {
-          console.log("eeeeeerrooooooor", err);
+          appConsole.log("eeeeeerrooooooor", err);
         }
       );
 
@@ -91,7 +94,7 @@ const test2 = async () => {
                 db.each(
                   "SELECT rowid AS id, info FROM lorem",
                   function (err, row) {
-                    console.log(row.id + ": " + row.info);
+                    appConsole.log(row.id + ": " + row.info);
                   },
                   (err, count) => {
                     if (err) {
@@ -103,7 +106,7 @@ const test2 = async () => {
                 );
               },
               (stmtErr) => {
-                console.log("stmtErr", stmtErr);
+                appConsole.log("stmtErr", stmtErr);
                 reject(stmtErr);
               }
             );
@@ -113,7 +116,7 @@ const test2 = async () => {
       promise.then(
         () => {},
         (err) => {
-          console.log("eeeeeerrooooooor2", err);
+          appConsole.log("eeeeeerrooooooor2", err);
         }
       );
 
@@ -122,10 +125,10 @@ const test2 = async () => {
   );
 };
 
-console.log("RUNNING TEST 1");
+appConsole.log("RUNNING TEST 1");
 await test1();
 
-console.log("RUNNING TEST 2");
+appConsole.log("RUNNING TEST 2");
 await test2();
 
-console.log("test successfull");
+appConsole.log("test successfull");

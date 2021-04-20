@@ -1,13 +1,18 @@
-import Bcrypt from "bcrypt";
-import { mkdirAsync } from "./src.node.common/fileSystem/types.js";
-import { createDirPathRec } from "./src.node.common/fileSystem/dir-hierarchy.js";
+import path from "path";
+
+import {
+  mkdirAsync,
+  emptyDirAsync,
+  writeFileAsync,
+} from "../../../src.node.common/fileSystem/types.js";
+import { createDirPathRec } from "../../../src.node.common/fileSystem/dir-hierarchy.js";
 
 import {
   envConfig,
   envBaseDir,
-} from "./src.node.common/appSettings/envConfig.js";
-import { appConsole } from "./src.common/logging/appConsole.js";
-import { appLogger } from "./src.node.common/logging/simple-file-logger.js";
+} from "../../../src.node.common/appSettings/envConfig.js";
+import { appConsole } from "../../../src.common/logging/appConsole.js";
+import { appLogger } from "../../../src.node.common/logging/simple-file-logger.js";
 
 appLogger.trace(
   "test.node.common.server ",
@@ -15,7 +20,7 @@ appLogger.trace(
 );
 
 process.on("unhandledRejection", (err) => {
-  appConsole.log(err);
+  console.log(err);
   process.exit(1);
 });
 
@@ -49,6 +54,15 @@ const runTest2 = async () => {
 
   const thirdDirPath = appEnv.getEnvRelPath(envBaseDir.data, "5678", "asdf");
   await createDirPathRec(thirdDirPath);
+
+  const fourthDirPath = appEnv.getEnvRelPath(envBaseDir.data, "ghjk");
+  const fifthDirPath = path.join(fourthDirPath, "asdf", "1234");
+
+  await createDirPathRec(fifthDirPath);
+  await emptyDirAsync(fourthDirPath);
+
+  const firstFilePath = path.join(fourthDirPath, "out.txt");
+  await writeFileAsync(firstFilePath, (["asdfasdf"] as unknown) as string);
 };
 
 await runTest1();

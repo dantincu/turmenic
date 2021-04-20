@@ -2,6 +2,8 @@ import fs from "fs";
 import readline from "readline";
 import { google } from "googleapis";
 
+import { appConsole } from "../../src.common/logging/appConsole.js";
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://www.googleapis.com/auth/contacts.readonly"];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -11,7 +13,7 @@ const TOKEN_PATH = "./src/googleapis/token.json";
 
 // Load client secrets from a local file.
 fs.readFile("./src/googleapis/credentials.json", (err, content) => {
-  if (err) return console.log("Error loading client secret file:", err);
+  if (err) return appConsole.log("Error loading client secret file:", err);
   // Authorize a client with credentials, then call the Google Tasks API.
   authorize(JSON.parse(content.toString("utf8")), listConnectionNames);
 });
@@ -49,7 +51,7 @@ const getNewToken = (oAuth2Client, callback) => {
     access_type: "offline",
     scope: SCOPES,
   });
-  console.log("Authorize this app by visiting this url:", authUrl);
+  appConsole.log("Authorize this app by visiting this url:", authUrl);
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -57,12 +59,12 @@ const getNewToken = (oAuth2Client, callback) => {
   rl.question("Enter the code from that page here: ", (code) => {
     rl.close();
     oAuth2Client.getToken(code, (err, token) => {
-      if (err) return console.error("Error retrieving access token", err);
+      if (err) return appConsole.error("Error retrieving access token", err);
       oAuth2Client.setCredentials(token);
       // Store the token to disk for later program executions
       fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-        if (err) return console.error(err);
-        console.log("Token stored to", TOKEN_PATH);
+        if (err) return appConsole.error(err);
+        appConsole.log("Token stored to", TOKEN_PATH);
       });
       callback(oAuth2Client);
     });
@@ -86,16 +88,16 @@ const listConnectionNames = (auth) => {
       if (err) return console.error("The API returned an error: " + err);
       const connections = res?.data.connections;
       if (connections) {
-        console.log("Connections:");
+        appConsole.log("Connections:");
         connections.forEach((person) => {
           if (person.names && person.names.length > 0) {
-            console.log(person.names[0].displayName);
+            appConsole.log(person.names[0].displayName);
           } else {
-            console.log("No display name found for connection.");
+            appConsole.log("No display name found for connection.");
           }
         });
       } else {
-        console.log("No connections found.");
+        appConsole.log("No connections found.");
       }
     }
   );

@@ -1,5 +1,7 @@
 import sqlite3 from "sqlite3";
 
+import { appConsole } from "../../src.common/logging/appConsole.js";
+
 /*
 export const openDbAsync = (fileName: string) => {
   const promise = new Promise<sqlite3.Database>((resolve, reject) => {
@@ -105,7 +107,7 @@ export const execPromWithDb = (
         reject(err);
       } else {
         try {
-          console.log("executing promise", db, resolve, reject);
+          appConsole.log("executing promise", db, resolve, reject);
           func(db, resolve, reject);
         } catch (err) {
           reject(err);

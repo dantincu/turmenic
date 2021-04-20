@@ -44,23 +44,36 @@ export const getFileLastModifiedTime = async (filePath: string) => {
 };
 
 export const createDirIfNotExisting = async (dirPath: string) => {
+  let retVal = 0;
+
   try {
     await mkdirAsync(dirPath);
   } catch (err) {
-    if (err.code !== "EEXIST") {
+    if (err.code === "EEXIST") {
+      retVal = 1;
+    } else if (err.code === "ENOENT") {
+      retVal = -1;
+    } else {
       throw err;
     }
   }
+
+  return retVal;
 };
 
 export const removeDirIfExists = async (dirPath: string) => {
+  let retVal = false;
+
   try {
     await removeDirAsync(dirPath);
+    retVal = true;
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err;
     }
   }
+
+  return retVal;
 };
 
 export const removeFileIfExists = async (filePath: string) => {
@@ -71,22 +84,6 @@ export const removeFileIfExists = async (filePath: string) => {
       throw err;
     }
   }
-};
-
-export const tryCreateNewDir = async (dirPath: string) => {
-  let alreadyExists = false;
-
-  try {
-    await mkdirAsync(dirPath);
-  } catch (err) {
-    if (err.code !== "EEXIST") {
-      throw err;
-    } else {
-      alreadyExists = true;
-    }
-  }
-
-  return alreadyExists;
 };
 
 export const readFileIfExists = async (filePath: string) => {
