@@ -9,6 +9,8 @@
   },
   "scripts": {
     "start": "node dist/index.js",
+    "testMemoize": "node dist/tests/memoize-test.js",
+    "sourceFilePathTest": "node dist/tests/source-file-path-test.js",
     "testCreateDirPathRec": "node dist/tests/__src.node.common/fileSystem/createDirPathRec.test.js",
     "testConsoleLogTestingComponent": "node dist/tests/__src.node.common/testing/console-log-test.test.js",
     "testFileOutputTestingComponent": "node dist/tests/__src.node.common/testing/file-output-test.test.js",
@@ -43,6 +45,7 @@
     "lodash": "^4.17.21",
     "simple-node-logger": "^18.12.24",
     "sqlite3": "^5.0.2",
+    "stacktracey": "^2.1.7",
     "winattr": "^3.0.0"
   }
 }

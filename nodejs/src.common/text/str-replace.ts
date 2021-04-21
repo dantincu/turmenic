@@ -1,7 +1,7 @@
-import { GenericHash } from "../utils/types.js";
+import { KeyValuePair } from "../utils/types.js";
 
 export interface TrimOpts {
-  replExpr: GenericHash<string>;
+  replExpr: KeyValuePair<string>[];
   trimWhiteSpace?: boolean | null | undefined;
 }
 
@@ -11,9 +11,9 @@ export interface StrTrimOpts {
 }
 
 const validateReplacedExpr = (expr: TrimOpts) => {
-  for (let [key, val] of Object.entries(expr.replExpr)) {
-    validateReplacedValue(key);
-  }
+  expr.replExpr.forEach((pair) => {
+    validateReplacedValue(pair.key);
+  });
 };
 
 const validateReplacedValue = (key: string) => {
@@ -23,29 +23,41 @@ const validateReplacedValue = (key: string) => {
 };
 
 export const trimStartReplaceOnce = (str: string, expr: TrimOpts) => {
-  for (let [key, val] of Object.entries(expr.replExpr)) {
-    if (expr.trimWhiteSpace) {
-      str = str.trimStart();
+  let loopEnd = false;
+
+  expr.replExpr.forEach((pair) => {
+    if (!loopEnd) {
+      if (expr.trimWhiteSpace) {
+        str = str.trimStart();
+      }
+
+      if (str.startsWith(pair.key)) {
+        str = [pair.value, str.substring(pair.key.length)].join("");
+        loopEnd = true;
+      }
     }
-    if (str.startsWith(key)) {
-      str = str.substring(key.length);
-      break;
-    }
-  }
+  });
 
   return str;
 };
 
 export const trimEndReplaceOnce = (str: string, expr: TrimOpts) => {
-  for (let [key, val] of Object.entries(expr.replExpr)) {
-    if (expr.trimWhiteSpace) {
-      str = str.trimEnd();
+  let loopEnd = false;
+
+  expr.replExpr.forEach((pair) => {
+    if (!loopEnd) {
+      if (expr.trimWhiteSpace) {
+        str = str.trimEnd();
+      }
+
+      if (str.endsWith(pair.key)) {
+        str = [str.substring(0, str.length - pair.key.length), pair.value].join(
+          ""
+        );
+        loopEnd = true;
+      }
     }
-    if (str.endsWith(key)) {
-      str = str.substring(0, str.length - key.length);
-      break;
-    }
-  }
+  });
 
   return str;
 };
@@ -73,6 +85,18 @@ export const trimEndReplace = (str: string, expr: TrimOpts) => {
   while (str !== prevStr) {
     prevStr = str;
     str = trimEndReplaceOnce(str, expr);
+  }
+
+  return str;
+};
+
+export const trimReplaceOnce = (str: string, opts: StrTrimOpts) => {
+  if (opts.trimStart) {
+    str = trimStartReplaceOnce(str, opts.trimStart);
+  }
+
+  if (opts.trimEnd) {
+    str = trimEndReplaceOnce(str, opts.trimEnd);
   }
 
   return str;

@@ -28,7 +28,10 @@ export const getBasicTest = (data: TestData, testOpts: BasicTestOpts) => {
     testFunc: async (funcOpts) => {
       data.intVal++;
       funcOpts.onMessageReceived({
-        text: ("0000" + data.intVal).slice(-4),
+        test: unitTest,
+        message: {
+          text: ("0000" + data.intVal).slice(-4),
+        },
       });
 
       if (testOpts.error) {

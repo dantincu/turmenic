@@ -6,6 +6,21 @@ export type GenericHash<T> = {
   [key: string]: T;
 };
 
+export type KeyValuePair<T> = {
+  key: string;
+  value: T;
+};
+
+export const getGenericHash = <T>(pairs: { key: string; value: T }[]) => {
+  const retHash = {} as GenericHash<T>;
+
+  pairs.forEach((pair) => {
+    retHash[pair.key] = pair.value;
+  });
+
+  return retHash;
+};
+
 export const cloneHashDeep = (hash: Hash) => {
   const cloneHash = { ...hash };
 

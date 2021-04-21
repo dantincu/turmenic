@@ -86,3 +86,10 @@ export const strIsAllDigits = (str: string) => {
   const isAllDigits = /^\d+$/.test(str);
   return isAllDigits;
 };
+
+export const strContainsAny = (str: string, search: string[]) => {
+  const found = search.find((srch) => str.indexOf(srch) >= 0);
+
+  const retVal = !!found;
+  return retVal;
+};

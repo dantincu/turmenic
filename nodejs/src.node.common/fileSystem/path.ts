@@ -1,6 +1,11 @@
 import path from "path";
 
 import { trimEndReplaceOnce } from "../../src.common/text/str-replace.js";
+import { strReplaceAll } from "../../src.common/text/utils.js";
+
+export interface NormalizePathOpts {
+  pathSeparatorChar?: string | null | undefined;
+}
 
 export const rebasePath = (
   srcPath: string,
@@ -38,16 +43,40 @@ export const getRelPath = (fsPath: string, basePath: string) => {
   return retPath;
 };
 
-export const normalizePath = (p: string) => {
-  p = path.normalize(p);
-  p = trimEndReplaceOnce(p, {
+export const joinPath = (
+  pathParts: string[],
+  opts?: NormalizePathOpts | null | undefined
+) => {
+  opts = opts ?? {};
+  let retPath = path.join(...pathParts);
+
+  if (opts.pathSeparatorChar) {
+    retPath = strReplaceAll(retPath, /[\/\\]/g, opts.pathSeparatorChar);
+  }
+
+  return retPath;
+};
+
+export const normalizePath = (
+  pathArg: string,
+  opts?: NormalizePathOpts | null | undefined
+) => {
+  opts = opts ?? {};
+
+  pathArg = path.normalize(pathArg);
+
+  pathArg = trimEndReplaceOnce(pathArg, {
     trimWhiteSpace: true,
-    replExpr: {
-      ".": "",
-      "/": "",
-      "\\": "",
-    },
+    replExpr: [
+      { key: ".", value: "" },
+      { key: "/", value: "" },
+      { key: "\\", value: "" },
+    ],
   });
 
-  return p;
+  if (opts.pathSeparatorChar) {
+    pathArg = strReplaceAll(pathArg, /[\/\\]/g, opts.pathSeparatorChar);
+  }
+
+  return pathArg;
 };
