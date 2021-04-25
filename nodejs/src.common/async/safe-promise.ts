@@ -1,7 +1,37 @@
+export interface Exception {
+  name: string;
+  message: string;
+  stack: string;
+}
+
 export interface SafePromiseError {
   reason?: any | undefined;
   caught?: any | undefined;
+  rsn?: any | undefined;
+  exc?: any | undefined;
 }
+
+export const getExc = (exc: Error) => {
+  const retObj: Exception = {
+    name: exc.name,
+    message: exc.message,
+    stack: exc.stack ?? "",
+  };
+
+  return retObj;
+};
+
+export const getNormPromErr = (err: SafePromiseError) => {
+  if (err.reason) {
+    err.rsn = getExc(err.reason);
+  }
+
+  if (err.caught) {
+    err.exc = getExc(err.caught);
+  }
+
+  return err;
+};
 
 export const getSafePromise = <T>(
   executor: (
@@ -11,11 +41,9 @@ export const getSafePromise = <T>(
 ): Promise<T> => {
   const promise = new Promise<T>((resolve, reject) => {
     try {
-      executor(resolve, (reason) =>
-        reject({ reason: reason } as SafePromiseError)
-      );
+      executor(resolve, (reason) => reject(getNormPromErr({ reason: reason })));
     } catch (err) {
-      reject({ caught: err } as SafePromiseError);
+      reject(getNormPromErr({ caught: err }));
     }
   });
 

@@ -21,114 +21,130 @@ const dbFilePath = appEnv.getEnvRelPath(
 
 appConsole.log("dbFilePath", dbFilePath);
 
+const test0 = async () => {
+  try {
+    const db = new sqlite3.Database(dbFilePath);
+
+    db.serialize(function () {
+      /* db.run("DROP TABLE IF EXISTS lorem");
+      db.run("CREATE TABLE lorem (info TEXT)"); */
+
+      try {
+        db.run("BEGIN;");
+        var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+        for (var i = 0; i < 10; i++) {
+          stmt.run("Ipsum " + i);
+        }
+        stmt.finalize();
+
+        db.each("SELECT rowid AS id, info FROM lorem", function (err, row) {
+          appConsole.log(row.id + ": " + row.info);
+        });
+
+        throw new Error("asdf");
+        db.run("COMMIT;");
+      } catch (err) {
+        db.run("ROLLBACK;");
+      }
+    });
+
+    appConsole.log("Closing the db");
+    db.close();
+    appConsole.log("The db closed");
+  } catch (err) {
+    appConsole.error("ERROR", err);
+  }
+};
+
 const managedDb = new ManagedDb({
   dbFilePath: dbFilePath,
+  onUnhandled: (err) => {
+    return false;
+  },
 });
 
 const test1 = async () => {
-  await managedDb.executeWithDb<Error>(
-    (db): Promise<void> => {
-      const promise = new Promise<void>((resolve, reject) => {
-        db.serialize(() => {
-          db.run("DROP TABLE IF EXISTS lorem");
-          db.run("CREATE TABLE lorem (info TEXT)");
+  console.log("test1");
 
-          var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-          for (var i = 0; i < 10; i++) {
-            stmt.run("Ipsum " + i);
-          }
-          stmt.finalize();
+  await managedDb.serialize((db) => {
+    console.log("serializeAsync start");
+    // db.run("DROP TABLE IF EXISTS lorem");
+    // db.run("CREATE TABLE lorem (info TEXT)");
 
-          db.each(
-            "SELECT rowid AS id, info FROM lorem",
-            function (err, row) {
-              appConsole.log(row.id + ": " + row.info);
-            },
-            (err, count) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve();
-              }
-            }
-          );
-        });
-
-        throw new Error("asdfasdfasdf");
-      });
-
-      promise.then(
-        () => {},
-        (err) => {
-          appConsole.log("eeeeeerrooooooor", err);
-        }
-      );
-
-      return promise;
+    var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+    for (var i = 0; i < 10; i++) {
+      stmt.run("Ipsum " + i);
     }
-  );
+    stmt.finalize();
+
+    managedDb.each("SELECT rowid AS id, info FROM lorem", {}, (err, row) => {
+      appConsole.log(row.id + ": " + row.info);
+    });
+
+    console.log("serializeAsync");
+    const countProm = managedDb.each(
+      "SELECT rowid AS id, info FROM lorem",
+      {},
+      (err, row) => {
+        appConsole.log(row.id + ": " + row.info, err);
+      }
+    );
+
+    appConsole.log("countProm : " + countProm);
+    return true;
+  });
 };
 
 const test2 = async () => {
-  await managedDb.executeWithDb<Error>(
-    (db): Promise<void> => {
-      const promise = new Promise<void>((resolve, reject) => {
-        db.serialize(() => {
-          db.run("DROP TABLE IF EXISTS lorem");
-          db.run("CREATE TABLE lorem (info TEXT)");
+  console.log("test2");
 
-          managedDb
-            .executeWithStmt(
-              db,
-              "INSERT INTO lorem VALUES (?)",
-              async (db, stmt) => {
-                for (var i = 0; i < 10; i++) {
-                  stmt.run("Ipsum " + i);
-                }
+  await managedDb.executeWithTranCoreAsync(async (db) => {
+    console.log("executeWithTranCoreAsync start");
+    db.run("DROP TABLE IF EXISTS lorem");
+    db.run("CREATE TABLE lorem (info TEXT)");
 
-                throw new Error("asdfasdfasdf");
-              }
-            )
-            .then(
-              () => {
-                db.each(
-                  "SELECT rowid AS id, info FROM lorem",
-                  function (err, row) {
-                    appConsole.log(row.id + ": " + row.info);
-                  },
-                  (err, count) => {
-                    if (err) {
-                      reject(err);
-                    } else {
-                      resolve();
-                    }
-                  }
-                );
-              },
-              (stmtErr) => {
-                appConsole.log("stmtErr", stmtErr);
-                reject(stmtErr);
-              }
-            );
-        });
-      });
-
-      promise.then(
-        () => {},
-        (err) => {
-          appConsole.log("eeeeeerrooooooor2", err);
-        }
-      );
-
-      return promise;
+    var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+    for (var i = 0; i < 10; i++) {
+      stmt.run("Ipsum " + i);
     }
-  );
+    stmt.finalize();
+
+    console.log("executeWithTranCoreAsync");
+    const count = await managedDb.each(
+      "SELECT rowid AS id, info FROM lorem",
+      {},
+      (err, row) => {
+        appConsole.log(row.id + ": " + row.info, err);
+      }
+    );
+
+    appConsole.log("count : " + count);
+    return true;
+  });
 };
 
-appConsole.log("RUNNING TEST 1");
-await test1();
+process.on("uncaughtException", (err) => {
+  appConsole.error("uncaughtException", err);
+});
 
-appConsole.log("RUNNING TEST 2");
-await test2();
+process.on("unhandledRejection", (err) => {
+  appConsole.error("unhandledRejection", err);
+});
 
-appConsole.log("test successfull");
+try {
+  /* appConsole.log("RUNNING TEST 1");
+  await test1(); */
+
+  appConsole.log("RUNNING TEST 2");
+  await test2();
+
+  appConsole.log("test successfull");
+} catch (err) {
+  appConsole.error("caught error", err);
+} finally {
+  managedDb.closeDb();
+  appConsole.log("db closed");
+}
+
+/* appConsole.log("RUNNING TEST 0");
+await test0(); */

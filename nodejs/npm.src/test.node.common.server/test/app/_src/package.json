@@ -1,7 +1,7 @@
 {
   "name": "app.test.server.turmerik",
   "version": "1.0.0",
-  "description": "Test package for Turmenic server side functionality",
+  "description": "Test package for Turmerik server side functionality",
   "main": "index.ts",
   "type": "module",
   "directories": {
@@ -38,6 +38,7 @@
     "@hapi/cookie": "^11.0.2",
     "@hapi/hapi": "^20.1.0",
     "@hapi/vision": "^6.0.1",
+    "async-mutex": "^0.3.1",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "fs-extra": "^9.1.0",
@@ -46,6 +47,7 @@
     "lodash": "^4.17.21",
     "simple-node-logger": "^18.12.24",
     "sqlite3": "^5.0.2",
+    "sqlite3-transactions": "0.0.5",
     "stacktracey": "^2.1.7",
     "winattr": "^3.0.0"
   }

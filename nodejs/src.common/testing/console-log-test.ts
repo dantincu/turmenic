@@ -31,6 +31,7 @@ export interface TestResult extends UnitTestComposite {
 
 export interface TestMessage {
   text: string;
+  args?: any[] | null | undefined;
 }
 
 export interface UnitTestMessage extends UnitTestComposite {

@@ -6,13 +6,7 @@ import {
 } from "../../../../src.common/testing/console-log-test.js";
 import { runUnitTestsInOrderAsync } from "../../../../src.node.common/testing/file-output-test.js";
 
-import {
-  SafePromise,
-  SafePromiseError,
-  executeSafe,
-  executeSafeWithVal,
-  getSafePromise,
-} from "../../../../src.common/async/safe-promise.js";
+import { SafePromise } from "../../../../src.common/async/safe-promise.js";
 
 const getUnitTest = (
   value: boolean,
@@ -24,48 +18,57 @@ const getUnitTest = (
   const unitTest: UnitTest = {
     testName: "safeThen",
     testFunc: async (opts) => {
-      sendMessage(opts, "safePromise\n");
+      sendMessage(opts, "safePromise");
 
       const safePromise = new SafePromise<boolean>(null, (resolve, reject) => {
-        sendMessage(opts, "safePromise executor\n");
+        sendMessage(opts, "safePromise executor");
 
         if (error !== null) {
-          sendMessage(opts, "safePromise executor error\n");
+          sendMessage(opts, "safePromise executor error");
           throw error;
         } else if (reason !== null) {
-          sendMessage(opts, "safePromise executor reject\n");
+          sendMessage(opts, "safePromise executor reject");
           reject(reason);
         } else {
-          sendMessage(opts, "safePromise executor resolve\n");
+          sendMessage(opts, "safePromise executor resolve");
           resolve(value);
         }
       }).safeThen<boolean, boolean>({
         onfulfilled: async (val) => {
-          sendMessage(opts, `safeThen onfulfilled ${val}\n`);
+          sendMessage(opts, {
+            text: `safeThen onfulfilled`,
+            args: [val],
+          });
 
           if (thenError) {
-            sendMessage(opts, `safeThen onfulfilled error\n`);
+            sendMessage(opts, `safeThen onfulfilled error`);
             throw thenError;
           } else {
-            sendMessage(opts, "safeThen onfulfilled resolve\n");
+            sendMessage(opts, "safeThen onfulfilled resolve");
           }
 
           return thenValue;
         },
         onrejected: async (reason) => {
-          sendMessage(opts, `safeThen onrejected ${reason}\n`);
+          sendMessage(opts, {
+            text: `safeThen onrejected`,
+            args: [reason],
+          });
 
           if (thenError) {
-            sendMessage(opts, `safeThen onrejected error\n`);
+            sendMessage(opts, `safeThen onrejected error`);
             throw thenError;
           } else {
-            sendMessage(opts, "safeThen onrejected resolve\n");
+            sendMessage(opts, "safeThen onrejected resolve");
           }
 
           return thenValue;
         },
         onfulfilledCrashed: (reason) => {
-          sendMessage(opts, `safeThen onfulfilledCrashed ${reason}\n`);
+          sendMessage(opts, {
+            text: `safeThen onfulfilledCrashed`,
+            args: [reason],
+          });
         },
       });
 
@@ -79,7 +82,7 @@ const getUnitTest = (
       }).promise;
 
       console.log(`safePromise retVal ${retVal}\n`);
-      sendMessage(opts, `safePromise retVal ${retVal}\n`);
+      sendMessage(opts, { text: `safePromise retVal`, args: [retVal] });
 
       return retVal;
     },

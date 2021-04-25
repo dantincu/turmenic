@@ -20,6 +20,7 @@ import {
 import { appConsole } from "../../src.common/logging/appConsole.js";
 
 import { StckTrcyExtractor } from "../stacktracey/stacktracey.js";
+import { getExc } from "../../src.common/async/safe-promise.js";
 
 interface UnitTestsGroupExecOptsBase {
   testGroup: UnitTestGroup;
@@ -44,8 +45,8 @@ const getNormalizedOpts = (
 ): UnitTestGroupExecNormOpts => {
   const normOpts: UnitTestGroupExecNormOpts = {
     testGroup: opts.testGroup,
-    outputFileExt: opts.outputFileExt ?? "out.txt",
-    errorFileExt: opts.errorFileExt ?? "err.txt",
+    outputFileExt: opts.outputFileExt ?? "out.json",
+    errorFileExt: opts.errorFileExt ?? "err.json",
     outputDirPath: appEnv.getEnvRelPath(
       envBaseDir.data,
       opts.outputDirRelPath ??
@@ -71,23 +72,35 @@ export const runUnitTestsInOrderAsync = async (
   });
 
   const errToStr = (error: any): string => {
-    let err = error as Error;
+    /* let err = error as Error;
 
     const retArr: string[] = [
       `ERR: ${err}\n`,
       `ERR NAME: ${err.name}\n`,
       `ERR MSG: ${err.message}\n`,
       `ERR STACK: ${err.stack}\n`,
-    ];
+    ];*/
 
-    const retStr = retArr.join(normOpts.outputMsgJoinChar);
+    // const retStr = retArr.join(normOpts.outputMsgJoinChar);
+    const retStr = JSON.stringify(
+      {
+        caught: error,
+        exc: getExc(error as Error),
+      },
+      null,
+      "  "
+    );
+
     return retStr;
   };
 
   const msgArrToStr = (msgArr: TestMessage[]) => {
-    const retArr = msgArr.map((msg) => msg.text);
+    /* const retArr = msgArr.map((msg) => msg.text);
 
     const retStr = retArr.join(normOpts.outputMsgJoinChar);
+    return retStr;*/
+
+    const retStr = JSON.stringify(msgArr, null, "  ");
     return retStr;
   };
 
