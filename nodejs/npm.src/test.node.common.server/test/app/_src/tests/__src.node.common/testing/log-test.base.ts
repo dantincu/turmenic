@@ -2,6 +2,7 @@ import { appConsole } from "../../../src.common/logging/appConsole.js";
 import {
   UnitTest,
   UnitTestGroup,
+  sendMessage,
 } from "../../../src.common/testing/console-log-test.js";
 
 export interface TestData {
@@ -25,14 +26,9 @@ export const getStartTestData = () => {
 export const getBasicTest = (data: TestData, testOpts: BasicTestOpts) => {
   const unitTest: UnitTest = {
     testName: "basic increment",
-    testFunc: async (funcOpts) => {
+    testFunc: async (opts) => {
       data.intVal++;
-      funcOpts.onMessageReceived({
-        test: unitTest,
-        message: {
-          text: ("0000" + data.intVal).slice(-4),
-        },
-      });
+      sendMessage(opts, ("0000" + data.intVal).slice(-4));
 
       if (testOpts.error) {
         throw testOpts.error;
@@ -79,7 +75,6 @@ export const getUnitTestGroup = () => {
         msg.message
       );
     },
-    onUnhandledError: (err, msg) => {},
   } as UnitTestGroup;
 
   return unitTestGroup;

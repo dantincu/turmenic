@@ -19,12 +19,14 @@ import {
 } from "../../src.common/testing/console-log-test.js";
 import { appConsole } from "../../src.common/logging/appConsole.js";
 
+import { StckTrcyExtractor } from "../stacktracey/stacktracey.js";
+
 interface UnitTestsGroupExecOptsBase {
   testGroup: UnitTestGroup;
 }
 
 export interface UnitTestsGroupExecOpts extends UnitTestsGroupExecOptsBase {
-  outputDirRelPath: string;
+  outputDirRelPath?: string | null | undefined;
   outputFileExt?: string | null | undefined;
   errorFileExt?: string | null | undefined;
   outputMsgJoinChar?: string | null | undefined;
@@ -44,7 +46,13 @@ const getNormalizedOpts = (
     testGroup: opts.testGroup,
     outputFileExt: opts.outputFileExt ?? "out.txt",
     errorFileExt: opts.errorFileExt ?? "err.txt",
-    outputDirPath: appEnv.getEnvRelPath(envBaseDir.data, opts.outputDirRelPath),
+    outputDirPath: appEnv.getEnvRelPath(
+      envBaseDir.data,
+      opts.outputDirRelPath ??
+        new StckTrcyExtractor().get({
+          ignoreCallingModule: 1,
+        }).filteredEntries[0].devRelFilePath
+    ),
     outputMsgJoinChar: opts.outputMsgJoinChar ?? "",
   };
 

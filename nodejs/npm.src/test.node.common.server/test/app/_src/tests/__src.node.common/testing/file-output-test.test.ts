@@ -7,7 +7,6 @@ const runTest = async () => {
   const unitTestGroup = await getUnitTestGroup();
   await runUnitTestsInOrderAsync({
     testGroup: unitTestGroup,
-    outputDirRelPath: "./tests/__src.node.common/testing/file-log-test.test",
   });
 };
 

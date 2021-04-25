@@ -17,6 +17,14 @@ interface StckTrcyEntryOpts {
   entryArr: StackTracey.Entry[];
 }
 
+export interface StckTrcyExtractorOpts {
+  filter?:
+    | ((entry: StckTrcyEntry, idx: number, arr: StckTrcyEntry[]) => boolean)
+    | null
+    | undefined;
+  ignoreCallingModule?: boolean | number | string | string[] | null | undefined;
+}
+
 export class StckTrcyExtractor {
   appSrcDirPath: string;
   devStckTrcyItemsPaths: readonly string[];
@@ -44,7 +52,7 @@ export class StckTrcyExtractor {
   private static AppSrcDirBasePath = "";
   private static StckTrcyPckItemsPaths: readonly string[];
 
-  public get() {
+  public get(opts: StckTrcyExtractorOpts) {
     const stack = new StackTracey(undefined, 0);
     const allEntries: StckTrcyEntry[] = [];
 
@@ -73,8 +81,14 @@ export class StckTrcyExtractor {
       devSrcEntries: allEntries.filter(
         (entry) => entry.entryFileType === StckTrcyEntryFileType.dev
       ),
+      stckTrcyEntries: allEntries.filter(
+        (entry) => entry.entryFileType === StckTrcyEntryFileType.devStckTrcy
+      ),
       stckTrcyPckgEntries: allEntries.filter(
         (entry) => entry.entryFileType === StckTrcyEntryFileType.stckTrcyPck
+      ),
+      nodeModuleEntries: allEntries.filter(
+        (entry) => entry.entryFileType === StckTrcyEntryFileType.nodeModule
       ),
       nodeJsInternalEntries: allEntries.filter(
         (entry) => entry.entryFileType === StckTrcyEntryFileType.nodeJsInternal
@@ -82,6 +96,11 @@ export class StckTrcyExtractor {
       appSrcDirPath: this.appSrcDirPath,
       appSrcDirBasePath: StckTrcyExtractor.AppSrcDirBasePath,
     } as StckTrcy;
+
+    retStack.filteredEntries = this.getFilteredEntries(
+      retStack.devSrcEntries,
+      opts
+    );
 
     return retStack;
   }
@@ -234,6 +253,59 @@ export class StckTrcyExtractor {
     return retArr;
   }
 
+  getFilteredEntries(
+    devSrcEntries: StckTrcyEntry[],
+    opts: StckTrcyExtractorOpts
+  ) {
+    let filteredEntries = [...devSrcEntries];
+
+    if (opts.filter) {
+      filteredEntries = devSrcEntries.filter(opts.filter);
+    } else if (
+      typeof opts.ignoreCallingModule !== "undefined" &&
+      opts.ignoreCallingModule !== null
+    ) {
+      const modulesArr: string[] = [];
+      const ignoreCallingModuleTypeOf = typeof opts.ignoreCallingModule;
+
+      while (filteredEntries.length > 0) {
+        let entry = filteredEntries[0]; // .splice(0, 1)[0];
+
+        if (modulesArr.indexOf(entry.devRelFilePath) >= 0) {
+          filteredEntries.splice(0, 1);
+        } else {
+          modulesArr.push(entry.devRelFilePath);
+
+          if (ignoreCallingModuleTypeOf === "number") {
+            if (modulesArr.length > opts.ignoreCallingModule) {
+              break;
+            } else {
+              filteredEntries.splice(0, 1);
+            }
+          } else if (ignoreCallingModuleTypeOf === "string") {
+            if (entry.devRelFilePath === opts.ignoreCallingModule) {
+              filteredEntries.splice(0, 1);
+            } else {
+              break;
+            }
+          } else if (ignoreCallingModuleTypeOf === "object") {
+            if (
+              (opts.ignoreCallingModule as string[]).indexOf(
+                entry.devRelFilePath
+              )
+            ) {
+              filteredEntries.splice(0, 1);
+            } else {
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    return filteredEntries;
+  }
+
   logStckTrcyExtractorStaticProps() {
     appConsole.log(
       "StckTrcyExtractor.AppSrcDirBasePath",
@@ -252,7 +324,10 @@ export interface StckTrcy {
   appSrcDirPath: string;
   allEntries: StckTrcyEntry[];
   devSrcEntries: StckTrcyEntry[];
+  filteredEntries: StckTrcyEntry[];
+  stckTrcyEntries: StckTrcyEntry[];
   stckTrcyPckgEntries: StckTrcyEntry[];
+  nodeModuleEntries: StckTrcyEntry[];
   nodeJsInternalEntries: StckTrcyEntry[];
 }
 

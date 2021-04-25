@@ -55,6 +55,8 @@ export const execSafeCallbackWithVal = <TVal>(
   return retPromise;
 };
 
+/*
+
 export const execWithDisp = <TDisposable, TOpenErr, TExecErr, TCloseErr>(
   openFunc: (openCallback: (openErr?: TOpenErr) => void) => TDisposable,
   execFunc: (disposable: TDisposable) => Promise<void>,
@@ -139,3 +141,5 @@ export const execWithDisp = <TDisposable, TOpenErr, TExecErr, TCloseErr>(
 
   return promise;
 };
+
+*/

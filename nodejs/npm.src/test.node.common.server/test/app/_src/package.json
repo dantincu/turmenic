@@ -14,7 +14,8 @@
     "testCreateDirPathRec": "node dist/tests/__src.node.common/fileSystem/createDirPathRec.test.js",
     "testConsoleLogTestingComponent": "node dist/tests/__src.node.common/testing/console-log-test.test.js",
     "testFileOutputTestingComponent": "node dist/tests/__src.node.common/testing/file-output-test.test.js",
-    "testSafePromise": "node dist/tests/__src.common/async/safe-promise/safe-promise.test.ts",
+    "testSafePromise": "node dist/tests/__src.common/async/safe-promise/safe-promise.test.js",
+    "testSafePromiseSafeThen": "node dist/tests/__src.common/async/safe-promise/safe-promise-safeThen.test.js",
     "testSqlite3": "node dist/tests/test-sqlite3.js"
   },
   "keywords": [

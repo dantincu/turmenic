@@ -24,57 +24,35 @@ export const getSafePromise = <T>(
 
 export const executeSafe = <T>(
   callback: () => T | PromiseLike<T>,
-  reject: (reason?: any) => void,
-  respond?: ((val: T | PromiseLike<T>) => void) | undefined | null
+  reject?: ((reason?: any) => void) | null | undefined
 ) => {
-  respond = respond ?? reject;
-
   let val: T | PromiseLike<T> | undefined;
-  let excpCaught = false;
 
   try {
     val = callback();
   } catch (err) {
-    excpCaught = true;
-    reject({ caught: err } as SafePromiseError);
+    if (reject) {
+      reject({ caught: err } as SafePromiseError);
+    } else {
+      throw err;
+    }
   }
 
-  if (!excpCaught) {
-    respond(val as T | PromiseLike<T>);
-  }
-
-  return excpCaught;
-};
-
-export const executeWithVal = <TVal, TRetVal>(
-  value: TVal,
-  callback: ((val: TVal) => TRetVal | PromiseLike<TRetVal>) | undefined | null,
-  respond: (val: TRetVal | PromiseLike<TRetVal>) => void
-) => {
-  let retVal: TRetVal | PromiseLike<TRetVal> | undefined;
-
-  if (callback) {
-    retVal = callback(value);
-  }
-
-  respond(retVal as TRetVal | PromiseLike<TRetVal>);
-  return retVal;
+  return val;
 };
 
 export const executeSafeWithVal = <TVal, TRetVal>(
   value: TVal,
   callback: (val: TVal) => TRetVal | PromiseLike<TRetVal>,
-  reject: (reason?: any) => void,
-  respond?: ((val: TRetVal | PromiseLike<TRetVal>) => void) | undefined | null
+  reject?: ((reason?: any) => void) | null | undefined
 ) => {
-  executeSafe(
-    () => {
-      const retVal = callback(value);
-      return retVal;
-    },
-    reject,
-    respond ?? reject
-  );
+  const retVal = executeSafe(() => {
+    const retVal = callback(value);
+
+    return retVal;
+  }, reject);
+
+  return retVal;
 };
 
 export class SafePromise<T> {
@@ -104,95 +82,39 @@ export class SafePromise<T> {
       );
   }
 
-  unsafeFinally(onfinally?: () => void | undefined | null) {
-    const retSafeProm = new SafePromise<T>(this.promise.finally(onfinally));
-
-    return retSafeProm;
-  }
-
-  safeFinally(onfinally?: (() => void) | undefined | null) {
-    const retSafeProm = new SafePromise<T>(null, (resolve, reject) => {
-      this.promise.finally(() => {
-        if (onfinally) {
-          executeSafe(onfinally, resolve, reject);
-        }
-      });
-    });
-
-    return retSafeProm;
-  }
-
-  unsafeThen<RsVal, RjVal>(
-    onfulfilled?: ((value: T) => RsVal | PromiseLike<RsVal>) | undefined | null,
-    onrejected?:
-      | ((reason?: any) => RjVal | PromiseLike<RjVal>)
-      | undefined
-      | null
-  ) {
-    const retSafeProm = new SafePromise<RsVal | RjVal>(
-      new Promise<RsVal | RjVal>((resolve, reject) => {
-        this.promise.then(
-          (value) => {
-            const retVal = executeWithVal(value, onfulfilled, resolve);
-            return retVal;
-          },
-          (reason) => {
-            const retVal = executeWithVal(reason, onrejected, reject);
-            return retVal;
-          }
-        );
-      })
-    );
-
-    return retSafeProm;
-  }
-
   safeThen<RsVal, RjVal>(
-    onfulfilled?: ((value: T) => RsVal | PromiseLike<RsVal>) | undefined | null,
-    onrejected?:
-      | ((reason?: any) => RjVal | PromiseLike<RjVal>)
-      | undefined
-      | null
+    opts: SafeThenOpts<T, RsVal, RjVal>
   ): SafePromise<RsVal | RjVal> {
     const retSafeProm = new SafePromise<RsVal | RjVal>(
-      new Promise<RsVal | RjVal>((resolve, reject) => {
-        this.promise.then(
-          (value) => {
-            let retVal: RsVal | PromiseLike<RsVal> | undefined;
+      this.promise.then(
+        (value) => {
+          const retVal = executeSafeWithVal(
+            value,
+            opts.onfulfilled,
+            opts.onfulfilledCrashed
+          );
 
-            executeSafeWithVal(
-              value,
-              (val) => {
-                if (onfulfilled) {
-                  retVal = onfulfilled(val);
-                }
-              },
-              resolve,
-              reject
-            );
+          return retVal;
+        },
+        (reason) => {
+          const retVal = executeSafeWithVal(
+            reason,
+            opts.onrejected,
+            opts.onrejectedCrashed
+          );
 
-            return retVal;
-          },
-          (reason) => {
-            let retVal: RjVal | PromiseLike<RjVal> | undefined;
-
-            executeSafeWithVal(
-              reason,
-              (rsn) => {
-                if (onrejected) {
-                  retVal = onrejected(rsn);
-                }
-              },
-              resolve,
-              reject
-            );
-
-            return retVal;
-          }
-        );
-      })
+          return retVal;
+        }
+      ) as Promise<RsVal | RjVal>
     );
 
     return retSafeProm;
   }
+}
+
+export interface SafeThenOpts<T, RsVal, RjVal> {
+  onfulfilled: (value: T) => RsVal | PromiseLike<RsVal>;
+  onrejected: (reason?: any) => RjVal | PromiseLike<RjVal>;
+  onfulfilledCrashed?: ((reason?: any) => void) | undefined | null;
+  onrejectedCrashed?: ((reason?: any) => void) | undefined | null;
 }

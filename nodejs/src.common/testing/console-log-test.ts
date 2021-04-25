@@ -13,10 +13,10 @@ export interface UnitTest {
   testName: string;
   testFunc: (opts: TestFuncOpts) => Promise<boolean>;
   onMessageReceived?: ((msg: UnitTestMessage) => void) | null | undefined;
-  onUnhandledError?:
+  /* onUnhandledError?:
     | ((err: any, msg: UnitTestMessage) => void)
     | null
-    | undefined;
+    | undefined; */
 }
 
 interface UnitTestComposite {
@@ -39,12 +39,12 @@ export interface UnitTestMessage extends UnitTestComposite {
 
 interface TestFuncBase {
   onMessageReceived: (msg: UnitTestMessage) => void;
-  onUnhandledError: (err: any, msg: UnitTestMessage) => void;
+  // onUnhandledError: (err: any, msg: UnitTestMessage) => void;
 }
 
-export interface TestFuncOpts {
+export interface TestFuncOpts extends UnitTestComposite {
   onMessageReceived: (msg: UnitTestMessage) => void;
-  onUnhandledError: (err: any, msg: UnitTestMessage) => void;
+  // onUnhandledError: (err: any, msg: UnitTestMessage) => void;
 }
 
 export interface TestGroup {
@@ -137,10 +137,11 @@ export const runTestAsync = async (opts: TestOpts): Promise<TestResult> => {
         testResult.messageArr.push(msg.message);
         (opts.test.onMessageReceived as (msg: UnitTestMessage) => void)(msg);
       },
-      onUnhandledError: opts.test.onUnhandledError as (
+      /* onUnhandledError: opts.test.onUnhandledError as (
         err: any,
         msg: UnitTestMessage
-      ) => void,
+      ) => void,*/
+      test: opts.test,
     });
 
     printTestResult(testResult);
@@ -171,7 +172,7 @@ const getTestNameNormalizer = (testGroup: UnitTestGroup) => {
 
       test.testName = `${testNamePrefix}-${(paddingStr + test.testId).slice(
         -paddingStrLen
-      )}`;
+      )}-${prevTestName}`;
 
       return prevTestName;
     };
@@ -189,9 +190,9 @@ const prepTestGroup = (testGroup: UnitTestGroup) => {
     test.onMessageReceived =
       test.onMessageReceived ?? ((msg) => testGroup.onMessageReceived(msg));
 
-    test.onUnhandledError =
+    /* test.onUnhandledError =
       test.onUnhandledError ??
-      ((err, msg) => testGroup.onUnhandledError(err, msg));
+      ((err, msg) => testGroup.onUnhandledError(err, msg)); */
   });
 };
 
@@ -204,11 +205,11 @@ export const runAllTestsInOrderAsync = async (testGroup: UnitTestGroup) => {
       test: test,
       onMessageReceived: (msg) =>
         (test.onMessageReceived as (msg: UnitTestMessage) => void)(msg),
-      onUnhandledError: (err, msg) =>
+      /* onUnhandledError: (err, msg) =>
         (test.onUnhandledError as (err: any, msg: UnitTestMessage) => void)(
           err,
           msg
-        ),
+        ),*/
     });
 
     testResultArr.push(testResult);
@@ -228,4 +229,21 @@ export const runAllTestsInOrderAsync = async (testGroup: UnitTestGroup) => {
   });
 
   return testResultArr;
+};
+
+export const normalizeMessage = (msg: string | TestMessage) => {
+  if (typeof msg === "string") {
+    msg = {
+      text: msg,
+    };
+  }
+
+  return msg;
+};
+
+export const sendMessage = (opts: TestFuncOpts, msg: string | TestMessage) => {
+  opts.onMessageReceived({
+    test: opts.test,
+    message: normalizeMessage(msg),
+  });
 };

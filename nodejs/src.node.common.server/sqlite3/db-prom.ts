@@ -4,13 +4,13 @@ import {
   SafePromise,
   SafePromiseError,
 } from "../../src.common/async/safe-promise";
-import { execWithDisp } from "../../src.common/async/disposable.js";
+// import { execWithDisp } from "../../src.common/async/disposable.js";
 
 export const executeWithDb = <TExecErr>(
   dbFileName: string,
   callback: (db: sqlite3.Database) => Promise<void>
 ): SafePromise<void> => {
-  const promise = execWithDisp<
+  /* const promise = execWithDisp<
     sqlite3.Database,
     Error | null,
     TExecErr,
@@ -19,9 +19,13 @@ export const executeWithDb = <TExecErr>(
     (openCallback) => new sqlite3.Database(dbFileName, openCallback),
     callback,
     (db, closeCallback) => db.close(closeCallback)
-  );
+  ); */
 
-  return promise;
+  return new SafePromise<void>(
+    new Promise<void>((resolve, reject) => {
+      resolve();
+    })
+  );
 };
 
 export const executeWithStmt = <TExecErr>(
@@ -29,7 +33,7 @@ export const executeWithStmt = <TExecErr>(
   stmtSql: string,
   callback: (db: sqlite3.Database, stmt: sqlite3.Statement) => Promise<void>
 ): SafePromise<void> => {
-  const promise = execWithDisp<
+  /* const promise = execWithDisp<
     sqlite3.Statement,
     Error | null,
     TExecErr,
@@ -41,7 +45,11 @@ export const executeWithStmt = <TExecErr>(
       return execPromise;
     },
     (stmt, closeCallback) => stmt.finalize(closeCallback)
-  );
+  ); */
 
-  return promise;
+  return new SafePromise<void>(
+    new Promise<void>((resolve, reject) => {
+      resolve();
+    })
+  );
 };

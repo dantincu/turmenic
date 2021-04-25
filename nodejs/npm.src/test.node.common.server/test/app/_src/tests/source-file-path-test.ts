@@ -9,7 +9,7 @@ import {
 
 export const runTest = async () => {
   const extractor = new StckTrcyExtractor();
-  const stckTrcy = extractor.get();
+  const stckTrcy = extractor.get({});
 
   appConsole.log("stckTrcy", stckTrcy);
   appConsole.log(
