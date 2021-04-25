@@ -28,14 +28,14 @@ export const executeSafe = <T>(
 ) => {
   let val: T | PromiseLike<T> | undefined;
 
-  try {
-    val = callback();
-  } catch (err) {
-    if (reject) {
+  if (reject) {
+    try {
+      val = callback();
+    } catch (err) {
       reject({ caught: err } as SafePromiseError);
-    } else {
-      throw err;
     }
+  } else {
+    val = callback();
   }
 
   return val;
