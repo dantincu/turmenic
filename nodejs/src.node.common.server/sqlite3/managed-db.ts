@@ -79,19 +79,14 @@ export class ManagedDb {
     params: any,
     callback: (err: Error | null, row: any) => void
   ) {
-    console.log("each");
-
     const promise = new Promise<number>((resolve, reject) => {
-      console.log("each promise");
       this.db.each(
         sql,
         params,
         (err, row) => {
-          console.log("each row", err, row);
           callback(err, row);
         },
         (err: Error | null, count: number) => {
-          console.log("each complete", err, count);
           if (err) {
             reject(err);
           } else {
@@ -246,12 +241,10 @@ export class ManagedDb {
     release?: MutexInterface.Releaser | null | undefined,
     errIsFatal?: boolean | null | undefined
   ) {
-    console.log("executeWithTranCoreAsync--");
     const executeCoreAsync = async (
       callback: (db: sqlite3.Database) => Promise<boolean>,
       db?: sqlite3.Database | null | undefined
     ) => {
-      console.log("executeCoreAsync--1");
       const retVal = await this.executeCoreAsync(
         callback,
         onUnhandled,
@@ -264,16 +257,12 @@ export class ManagedDb {
     };
 
     executeCoreAsync((db) => {
-      console.log("executeCoreAsync--2");
       const promise = new Promise<boolean>((resolve, reject) => {
-        console.log("executeCoreAsync-3");
         this.tranDb.beginTransaction((err, tranDb: sqlite3.Database) => {
-          console.log("beginTransaction--");
           if (err) {
             reject(err);
           } else {
             executeCoreAsync((db) => {
-              console.log("beginTransaction--1");
               const retProm = callback(this.db, tranDb);
               retProm.then((value) => {
                 if (value) {

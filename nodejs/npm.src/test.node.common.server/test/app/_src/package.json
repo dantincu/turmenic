@@ -16,7 +16,8 @@
     "testFileOutputTestingComponent": "node dist/tests/__src.node.common/testing/file-output-test.test.js",
     "testSafePromise": "node dist/tests/__src.common/async/safe-promise/safe-promise.test.js",
     "testSafePromiseSafeThen": "node dist/tests/__src.common/async/safe-promise/safe-promise-safeThen.test.js",
-    "testSqlite3": "node dist/tests/test-sqlite3.js"
+    "testSqlite3": "node dist/tests/test-sqlite3.js",
+    "testSqlite3Database": "node dist/tests/test-sqlite3-database.js"
   },
   "keywords": [
     "test",

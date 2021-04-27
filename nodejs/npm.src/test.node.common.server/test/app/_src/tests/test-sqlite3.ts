@@ -64,10 +64,7 @@ const managedDb = new ManagedDb({
 });
 
 const test1 = async () => {
-  console.log("test1");
-
   await managedDb.serialize((db) => {
-    console.log("serializeAsync start");
     // db.run("DROP TABLE IF EXISTS lorem");
     // db.run("CREATE TABLE lorem (info TEXT)");
 
@@ -81,7 +78,6 @@ const test1 = async () => {
       appConsole.log(row.id + ": " + row.info);
     });
 
-    console.log("serializeAsync");
     const countProm = managedDb.each(
       "SELECT rowid AS id, info FROM lorem",
       {},
@@ -96,10 +92,7 @@ const test1 = async () => {
 };
 
 const test2 = async () => {
-  console.log("test2");
-
   await managedDb.executeWithTranCoreAsync(async (db) => {
-    console.log("executeWithTranCoreAsync start");
     db.run("DROP TABLE IF EXISTS lorem");
     db.run("CREATE TABLE lorem (info TEXT)");
 
@@ -109,7 +102,6 @@ const test2 = async () => {
     }
     stmt.finalize();
 
-    console.log("executeWithTranCoreAsync");
     const count = await managedDb.each(
       "SELECT rowid AS id, info FROM lorem",
       {},
@@ -123,20 +115,12 @@ const test2 = async () => {
   });
 };
 
-process.on("uncaughtException", (err) => {
-  appConsole.error("uncaughtException", err);
-});
-
-process.on("unhandledRejection", (err) => {
-  appConsole.error("unhandledRejection", err);
-});
-
 try {
   /* appConsole.log("RUNNING TEST 1");
   await test1(); */
 
-  appConsole.log("RUNNING TEST 2");
-  await test2();
+  /* appConsole.log("RUNNING TEST 2");
+  await test2(); */
 
   appConsole.log("test successfull");
 } catch (err) {
