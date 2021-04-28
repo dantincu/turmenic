@@ -1,5 +1,5 @@
 export interface SafeExecutorOpts {
-  onUnhandled: ((err: any) => boolean | undefined) | null | undefined;
+  onUnhandled: (err: any) => boolean | undefined;
 }
 
 export interface ExecuteSafeOpts {
@@ -26,7 +26,7 @@ export class SafeExecutor {
       }
     } catch (err) {
       const normOpts = this.getNormOpts(opts);
-      this.handleError(err, normOpts);
+      this.handleError(err, normOpts as ExecuteSafeOpts);
     }
   }
 
@@ -41,7 +41,7 @@ export class SafeExecutor {
     if (opts.onUnhandled) {
       fatal = opts.onUnhandled(err);
     } else {
-      fatal = this.opts.onUnhandled(err);
+      fatal = (this.opts as SafeExecutorOpts).onUnhandled(err);
     }
 
     this.fatalOcurred = fatal ?? true;

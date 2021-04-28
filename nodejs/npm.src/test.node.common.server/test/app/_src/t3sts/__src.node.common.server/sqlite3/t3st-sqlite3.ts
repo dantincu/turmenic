@@ -1,16 +1,16 @@
 import sqlite3 from "sqlite3";
 
-import { appConsole } from "../src.common/logging/appConsole.js";
+import { appConsole } from "../../../src.common/logging/appConsole.js";
 
 import {
   envConfig,
   envBaseDir,
-} from "../src.node.common/appSettings/envConfig.js";
+} from "../../../src.node.common/appSettings/envConfig.js";
 
 import {
   ManagedDb,
   ManagedDbOpts,
-} from "../src.node.common.server/sqlite3/managed-db.js";
+} from "../../../src.node.common.server/sqlite3/managed-db.js";
 
 const appEnv = await envConfig.appEnv.instance();
 const dbFilePath = appEnv.getEnvRelPath(
