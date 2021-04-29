@@ -20,7 +20,7 @@ appLogger.trace(
 );
 
 process.on("unhandledRejection", (err) => {
-  console.log(err);
+  appConsole.log(err);
   process.exit(1);
 });
 

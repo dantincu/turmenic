@@ -10,9 +10,9 @@ import {
 
 import { dataTypeConvertors } from "./db-types-convertors.js";
 
-const getDataTypeConvNotFoundErrMsg = (
-  columnDbType: string,
-  propJsType: string,
+export const getDataTypeConvNotFoundErrMsg = (
+  columnDbType: ColumnDbType,
+  propJsType: PropJsType,
   propCustomType?: PropCustomType | null | undefined
 ) => {
   let msg = `Could not find convertor for columnDbType=${columnDbType} and propJsType=${propJsType}`;
@@ -25,8 +25,8 @@ const getDataTypeConvNotFoundErrMsg = (
 };
 
 const getDataTypeConvSelPred = (
-  columnDbType: string,
-  propJsType: string,
+  columnDbType: ColumnDbType,
+  propJsType: PropJsType,
   propCustomType: PropCustomType | null | undefined
 ) => {
   const stdPred = (cvtr: DataTypeConvertor) =>
@@ -37,14 +37,17 @@ const getDataTypeConvSelPred = (
   if (propCustomType) {
     predicate = (cvtr: DataTypeConvertor) =>
       stdPred(cvtr) && cvtr.propCustomType === propCustomType;
+  } else {
+    predicate = (cvtr: DataTypeConvertor) =>
+      stdPred(cvtr) && !cvtr.propCustomType;
   }
 
   return predicate;
 };
 
 export const getDataTypeConvertor = (
-  columnDbType: string,
-  propJsType: string,
+  columnDbType: ColumnDbType,
+  propJsType: PropJsType,
   propCustomType?: PropCustomType | null | undefined
 ) => {
   let predicate = getDataTypeConvSelPred(
@@ -56,8 +59,10 @@ export const getDataTypeConvertor = (
   let convertor = dataTypeConvertors.find(predicate);
 
   if (!convertor) {
-    throw new Error(
-      getDataTypeConvNotFoundErrMsg(columnDbType, propJsType, propCustomType)
+    throw getSqlite3DbError(
+      new Error(
+        getDataTypeConvNotFoundErrMsg(columnDbType, propJsType, propCustomType)
+      )
     );
   }
 
@@ -66,56 +71,64 @@ export const getDataTypeConvertor = (
 
 export const dbToJsVal = (
   dbVal: any | null,
-  columnDbType: string,
-  propJsType: string,
+  columnDbType: ColumnDbType,
+  propJsType: PropJsType,
   isPropRequired?: boolean | null | undefined,
   propCustomType?: PropCustomType | null | undefined
 ) => {
-  assureReqPropValid(dbVal, isPropRequired);
+  assurePropValid(dbVal, isPropRequired);
 
-  const convertor = getDataTypeConvertor(
-    columnDbType,
-    propJsType,
-    propCustomType
-  );
+  let jsVal: any | null | undefined;
 
-  const jsVal = convertor.dbToJsVal(dbVal);
-  assureReqPropValid(jsVal, isPropRequired);
+  if (isDbNull(dbVal)) {
+    jsVal = dbVal;
+  } else {
+    const convertor = getDataTypeConvertor(
+      columnDbType,
+      propJsType,
+      propCustomType
+    );
+
+    jsVal = convertor.dbToJsVal(dbVal);
+    assurePropValid(jsVal, isPropRequired);
+  }
 
   return jsVal;
 };
 
 export const jsToDbVal = (
   jsVal: any | null,
-  columnDbType: string,
+  columnDbType: ColumnDbType,
   isPropRequired?: boolean | null | undefined,
   propCustomType?: PropCustomType | null | undefined
 ) => {
   const propJsType = typeof jsVal;
-  assureReqPropValid(jsVal, isPropRequired);
+  assurePropValid(jsVal, isPropRequired);
 
-  const convertor = getDataTypeConvertor(
-    columnDbType,
-    propJsType,
-    propCustomType
-  );
+  let dbVal: any | null | undefined;
 
-  const dbVal = convertor.jsToDbVal(jsVal);
-  assureReqPropValid(dbVal, isPropRequired);
+  if (isDbNull(jsVal)) {
+    dbVal = jsVal;
+  } else {
+    const convertor = getDataTypeConvertor(
+      columnDbType,
+      propJsType as PropJsType,
+      propCustomType
+    );
+
+    dbVal = convertor.jsToDbVal(jsVal);
+    assurePropValid(dbVal, isPropRequired);
+  }
 
   return dbVal;
 };
 
 export const isDbNull = (val: any) => {
-  const valType = typeof val;
-  let retVal = valType === "undefined";
-  retVal = retVal || val === null;
-
-  retVal = retVal || (valType === "number" && isNaN(val));
+  let retVal = typeof val === "undefined" || val === null;
   return retVal;
 };
 
-export const assureReqPropValid = (
+export const assurePropValid = (
   val: any,
   isPropRequired?: boolean | null | undefined
 ) => {
@@ -123,6 +136,24 @@ export const assureReqPropValid = (
     throw getSqlite3DbError(
       new Error(`Required prop value has falsy value ${val}`)
     );
+  } else {
+    const typeName = typeof val; // "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"
+
+    if (typeName === "number" && isNaN(val)) {
+      throw getSqlite3DbError(new Error(`Prop value is NaN ${val}`));
+    } else if (typeName === "symbol") {
+      throw getSqlite3DbError(
+        new Error(
+          `Expected javascript type to be either string, number, boolean or object but received ${typeName}`
+        )
+      );
+    } else if (["bigint", "function"].indexOf(typeName) >= 0) {
+      throw getSqlite3DbError(
+        new Error(
+          `Expected javascript type to be either string, number, boolean or object but received ${typeName}: ${val}`
+        )
+      );
+    }
   }
 };
 
@@ -140,10 +171,11 @@ export const assureJsValOfType = (jsVal: any, jsDataType: PropJsType) => {
 
 export const assureJsValIsBit = (jsVal: number) => {
   jsVal = jsVal ?? 0;
-  if (jsVal !== 0 && jsVal !== 1) {
+
+  if (isNaN(jsVal) || (jsVal !== 0 && jsVal !== 1)) {
     throw getSqlite3DbError(
       new Error(
-        `Expected javascript value to be either 0 or 1, but received ${jsVal}`
+        `Expected javascript value to be either 0 or 1 but received ${jsVal}`
       )
     );
   }
@@ -154,7 +186,7 @@ export const assureJsValIsInt = (jsVal: number) => {
   if (jsVal !== Math.floor(jsVal)) {
     throw getSqlite3DbError(
       new Error(
-        `Expected javascript value to be an integer number, but received ${jsVal}`
+        `Expected javascript value to be an integer number but received ${jsVal}`
       )
     );
   }
@@ -168,13 +200,13 @@ export const assureJsValIsPositiveNumber = (
   if (jsVal < 0) {
     throw getSqlite3DbError(
       new Error(
-        `Expected javascript value to be positive number, but received ${jsVal}`
+        `Expected javascript value to be positive number but received ${jsVal}`
       )
     );
   } else if (jsVal === 0 && strictlyPositive) {
     throw getSqlite3DbError(
       new Error(
-        `Expected javascript value to be strictly positive number, but received ${jsVal}`
+        `Expected javascript value to be strictly positive number but received ${jsVal}`
       )
     );
   }

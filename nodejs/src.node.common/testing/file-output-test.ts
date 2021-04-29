@@ -50,7 +50,7 @@ const getNormalizedOpts = (
     outputDirPath: appEnv.getEnvRelPath(
       envBaseDir.data,
       opts.outputDirRelPath ??
-        new StckTrcyExtractor().get({
+        new StckTrcyExtractor({}).get({
           ignoreCallingModule: 1,
         }).filteredEntries[0].devRelFilePath
     ),
@@ -72,16 +72,6 @@ export const runUnitTestsInOrderAsync = async (
   });
 
   const errToStr = (error: any): string => {
-    /* let err = error as Error;
-
-    const retArr: string[] = [
-      `ERR: ${err}\n`,
-      `ERR NAME: ${err.name}\n`,
-      `ERR MSG: ${err.message}\n`,
-      `ERR STACK: ${err.stack}\n`,
-    ];*/
-
-    // const retStr = retArr.join(normOpts.outputMsgJoinChar);
     const retStr = JSON.stringify(
       {
         caught: error,
@@ -95,11 +85,6 @@ export const runUnitTestsInOrderAsync = async (
   };
 
   const msgArrToStr = (msgArr: TestMessage[]) => {
-    /* const retArr = msgArr.map((msg) => msg.text);
-
-    const retStr = retArr.join(normOpts.outputMsgJoinChar);
-    return retStr;*/
-
     const retStr = JSON.stringify(msgArr, null, "  ");
     return retStr;
   };

@@ -57,7 +57,7 @@ export const readDirIfExists = async (dirPath: string) => {
   return dirEntries;
 };
 
-export const writeFileAsynk = (
+export const writeFileAsync = (
   path: PathLike | number,
   data: string | NodeJS.ArrayBufferView,
   options?: WriteFileOptions | undefined | null,

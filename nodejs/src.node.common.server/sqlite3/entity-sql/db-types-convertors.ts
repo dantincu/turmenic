@@ -13,7 +13,7 @@ import {
   isDbNull,
   assureJsValIsBit,
   assureJsValIsInt,
-  assureReqPropValid,
+  assurePropValid,
   getDataTypeConvertor,
   assureJsValIsPositiveNumber,
   convertJsValue,
@@ -130,6 +130,8 @@ export const dataTypeConvertors: DataTypeConvertor[] = [
       const dbVal = convertJsValue(jsVal, (jsVal) => {
         const dateTimeJsVal = jsVal as DateTime;
 
+        assureJsValOfType(dateTimeJsVal.millis, PropJsType.number);
+        assureJsValIsInt(dateTimeJsVal.millis);
         assureJsValIsPositiveNumber(dateTimeJsVal.millis, true);
         assureJsValOfType(dateTimeJsVal.value, PropJsType.object);
 

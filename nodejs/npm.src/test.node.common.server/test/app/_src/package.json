@@ -11,6 +11,8 @@
     "start": "node dist/index.js",
     "test": "mocha",
     "testMemoize": "node dist/t3sts/memoize-test.js",
+    "testTsEnumValues": "node dist/t3sts/ts-enum-values.js",
+    "testRedirectOutputStreams": "node dist/t3sts/__src.node.common/testing/process.stream.t3st.js",
     "sourceFilePathTest": "node dist/t3sts/__src.node.common/source-file-path-test.js",
     "testCreateDirPathRec": "node dist/t3sts/__src.node.common/fileSystem/createDirPathRec.t3st.js",
     "testConsoleLogTestingComponent": "node dist/t3sts/__src.node.common/testing/console-log-test.t3st.js",
@@ -19,7 +21,8 @@
     "testSafePromiseSafeThen": "node dist/t3sts/__src.common/async/safe-promise/safe-promise-safeThen.t3st.js",
     "testSqlite3": "node dist/t3sts/__src.node.common.server/t3st-sqlite3.js",
     "testSqlite3Database": "node dist/t3sts/__src.node.common.server/t3st-sqlite3-database.js",
-    "__mocha__dbTypesValidators": "mocha dist/mocha-tests/__src.node.common.server/sqlite3/entity-sql/db-types-validators.test.js"
+    "__sncs_sqlite3_entitySql_dbTypesValidators": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-validators.test.js",
+    "__sncs_sqlite3_entitySql_dbTypesConvertors": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-convertors.test.js"
   },
   "keywords": [
     "test",

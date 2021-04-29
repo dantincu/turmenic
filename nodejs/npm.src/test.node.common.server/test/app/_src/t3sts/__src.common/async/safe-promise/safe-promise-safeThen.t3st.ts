@@ -81,7 +81,7 @@ const getUnitTest = (
         },
       }).promise;
 
-      console.log(`safePromise retVal ${retVal}\n`);
+      appConsole.log(`safePromise retVal ${retVal}\n`);
       sendMessage(opts, { text: `safePromise retVal`, args: [retVal] });
 
       return retVal;

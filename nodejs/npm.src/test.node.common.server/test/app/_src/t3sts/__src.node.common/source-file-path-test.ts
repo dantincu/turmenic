@@ -8,7 +8,7 @@ import {
 } from "../../src.node.common/stacktracey/stacktracey.js";
 
 export const runTest = async () => {
-  const extractor = new StckTrcyExtractor();
+  const extractor = new StckTrcyExtractor({});
   const stckTrcy = extractor.get({});
 
   appConsole.log("stckTrcy", stckTrcy);
