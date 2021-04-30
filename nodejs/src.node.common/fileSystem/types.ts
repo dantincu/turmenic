@@ -26,6 +26,7 @@ export const winattrGetAsync = util.promisify(winattr.get);
 export interface DirEntryWrapper {
   dirEntry: DirEntry;
   error?: any;
+  errEnoent?: boolean | null | undefined;
 }
 
 export interface DirEntryAttrs {
@@ -38,6 +39,7 @@ export interface DirEntryAttrs {
 export interface DirEntry {
   name: string;
   attrs?: DirEntryAttrs;
+  stats?: fs.Stats | null | undefined;
 }
 
 export interface TryGetDirEntryOpts {
@@ -125,4 +127,63 @@ export const getFileExtension = (filePath: string) => {
   }
 
   return ext;
+};
+
+export interface GetEntryStatsOpts {
+  catchErr?: boolean | null | undefined;
+  catchErrEnoent?: boolean | null | undefined;
+}
+
+interface GetEntryStatsNormOpts {
+  catchErr: boolean;
+  catchErrEnoent: boolean;
+}
+
+const getGetEntryStatsNormOpts = (
+  opts?: GetEntryStatsOpts | boolean | null | undefined
+) => {
+  opts = opts ?? {};
+
+  if (typeof opts === "boolean") {
+    opts = {
+      catchErr: false,
+      catchErrEnoent: opts as boolean,
+    };
+  }
+
+  const normOpts: GetEntryStatsNormOpts = {
+    catchErr: opts.catchErr ?? true,
+    catchErrEnoent: opts.catchErrEnoent ?? true,
+  };
+
+  return normOpts;
+};
+
+export const tryGetEntryStats = async (
+  entryPath: string,
+  opts?: GetEntryStatsOpts | boolean | null | undefined
+) => {
+  const normOpts = getGetEntryStatsNormOpts(opts);
+
+  const dirEntryWrapper: DirEntryWrapper = {
+    dirEntry: {
+      name: path.basename(entryPath),
+    },
+  };
+
+  try {
+    dirEntryWrapper.dirEntry.stats = await getEntryStatsAsync(entryPath);
+    dirEntryWrapper.dirEntry.attrs = await winattrGetAsync(entryPath);
+  } catch (err) {
+    if (normOpts.catchErr === false) {
+      if (normOpts.catchErrEnoent === false || err.code !== "ENOENT") {
+        throw err;
+      }
+    }
+
+    dirEntryWrapper.error = err;
+    dirEntryWrapper.errEnoent = err.code === "ENOENT";
+  }
+
+  return dirEntryWrapper;
 };

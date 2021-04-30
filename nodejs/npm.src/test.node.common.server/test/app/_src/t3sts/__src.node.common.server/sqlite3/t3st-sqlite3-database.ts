@@ -17,13 +17,21 @@ import { Sqlite3Db } from "../../../src.node.common.server/sqlite3/sqlite3-db.js
 const appEnv = await envConfig.appEnv.instance();
 const dbFilePath = appEnv.getEnvRelPath(
   envBaseDir.data,
-  "sqlite3-data",
+  "sqlite3",
+  "data",
   "sqlite3.db"
 );
 
 appConsole.log("dbFilePath", dbFilePath);
 
 const sqlite3Db = new Sqlite3Db(dbFilePath);
+
+const runTest0 = async () => {
+  await sqlite3Db.executeWithTranDbThreadSafe(async (tranDb, db) => {
+    const rows = await db.all("SELECT * FROM sqlite_schema", {});
+    appConsole.log("sqlite_schema", rows);
+  });
+};
 
 const runTest1 = async () => {
   await sqlite3Db.executeWithTranDbThreadSafe(async (tranDb, db) => {
@@ -48,8 +56,8 @@ const runTest1 = async () => {
 };
 
 const runAllTests = async () => {
-  appConsole.log("RUNNING TEST 1");
-  await runTest1();
+  appConsole.log("RUNNING TEST 0");
+  await runTest0();
 };
 
 try {

@@ -1,4 +1,5 @@
-import { contains, filterIndex, findIndex } from "./arrays";
+import { compareObjs } from "../utils/types.js";
+import { contains, filterIndex, findIndex } from "./arrays.js";
 
 export interface ArrayDiff<T> {
   leftOnly: { val: T; idx: number }[];
@@ -84,4 +85,28 @@ export const removeDuplicates = <T>(
   }
 
   return arr;
+};
+
+export const arraysAreEqual = <T>(leftArr: T[], rightArr: T[]) => {
+  let retVal = leftArr.length === rightArr.length;
+
+  if (retVal && leftArr.length > 0) {
+    const clonedArr = [...rightArr];
+
+    leftArr.forEach((leftItem) => {
+      if (retVal) {
+        const retIdx = findIndex(clonedArr, (rightItem) =>
+          compareObjs(leftItem, rightItem)
+        );
+
+        if (retIdx.idx >= 0) {
+          clonedArr.splice(retIdx.idx, 1);
+        } else {
+          retVal = false;
+        }
+      }
+    });
+  }
+
+  return retVal;
 };

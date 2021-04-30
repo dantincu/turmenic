@@ -181,3 +181,25 @@ export const getDirEntries = async (
   const retEntries = await getDirEntriesCore(dirPath, opts);
   return retEntries;
 };
+
+export const getDirEntriesArr = async (
+  dirPath: string
+): Promise<DirEntry[]> => {
+  dirPath = path.normalize(dirPath);
+  const dirEntries = await readdirAsync(dirPath);
+
+  const dirEntriesArr = dirEntries.map((entry) => {
+    const entryObj: DirEntry = {
+      name: entry,
+    };
+
+    return entryObj;
+  });
+
+  await forEachAsync(dirEntriesArr, async (entry) => {
+    const entryPath = path.join(dirPath, entry.name);
+    entry.stats = await getEntryStatsAsync(entryPath);
+  });
+
+  return dirEntriesArr;
+};

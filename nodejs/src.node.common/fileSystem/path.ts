@@ -57,6 +57,16 @@ export const joinPath = (
   return retPath;
 };
 
+export const normJoinPath = (
+  pathParts: string[],
+  opts?: NormalizePathOpts | null | undefined
+) => {
+  opts = opts ?? {};
+  let retPath = normalizePath(path.join(...pathParts));
+
+  return retPath;
+};
+
 export const normalizePath = (
   pathArg: string,
   opts?: NormalizePathOpts | null | undefined

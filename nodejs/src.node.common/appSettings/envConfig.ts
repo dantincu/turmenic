@@ -1,4 +1,4 @@
-import path from "path";
+import { normJoinPath } from "../fileSystem/path.js";
 import { AsyncSingleton } from "../../src.common/async/async-singleton.js";
 import { loadJsonAsyncInto } from "../fileSystem/json.js";
 import { appEnvLocator } from "./appEnvLocator.js";
@@ -43,13 +43,14 @@ export class EnvConfig {
     let envBaseRelDirPath: string =
       getWithKey(this, envBaseDirName + "RelDirPath") || envBaseDirName || "";
 
-    let envDirPath = path.join(this.envBasePath ?? "", envBaseRelDirPath);
+    let envDirPath = normJoinPath([this.envBasePath ?? "", envBaseRelDirPath]);
+
     return envDirPath;
   }
 
   getEnvRelPath(envBaseDirName: string, ...relPathPartsArr: string[]): string {
     let envDirPath = this.getEnvDirPath(envBaseDirName);
-    let relPath = path.join(envDirPath, ...relPathPartsArr);
+    let relPath = normJoinPath([envDirPath, ...relPathPartsArr]);
 
     return relPath;
   }
@@ -82,7 +83,8 @@ export const getAppEnvSingleton = (
       ...relDirPathPartsArr
     );
 
-    let filePath = path.join(envConfig.envBasePath, "env.jsconfig.json");
+    let filePath = normJoinPath([envConfig.envBasePath, "env.jsconfig.json"]);
+
     envConfig.data = Object.freeze(
       await loadJsonAsyncInto(filePath, envConfig)
     );

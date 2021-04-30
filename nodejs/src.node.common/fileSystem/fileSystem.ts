@@ -90,7 +90,7 @@ export const readFileIfExists = async (filePath: string) => {
   let content: string | null = null;
 
   try {
-    content = (await readFileAsync(filePath)).toString("utf8") ?? "";
+    content = (await readFileAsync(filePath)).toString("utf8");
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err;
@@ -108,7 +108,6 @@ export const readDirIfExists = async (dirPath: string) => {
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err;
-    } else {
     }
   }
 
@@ -117,7 +116,7 @@ export const readDirIfExists = async (dirPath: string) => {
 
 export const isDirEntry = async (dirPath: string) => {
   const dirStats = await getEntryStatsAsync(dirPath);
-  const isDir = dirStats.isDirectory();
+  const isDir = dirStats?.isDirectory();
 
   return isDir;
 };
@@ -134,5 +133,23 @@ export const removeEntryAsync = async (entryPath: string) => {
     await removeDirWithContentAsync(entryPath);
   } else {
     await removeFileAsync(entryPath);
+  }
+};
+
+export const assureEnoent = async (entryPath: string) => {
+  let enoent = false;
+
+  try {
+    await getEntryStatsAsync(entryPath);
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      enoent = true;
+    } else {
+      throw err;
+    }
+  }
+
+  if (!enoent) {
+    throw new Error(`Entry path ${entryPath} already exists`);
   }
 };

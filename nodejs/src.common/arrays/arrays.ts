@@ -40,3 +40,15 @@ export const filterIndex = <T>(
 
   return retArr;
 };
+
+export const splice = <T>(
+  arr: T[],
+  start: number,
+  deleteCount: number,
+  items: T[]
+) => {
+  const retArr = [...arr];
+  retArr.splice(start, deleteCount, ...items);
+
+  return retArr;
+};

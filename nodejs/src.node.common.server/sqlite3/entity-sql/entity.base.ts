@@ -10,20 +10,244 @@ import {
 
 import { dbToJsVal, jsToDbVal } from "./db-types-validators.js";
 
-export interface EntityPropMapping {
-  propName: string;
-  columnName: string;
+export interface EntityPropTypeMapping {
   propJsType: PropJsType;
   columnDbType: ColumnDbType;
   propCustomType?: PropCustomType | null | undefined;
+}
+
+export interface EntityPropConstrMapping {
   defaultValue?: any | null | undefined;
   propIsRequired?: boolean | null | undefined;
 }
 
+export interface EntityPropTypeConstrMapping
+  extends EntityPropTypeMapping,
+    EntityPropConstrMapping {}
+
+export interface EntityPropMapping extends EntityPropTypeConstrMapping {
+  propName: string;
+  columnName: string;
+}
+
 export interface EntityMapping<TData> {
   tableName: string;
-  propMappings: GenericHash<any>;
+  propMappings: GenericHash<EntityPropMapping>;
 }
+
+export abstract class EntityMappingBase<TData> implements EntityMapping<TData> {
+  tableName: string;
+  propMappings: GenericHash<EntityPropMapping>;
+
+  constructor() {
+    this.tableName = this.getTableName();
+
+    this.propMappings = {};
+    this.addPropMappings();
+  }
+
+  abstract getTableName(): string;
+  abstract addPropMappings(): void;
+
+  addEntityPropMapping(
+    propName: string | ((o: TData) => any),
+    propTypeConstrMapping: EntityPropTypeConstrMapping
+  ) {
+    const propMapping = addEntityPropMapping(
+      this.propMappings,
+      propName,
+      propTypeConstrMapping
+    );
+
+    return propMapping;
+  }
+
+  addStringPropMapping(
+    propName: string | ((o: TData) => any),
+    propConstrMapping: EntityPropConstrMapping
+  ) {
+    const propMapping = addStringPropMapping(
+      this.propMappings,
+      propName,
+      propConstrMapping
+    );
+
+    return propMapping;
+  }
+
+  addBooleanPropMapping(
+    propName: string | ((o: TData) => any),
+    propConstrMapping: EntityPropConstrMapping
+  ) {
+    const propMapping = addBooleanPropMapping(
+      this.propMappings,
+      propName,
+      propConstrMapping
+    );
+
+    return propMapping;
+  }
+
+  addIntegerPropMapping(
+    propName: string | ((o: TData) => any),
+    propConstrMapping: EntityPropConstrMapping
+  ) {
+    const propMapping = addIntegerPropMapping(
+      this.propMappings,
+      propName,
+      propConstrMapping
+    );
+
+    return propMapping;
+  }
+
+  addNumericPropMapping(
+    propName: string | ((o: TData) => any),
+    propConstrMapping: EntityPropConstrMapping
+  ) {
+    const propMapping = addNumericPropMapping(
+      this.propMappings,
+      propName,
+      propConstrMapping
+    );
+
+    return propMapping;
+  }
+
+  addRealNumPropMapping(
+    propName: string | ((o: TData) => any),
+    propConstrMapping: EntityPropConstrMapping
+  ) {
+    const propMapping = addRealNumPropMapping(
+      this.propMappings,
+      propName,
+      propConstrMapping
+    );
+
+    return propMapping;
+  }
+
+  addDatePropMapping(
+    propName: string | ((o: TData) => any),
+    propConstrMapping: EntityPropConstrMapping
+  ) {
+    const propMapping = addDatePropMapping(
+      this.propMappings,
+      propName,
+      propConstrMapping
+    );
+
+    return propMapping;
+  }
+}
+
+export const getPropName = <TData>(propName: string | ((o: TData) => any)) => {
+  if (typeof propName === "function") {
+    propName = nameof(propName);
+  }
+
+  return propName;
+};
+
+export const addEntityPropMapping = <TData>(
+  propMappings: GenericHash<EntityPropMapping>,
+  propName: string | ((o: TData) => any),
+  propTypeConstrMapping: EntityPropTypeConstrMapping
+) => {
+  propName = getPropName(propName);
+  const propMapping = propTypeConstrMapping as EntityPropMapping;
+
+  propMapping.propName = propName;
+  propMapping.columnName = propName;
+
+  propMappings[propName] = propMapping;
+  return propTypeConstrMapping;
+};
+
+export const addStringPropMapping = <TData>(
+  propMappings: GenericHash<EntityPropMapping>,
+  propName: string | ((o: TData) => any),
+  propConstrMapping: EntityPropConstrMapping
+) => {
+  const propTypeConstrMapping = propConstrMapping as EntityPropTypeConstrMapping;
+
+  propTypeConstrMapping.columnDbType = ColumnDbType.text;
+  propTypeConstrMapping.propJsType = PropJsType.string;
+
+  addEntityPropMapping(propMappings, propName, propTypeConstrMapping);
+  return propTypeConstrMapping;
+};
+
+export const addBooleanPropMapping = <TData>(
+  propMappings: GenericHash<EntityPropMapping>,
+  propName: string | ((o: TData) => any),
+  propConstrMapping: EntityPropConstrMapping
+) => {
+  const propTypeConstrMapping = propConstrMapping as EntityPropTypeConstrMapping;
+
+  propTypeConstrMapping.columnDbType = ColumnDbType.integer;
+  propTypeConstrMapping.propJsType = PropJsType.boolean;
+
+  addEntityPropMapping(propMappings, propName, propTypeConstrMapping);
+  return propTypeConstrMapping;
+};
+
+export const addIntegerPropMapping = <TData>(
+  propMappings: GenericHash<EntityPropMapping>,
+  propName: string | ((o: TData) => any),
+  propConstrMapping: EntityPropConstrMapping
+) => {
+  const propTypeConstrMapping = propConstrMapping as EntityPropTypeConstrMapping;
+
+  propTypeConstrMapping.columnDbType = ColumnDbType.integer;
+  propTypeConstrMapping.propJsType = PropJsType.number;
+
+  addEntityPropMapping(propMappings, propName, propTypeConstrMapping);
+  return propTypeConstrMapping;
+};
+
+export const addNumericPropMapping = <TData>(
+  propMappings: GenericHash<EntityPropMapping>,
+  propName: string | ((o: TData) => any),
+  propConstrMapping: EntityPropConstrMapping
+) => {
+  const propTypeConstrMapping = propConstrMapping as EntityPropTypeConstrMapping;
+
+  propTypeConstrMapping.columnDbType = ColumnDbType.numeric;
+  propTypeConstrMapping.propJsType = PropJsType.number;
+
+  addEntityPropMapping(propMappings, propName, propTypeConstrMapping);
+  return propTypeConstrMapping;
+};
+
+export const addRealNumPropMapping = <TData>(
+  propMappings: GenericHash<EntityPropMapping>,
+  propName: string | ((o: TData) => any),
+  propConstrMapping: EntityPropConstrMapping
+) => {
+  const propTypeConstrMapping = propConstrMapping as EntityPropTypeConstrMapping;
+
+  propTypeConstrMapping.columnDbType = ColumnDbType.real;
+  propTypeConstrMapping.propJsType = PropJsType.number;
+
+  addEntityPropMapping(propMappings, propName, propTypeConstrMapping);
+  return propTypeConstrMapping;
+};
+
+export const addDatePropMapping = <TData>(
+  propMappings: GenericHash<EntityPropMapping>,
+  propName: string | ((o: TData) => any),
+  propConstrMapping: EntityPropConstrMapping
+) => {
+  const propTypeConstrMapping = propConstrMapping as EntityPropTypeConstrMapping;
+
+  propTypeConstrMapping.columnDbType = ColumnDbType.integer;
+  propTypeConstrMapping.propJsType = PropJsType.object;
+  propTypeConstrMapping.propCustomType = PropCustomType.dateTime;
+
+  addEntityPropMapping(propMappings, propName, propTypeConstrMapping);
+  return propTypeConstrMapping;
+};
 
 export abstract class EntityBase<TData> {
   data: TData;
@@ -69,12 +293,12 @@ export abstract class EntityBase<TData> {
     return this._entityMappings;
   }
 
-  public getPropMappings<TMpp>(propName: string) {
+  public getPropMappings<TMpp extends EntityPropMapping>(propName: string) {
     const propMappings = this.entityMappings.propMappings[propName] as TMpp;
     return propMappings;
   }
 
-  public getMappings<TMpp>(
+  public getMappings<TMpp extends EntityPropMapping>(
     prop: (obj: TData) => TMpp,
     options?: NameofOptions
   ) {
