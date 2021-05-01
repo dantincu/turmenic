@@ -26,7 +26,8 @@
     "testSqlite3": "node dist/t3sts/__src.node.common.server/sqlite3/t3st-sqlite3.js",
     "testSqlite3Database": "node dist/t3sts/__src.node.common.server/sqlite3/t3st-sqlite3-database.js",
     "__sncs_sqlite3_entitySql_dbTypesValidators": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-validators.test.js",
-    "__sncs_sqlite3_entitySql_dbTypesConvertors": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-convertors.test.js"
+    "__sncs_sqlite3_entitySql_dbTypesConvertors": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-convertors.test.js",
+    "__sncs_sqlite3_entitySql_dbTypesSql": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-sql.test.js"
   },
   "keywords": [
     "test",
