@@ -187,3 +187,46 @@ export const tryGetEntryStats = async (
 
   return dirEntryWrapper;
 };
+
+export const tryCatchEnoent = async (
+  func: () => Promise<void>,
+  catchEnoent?: boolean | null | undefined
+) => {
+  if (catchEnoent) {
+    try {
+      await func();
+    } catch (err) {
+      if (err.code !== "ENOENT") {
+        throw err;
+      }
+    }
+  } else {
+    await func();
+  }
+};
+
+export const tryCatchEnoentWithRetVal = async <TRetVal>(
+  func: () => Promise<TRetVal | null>,
+  catchEnoent?: boolean | null | undefined
+): Promise<TRetVal | null> => {
+  let retVal: TRetVal | null = null;
+
+  await tryCatchEnoent(async () => {
+    retVal = await func();
+  }, catchEnoent);
+
+  return retVal;
+};
+
+export const tryCatchEnoentWithVal = async <TArg, TRetVal>(
+  arg: TArg,
+  func: (arg: TArg) => Promise<TRetVal | null>,
+  catchEnoent?: boolean | null | undefined
+) => {
+  const retVal = await tryCatchEnoentWithRetVal(
+    async () => await func(arg),
+    catchEnoent
+  );
+
+  return retVal;
+};

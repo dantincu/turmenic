@@ -26,19 +26,16 @@ import {
   rmdirAsync,
   winattrGetAsync,
   getFileExtension,
+  tryCatchEnoent,
+  tryCatchEnoentWithRetVal,
+  tryCatchEnoentWithVal,
 } from "./types.js";
 
 export const getFileLastModifiedTime = async (filePath: string) => {
-  let fileStats: fs.Stats | null = null;
-
-  try {
-    fileStats = await getEntryStatsAsync(filePath);
-  } catch (err) {
-    if (err.code !== "ENOENT") {
-      throw err;
-    } else {
-    }
-  }
+  let fileStats: fs.Stats | null = await tryCatchEnoentWithRetVal(
+    async () => await getEntryStatsAsync(filePath),
+    true
+  );
 
   return fileStats?.mtime ?? new Date(0);
 };
@@ -62,54 +59,39 @@ export const createDirIfNotExisting = async (dirPath: string) => {
 };
 
 export const removeDirIfExists = async (dirPath: string) => {
-  let retVal = false;
-
-  try {
-    await removeDirAsync(dirPath);
-    retVal = true;
-  } catch (err) {
-    if (err.code !== "ENOENT") {
-      throw err;
-    }
-  }
+  let retVal =
+    (await tryCatchEnoentWithRetVal(async () => {
+      await removeDirAsync(dirPath);
+      return true;
+    }, true)) ?? false;
 
   return retVal;
 };
 
 export const removeFileIfExists = async (filePath: string) => {
-  try {
-    await removeFileAsync(filePath);
-  } catch (err) {
-    if (err.code !== "ENOENT") {
-      throw err;
-    }
-  }
+  let retVal =
+    (await tryCatchEnoentWithRetVal(async () => {
+      await removeFileAsync(filePath);
+      return true;
+    }, true)) ?? false;
+
+  return retVal;
 };
 
 export const readFileIfExists = async (filePath: string) => {
-  let content: string | null = null;
-
-  try {
-    content = (await readFileAsync(filePath)).toString("utf8");
-  } catch (err) {
-    if (err.code !== "ENOENT") {
-      throw err;
-    }
-  }
+  let content = await tryCatchEnoentWithRetVal(
+    async () => (await readFileAsync(filePath)).toString("utf8"),
+    true
+  );
 
   return content;
 };
 
 export const readDirIfExists = async (dirPath: string) => {
-  let dirEntries: string[] | null = null;
-
-  try {
-    dirEntries = await readdirAsync(dirPath);
-  } catch (err) {
-    if (err.code !== "ENOENT") {
-      throw err;
-    }
-  }
+  let dirEntries = await tryCatchEnoentWithRetVal(
+    async () => await readdirAsync(dirPath),
+    true
+  );
 
   return dirEntries;
 };
@@ -119,6 +101,36 @@ export const isDirEntry = async (dirPath: string) => {
   const isDir = dirStats?.isDirectory();
 
   return isDir;
+};
+
+export const tryGetEntryStatsAsync = async (
+  entryPath: string,
+  opts?: FileSystemEntryReadOpts | null | undefined
+) => {
+  opts = opts ?? {};
+
+  const stats = await tryCatchEnoentWithRetVal(
+    async () => await getEntryStatsAsync(entryPath),
+    opts.catchEnoent
+  );
+
+  return stats;
+};
+
+export interface FileSystemEntryReadOpts {
+  catchEnoent?: boolean | null | undefined;
+}
+
+export const tryRemoveDirWithContentAsync = async (
+  dirPath: string,
+  opts: FileSystemEntryReadOpts
+) => {
+  const retVal = await tryCatchEnoentWithRetVal(async () => {
+    removeDirWithContentAsync(dirPath);
+    return true;
+  }, opts.catchEnoent);
+
+  return retVal;
 };
 
 export const removeDirWithContentAsync = async (dirPath: string) => {

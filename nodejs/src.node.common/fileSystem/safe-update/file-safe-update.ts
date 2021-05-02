@@ -7,6 +7,8 @@ import {
   readFileIfExists,
 } from "../fileSystem.js";
 
+import { removeFileAsync } from "../types.js";
+
 import {
   SafeUpdateOpts,
   TempEntryNameOpts,
@@ -17,13 +19,22 @@ import {
 export const makeFileSafeUpdate = async (opts: SafeUpdateOpts) => {
   const normOpts = await prepareSafeUpdate(opts);
 
-  await copyAsync(normOpts.entryPath, normOpts.prevEntryPath);
+  if (normOpts.entryPathExists) {
+    await copyAsync(normOpts.entryPath, normOpts.prevEntryPath);
+  }
+
   const retVal = await opts.updateFunc(normOpts.nextEntryPath);
 
   if (retVal) {
-    await rmAsync(normOpts.entryPath);
+    if (normOpts.entryPathExists) {
+      await removeFileAsync(normOpts.entryPath);
+    }
+
     await renameAsync(normOpts.nextEntryPath, normOpts.entryPath);
-    await rmAsync(normOpts.prevEntryPath);
+
+    if (normOpts.entryPathExists) {
+      await rmAsync(normOpts.prevEntryPath);
+    }
   }
 
   return retVal;

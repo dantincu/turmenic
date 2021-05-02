@@ -5,11 +5,19 @@ import { forEachAsync } from "../../../src.common/arrays/arrays-async.js";
 import { arraysAreEqual } from "../../../src.common/arrays/arr-diff.js";
 
 import { normJoinPath } from "../../../src.node.common/fileSystem/path.js";
+import { createDirPathRec } from "../../../src.node.common/fileSystem/dir-hierarchy.js";
+
 import {
   readdirAsync,
   readFileAsync,
+  writeFileAsync,
 } from "../../../src.node.common/fileSystem/types.js";
-import { createDirPathRec } from "../../../src.node.common/fileSystem/dir-hierarchy";
+
+import {
+  SafeUpdateOpts,
+  TempEntryNameOpts,
+} from "../../../src.node.common/fileSystem/safe-update/safe-update.base.js";
+import { makeDirSafeUpdate } from "../../../src.node.common/fileSystem/safe-update/dir-safe-update.js";
 
 import {
   envConfig,
@@ -42,6 +50,7 @@ import {
 } from "./db-types-validators.js";
 
 import { Sqlite3Db } from "../sqlite3-db.js";
+import { appConsole } from "../../../src.common/logging/appConsole.js";
 
 export interface DbSchema {
   type: string;
@@ -61,10 +70,10 @@ export class DbSchemaExtractor {
 
   sqlite3Db: Sqlite3Db;
 
-  constructor(envConfig: EnvConfig) {
-    this.envConfig = envConfig;
+  constructor(appEnv: EnvConfig) {
+    this.envConfig = appEnv;
 
-    this.dbBaseDirPath = envConfig.getEnvRelPath(
+    this.dbBaseDirPath = appEnv.getEnvRelPath(
       envBaseDir.data,
       this.dbBaseRelDirPath
     );
@@ -105,14 +114,32 @@ export class DbSchemaExtractor {
       throw new Error(
         `Db schema is invalid for db file path ${this.dbDataFilePath}`
       );
+    } else {
+      appConsole.log(
+        `Db schema is valid for db file path ${this.dbDataFilePath}`
+      );
     }
   }
 
   public async dumpDbSchema() {
     const dbSchema = await this.loadSchemaFromDb();
 
-    await forEachAsync(dbSchema, async (dbSchemaObj) => {
-        
+    await makeDirSafeUpdate({
+      parentDirPath: path.dirname(this.dbSchemaDirPath),
+      entryName: path.basename(this.dbSchemaDirPath),
+      assureParentDirPath: true,
+      updateFunc: async (dbSchemaDirPath) => {
+        await forEachAsync(dbSchema, async (dbSchemaObj) => {
+          const filePath = this.geDbSchemaObjFilePath(
+            dbSchemaObj,
+            dbSchemaDirPath
+          );
+
+          await writeFileAsync(filePath, dbSchemaObj.sql);
+        });
+
+        return true;
+      },
     });
   }
 
@@ -137,9 +164,14 @@ export class DbSchemaExtractor {
     return fileName;
   }
 
-  geDbSchemaObjFilePath(schemaObj: DbSchema) {
+  geDbSchemaObjFilePath(
+    schemaObj: DbSchema,
+    dbSchemaDirPath?: string | null | undefined
+  ) {
+    dbSchemaDirPath = dbSchemaDirPath ?? this.dbSchemaDirPath;
+
     const fileName = this.getDbSchemaObjFileName(schemaObj);
-    const filePath = normJoinPath([this.dbSchemaDirPath, fileName]);
+    const filePath = normJoinPath([dbSchemaDirPath, fileName]);
 
     return filePath;
   }
@@ -177,7 +209,7 @@ export class DbSchemaExtractor {
   }
 
   async loadSchemaObj(dbSchemaObjArr: DbSchema[], fileName: string) {
-    const fileNameParts = fileName.split(/\\\//g);
+    const fileNameParts = fileName.split(".");
 
     if (this.isDbSchemaFileName(fileNameParts)) {
       dbSchemaObjArr.push(await this.getDbSchemaObj(fileName, fileNameParts));

@@ -3,7 +3,7 @@ import { nameof } from "ts-simple-nameof";
 import { addFileNameSuffix } from "../fileName.js";
 import { normJoinPath } from "../path.js";
 import { createDirPathRec } from "../dir-hierarchy.js";
-import { assureEnoent } from "../fileSystem.js";
+import { assureEnoent, tryGetEntryStatsAsync } from "../fileSystem.js";
 
 export interface TempEntryNameOpts {
   entryName?: string | null | undefined;
@@ -24,6 +24,7 @@ export interface SafeUpdateOpts {
 
 export interface SafeUpdateNormOpts {
   entryPath: string;
+  entryPathExists: boolean;
   nextEntryPath: string;
   prevEntryPath: string;
 }
@@ -91,7 +92,7 @@ export const getDefaultTempEntryNameOpts = (suffix: string) => {
   return opts;
 };
 
-export const validateNormalizeSafeUpdateOpts = (opts: SafeUpdateOpts) => {
+export const validateNormalizeSafeUpdateOpts = async (opts: SafeUpdateOpts) => {
   validateAllSafeUpdateOptsProp(opts);
 
   opts.nextEntryName = normalizeTempEntryNameOpts(
@@ -105,8 +106,13 @@ export const validateNormalizeSafeUpdateOpts = (opts: SafeUpdateOpts) => {
     opts.prevEntryName
   );
 
+  const entryPath = normJoinPath([opts.parentDirPath, opts.entryName]);
+
   const normOpts: SafeUpdateNormOpts = {
-    entryPath: normJoinPath([opts.parentDirPath, opts.entryName]),
+    entryPath: entryPath,
+    entryPathExists: !!(await tryGetEntryStatsAsync(entryPath, {
+      catchEnoent: true,
+    })),
     nextEntryPath: normJoinPath([
       opts.parentDirPath,
       opts.nextEntryName?.entryName as string,
@@ -121,7 +127,7 @@ export const validateNormalizeSafeUpdateOpts = (opts: SafeUpdateOpts) => {
 };
 
 export const prepareSafeUpdate = async (opts: SafeUpdateOpts) => {
-  const normOpts = validateNormalizeSafeUpdateOpts(opts);
+  const normOpts = await validateNormalizeSafeUpdateOpts(opts);
 
   if (opts.assureParentDirPath) {
     await createDirPathRec(opts.parentDirPath);

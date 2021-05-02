@@ -51,8 +51,8 @@ export const copyDirFiles = async (
 };
 
 export const copyDirAsync = async (srcDirPath: string, destDirPath: string) => {
+  const entriesArr = (await getDirEntriesArr(srcDirPath)) as DirEntry[];
   await createDirPathRec(destDirPath);
-  const entriesArr = await getDirEntriesArr(srcDirPath);
 
   await copyDirFiles(
     srcDirPath,
