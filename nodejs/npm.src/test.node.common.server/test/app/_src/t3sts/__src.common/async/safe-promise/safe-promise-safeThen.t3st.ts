@@ -1,12 +1,12 @@
-import { appConsole } from "../../../../src.common/logging/appConsole.js";
+import { appConsole } from "../../../../../../../src.common/logging/appConsole.js";
 import {
   UnitTest,
   UnitTestGroup,
   sendMessage,
-} from "../../../../src.common/testing/console-log-test.js";
-import { runUnitTestsInOrderAsync } from "../../../../src.node.common/testing/file-output-test.js";
+} from "../../../../../../../src.common/testing/console-log-test.js";
+import { runUnitTestsInOrderAsync } from "../../../../../../../src.node.common/testing/file-output-test.js";
 
-import { SafePromise } from "../../../../src.common/async/safe-promise.js";
+import { SafePromise } from "../../../../../../../src.common/async/safe-promise.js";
 
 const getUnitTest = (
   value: boolean,

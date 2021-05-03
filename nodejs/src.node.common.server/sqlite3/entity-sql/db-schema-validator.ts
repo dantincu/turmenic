@@ -52,6 +52,8 @@ import {
 import { Sqlite3Db } from "../sqlite3-db.js";
 import { appConsole } from "../../../src.common/logging/appConsole.js";
 
+import { Sqlite3EntityDbOpts, Sqlite3EntityDbBase } from "./entity-db.js";
+
 export interface DbSchema {
   type: string;
   name: string;
@@ -60,46 +62,10 @@ export interface DbSchema {
   rootpage?: number | null | undefined;
 }
 
-export class DbSchemaExtractor {
-  envConfig: EnvConfig;
-
-  dbBaseDirPath: string;
-  dbDataDirPath: string;
-  dbDataFilePath: string;
-  dbSchemaDirPath: string;
-
-  sqlite3Db: Sqlite3Db;
-
-  constructor(appEnv: EnvConfig) {
-    this.envConfig = appEnv;
-
-    this.dbBaseDirPath = appEnv.getEnvRelPath(
-      envBaseDir.data,
-      this.dbBaseRelDirPath
-    );
-
-    this.dbDataDirPath = normJoinPath([
-      this.dbBaseDirPath,
-      this.dbDataRelDirPath,
-    ]);
-
-    this.dbDataFilePath = normJoinPath([
-      this.dbDataDirPath,
-      this.dbDataFileName,
-    ]);
-
-    this.dbSchemaDirPath = normJoinPath([
-      this.dbBaseDirPath,
-      this.dbSchemaRelDirPath,
-    ]);
-
-    this.sqlite3Db = new Sqlite3Db(this.dbDataFilePath);
+export class DbSchemaValidator extends Sqlite3EntityDbBase<Sqlite3EntityDbOpts> {
+  constructor(opts: Sqlite3EntityDbOpts) {
+    super(opts);
   }
-
-  public static readonly DEFAULT_DB_BASE_REL_DIR_PATH = "sqlite3";
-  public static readonly DEFAULT_DB_DATA_REL_DIR_PATH = "data";
-  public static readonly DEFAULT_DB_SCHEMA_REL_DIR_PATH = "schema";
-  public static readonly DEFAULT_DB_DATA_FILE_NAME = "sqlite3-data.db";
 
   public async isDbSchemaValid() {
     const fsSchema = await this.loadSchemaFromDir();
@@ -141,22 +107,6 @@ export class DbSchemaExtractor {
         return true;
       },
     });
-  }
-
-  get dbBaseRelDirPath() {
-    return DbSchemaExtractor.DEFAULT_DB_BASE_REL_DIR_PATH;
-  }
-
-  get dbDataRelDirPath() {
-    return DbSchemaExtractor.DEFAULT_DB_DATA_REL_DIR_PATH;
-  }
-
-  get dbDataFileName() {
-    return DbSchemaExtractor.DEFAULT_DB_DATA_FILE_NAME;
-  }
-
-  get dbSchemaRelDirPath() {
-    return DbSchemaExtractor.DEFAULT_DB_SCHEMA_REL_DIR_PATH;
   }
 
   getDbSchemaObjFileName(schemaObj: DbSchema) {

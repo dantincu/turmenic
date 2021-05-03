@@ -1,4 +1,4 @@
-import { appConsole } from "../src.common/logging/appConsole.js";
+import { appConsole } from "../../../../src.common/logging/appConsole.js";
 
 const func1 = (x: number) => {
   appConsole.log("func1", x);

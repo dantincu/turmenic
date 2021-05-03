@@ -36,14 +36,15 @@ export interface EntityMapping<TData> {
 }
 
 export abstract class EntityMappingBase<TData> implements EntityMapping<TData> {
-  tableName: string;
-  propMappings: GenericHash<EntityPropMapping>;
+  readonly tableName: string;
+  readonly propMappings: GenericHash<EntityPropMapping>;
 
   constructor() {
     this.tableName = this.getTableName();
-
     this.propMappings = {};
+
     this.addPropMappings();
+    this.propMappings = Object.freeze(this.propMappings);
   }
 
   abstract getTableName(): string;

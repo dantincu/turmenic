@@ -1,9 +1,9 @@
-import { appConsole } from "../../../src.common/logging/appConsole.js";
+import { appConsole } from "../../../../../../src.common/logging/appConsole.js";
 import {
   UnitTest,
   UnitTestGroup,
   sendMessage,
-} from "../../../src.common/testing/console-log-test.js";
+} from "../../../../../../src.common/testing/console-log-test.js";
 
 export interface TestData {
   intVal: number;

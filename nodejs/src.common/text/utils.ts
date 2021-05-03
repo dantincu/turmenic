@@ -93,3 +93,18 @@ export const strContainsAny = (str: string, search: string[]) => {
   const retVal = !!found;
   return retVal;
 };
+
+export const isUpperLetter = (char: string) => {
+  const retVal = char === char.toUpperCase() && char !== char.toLowerCase();
+  return retVal;
+};
+
+export const isLowerLetter = (char: string) => {
+  const retVal = char === char.toLowerCase() && char !== char.toUpperCase();
+  return retVal;
+};
+
+export const isLetter = (char: string) => {
+  const retVal = char.toLowerCase() !== char.toUpperCase();
+  return retVal;
+};

@@ -1,11 +1,11 @@
 import path from "path";
 
-import { appConsole } from "../../../src.common/logging/appConsole.js";
+import { appConsole } from "../../../../../../src.common/logging/appConsole.js";
 
 import {
   envConfig,
   envBaseDir,
-} from "../../../src.node.common/appSettings/envConfig.js";
+} from "../../../../../../src.node.common/appSettings/envConfig.js";
 
 const appEnv = await envConfig.appEnv.instance();
 let fsPath = appEnv.envBasePath as string;

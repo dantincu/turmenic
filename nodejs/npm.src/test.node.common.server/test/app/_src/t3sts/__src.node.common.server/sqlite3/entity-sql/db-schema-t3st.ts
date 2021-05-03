@@ -1,17 +1,18 @@
 import {
   envBaseDir,
   envConfig,
-} from "../../../../src.node.common/appSettings/envConfig.js";
+} from "../../../../../../../src.node.common/appSettings/envConfig.js";
 
 import {
   DbSchema,
-  DbSchemaExtractor,
-} from "../../../../src.node.common.server/sqlite3/entity-sql/db-schema.js";
-import { runTest } from "../../../memoize-test.js";
+  DbSchemaValidator,
+} from "../../../../db-schema-validator.js";
 
-const dbSchemaExtractor = new DbSchemaExtractor(
-  await envConfig.appEnv.instance()
-);
+const appEnv = await envConfig.appEnv.instance();
+
+const dbSchemaExtractor = new DbSchemaValidator({
+  dbBaseDirPath: appEnv.getEnvRelPath(envBaseDir.data, "sqlite3"),
+});
 
 const runTest1 = async () => {
   await dbSchemaExtractor.dumpDbSchema();
@@ -22,5 +23,4 @@ const runTest2 = async () => {
 };
 
 await runTest1();
-
 await runTest2();

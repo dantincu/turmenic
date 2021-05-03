@@ -1,14 +1,14 @@
-import { appConsole } from "../../../src.common/logging/appConsole.js";
+import { appConsole } from "../../../../../../src.common/logging/appConsole.js";
 
 import {
   envBaseDir,
   envConfig,
-} from "../../../src.node.common/appSettings/envConfig.js";
+} from "../../../../../../src.node.common/appSettings/envConfig.js";
 
 import {
   copyDirAsync,
   copyDirFiles,
-} from "../../../src.node.common/fileSystem/dir-hierarchy.js";
+} from "../../../../../../src.node.common/fileSystem/dir-hierarchy.js";
 
 const appEnv = await envConfig.appEnv.instance();
 

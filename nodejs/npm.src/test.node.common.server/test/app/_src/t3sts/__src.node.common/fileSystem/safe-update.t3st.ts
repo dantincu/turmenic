@@ -1,25 +1,25 @@
 import path from "path";
 
-import { appConsole } from "../../../src.common/logging/appConsole.js";
+import { appConsole } from "../../../../../../src.common/logging/appConsole.js";
 
 import {
   envBaseDir,
   envConfig,
-} from "../../../src.node.common/appSettings/envConfig.js";
+} from "../../../../../../src.node.common/appSettings/envConfig.js";
 
 import {
   SafeUpdateOpts,
   TempEntryNameOpts,
-} from "../../../src.node.common/fileSystem/safe-update/safe-update.base.js";
-import { makeDirSafeUpdate } from "../../../src.node.common/fileSystem/safe-update/dir-safe-update.js";
-import { makeFileSafeUpdate } from "../../../src.node.common/fileSystem/safe-update/file-safe-update.js";
+} from "../../../../../../src.node.common/fileSystem/safe-update/safe-update.base.js";
+import { makeDirSafeUpdate } from "../../../../../../src.node.common/fileSystem/safe-update/dir-safe-update.js";
+import { makeFileSafeUpdate } from "../../../../../../src.node.common/fileSystem/safe-update/file-safe-update.js";
 
 import {
   readFileAsync,
   writeFileAsync,
-} from "../../../src.node.common/fileSystem/types.js";
+} from "../../../../../../src.node.common/fileSystem/types.js";
 
-import { copyDirAsync } from "../../../src.node.common/fileSystem/dir-hierarchy.js";
+import { copyDirAsync } from "../../../../../../src.node.common/fileSystem/dir-hierarchy.js";
 
 const appEnv = await envConfig.appEnv.instance();
 

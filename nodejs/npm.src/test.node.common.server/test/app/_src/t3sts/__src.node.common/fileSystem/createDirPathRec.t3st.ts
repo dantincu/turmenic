@@ -4,15 +4,15 @@ import {
   mkdirAsync,
   emptyDirAsync,
   writeFileAsync,
-} from "../../../src.node.common/fileSystem/types.js";
-import { createDirPathRec } from "../../../src.node.common/fileSystem/dir-hierarchy.js";
+} from "../../../../../../src.node.common/fileSystem/types.js";
+import { createDirPathRec } from "../../../../../../src.node.common/fileSystem/dir-hierarchy.js";
 
 import {
   envConfig,
   envBaseDir,
-} from "../../../src.node.common/appSettings/envConfig.js";
-import { appConsole } from "../../../src.common/logging/appConsole.js";
-import { appLogger } from "../../../src.node.common/logging/simple-file-logger.js";
+} from "../../../../../../src.node.common/appSettings/envConfig.js";
+import { appConsole } from "../../../../../../src.common/logging/appConsole.js";
+import { appLogger } from "../../../../../../src.node.common/logging/simple-file-logger.js";
 
 appLogger.trace(
   "test.node.common.server ",

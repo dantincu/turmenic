@@ -1,6 +1,6 @@
-import { appConsole } from "../../../src.common/logging/appConsole.js";
+import { appConsole } from "../../../../../../src.common/logging/appConsole.js";
 
-import { runUnitTestsInOrderAsync } from "../../../src.node.common/testing/file-output-test.js";
+import { runUnitTestsInOrderAsync } from "../../../../../../src.node.common/testing/file-output-test.js";
 import { getUnitTestGroup } from "./log-test.base.js";
 
 const runTest = async () => {
