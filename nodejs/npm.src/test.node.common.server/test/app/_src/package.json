@@ -27,7 +27,7 @@
     "testSqlite3": "node dist/t3sts/__src.node.common.server/sqlite3/t3st-sqlite3.js",
     "testSqlite3DbSchema": "node --trace-deprecation dist/t3sts/__src.node.common.server/sqlite3/entity-sql/db-schema-t3st.js",
     "testSqlite3Database": "node dist/t3sts/__src.node.common.server/sqlite3/t3st-sqlite3-database.js",
-    "testSqlite3DbTable": "node --trace-deprecation dist/t3sts/__src.node.common.server/sqlite3/entity-sql/db-table.t3st.js",
+    "testSqlite3DbTable": "node dist/t3sts/__src.node.common.server/sqlite3/entity-sql/db-table.t3st.js",
     "__sncs_sqlite3_entitySql_dbTypesValidators": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-validators.test.js",
     "__sncs_sqlite3_entitySql_dbTypesConvertors": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-convertors.test.js",
     "__sncs_sqlite3_entitySql_dbTypesSql": "mocha dist/mocha-tests/__sncs/sqlite3/entity-sql/db-types-sql.test.js"
@@ -63,7 +63,6 @@
     "handlebars": "^4.7.7",
     "he": "^1.2.0",
     "ioredis": "^4.27.1",
-    "jaydata": "^1.5.10",
     "lodash": "^4.17.21",
     "platform-folders": "^0.5.3",
     "redis-semaphore": "^4.1.0",
