@@ -1,9 +1,0 @@
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\obj\Debug\netstandard2.1\ParsecSharp.AssemblyInfoInputs.cache
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\obj\Debug\netstandard2.1\ParsecSharp.AssemblyInfo.cs
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\obj\Debug\netstandard2.1\ParsecSharp.csproj.CoreCompileInputs.cache
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\bin\Debug\netstandard2.1\ParsecSharp.deps.json
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\bin\Debug\netstandard2.1\ParsecSharp.dll
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\bin\Debug\netstandard2.1\ParsecSharp.pdb
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\obj\Debug\netstandard2.1\ParsecSharp.csprojAssemblyReference.cache
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\obj\Debug\netstandard2.1\ParsecSharp.dll
-F:\C\X\TD\SRC\turmerik\dotnet\src-ext\_src\ParsecSharp.NetStd\ParsecSharp\obj\Debug\netstandard2.1\ParsecSharp.pdb

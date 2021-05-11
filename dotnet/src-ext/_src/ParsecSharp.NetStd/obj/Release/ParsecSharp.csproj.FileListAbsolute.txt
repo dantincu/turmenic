@@ -1,6 +1,0 @@
-F:\C\X\z\EXT-SRC\github.com%Pjanssen%ParsecSharp\ParsecSharp\ParsecSharp\bin\Release\PJanssen.ParsecSharp.dll
-F:\C\X\z\EXT-SRC\github.com%Pjanssen%ParsecSharp\ParsecSharp\ParsecSharp\bin\Release\PJanssen.ParsecSharp.pdb
-F:\C\X\z\EXT-SRC\github.com%Pjanssen%ParsecSharp\ParsecSharp\ParsecSharp\obj\Release\ParsecSharp.csprojAssemblyReference.cache
-F:\C\X\z\EXT-SRC\github.com%Pjanssen%ParsecSharp\ParsecSharp\ParsecSharp\obj\Release\ParsecSharp.csproj.CoreCompileInputs.cache
-F:\C\X\z\EXT-SRC\github.com%Pjanssen%ParsecSharp\ParsecSharp\ParsecSharp\obj\Release\PJanssen.ParsecSharp.dll
-F:\C\X\z\EXT-SRC\github.com%Pjanssen%ParsecSharp\ParsecSharp\ParsecSharp\obj\Release\PJanssen.ParsecSharp.pdb
