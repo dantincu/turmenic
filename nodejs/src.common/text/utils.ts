@@ -1,3 +1,13 @@
+export interface StrReplaceOpts {
+  searchValue: {
+    [Symbol.replace](
+      string: string,
+      replacer: (substring: string, ...args: any[]) => string
+    ): string;
+  };
+  replacer: (substring: string, ...args: any[]) => string;
+}
+
 export const compareStringsAsInts = (
   leftVal: string,
   rightVal: string
@@ -12,34 +22,39 @@ export const compareStringsAsInts = (
 export const strReplaceAll = (
   val: string,
   str: string | RegExp,
-  replExpr: string
+  replacer: string
 ) => {
-  let replVal = null;
+  let retVal = "";
 
   if (typeof val == "string") {
-    replVal = val.replace(str, replExpr);
+    retVal = val.replace(str, replacer);
 
-    while (replVal !== val) {
-      val = replVal;
-      replVal = val.replace(str, replExpr);
+    while (retVal !== val) {
+      val = retVal;
+      retVal = val.replace(str, replacer);
     }
   }
 
-  return replVal;
+  return retVal;
 };
 
-export const strReplaceEndsWith = (
+export const strReplaceAllWith = (
   val: string,
-  str: string,
-  replExpr: string
+  searchValue: string | RegExp,
+  replacer: (substring: string, ...args: any[]) => string
 ) => {
-  let replVal = val;
+  let retVal = "";
 
-  if (typeof val == "string" && val.endsWith(str)) {
-    replVal = [val.substring(0, val.length - str.length), replExpr].join("");
+  if (typeof val == "string") {
+    retVal = val.replace(searchValue, replacer);
+
+    while (retVal !== val) {
+      val = retVal;
+      retVal = val.replace(searchValue, replacer);
+    }
   }
 
-  return replVal;
+  return retVal;
 };
 
 export const strCount = (val: string, str: string): number => {
@@ -70,4 +85,26 @@ export const strContainsDigits = (str: string) => {
 export const strIsAllDigits = (str: string) => {
   const isAllDigits = /^\d+$/.test(str);
   return isAllDigits;
+};
+
+export const strContainsAny = (str: string, search: string[]) => {
+  const found = search.find((srch) => str.indexOf(srch) >= 0);
+
+  const retVal = !!found;
+  return retVal;
+};
+
+export const isUpperLetter = (char: string) => {
+  const retVal = char === char.toUpperCase() && char !== char.toLowerCase();
+  return retVal;
+};
+
+export const isLowerLetter = (char: string) => {
+  const retVal = char === char.toLowerCase() && char !== char.toUpperCase();
+  return retVal;
+};
+
+export const isLetter = (char: string) => {
+  const retVal = char.toLowerCase() !== char.toUpperCase();
+  return retVal;
 };

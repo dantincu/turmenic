@@ -4,6 +4,7 @@ import { RequestQuery } from "@hapi/hapi";
 import path from "path";
 import isValidPath from "is-valid-path";
 
+import { normalizePath } from "../../../src.node.common/fileSystem/path.js";
 import { envConfig } from "../../../src.node.common/appSettings/envConfig.js";
 import { intIdGenerator } from "../../../src.common/data/intIdGenerator.js";
 import { AppLocalFileDataSource } from "../../data/json/local-file-app-data/data-source.js";
@@ -42,7 +43,10 @@ import {
 } from "../../../src.node.common/app-data/device-app-drives/request.types.js";
 
 export const addDeviceAppDriveValidation = {
-  validateAndNormalize: async (newAppDrive: AddAppDrive) => {
+  validateAndNormalize: async (
+    newAppDrive: AddAppDrive,
+    allAppDrives: AppDrive[]
+  ) => {
     let result: AddAppDrive | Boom.Boom | null = null;
 
     if (reqStrValIsValid(newAppDrive.label) !== true) {
@@ -59,8 +63,19 @@ export const addDeviceAppDriveValidation = {
         .filter((s) => !!s) // excludes empty segments (like the trailing one if the provided path ends with path separator)
         .pop() as string; // returns the dir name as the last non empty path segment
 
-      newAppDrive.path = path.normalize(newAppDrive.path);
-      result = newAppDrive;
+      newAppDrive.path = normalizePath(newAppDrive.path);
+
+      if (
+        !!allAppDrives.find(
+          (drive) => drive.rootFolder.path === newAppDrive.path
+        ) === true
+      ) {
+        result = Boom.badRequest(
+          "You have already added an app drive with this path"
+        );
+      } else {
+        result = newAppDrive;
+      }
     }
 
     return result;

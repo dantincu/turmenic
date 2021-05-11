@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { ColProps } from 'reactstrap';
 
 import "./DriveItem.scss";
@@ -22,6 +22,14 @@ const DriveItemName = (props: DriveItemNameProps) => {
     title: props.itemTooltipText,
   };
 
+  const onContextMenu = (e: MouseEvent) => {
+    console.log("onContextMenu");
+    e.preventDefault();
+    if (props.onContextMenu) {
+      props.onContextMenu(e);
+    }
+  }
+
   const elProps = {
     btstrpElType: BtstrpElType.Col,
     domElAttrs: domElAttrs,
@@ -29,6 +37,7 @@ const DriveItemName = (props: DriveItemNameProps) => {
     onDoubleClick: props.onDoubleClick,
     onMiddleClick: props.onMiddleClick,
     onRightClick: props.onRightClick,
+    onContextMenu: onContextMenu,
     mouseBtnPressedCssClasses: {
       btn0: "mouseBtn0Pressed",
       btn1: "mouseBtn1Pressed",

@@ -1,0 +1,87 @@
+@import "../../styles/mixins.scss";
+@import "./themes/themes.scss";
+
+.trmrk-all-app-drives {
+  font-size: 14px;
+
+  .trmrk-drives-list {
+    list-style-type: none;
+    padding-left: 0px;
+
+    .trmrk-app-drive-item {
+      text-align: left;
+      padding-left: 10px;
+      border-radius: 3px;
+
+      .trmrk-drive-label {
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+        margin-bottom: 0px;
+      }
+
+      .trmrk-drive-type {
+        font-style: italic;
+        font-size: 12px;
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+
+.trmrk-app-drives-list-empty {
+  font-size: 14px;
+}
+
+.trmrk-add-app-drives-options {
+  font-size: 14px;
+  margin-top: 20px;
+
+  .trmrk-add-app-drives-options-title {
+  }
+
+  .trmrk-add-app-drive-option {
+    .trmrk-add-app-drive-opt-descr {
+      .trmrk-add-app-drive-opt-descr-emph {
+        font-weight: bold;
+        font-style: italic;
+      }
+    }
+  }
+}
+
+.trmrk-all-app-sessions {
+  font-size: 14px;
+
+  .trmrk-app-sessions-list {
+    list-style-type: none;
+    padding-left: 0px;
+
+    .trmrk-app-session {
+      text-align: left;
+      padding-left: 10px;
+      border-radius: 3px;
+
+      .trmrk-app-session-label {
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+
+.trmrk-app-sessions-list-empty {
+  font-size: 14px;
+}
+
+.trmrk-add-app-session {
+  font-size: 14px;
+  margin-top: 20px;
+
+  .trmrk-add-app-session-title {
+  }
+}

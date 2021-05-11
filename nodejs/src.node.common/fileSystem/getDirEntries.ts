@@ -12,6 +12,7 @@ import {
   getTryGetDirEntryOptsNorm,
   getGetDirEntryNormOpts,
   getFileExtension,
+  tryCatchEnoentWithRetVal,
 } from "./types.js";
 
 import { forEachAsync } from "../../src.common/arrays/arrays-async.js";
@@ -180,4 +181,38 @@ export const getDirEntries = async (
 
   const retEntries = await getDirEntriesCore(dirPath, opts);
   return retEntries;
+};
+
+export interface GetDirEntriesArrOpts {
+  catchEnoent?: boolean | null | undefined;
+}
+
+export const getDirEntriesArr = async (
+  dirPath: string,
+  opts?: GetDirEntriesArrOpts | null | undefined
+): Promise<DirEntry[] | null> => {
+  opts = opts ?? {};
+  dirPath = path.normalize(dirPath);
+
+  const dirEntries = await tryCatchEnoentWithRetVal(
+    async () => await readdirAsync(dirPath)
+  );
+
+  const dirEntriesArr =
+    dirEntries?.map((entry) => {
+      const entryObj: DirEntry = {
+        name: entry,
+      };
+
+      return entryObj;
+    }) ?? null;
+
+  if (dirEntriesArr) {
+    await forEachAsync(dirEntriesArr, async (entry) => {
+      const entryPath = path.join(dirPath, entry.name);
+      entry.stats = await getEntryStatsAsync(entryPath);
+    });
+  }
+
+  return dirEntriesArr;
 };

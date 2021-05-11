@@ -5,6 +5,8 @@ import {
   envBaseDir,
 } from "../../../src.node.common/appSettings/envConfig.js";
 
+import { maxDate } from "../../../src.common/utils/date.js";
+
 import {
   DataCollectionBase,
   DataCollectionOptions,
@@ -105,7 +107,9 @@ export abstract class LocalFileCollectionBase<
   abstract getDataDirRelPath(): string;
 
   async loadJsonData(): Promise<JsonDataContainer<TJsonData>> {
-    const lastModifiedTime = await this.getCurrentLastModifiedTime();
+    const lastModifiedTime = await getFileLastModifiedTime(
+      this.dataJsonFilePath
+    );
 
     const jsonData: JsonDataContainer<TJsonData> = await loadJsonFromFileOrDefault(
       this.dataJsonFilePath,
@@ -113,11 +117,15 @@ export abstract class LocalFileCollectionBase<
         collection: <JsonDataCollection<TJsonData>>{
           dataItems: [],
         },
-        lastModifiedTime: new Date(0),
+        lastModifiedTime: lastModifiedTime,
       }
     );
 
-    jsonData.lastModifiedTime = lastModifiedTime;
+    jsonData.lastModifiedTime = maxDate(
+      jsonData.lastModifiedTime,
+      lastModifiedTime
+    );
+
     return jsonData;
   }
 
@@ -125,7 +133,7 @@ export abstract class LocalFileCollectionBase<
     jsonData: JsonDataContainer<TJsonData>,
     safeMode?: boolean
   ): Promise<DataSaveResult<TData, TJsonData>> {
-    const currentLastModifiedTime = await this.getCurrentLastModifiedTime();
+    const currentLastModifiedTime = await this.getConflictingLastModifiedTime();
     let newLastModifiedTime = currentLastModifiedTime;
 
     if (currentLastModifiedTime.getTime() === 0) {
@@ -268,13 +276,13 @@ export abstract class LocalFileCollectionBase<
     return dataFileName;
   }
 
-  async getCurrentLastModifiedTime(): Promise<Date> {
+  async getConflictingLastModifiedTime(): Promise<Date> {
     const lastModifiedTime = this.lastModifiedTime ?? new Date(0);
     const mtime = await getFileLastModifiedTime(this.dataJsonFilePath);
 
-    const isConflicting = mtime > lastModifiedTime;
+    const isConflict = mtime > lastModifiedTime;
 
-    const retVal: Date = isConflicting ? mtime : new Date(0);
+    const retVal: Date = isConflict ? mtime : new Date(0);
     return retVal;
   }
 }

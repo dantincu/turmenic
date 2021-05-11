@@ -94,15 +94,21 @@ export class DeviceAppDrivesData {
       [appDrive]
     );
 
-    await appLocalFileDataSource.deviceRootDirLocationCollection.insert([
-      deviceRootDirLocation,
-    ]);
+    const devRootDirSaveResult = await appLocalFileDataSource.deviceRootDirLocationCollection.insert(
+      [deviceRootDirLocation]
+    );
 
-    return dataSaveResult?.inserted.pop() as AppDrive;
+    await refreshData();
+
+    const addedAppDrive = dataSaveResult?.inserted.pop() as AppDrive;
+    return addedAppDrive;
   }
 }
 
-await appLocalFileDataSource.deviceRootDirLocationCollection.load();
+export const refreshData = async () => {
+  await appLocalFileDataSource.deviceRootDirLocationCollection.load();
+  await deviceAppDrivesData.loadData();
+};
 
 export const deviceAppDrivesData = new DeviceAppDrivesData();
-await deviceAppDrivesData.loadData();
+await refreshData();

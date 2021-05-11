@@ -6,6 +6,21 @@ export type GenericHash<T> = {
   [key: string]: T;
 };
 
+export type KeyValuePair<T> = {
+  key: string;
+  value: T;
+};
+
+export const getGenericHash = <T>(pairs: { key: string; value: T }[]) => {
+  const retHash = {} as GenericHash<T>;
+
+  pairs.forEach((pair) => {
+    retHash[pair.key] = pair.value;
+  });
+
+  return retHash;
+};
+
 export const cloneHashDeep = (hash: Hash) => {
   const cloneHash = { ...hash };
 
@@ -75,4 +90,49 @@ export const strArrToHash = <T>(
   });
 
   return hash;
+};
+
+export const compareValues = <T>(left: T, right: T) => {
+  let retVal = left === right;
+  return retVal;
+};
+
+export const getObjEntries = <T>(obj: any): KeyValuePair<T>[] => {
+  const pairsArr = Object.entries<T>(obj)
+    .filter((pair) => typeof pair[0] !== "undefined")
+    .map((pair) => {
+      const retPair = {
+        key: pair[0],
+        value: pair[1],
+      } as KeyValuePair<T>;
+
+      return retPair;
+    });
+
+  return pairsArr;
+};
+
+export const compareObjs = <T>(left: T, right: T) => {
+  let leftPairsArr = getObjEntries<any>(left);
+  let rightPairsArr = getObjEntries<any>(right);
+
+  let retVal = leftPairsArr.length === rightPairsArr.length;
+
+  if (retVal && leftPairsArr.length > 0) {
+    leftPairsArr.forEach((leftPair) => {
+      if (retVal) {
+        const rightPair = rightPairsArr.find(
+          (pair) => pair.key === leftPair.key
+        );
+
+        if (rightPair) {
+          retVal = compareValues(leftPair.value, rightPair.value);
+        } else {
+          retVal = false;
+        }
+      }
+    });
+  }
+
+  return retVal;
 };

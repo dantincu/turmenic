@@ -29,6 +29,7 @@ export interface DomElAttrs {
   onClick?: (e: MouseEvent) => void;
   onMouseDown?: (e: MouseEvent) => void;
   onMouseUp?: (e: MouseEvent) => void;
+  onContextMenu?: (e: MouseEvent) => void;
 }
 
 export interface ButtonDomElAttrs extends DomElAttrs {

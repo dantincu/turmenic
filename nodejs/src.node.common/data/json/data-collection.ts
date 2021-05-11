@@ -325,12 +325,13 @@ export abstract class DataCollectionBase<
 
   insertUuids(dataList: TData[]) {
     let uuidPropName = this.dataSaveOptions.uuidPropName;
+    this.insertedUuids = this.insertedUuids ?? [];
 
     if (uuidPropName) {
       for (let item of dataList) {
         const uuid = getPropVal(item, uuidPropName) as string | null;
         if (uuid) {
-          this.insertedUuids?.push(uuid);
+          this.insertedUuids.push(uuid);
         }
       }
     }
@@ -395,7 +396,7 @@ export abstract class DataCollectionBase<
 
     if (uuidPropName) {
       uuid = this.generateUuid();
-      if (getPropVal(dataItem, uuidPropName)) {
+      if (!!getPropVal(dataItem, uuidPropName) !== true) {
         setPropVal(dataItem, uuidPropName, uuid);
         insertedUuids.push(uuid);
       }
@@ -440,11 +441,10 @@ export abstract class DataCollectionBase<
     if (key) {
       while (
         dataList.find(
-          (item) =>
-            getPropVal(item, this.dataSaveOptions.keyPropName) === keySlug
+          (item) => getPropVal(item, this.dataSaveOptions.keyPropName) === key
         )
       ) {
-        key = `${keySlug}_${suffix}`;
+        key = `${keySlug}_${++suffix}`;
       }
     }
 

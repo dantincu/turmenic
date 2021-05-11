@@ -16,5 +16,6 @@ export interface MouseDblClickableProps extends TrmrkCompProps {
   onDoubleClick?: (e: MouseEvent) => void;
   onMiddleClick?: (e: MouseEvent) => void;
   onRightClick?: (e: MouseEvent) => void;
+  onContextMenu?: (e: MouseEvent) => void;
   mouseBtnPressedCssClasses?: MouseBtnPressedCssClasses;
 }

@@ -9,6 +9,7 @@ import {
   envBaseDir,
 } from "../../src.node.common/appSettings/envConfig.js";
 
+import { appConsole } from "../../src.common/logging/appConsole.js";
 import { appLogger } from "../../src.node.common/logging/simple-file-logger.js";
 import { serverOptions } from "./hapi-options.js";
 
@@ -100,5 +101,5 @@ export const start = async () => {
 
   await server.start();
 
-  console.log("server running at: " + server.info.uri);
+  appConsole.log("server running at: " + server.info.uri);
 };

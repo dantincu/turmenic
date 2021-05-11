@@ -8,8 +8,10 @@ import { ErrorBoundary } from "./src.node.common.client/jsx-cmp/errorBoundary/Er
 import AppHeader from "./components/appHeader/AppHeader";
 import AppFooter from "./components/appFooter/AppFooter";
 
-import AppDrivesExplorerPage from "./pages/app-drives-explorer/AppDrivesExplorerPage";
+import AppSessionPage from "./pages/sessions/appSession/AppSessionPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
+
+import AppPage from './pages/AppPage';
 
 import { authApi } from "./api/auth.api";
 
@@ -41,11 +43,14 @@ const App = () => {
         <ErrorBoundary showDetails={devMode}>
           <AppHeader devMode={devMode}></AppHeader>
           <Switch>
-            <Route path="/drive/:id">
-              <AppDrivesExplorerPage></AppDrivesExplorerPage>
+            <Route path="/app-session/:uuid">
+              <AppSessionPage></AppSessionPage>
+            </Route>
+            <Route path="/dashboard">
+              <DashboardPage></DashboardPage>
             </Route>
             <Route path="/">
-              <DashboardPage></DashboardPage>
+              <AppPage></AppPage>
             </Route>
           </Switch>
           <AppFooter></AppFooter>

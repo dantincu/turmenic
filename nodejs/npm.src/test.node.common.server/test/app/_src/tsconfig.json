@@ -69,9 +69,12 @@
   },
   "include":[
     "src/**/*",
+    "src.common/**/*",
+    "src.node.common/**/*",
+    "src.node.common.server/**/*",
     "index.ts",
-    "tests/*",
-    "tests/node-json-db/*",
+    "src.node.common/t3sts/**/*",
+    "mocha-tests/**/*", "t3sts",
   ],
   "exclude":[
       "node_modules",

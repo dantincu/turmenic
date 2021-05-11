@@ -26,6 +26,23 @@ export const deviceAppDriveSessionsSlice = createSlice({
   name: "deviceAppDriveSessions",
   initialState,
   reducers: {
+    updateAppSessions: (
+      state,
+      action: PayloadAction<{ allAppSessions: AppSession[] }>
+    ) => {
+      const allAppSessions = [...state.appSessions];
+
+      updateMergeArr(
+        allAppSessions,
+        action.payload.allAppSessions,
+        (srcVal: AppSession, destVal: AppSession) => {
+          const retVal = srcVal.uuid === destVal.uuid;
+          return retVal;
+        }
+      );
+
+      state.appSessions = allAppSessions;
+    },
     updateAppDrives: (
       state,
       action: PayloadAction<{ deviceAppDrives: AppDrive[] }>
@@ -118,14 +135,24 @@ export const deviceAppDriveSessionsSlice = createSlice({
   },
 });
 
-export const selectSessionAppDrives = (state: RootState) => {
-  const value = state.deviceAppDriveSessions.defaultAppSession?.appDrives ?? [];
+export const selectAppSession = (sessionUuid: string) => (state: RootState) => {
+  const value =
+    sessionUuid === "default"
+      ? state.deviceAppDriveSessions.defaultAppSession
+      : state.deviceAppDriveSessions.appSessions.find(
+          (session) => session.uuid === sessionUuid
+        );
+
   return value;
 };
 
 export const selectAllAppDrives = (state: RootState) => {
   const value = state.deviceAppDriveSessions.allAppDrives;
-  console.log("allAppDrives", value);
+  return value;
+};
+
+export const selectAllAppSessions = (state: RootState) => {
+  const value = state.deviceAppDriveSessions.appSessions;
   return value;
 };
 
@@ -168,6 +195,7 @@ export const selectFile = (folderUuid: string, fileUuid: string) => (
 };
 
 export const {
+  updateAppSessions,
   updateAppDrives,
   toggleFolder,
   renameFolder,

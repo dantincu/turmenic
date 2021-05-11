@@ -1,48 +1,55 @@
 import Bcrypt from "bcrypt";
+import { mkdirAsync } from "./src.node.common/fileSystem/types.js";
+import { createDirPathRec } from "./src.node.common/fileSystem/dir-hierarchy.js";
 
 import {
   envConfig,
   envBaseDir,
 } from "./src.node.common/appSettings/envConfig.js";
 import { appConsole } from "./src.common/logging/appConsole.js";
-import { start } from "./src/api/hapi-start.js";
 import { appLogger } from "./src.node.common/logging/simple-file-logger.js";
-import { startOAuth } from "./src/googleapis/sample.js";
 
 appLogger.trace(
-  "test.node.common.server",
+  "test.node.common.server ",
   (await envConfig.appEnv?.instance())?.getEnvRelPath(envBaseDir.temp)
 );
 
-// start();
-await startOAuth();
-
 process.on("unhandledRejection", (err) => {
-  console.log(err);
+  appConsole.log(err);
   process.exit(1);
 });
 
-// const password = "myPassword";
+const appEnv = await envConfig.appEnv.instance();
 
-/* 
-let hash = await Bcrypt.hash(password, 10);
-appConsole.log("hash", hash);
-*/
-// hash $2b$10$tPL/1Xbj1Z25i4kiBIEY6euWMosEfPvVFmekxZhC.d9RNziKQBsbO
-// hash $2b$10$JtniJHps7YV6s/CMS9ZghOXQ2aP/.QtES8iZfclu67L/j11teHEF2
+const runTest1 = async () => {
+  const arr = [1, 2, 3, 4];
+  appConsole.log("arr", arr);
 
-/* 
-let comparisonResult = await Bcrypt.compare(
-  password,
-  "$2b$10$tPL/1Xbj1Z25i4kiBIEY6euWMosEfPvVFmekxZhC.d9RNziKQBsbO"
-);
+  arr.sort((a, b) => a - b);
+  appConsole.log("arr.sort((a, b) => a - b)", arr);
+};
 
-appConsole.log("comparisonResult", comparisonResult);
+const runTest2 = async () => {
+  const firstDirPath = appEnv.getEnvRelPath(envBaseDir.data, "asdf", "1234");
 
-comparisonResult = await Bcrypt.compare(
-  password,
-  "$2b$10$JtniJHps7YV6s/CMS9ZghOXQ2aP/.QtES8iZfclu67L/j11teHEF2"
-);
+  try {
+    await mkdirAsync(firstDirPath);
+  } catch (err) {
+    appConsole.error("mkdirAsync err", err);
+  }
 
-appConsole.log("comparisonResult", comparisonResult);
-*/
+  const secondDirPath = appEnv.getEnvRelPath(envBaseDir.data, "1234");
+
+  try {
+    await mkdirAsync(secondDirPath);
+    await mkdirAsync(secondDirPath);
+  } catch (err) {
+    appConsole.error("mkdirAsync err", err);
+  }
+
+  const thirdDirPath = appEnv.getEnvRelPath(envBaseDir.data, "5678", "asdf");
+  await createDirPathRec(thirdDirPath);
+};
+
+await runTest1();
+await runTest2();

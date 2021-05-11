@@ -1,7 +1,5 @@
 export interface DriveNode {
-  // idty: Idty;
   uuid: string;
-  // parentFolderIdty?: Idty;
   parentFolderUuid?: string | null;
   name: string;
 }
@@ -34,11 +32,10 @@ export interface DriveFolder extends DriveItem {
 }
 
 export interface AppDrive {
-  // idty: Idty;
   uuid: string;
   label: string;
   description?: string | null | undefined;
-  deviceRootDirLocationUuid: string;
+  deviceRootDirLocationUuid?: string | null | undefined;
   sortIdx: number;
 
   rootFolder: DriveFolder;
@@ -46,8 +43,9 @@ export interface AppDrive {
 }
 
 export interface AppSession {
-  // idty: Idty;
   uuid: string;
+  name: string;
+  description: string;
 
   appDrives: AppDrive[];
   allFolders: DriveFolder[];

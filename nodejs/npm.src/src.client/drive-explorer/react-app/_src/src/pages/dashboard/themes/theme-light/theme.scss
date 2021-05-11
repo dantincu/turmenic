@@ -1,2 +1,59 @@
 .trmrk.trmrk-theme-light {
+  .trmrk-all-app-drives {
+    .trmrk-app-drives-header-text {
+    }
+
+    .trmrk-drives-list {
+      .trmrk-app-drive-item {
+        background-color: #e5e3e2ff;
+        border: 1px solid white;
+
+        .trmrk-drive-label {
+          color: rgb(192, 128, 0);
+
+          &.mouseBtn0Pressed {
+            background-color: black;
+          }
+
+          &.mouseBtn1Pressed {
+            background-color: black;
+          }
+
+          &.mouseBtn2Pressed {
+            background-color: black;
+          }
+        }
+      }
+
+      .trmrk-app-drive-item:hover {
+        .trmrk-drive-label {
+          color: #8080ffff;
+        }
+      }
+    }
+  }
+
+  .trmrk-add-app-drives-options {
+    .trmrk-add-app-drives-options-title {
+    }
+
+    .trmrk-add-app-drive-option {
+      .trmrk-add-app-drive-opt-descr {
+        color: #22c;
+
+        .trmrk-add-app-drive-opt-descr-emph {
+          font-weight: bold;
+          font-style: italic;
+
+          color: #44f;
+        }
+      }
+    }
+  }
+
+  .trmrk-add-app-session {
+    .trmrk-add-app-session-title {
+      color: #22c;
+    }
+  }
 }
